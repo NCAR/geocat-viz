@@ -17,5 +17,6 @@ setup(
     install_requires=['numpy',
                       'matplotlib',
                       'cartopy',
-                      'cmaps'],
+                      'cmaps',
+                      'xarray'],
 )
