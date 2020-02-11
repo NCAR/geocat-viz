@@ -69,8 +69,6 @@ def set_titles_and_labels(ax, title=None, titlefontsize=18, left=None, leftfonts
     Utility function to handle axis titles, left/right titles, and labels
     """
 
-    # Set title, axis labels and limits, etc.
-
     if title is not None:
         if left is not None or right is not None:
             ax.set_title(title, fontsize=titlefontsize+2, y=1.12)
@@ -90,6 +88,9 @@ def set_titles_and_labels(ax, title=None, titlefontsize=18, left=None, leftfonts
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
 def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
+    """
+    Utility function to determine axis limits, tick values and labels
+    """
 
     if xlim is not None:
         ax.set_xlim(xlim)
