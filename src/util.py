@@ -250,5 +250,8 @@ def xr_add_cyclic_longitudes(da, coord):
     coords = da.coords.to_dataset()
     coords[coord] = cyclic_coord
 
-    return xr.DataArray(cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs, encoding=da.encoding)
+    new_da = xr.DataArray(cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs)
+    new_da.encoding = da.encoding
+
+    return new_da
 
