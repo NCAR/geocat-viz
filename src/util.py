@@ -95,27 +95,24 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
             Current axes to the current figure
 
         maintitle (:class:`str`):
-            Text to use for the Title.
+            Text to use for the maintitle.
 
         maintitlefontsize (:class:`int`):
-            Title text font size. A default value of 18 is used if nothing is set.
+            Text font size for maintitle. A default value of 18 is used if nothing is set.
 
         lefttitle (:class:`str`):
-            Text to use for an optional left-aligned title, if any. For most plots, only a Title is enough,
-            but for some plot types, a left-aligned likely with a  right-aligned title can be used together. If a
-            left-aligned title as well as regular Title are set together, Title is placed to top of the left/right title row.
+            Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
+            but for some plot types, a lefttitle likely with a right-aligned title, righttitle, can be used together.
 
         lefttitlefontsize (:class:`int`):
-            Left-aligned title text font size. A default value of 18 is used if nothing is set.
+            Text font size for lefttitle. A default value of 18 is used if nothing is set.
 
         righttitle (:class:`str`):
-            Text to use for an optional right-aligned title, if any. For most plots, only a Title is enough,
-            but for some plot types, a right-aligned likely with a left-aligned title can be used together. If a
-            right-aligned title as well as regular Title are set together, Title is placed to top of the left/right
-            title row.
+            Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
+            but for some plot types, a righttitle likely with a left-aligned title, lefttitle, can be used together.
 
         righttitlefontsize (:class:`int`):
-            Right-aligned title text font size. A default value of 18 is used if nothing is set.
+            Text font size for righttitle. A default value of 18 is used if nothing is set.
 
         xlabel (:class:`str`):
             Text for the x-axis label.
