@@ -2,8 +2,16 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     """
     Utility function to make plots look like NCL plots by using latitude, longitude tick labels
 
-    Set zero_direction_label = True to get 0 E / O W
-    Set dateline_direction_label = True to get 180 E / 180 W
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        zero_direction_label (:class:`bool`):
+            Set True to get 0 E / O W or False to get 0 only.
+
+        dateline_direction_label (:class:`bool`):
+            Set True to get 180 E / 180 W or False to get 180 only.
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
@@ -16,6 +24,17 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
 def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small"):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        x_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on x-axis
+
+        y_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on y-axis
     """
     import matplotlib.ticker as tic
 
@@ -46,27 +65,48 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
         right=True,
     )
 
-def make_byr_cmap():
-    """
-    Define the byr colormap
-
-    Note: this will be replaced with cmaps.BlueYellowRed
-    """
-    from . import cmaps
-
-    import warnings
-    warnings.simplefilter('always', DeprecationWarning)
-    warnings.warn('geocat.viz.util.make_byr_cmap: This function has been '
-                  'deprecated, please use geocat.viz.cmaps.BlueYellowRed '
-                  'instead.', DeprecationWarning, stacklevel=2)
-    warnings.filters.pop(0)
-
-    return cmaps.BlueYellowRed
-
 def set_titles_and_labels(ax, title=None, titlefontsize=18, left=None, leftfontsize=18, right=None, rightfontsize=18,
                           xlabel=None, ylabel=None, labelfontsize=16):
     """
     Utility function to handle axis titles, left/right titles, and labels
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        title (:class:`str`):
+            Text to use for the Title. If there is no left or right titles given, Title is placed just top of the
+            axes. If any of left or right titles is given, Title is placed to top of the left/right title row.
+
+        titlefontsize (:class:`int`):
+            Title text font size. A default value of 18 is used if nothing is set.
+
+        left (:class:`str`):
+            Text to use for an optional left-aligned title, if any. For most plots, only a Title is enough,
+            but for some plot types, a left-aligned likely with a  right-aligned title can be used together. If a
+            left-aligned title as well as regular Title are set together, Title is placed to top of the left/right title row.
+
+        leftfontsize (:class:`int`):
+            Left-aligned title text font size. A default value of 18 is used if nothing is set.
+
+        right (:class:`str`):
+            Text to use for an optional right-aligned title, if any. For most plots, only a Title is enough,
+            but for some plot types, a right-aligned likely with a left-aligned title can be used together. If a
+            right-aligned title as well as regular Title are set together, Title is placed to top of the left/right
+            title row.
+
+        rightfontsize (:class:`int`):
+            Right-aligned title text font size. A default value of 18 is used if nothing is set.
+
+        xlabel (:class:`str`):
+            Text for the x-axis label.
+
+        ylabel (:class:`str`):
+            Text for the y-axis label.
+
+        labelfontsize (:class:`int`):
+            Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
     """
 
     if title is not None:
@@ -90,6 +130,31 @@ def set_titles_and_labels(ax, title=None, titlefontsize=18, left=None, leftfonts
 def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
     """
     Utility function to determine axis limits, tick values and labels
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        xlim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            x-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged.
+
+        ylim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged.
+
+        xticks (:class:`list`):
+            List of x-axis tick locations.
+
+        yticks (:class:`list`):
+            List of y-axis tick locations.
+
+        xticklabels (:class:`list[str]`):
+            List of string labels for x-axis ticks.
+
+        yticklabels (:class:`list[str]`):
+            List of string labels for y-axis ticks.
     """
 
     if xlim is not None:
@@ -116,6 +181,24 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     Registers the new colormap by name in plt.cm, and also returns the updated map.
 
     Copied from  https://stackoverflow.com/questions/18926031/how-to-extract-a-subset-of-a-colormap-as-a-new-colormap-in-matplotlib
+
+    Args:
+
+        cmap (:class:`matplotlib.colors.Colormap`):
+            Colormap to be truncated.
+
+        minval (:class:`int` or :class:`float`):
+            Minimum value to be used for truncation of the color map.
+
+        maxval (:class:`int` or :class:`float`):
+            Maximum value to be used for truncation of the color map.
+
+        n (:class:`int`):
+            Number of color values in the new color map.
+
+        name (:class:`str`):
+            Optional name of the new color map. If not set, a new name is generated by using the name of the input
+            colormap as well as min and max values.
     """
     import numpy as np
     import matplotlib as mpl
@@ -130,9 +213,18 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     cm.register_cmap(name, new_cmap)
     return new_cmap
 
-def xr_add_cyclic(da, coord):
+def xr_add_cyclic_longitudes(da, coord):
     """
     Utility function to handle the no-shown-data artifact of 0 and 360-degree longitudes
+
+    Args:
+
+        da (:class:`xarray.core.dataarray.DataArray`):
+            Data array that contains one or more coordinates, strictly including the coordinate with the name
+            given with the "coord" parameter.
+
+        coord (:class:`str`):
+            Name of the longitude coordinate within "da" data array.
     """
 
     import xarray as xr
@@ -142,5 +234,6 @@ def xr_add_cyclic(da, coord):
 
     coords = da.coords.to_dataset()
     coords[coord] = cyclic_coord
+
     return xr.DataArray(cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs, encoding=da.encoding)
 
