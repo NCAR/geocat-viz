@@ -70,6 +70,9 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
     """
     Utility function to handle axis titles, left/right aligned titles, and labels as they appear in NCL plots.
 
+    The intent of this function is to help make the plot look like an NCL plot as well as to help developers use only
+    this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
+
     (1) If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
 
                      maintitle
@@ -146,6 +149,9 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
     """
     Utility function to determine axis limits, tick values and labels
 
+    The intent of this function is to help developers use only this convenience function instead of multiple
+    matplotlib.axes.Axes functions, when applicable.
+
     Args:
 
         ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
@@ -153,23 +159,25 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
 
         xlim (:class:`tuple`):
             Should be given as a tuple of numeric values (left, right), where left and right are the left and right
-            x-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged.
+            x-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
 
         ylim (:class:`tuple`):
             Should be given as a tuple of numeric values (left, right), where left and right are the left and right
-            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged.
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
 
         xticks (:class:`list`):
-            List of x-axis tick locations.
+            List of x-axis tick locations. See Matplotlib documentation for further information.
 
         yticks (:class:`list`):
-            List of y-axis tick locations.
+            List of y-axis tick locations. See Matplotlib documentation for further information.
 
         xticklabels (:class:`list[str]`):
-            List of string labels for x-axis ticks.
+            List of string labels for x-axis ticks. See Matplotlib documentation for further information.
 
         yticklabels (:class:`list[str]`):
-            List of string labels for y-axis ticks.
+            List of string labels for y-axis ticks. See Matplotlib documentation for further information.
     """
 
     if xlim is not None:
