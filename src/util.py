@@ -177,12 +177,6 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
             List of string labels for y-axis ticks. See Matplotlib documentation for further information.
     """
 
-    if xlim is not None:
-        ax.set_xlim(xlim)
-
-    if ylim is not None:
-        ax.set_ylim(ylim)
-
     if xticks is not None:
         ax.set_xticks(xticks)
 
@@ -194,6 +188,12 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
 
     if yticklabels is not None:
         ax.set_yticklabels(yticklabels)
+
+    if xlim is not None:
+        ax.set_xlim(xlim)
+
+    if ylim is not None:
+        ax.set_ylim(ylim)
 
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     """
