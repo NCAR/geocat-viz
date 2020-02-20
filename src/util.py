@@ -260,3 +260,39 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
+###############################################################################
+#
+# The following functions are deprecated and should eventually be removed 
+#
+###############################################################################
+
+def nclize_axis(ax, minor_per_major=3):
+    """
+    Utility function to make plots look like NCL plots
+
+    Deprecated, use `add_major_minor_ticks` instead
+    """
+    import warnings
+    warnings.simplefilter('always', DeprecationWarning)
+    warnings.warn('geocat.viz.util.nclize_axis: This function has been '
+                  'deprecated, please use geocat.viz.util.add_major_minor_ticks'
+                  ' instead.', DeprecationWarning, stacklevel=2)
+    warnings.filters.pop(0)
+
+    add_major_minor_ticks(ax, x_minor_per_major=minor_per_major, y_minor_per_major=minor_per_major)
+
+def make_byr_cmap():
+    """
+    Define the byr colormap
+    Note: this will be replaced with cmaps.BlueYellowRed
+    """
+    from . import cmaps
+
+    import warnings
+    warnings.simplefilter('always', DeprecationWarning)
+    warnings.warn('geocat.viz.util.make_byr_cmap: This function has been '
+                  'deprecated, please use geocat.viz.cmaps.BlueYellowRed '
+                  'instead.', DeprecationWarning, stacklevel=2)
+    warnings.filters.pop(0)
+
+    return cmaps.BlueYellowRed
