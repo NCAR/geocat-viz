@@ -260,6 +260,55 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
+def set_wedge_boundary(ax, lon_range, lat_range, res=1):
+    """
+    Utility function to set the boundary of ax to a wedge shape that is created
+    using given ranges of longitudes and latitudes.
+
+    Args:
+        ax (:class:'matplotlib.axes'):
+            The axes to which the boundary will be applied.
+
+        lon_range (:class:'tuple'):
+            The two-tuple containting the start and end of the desired range of
+            longitudes. The first entry must be smaller than the second entry.
+            Both entries must be between [-180 , 180].
+
+        lat_range (:class:'tuple'):
+            The two-tuple containting the start and end of the desired range of
+            longitudes. The first entry must be smaller than the second entry.
+            Both entries must be between (-90 , 90).
+
+        res (:class:'int'):
+            The size of the incrementation for vertices in degrees. Default is
+            a vertex every one degree of longitude. A higher number results in
+            a lower resolution boundary.
+    """
+    import cartopy.crs as ccrs
+    import matplotlib.path as mpath
+    
+    if (lon_range[0] >= lon_range[1]) :
+        raise ValueError("The first longitude value must be strictly less than the second longitude value")
+
+    if (lat_range[0] >= lat_range[1]) :
+        raise ValueError("The first latitude value must be strictly less than the second latitude value")
+
+    if (lat_range[0] >= 90 or lat_range[0] <= -90 or lat_range[1] >= 90 or lat_range[1] <= -90):
+        raise ValueError("The latitudes must be within the range (-90, 90) exclusive")
+
+    if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
+        raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
+
+    # Set extent of map
+    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]],
+                  ccrs.PlateCarree())
+    # Make a boundary path in PlateCarree projection begining in the bottom
+    # left and continuing anitclockwise creating a point every `res` degree
+    vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
+               [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)]
+    boundary = mpath.Path(vertices)
+    ax.set_boundary(boundary, transform=ccrs.PlateCarree())
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed 
