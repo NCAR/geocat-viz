@@ -289,8 +289,9 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1):
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
     
-    #if (lon_range[0] >= lon_range[1]) :
-    #    raise ValueError("The first longitude value must be strictly less than the second longitude value")
+    if (lon_range[0] >= lon_range[1]) : 
+        if not (lon_range[0] > 0 and lon_range[1] < 0) :
+            raise ValueError("The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian")
 
     if (lat_range[0] >= lat_range[1]) :
         raise ValueError("The first latitude value must be strictly less than the second latitude value")
@@ -310,14 +311,14 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1):
                    [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]           
-    else :           
+    else :
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
-                   [(lon_range[1], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)] + \
+                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)]          
+                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]          
         
     # Set extent of map
-    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]], crs=ccrs.PlateCarree())
+    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
     boundary = mpath.Path(vertices)
     ax.set_boundary(boundary, transform=ccrs.PlateCarree())
 
