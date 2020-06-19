@@ -262,21 +262,23 @@ def xr_add_cyclic_longitudes(da, coord):
 
 def set_wedge_boundary(ax, lon_range, lat_range, res=1):
     """
-    Utility function to set the boundary of ax to a wedge shape that is created
-    using given ranges of longitudes and latitudes.
+    Utility function to set the boundary of ax to a path that surrounds a
+    given region specified by latitude and longitude coordiantes. This
+    boundary is drawn in the projection coordinates and therefore follows
+    any curves created by the projection.
 
     Args:
         ax (:class:'matplotlib.axes'):
             The axes to which the boundary will be applied.
 
         lon_range (:class:'tuple'):
-            The two-tuple containting the start and end of the desired range of
+            The two-tuple containing the start and end of the desired range of
             longitudes. The first entry must be smaller than the second entry.
             Both entries must be between [-180 , 180].
 
         lat_range (:class:'tuple'):
-            The two-tuple containting the start and end of the desired range of
-            longitudes. The first entry must be smaller than the second entry.
+            The two-tuple containing the start and end of the desired range of
+            latitudes. The first entry must be smaller than the second entry.
             Both entries must be between (-90 , 90).
 
         res (:class:'int'):
