@@ -305,23 +305,23 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1):
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
     if (lon_range[0] > 0 and lon_range[1] < 0): # Case when range crosses antimeridian
-        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180, res)] + \
-                   [(lon, lat_range[0]) for lon in range(-180, lon_range[1], res)] + \
-                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1], res)] + \
-                   [(lon, lat_range[1]) for lon in range(lon_range[1], -180, -res)] + \
-                   [(lon, lat_range[1]) for lon in range(180, lon_range[0], -res)] + \
+        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
+                   [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
+                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
+                   [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
+                   [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]           
     else :
-        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1], res)] + \
-                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1], res)] + \
-                   [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0], -res)] + \
+        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
+                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
+                   [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]          
         
     # Set extent of map
     ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
     boundary = mpath.Path(vertices)
     ax.set_boundary(boundary, transform=ccrs.PlateCarree())
-    
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed 
