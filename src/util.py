@@ -260,7 +260,7 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_wedge_boundary(ax, lon_range, lat_range, res=1, lon_pad=None, lat_pad=None):
+def set_wedge_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordiantes. This
@@ -280,6 +280,22 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1, lon_pad=None, lat_pad=No
             The two-tuple containing the start and end of the desired range of
             latitudes. The first entry must be smaller than the second entry.
             Both entries must be between (-90 , 90).
+
+        north_pad (:class:'int'):
+            A constant to be added to the second entry in lat_range. Use this
+            if the northern edge of the plot is cut off.
+
+        south_pad (:class:'int');
+            A constant to be subtracted from the first entry in lat_range. Use
+            this if the southern edge of the plot is cut off.
+
+        east_pad (:class:'int'):
+            A constant to be added to the second entry in lon_range. Use this
+            if the eastern edge of the plot is cut off.
+        
+        west_pad (:class:'int'):
+            A constant to be subtracted from the first entry in lon_range. Use
+            this if the western edge of the plot is cut off.
 
         res (:class:'int'):
             The size of the incrementation for vertices in degrees. Default is
@@ -317,25 +333,16 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1, lon_pad=None, lat_pad=No
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]          
         
-    # Set extent of map
-    #ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
     path = mpath.Path(vertices)
-    #ax.set_boundary(path, transform=ccrs.PlateCarree())
-    
-    #rect = mpath.Path([[lon_range[0], lat_range[0]],
-    #               [lon_range[1], lat_range[0]],
-    #               [lon_range[1], lat_range[1]],
-    #               [lon_range[0], lat_range[1]],
-    #               [lon_range[0], lat_range[0]],
-    #               ]).interpolated(20)
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
     rect_in_target = proj_to_data.transform_path(path)
 
     ax.set_boundary(rect_in_target)
 
-    
-    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
+    ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
+                  lat_range[0] - south_pad, lat_range[1] + north_pad])
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed 
