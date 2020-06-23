@@ -260,7 +260,7 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_wedge_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
+def set_wedge_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordiantes. This
@@ -270,6 +270,9 @@ def set_wedge_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_
     Args:
         ax (:class:'matplotlib.axes'):
             The axes to which the boundary will be applied.
+
+        projection (:class:'cartopy.crs'):
+            The projection of ax.
 
         lon_range (:class:'tuple'):
             The two-tuple containing the start and end of the desired range of
@@ -304,7 +307,7 @@ def set_wedge_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_
     """
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
-    
+
     if (lon_range[0] >= lon_range[1]) : 
         if not (lon_range[0] > 0 and lon_range[1] < 0) :
             raise ValueError("The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian")
@@ -340,8 +343,12 @@ def set_wedge_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_
 
     ax.set_boundary(rect_in_target)
 
-    ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
-                  lat_range[0] - south_pad, lat_range[1] + north_pad])
+    if (isinstance(projection, ccrs.NorthPolarStereo) or isinstance(projection, ccrs.SouthPolarStereo)):
+        ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
+                  lat_range[0] - south_pad, lat_range[1] + north_pad], crs=ccrs.PlateCarree())
+    else:
+        ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
+                      lat_range[0] - south_pad, lat_range[1] + north_pad])
 
 ###############################################################################
 #
