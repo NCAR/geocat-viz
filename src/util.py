@@ -260,7 +260,7 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_wedge_boundary(ax, lon_range, lat_range, res=1):
+def set_wedge_boundary(ax, lon_range, lat_range, res=1, lon_pad=None, lat_pad=None):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordiantes. This
@@ -301,7 +301,7 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1):
 
     if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
         raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
-
+    
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
     if (lon_range[0] > 0 and lon_range[1] < 0): # Case when range crosses antimeridian
@@ -318,10 +318,24 @@ def set_wedge_boundary(ax, lon_range, lat_range, res=1):
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]          
         
     # Set extent of map
-    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
-    boundary = mpath.Path(vertices)
-    ax.set_boundary(boundary, transform=ccrs.PlateCarree())
+    #ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
+    path = mpath.Path(vertices)
+    #ax.set_boundary(path, transform=ccrs.PlateCarree())
+    
+    #rect = mpath.Path([[lon_range[0], lat_range[0]],
+    #               [lon_range[1], lat_range[0]],
+    #               [lon_range[1], lat_range[1]],
+    #               [lon_range[0], lat_range[1]],
+    #               [lon_range[0], lat_range[0]],
+    #               ]).interpolated(20)
 
+    proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
+    rect_in_target = proj_to_data.transform_path(path)
+
+    ax.set_boundary(rect_in_target)
+
+    
+    ax.set_extent([lon_range[0], lon_range[1], lat_range[0], lat_range[1]])
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed 
