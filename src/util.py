@@ -282,7 +282,7 @@ def set_wedge_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_
         lat_range (:class:'tuple'):
             The two-tuple containing the start and end of the desired range of
             latitudes. The first entry must be smaller than the second entry.
-            Both entries must be between (-90 , 90).
+            Both entries must be between [-90 , 90].
 
         north_pad (:class:'int'):
             A constant to be added to the second entry in lat_range. Use this
@@ -315,15 +315,12 @@ def set_wedge_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_
     if (lat_range[0] >= lat_range[1]) :
         raise ValueError("The first latitude value must be strictly less than the second latitude value")
 
-    if (lat_range[0] >= 90 or lat_range[0] <= -90 or lat_range[1] >= 90 or lat_range[1] <= -90):
-        raise ValueError("The latitudes must be within the range (-90, 90) exclusive")
-
     if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
         raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
     
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
-    if (lon_range[0] > 0 and lon_range[1] < 0): # Case when range crosses antimeridian
+    if (lon_range[0] >= 0 and lon_range[1] <= 0): # Case when range crosses antimeridian
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
                    [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
