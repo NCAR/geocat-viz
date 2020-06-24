@@ -21,6 +21,7 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
+
 def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small"):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
@@ -64,6 +65,7 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
         left=True,
         right=True,
     )
+
 
 def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=None, lefttitlefontsize=18, righttitle=None, righttitlefontsize=18,
                           xlabel=None, ylabel=None, labelfontsize=16):
@@ -142,6 +144,7 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
     if ylabel is not None:
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
+
 def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
     """
     Utility function to determine axis limits, tick values and labels
@@ -195,6 +198,7 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
     if ylim is not None:
         ax.set_ylim(ylim)
 
+
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     """
     Utility function that truncates a colormap.
@@ -225,13 +229,14 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     from matplotlib import cm
 
     if not name:
-        name="trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
+        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name,
         colors=cmap(np.linspace(minval, maxval, n)),
     )
     cm.register_cmap(name, new_cmap)
     return new_cmap
+
 
 def xr_add_cyclic_longitudes(da, coord):
     """
@@ -262,9 +267,10 @@ def xr_add_cyclic_longitudes(da, coord):
 
 ###############################################################################
 #
-# The following functions are deprecated and should eventually be removed 
+# The following functions are deprecated and should eventually be removed
 #
 ###############################################################################
+
 
 def nclize_axis(ax, minor_per_major=3):
     """
@@ -281,6 +287,7 @@ def nclize_axis(ax, minor_per_major=3):
 
     add_major_minor_ticks(ax, x_minor_per_major=minor_per_major, y_minor_per_major=minor_per_major)
 
+
 def make_byr_cmap():
     """
     Define the byr colormap
@@ -296,3 +303,79 @@ def make_byr_cmap():
     warnings.filters.pop(0)
 
     return cmaps.BlueYellowRed
+
+
+def set_vector_density(ds, lat_density=1, lon_density=1, minDistance=0):
+    """
+    Utility function to change density of vector plots.
+
+    Ars:
+
+        da (:class:`xarray.core.dataarray.DataArray`):
+            Data array that contains the vector plot data.
+
+        lat_density (:class:`int`):
+            Value in range (0,1] that determines the density of the vectors in the y range.
+
+        lon_density (:class:`int`):
+            Value in range (0,1] that determines the density of the vectors in the x range.
+
+        minDistance (:class:`int`):
+            Value in degrees that determines the distance between the vectors.
+
+    """
+    import math
+
+    if minDistance != 0 and lat_density != 1 or lon_density != 1:
+        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
+
+    # Change the density with parameter "minDistance"
+    if minDistance != 0:
+
+        lat_every = 1
+        lon_every = 1
+
+        # Get distance between points in latitude (y axis)
+        lat = ds.U['lat']
+        latdifference = (float)(lat[1] - lat[0])
+
+        # Get distance between points in longitude (x axis)
+        lon = ds.U['lon']
+        londifference = (float)(lon[1] - lon[0])
+
+        # Get distance between points that are diagonally adjacent
+        diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+        # While diagD
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
+
+            # Get distance between points in latitude (y axis)
+            lat = ds.U['lat']
+            latdifference = (float)(lat[1] - lat[0])
+
+            # Get distance between points in longitude (x axis)
+            lon = ds.U['lon']
+            londifference = (float)(lon[1] - lon[0])
+
+            # Get distance between points that are diagonally adjacent
+            diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+            ds = ds.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
+
+        return ds
+
+    # Change the density with parameters "lat_density" and "lon_density"
+    else:
+
+        if lat_density <= 0 or lat_density > 1:
+            raise Exception("Vector density must be within the range (0, 1]")
+
+        if lon_density <= 0 or lon_density > 1:
+            raise Exception("Vector density must be within the range (0, 1]")
+
+        lat_every = (int)(1/lat_density)
+        lon_every = (int)(1/lon_density)
+
+        ds = ds.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
+
+        return ds
