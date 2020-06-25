@@ -260,12 +260,14 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_wedge_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
+def set_map_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordiantes. This
     boundary is drawn in the projection coordinates and therefore follows
-    any curves created by the projection.
+    any curves created by the projection. This is currently designed for
+    the Lambert Conformal Projection and North/South Polar Stereographic
+    Projections.
 
     Args:
         ax (:class:'matplotlib.axes'):
