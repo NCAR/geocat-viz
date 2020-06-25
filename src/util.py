@@ -342,12 +342,8 @@ def set_map_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pa
 
     ax.set_boundary(rect_in_target)
 
-    if (isinstance(projection, ccrs.NorthPolarStereo) or isinstance(projection, ccrs.SouthPolarStereo)):
-        ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
+    ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
                   lat_range[0] - south_pad, lat_range[1] + north_pad], crs=ccrs.PlateCarree())
-    else:
-        ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
-                      lat_range[0] - south_pad, lat_range[1] + north_pad])
 
 ###############################################################################
 #
