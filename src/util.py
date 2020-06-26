@@ -260,21 +260,18 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_map_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
+def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordiantes. This
     boundary is drawn in the projection coordinates and therefore follows
-    any curves created by the projection. This is currently designed for
-    the Lambert Conformal Projection and North/South Polar Stereographic
-    Projections.
+    any curves created by the projection. As of now, this only works
+    consistently for the Lambert Conformal Projection and North/South
+    Polar Stereographic Projections.
 
     Args:
         ax (:class:'matplotlib.axes'):
             The axes to which the boundary will be applied.
-
-        projection (:class:'cartopy.crs'):
-            The projection of ax.
 
         lon_range (:class:'tuple'):
             The two-tuple containing the start and end of the desired range of
@@ -320,6 +317,8 @@ def set_map_boundary(ax, projection, lon_range, lat_range, north_pad=0, south_pa
     if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
         raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
     
+    
+
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
     if (lon_range[0] >= 0 and lon_range[1] <= 0): # Case when range crosses antimeridian
