@@ -269,6 +269,14 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     consistently for the Lambert Conformal Projection and North/South
     Polar Stereographic Projections.
 
+    Note: Due to the behavior of cartopy's set_extent() function, the curved 
+    edges of the boundary may be flattened and cut off. To solve this, use the
+    kwargs north_pad, south_pad, east_pad, and west_pad. These will modify the
+    coordinates passed to set_extent(). For the Lambert Conformal and Polar
+    Stereographic porjections, typicallly only north_pad and south_pad are
+    needed. If attempting to use this function for other projections
+    (i.e. Othographic) east_pad and west_pad may be needed.
+
     Args:
         ax (:class:'matplotlib.axes'):
             The axes to which the boundary will be applied.
@@ -285,19 +293,19 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
 
         north_pad (:class:'int'):
             A constant to be added to the second entry in lat_range. Use this
-            if the northern edge of the plot is cut off.
+            if the northern edge of the plot is cut off. Defaults to 0.
 
         south_pad (:class:'int');
             A constant to be subtracted from the first entry in lat_range. Use
-            this if the southern edge of the plot is cut off.
+            this if the southern edge of the plot is cut off. Defaults to 0.
 
         east_pad (:class:'int'):
             A constant to be added to the second entry in lon_range. Use this
-            if the eastern edge of the plot is cut off.
+            if the eastern edge of the plot is cut off. Defaults to 0.
         
         west_pad (:class:'int'):
             A constant to be subtracted from the first entry in lon_range. Use
-            this if the western edge of the plot is cut off.
+            this if the western edge of the plot is cut off. Defaults to 0.
 
         res (:class:'int'):
             The size of the incrementation for vertices in degrees. Default is
