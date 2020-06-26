@@ -316,6 +316,9 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
 
     if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
         raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
+
+    if (lat_range[0] > 90 or lat_range[0] < -90 or lat_range[1] > 90 or lat_range[1] < -90):
+        raise ValueError("The latitudes must be within the range [-90, 90] inclusive")
     
     
 
