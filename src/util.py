@@ -273,7 +273,7 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     edges of the boundary may be flattened and cut off. To solve this, use the
     kwargs north_pad, south_pad, east_pad, and west_pad. These will modify the
     coordinates passed to set_extent(). For the Lambert Conformal and Polar
-    Stereographic porjections, typicallly only north_pad and south_pad are
+    Stereographic projections, typically only north_pad and south_pad are
     needed. If attempting to use this function for other projections
     (i.e. Othographic) east_pad and west_pad may be needed.
 
@@ -320,11 +320,11 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     import matplotlib.patches as mpatches
     import numpy as np
 
-    if (lon_range[0] >= lon_range[1]) : 
-        if not (lon_range[0] > 0 and lon_range[1] < 0) :
+    if (lon_range[0] >= lon_range[1]): 
+        if not (lon_range[0] > 0 and lon_range[1] < 0):
             raise ValueError("The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian")
 
-    if (lat_range[0] >= lat_range[1]) :
+    if (lat_range[0] >= lat_range[1]):
         raise ValueError("The first latitude value must be strictly less than the second latitude value")
 
     if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
@@ -345,8 +345,7 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)         
-    elif ((lon_range[0] == 180 or lon_range[0] == -180) and (lon_range[1] == 180 or lon_range[1] == -180)):
-        
+    elif ((lon_range[0] == 180 or lon_range[0] == -180) and (lon_range[1] == 180 or lon_range[1] == -180)):  
         verts = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
         path = mpath.Path(verts)
     else:
@@ -358,12 +357,11 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
-    rect_in_target = proj_to_data.transform_path(path)
-
-    ax.set_boundary(rect_in_target)
+    ax.set_boundary(proj_to_data.transform_path(path))
 
     ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
-                  lat_range[0] - south_pad, lat_range[1] + north_pad], crs=ccrs.PlateCarree())
+                  lat_range[0] - south_pad, lat_range[1] + north_pad],
+                  crs=ccrs.PlateCarree())
 
 ###############################################################################
 #
