@@ -283,8 +283,11 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
 
         lon_range (:class:'tuple'):
             The two-tuple containing the start and end of the desired range of
-            longitudes. The first entry must be smaller than the second entry.
-            Both entries must be between [-180 , 180].
+            longitudes. The first entry must be smaller than the second entry,
+            except when the region crosses the antimeridian. Both entries must
+            be between [-180 , 180]. If lon_range is from -180 to 180, then a
+            full circle centered on the pole with a radius from the pole to the
+            lowest latitude given by lat_range will be set as the boundary.
 
         lat_range (:class:'tuple'):
             The two-tuple containing the start and end of the desired range of
@@ -314,6 +317,8 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     """
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
+    import matplotlib.patches as mpatches
+    import numpy as np
 
     if (lon_range[0] >= lon_range[1]) : 
         if not (lon_range[0] > 0 and lon_range[1] < 0) :
@@ -338,14 +343,19 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]           
-    else :
+                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+        path = mpath.Path(vertices)         
+    elif ((lon_range[0] == 180 or lon_range[0] == -180) and (lon_range[1] == 180 or lon_range[1] == -180)):
+        
+        verts = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
+        path = mpath.Path(verts)
+    else:
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]          
-        
-    path = mpath.Path(vertices)
+                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+        path = mpath.Path(vertices)
+    
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
     rect_in_target = proj_to_data.transform_path(path)
