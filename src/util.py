@@ -21,7 +21,7 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
-def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small"):
+def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small", basex=10, basey=10):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
 
@@ -35,13 +35,28 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
 
         y_minor_per_major (:class:`int`):
             Number of minor ticks between adjacent major ticks on y-axis
+
+        basex (:clase:`int`):
+            If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+
+        basey (:clase:`int`):
+            If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+
     """
     import matplotlib.ticker as tic
+    import numpy as np
 
     ax.tick_params(labelsize=labelsize)
     ax.minorticks_on()
-    ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
-    ax.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
+    if (ax.xaxis.get_scale()=='log'):
+        ax.xaxis.set_minor_locator(tic.LogLocator(base=basex, subs=np.linspace(1, basex, x_minor_per_major + 1)))
+    else:
+        ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
+
+    if (ax.yaxis.get_scale()=='log'):
+        ax.yaxis.set_minor_locator(tic.LogLocator(base=basey, subs=np.linspace(1, basey, y_minor_per_major + 1)))
+    else:
+        ax.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
 
     # length and width are in points and may need to change depending on figure size etc.
     ax.tick_params(
