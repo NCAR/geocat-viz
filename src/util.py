@@ -21,7 +21,7 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
-def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small", basex=10, basey=10):
+def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small", basex=10, basey=10, linthreshx=2, linthreshy=2):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
 
@@ -36,12 +36,23 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
         y_minor_per_major (:class:`int`):
             Number of minor ticks between adjacent major ticks on y-axis
 
-        basex (:clase:`int`):
+        basex (:class:`int`):
             If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
-        basey (:clase:`int`):
+        basey (:class:`int`):
             If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
+        linthreshx (:class:`int`):
+            A kwarg passed to SymmetricalLogLocator if the xaxis scale is
+            `symlog`. Defines the range (-x, x), within which the plot is
+            linear. This avoids having the plot go to infinity around zero.
+            Defaults to 2.
+
+        linthreshy (:class:`int`):
+            A kwarg passed to SymmetricalLogLocator if the yaxis scale is
+            `symlog`. Defines the range (-x, x), within which the plot is
+            linear. This avoids having the plot go to infinity around zero.
+            Defaults to 2.
     """
     import matplotlib.ticker as tic
     import numpy as np
@@ -50,11 +61,15 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
     ax.minorticks_on()
     if (ax.xaxis.get_scale()=='log'):
         ax.xaxis.set_minor_locator(tic.LogLocator(base=basex, subs=np.linspace(1, basex, x_minor_per_major + 1)))
+    elif (ax.xaxis.get_scale()=='symlog'):
+        ax.xaxis.set_minor_locator(tic.SymmetricalLogLocator(base=basex, subs=np.linspace(1, basex, x_minor_per_major + 1), linthresh=linthreshx))
     else:
         ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
 
     if (ax.yaxis.get_scale()=='log'):
         ax.yaxis.set_minor_locator(tic.LogLocator(base=basey, subs=np.linspace(1, basey, y_minor_per_major + 1)))
+    elif (ax.yaxis.get_scale()=='symlog'):
+        ax.yaxis.set_minor_locator(tic.SymmetricalLogLocator(base=basey, subs=np.linspace(1, basey, y_minor_per_major + 1), linthresh=linthreshy))
     else:
         ax.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
 
