@@ -265,6 +265,96 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
+def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherVars=[]):
+    """
+    Utility function to change density of vector plots.
+
+    Ars:
+
+        data (:class:`xarray.core.dataarray.DataArray`):
+            Data array that contains the vector plot data.
+
+        lat_density (:class:`int`):
+            Value in range (0,1] that determines the density of the vectors in the y range.
+
+        lon_density (:class:`int`):
+            Value in range (0,1] that determines the density of the vectors in the x range.
+
+        minDistance (:class:`int`):
+            Value in degrees that determines the distance between the vectors.
+        
+        otherVars (:class: array of `xarray.core.dataarray.DataArray`):
+            Other variables that require the same density reduction as lat/lon in data
+
+    """
+    import math
+
+    if minDistance != 0 and (lat_density != 1 or lon_density != 1):
+        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
+
+    # Change the density with parameter "minDistance"
+    if minDistance != 0:
+
+        lat_every = 1
+        lon_every = 1
+
+        # Get distance between points in latitude (y axis)
+        lat = data['lat']
+        latdifference = (float)(lat[1] - lat[0])
+
+        # Get distance between points in longitude (x axis)
+        lon = data['lon']
+        londifference = (float)(lon[1] - lon[0])
+
+        # Get distance between points that are diagonally adjacent
+        diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+        # While diagD
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
+
+            # Get distance between points in latitude (y axis)
+            lat = data['lat']
+            latdifference = (float)(lat[1] - lat[0])
+
+            # Get distance between points in longitude (x axis)
+            lon = data['lon']
+            londifference = (float)(lon[1] - lon[0])
+
+            # Get distance between points that are diagonally adjacent
+            diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+            ds = data.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
+
+        lon_size = data['lon'].size
+        lat_size = data['lat'].size
+
+        for variable in range(len(otherVars)):
+            otherVars[variable] = otherVars[variable][0:lat_size:lat_every+1, 0:lon_size:lon_every+1]
+
+        return ds, otherVars
+
+    # Change the density with parameters "lat_density" and "lon_density"
+    else:
+
+        if lat_density <= 0 or lat_density > 1:
+            raise Exception("Vector density must be within the range (0, 1]")
+
+        if lon_density <= 0 or lon_density > 1:
+            raise Exception("Vector density must be within the range (0, 1]")
+
+        lat_every = (int)(1/lat_density)
+        lon_every = (int)(1/lon_density)
+
+        ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
+
+        lon_size = data['lon'].size
+        lat_size = data['lat'].size
+
+        for variable in range(len(otherVars)):
+            otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
+
+        return ds, otherVars
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed
@@ -303,79 +393,3 @@ def make_byr_cmap():
     warnings.filters.pop(0)
 
     return cmaps.BlueYellowRed
-
-
-def set_vector_density(ds, lat_density=1, lon_density=1, minDistance=0):
-    """
-    Utility function to change density of vector plots.
-
-    Ars:
-
-        da (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains the vector plot data.
-
-        lat_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the y range.
-
-        lon_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the x range.
-
-        minDistance (:class:`int`):
-            Value in degrees that determines the distance between the vectors.
-
-    """
-    import math
-
-    if minDistance != 0 and lat_density != 1 or lon_density != 1:
-        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
-
-    # Change the density with parameter "minDistance"
-    if minDistance != 0:
-
-        lat_every = 1
-        lon_every = 1
-
-        # Get distance between points in latitude (y axis)
-        lat = ds.U['lat']
-        latdifference = (float)(lat[1] - lat[0])
-
-        # Get distance between points in longitude (x axis)
-        lon = ds.U['lon']
-        londifference = (float)(lon[1] - lon[0])
-
-        # Get distance between points that are diagonally adjacent
-        diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-        # While diagD
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
-
-            # Get distance between points in latitude (y axis)
-            lat = ds.U['lat']
-            latdifference = (float)(lat[1] - lat[0])
-
-            # Get distance between points in longitude (x axis)
-            lon = ds.U['lon']
-            londifference = (float)(lon[1] - lon[0])
-
-            # Get distance between points that are diagonally adjacent
-            diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-            ds = ds.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
-
-        return ds
-
-    # Change the density with parameters "lat_density" and "lon_density"
-    else:
-
-        if lat_density <= 0 or lat_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        if lon_density <= 0 or lon_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        lat_every = (int)(1/lat_density)
-        lon_every = (int)(1/lon_density)
-
-        ds = ds.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
-
-        return ds
