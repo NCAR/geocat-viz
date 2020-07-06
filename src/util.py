@@ -263,7 +263,7 @@ def xr_add_cyclic_longitudes(da, coord):
 def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
-    given region specified by latitude and longitude coordiantes. This
+    given region specified by latitude and longitude coordinates. This
     boundary is drawn in the projection coordinates and therefore follows
     any curves created by the projection. As of now, this only works
     consistently for the Lambert Conformal Projection and North/South
@@ -278,10 +278,10 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     (i.e. Othographic) east_pad and west_pad may be needed.
 
     Args:
-        ax (:class:'matplotlib.axes'):
+        ax (:class:`matplotlib.axes`):
             The axes to which the boundary will be applied.
 
-        lon_range (:class:'tuple'):
+        lon_range (:class:`tuple` or :class:`list`):
             The two-tuple containing the start and end of the desired range of
             longitudes. The first entry must be smaller than the second entry,
             except when the region crosses the antimeridian. Both entries must
@@ -289,28 +289,28 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
             full circle centered on the pole with a radius from the pole to the
             lowest latitude given by lat_range will be set as the boundary.
 
-        lat_range (:class:'tuple'):
+        lat_range (:class:`tuple` or :class:`list`):
             The two-tuple containing the start and end of the desired range of
             latitudes. The first entry must be smaller than the second entry.
             Both entries must be between [-90 , 90].
 
-        north_pad (:class:'int'):
+        north_pad (:class:`int`):
             A constant to be added to the second entry in lat_range. Use this
             if the northern edge of the plot is cut off. Defaults to 0.
 
-        south_pad (:class:'int');
+        south_pad (:class:`int`);
             A constant to be subtracted from the first entry in lat_range. Use
             this if the southern edge of the plot is cut off. Defaults to 0.
 
-        east_pad (:class:'int'):
+        east_pad (:class:`int`):
             A constant to be added to the second entry in lon_range. Use this
             if the eastern edge of the plot is cut off. Defaults to 0.
         
-        west_pad (:class:'int'):
+        west_pad (:class:`int`):
             A constant to be subtracted from the first entry in lon_range. Use
             this if the western edge of the plot is cut off. Defaults to 0.
 
-        res (:class:'int'):
+        res (:class:`int`):
             The size of the incrementation for vertices in degrees. Default is
             a vertex every one degree of longitude. A higher number results in
             a lower resolution boundary.
