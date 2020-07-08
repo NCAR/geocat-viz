@@ -314,24 +314,25 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
 
             # Get distance between points in latitude (y axis)
             lat = data['lat']
-            latdifference = (float)(lat[1] - lat[0])
+            latdifference = (float)(lat[lat_every] - lat[0])
 
             # Get distance between points in longitude (x axis)
             lon = data['lon']
-            londifference = (float)(lon[1] - lon[0])
+            londifference = (float)(lon[lon_every] - lon[0])
 
             # Get distance between points that are diagonally adjacent
             diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-            ds = data.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
+            lat_every += 1
+            lon_every += 1
+
+            ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
 
         lon_size = data['lon'].size
         lat_size = data['lat'].size
 
         for variable in range(len(otherVars)):
-            otherVars[variable] = otherVars[variable][0:lat_size:lat_every+1, 0:lon_size:lon_every+1]
-
-        return ds, otherVars
+            otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
 
     # Change the density with parameters "lat_density" and "lon_density"
     else:
@@ -353,7 +354,11 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
         for variable in range(len(otherVars)):
             otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
 
+
+    if otherVars != []:
         return ds, otherVars
+    else:
+        return ds
 
 ###############################################################################
 #
