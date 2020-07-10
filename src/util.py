@@ -272,7 +272,7 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
     Ars:
 
         data (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains the vector plot data.
+            Data array that contains the vector plot latitude/longitude data.
 
         lat_density (:class:`int`):
             Value in range (0,1] that determines the density of the vectors in the y range.
@@ -284,7 +284,7 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
             Value in degrees that determines the distance between the vectors.
         
         otherVars (:class: array of `xarray.core.dataarray.DataArray`):
-            Other variables that require the same density reduction as lat/lon in data
+            Other variables that require the same density reduction as the lat/lon data
 
     """
     import math
