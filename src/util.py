@@ -309,6 +309,9 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
+        # Initialize ds
+        ds = data.isel(lat=slice(None, None, None), lon=slice(None, None, None))
+
         # While diagD
         while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
 
