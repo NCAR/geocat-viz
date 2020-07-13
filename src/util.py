@@ -264,7 +264,6 @@ def xr_add_cyclic_longitudes(da, coord):
     new_da.encoding = da.encoding
 
     return new_da
-###############################################################################
 
 def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
     
