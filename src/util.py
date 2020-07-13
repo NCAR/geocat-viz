@@ -265,6 +265,106 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
+def plotCLabels(pressure, contours, transform, ax, proj, Clevels=[], lowClevels=[], highClevels=[]):
+
+    """
+    Utility function to plot contour labels
+
+    Args:
+
+        pressure: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat and lon values
+
+        contours (:class:`cartopy.mpl.contour.GeoContourSet`):
+            Contours that the labels will be plotted on
+
+        transform (:class:`cartopy._crs`):
+            Projection that the input coordinates (in GPS form of lon, lat) should be transformed to
+            (ex. ccrs.Geodetic())
+
+        ax (:class:`matplotlib.pyplot.axis`):
+            Axis that the contour labels are being plotted on
+
+        proj (:class:`cartopy._crs`):
+            Projection that the input coordinates (in GPS form of lon, lat) are being plotted on   
+
+        Clevels (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify where the contours with regular pressure values should be plotted  
+
+        lowClevels (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify where the contours with low pressure values should be plotted   
+
+        highClevels (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify where the contours with high pressure values should be plotted        
+    
+    Returns: 
+    
+        None
+            
+    """
+
+    import numpy as np
+
+    # Create coord arr to map to pressure values
+    coordarr = []
+    for y in np.array(pressure.lat):
+        temparr = []
+        for x in np.array(pressure.lon):
+            temparr.append((x, y))
+        coordarr.append(temparr)
+    coordarr = np.array(coordarr)
+
+    # Plot any regular contour levels
+    if Clevels != []:
+        clevelpoints = proj.transform_points(transform,
+                                            np.array([x[0] for x in Clevels]),
+                                            np.array([x[1] for x in Clevels]))
+        transformedClevels = [(x[0], x[1]) for x in clevelpoints]
+        ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=14, colors='k', fmt="%.0f")
+
+    # Plot any low contour levels
+    if lowClevels != []:
+        clevelpoints = proj.transform_points(transform,
+                                            np.array([x[0] for x in lowClevels]),
+                                            np.array([x[1] for x in lowClevels]))
+        transformedLowClevels = [(x[0], x[1]) for x in clevelpoints]
+        for x in range(len(transformedLowClevels)):
+            try:
+                # Find pressure data at that coordinate
+                coord = lowClevels[x]
+                for z in range(len(coordarr)):
+                    for y in range(len(coordarr[z])):
+                        if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
+                            p = int(round(pressure.data[z][y]))
+
+                plt.text(transformedLowClevels[x][0], transformedLowClevels[x][1], "L$_{" + str(p) + "}$", fontsize=22,
+                         horizontalalignment='center', verticalalignment='center', rotation=0)
+            except:
+                continue
+
+    # Plot any high contour levels
+    if highClevels != []:
+        clevelpoints = proj.transform_points(transform,
+                                            np.array([x[0] for x in highClevels]),
+                                            np.array([x[1] for x in highClevels]))
+        transformedHighClevels = [(x[0], x[1]) for x in clevelpoints]
+        for x in range(len(transformedHighClevels)):
+            try:
+                # Find pressure data at that coordinate
+                coord = highClevels[x]
+                for z in range(len(coordarr)):
+                    for y in range(len(coordarr[z])):
+                        if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
+                            p = int(round(pressure.data[z][y]))
+
+                plt.text(transformedHighClevels[x][0], transformedHighClevels[x][1], "H$_{" + str(p) + "}$", fontsize=22,
+                         horizontalalignment='center', verticalalignment='center', rotation=0)
+            except:
+                continue
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed
@@ -303,79 +403,3 @@ def make_byr_cmap():
     warnings.filters.pop(0)
 
     return cmaps.BlueYellowRed
-
-
-def set_vector_density(ds, lat_density=1, lon_density=1, minDistance=0):
-    """
-    Utility function to change density of vector plots.
-
-    Ars:
-
-        da (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains the vector plot data.
-
-        lat_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the y range.
-
-        lon_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the x range.
-
-        minDistance (:class:`int`):
-            Value in degrees that determines the distance between the vectors.
-
-    """
-    import math
-
-    if minDistance != 0 and lat_density != 1 or lon_density != 1:
-        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
-
-    # Change the density with parameter "minDistance"
-    if minDistance != 0:
-
-        lat_every = 1
-        lon_every = 1
-
-        # Get distance between points in latitude (y axis)
-        lat = ds.U['lat']
-        latdifference = (float)(lat[1] - lat[0])
-
-        # Get distance between points in longitude (x axis)
-        lon = ds.U['lon']
-        londifference = (float)(lon[1] - lon[0])
-
-        # Get distance between points that are diagonally adjacent
-        diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-        # While diagD
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
-
-            # Get distance between points in latitude (y axis)
-            lat = ds.U['lat']
-            latdifference = (float)(lat[1] - lat[0])
-
-            # Get distance between points in longitude (x axis)
-            lon = ds.U['lon']
-            londifference = (float)(lon[1] - lon[0])
-
-            # Get distance between points that are diagonally adjacent
-            diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-            ds = ds.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
-
-        return ds
-
-    # Change the density with parameters "lat_density" and "lon_density"
-    else:
-
-        if lat_density <= 0 or lat_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        if lon_density <= 0 or lon_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        lat_every = (int)(1/lat_density)
-        lon_every = (int)(1/lon_density)
-
-        ds = ds.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
-
-        return ds
