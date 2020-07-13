@@ -264,6 +264,162 @@ def xr_add_cyclic_longitudes(da, coord):
     new_da.encoding = da.encoding
 
     return new_da
+###############################################################################
+
+def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
+    
+    """
+    Utility function to find local low pressure coordinates on a contour map
+
+    Args:
+
+        pressure: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat and lon values
+
+        maxPressure (:class:`int`):
+            Pressure value that the local maximum pressures must be greater than
+            to qualify as a high pressure location
+
+        minPressure (:class:`int`):
+            Pressure value that the local minimum pressures must be less than
+            to qualify as a low pressure location
+
+        eType (:class:`str`):
+            'Min' or 'Max'
+            Determines which extrema are being found- minimum or maximum,
+            respectively
+    
+    Returns: 
+    
+        clusterMins (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees,
+            lat in degrees)
+            that specify low pressure areas
+            
+    """
+
+    import xarray as xr
+    import numpy as np
+    from sklearn import DBSCAN
+
+    # Create a 2D array of all the coordinates with pressure data
+    coordarr = []
+    for y in np.array(pressure.lat):
+        temparr = []
+        for x in np.array(pressure.lon):
+            temparr.append((x, y))
+        coordarr.append(temparr)
+    coordarr =  np.array(coordarr)
+
+    # Set number that a derivative must be less than in order to
+    # classify as a "zero"
+    bound = 0.0
+
+    # Get global gradient of contour data
+    grad = np.gradient(pressure.data)
+
+    # Gradient in the x direction
+    arr1 = grad[0]
+
+    # Gradient in the y direction
+    arr2 = grad[1]
+
+    # Get all array 1 indexes where gradient value is between -bound and +bound
+    posfirstzeroes = np.argwhere(arr1 <= bound)
+    negfirstzeroes = np.argwhere(-bound <= arr1)
+
+    # Get all array 2 indexes where gradient value is between -bound and +bound
+    possecondzeroes = np.argwhere(arr2 <= bound)
+    negsecondzeroes = np.argwhere(-bound <= arr2)
+
+    # Find zeroes of all four gradient arrays
+    commonzeroes = []
+    for x in possecondzeroes:
+        if x in posfirstzeroes and x in negfirstzeroes and x in negsecondzeroes:
+            commonzeroes.append(x)
+
+    extremacoords = []
+    coordsinthearray = []
+
+    # For every common zero in both gradient arrays
+    for x in commonzeroes:
+
+        try:
+            xval = x[0]
+            yval = x[1]
+
+            if eType == 'Min':
+                # If the gradient value is a "zero", and if the
+                # pressure.data value is less than minPressure:
+                if wrap_pressure.data[xval][yval] < minPressure:
+
+                    coordonmap = coordarr[xval][yval]
+
+                    coordsinthearray.append((xval, yval))
+
+                    # Get coordinate from index in coordArr
+                    xcoord = coordonmap[0]
+                    ycoord = coordonmap[1]
+
+                    extremacoords.append((xcoord, ycoord))
+
+            if eType == 'Max':
+                # If the gradient value is a "zero", and if the
+                # pressure.data value is less than minPressure:
+                if wrap_pressure.data[xval][yval] > maxPressure:
+
+                    coordonmap = coordarr[xval][yval]
+
+                    coordsinthearray.append((xval, yval))
+
+                    # Get coordinate from index in coordArr
+                    xcoord = coordonmap[0]
+                    ycoord = coordonmap[1]
+
+                    extremacoords.append((xcoord, ycoord))
+        except:
+            continue
+
+    # coordsAndLabels = getKClusters(extremacoords)
+    lonvals = [a_tuple[0] for a_tuple in extremacoords]
+    latvals = [a_tuple[1] for a_tuple in extremacoords]
+    
+    db = DBSCAN(eps=10, min_samples=1) 
+    new = db.fit(list(zip(lonvals, latvals)))
+    labels = new.labels_
+    
+    # Create an dictionary of values with key being coordinate
+    # and value being cluster label.
+    coordsAndLabels = {}
+
+    for x in range(len(extremacoords)):
+        if labels[x] in coordsAndLabels:
+            coordsAndLabels[labels[x]].append(extremacoords[x])
+        else:
+            coordsAndLabels[labels[x]] = [extremacoords[x]]
+
+    clusterExtremas = []
+
+    for key in coordsAndLabels:
+
+        pressures = []
+        for coord in coordsAndLabels[key]:
+
+            for x in range(len(coordarr)):
+                for y in range(len(coordarr[x])):
+                    if coordarr[x][y][0] == coord[0] and coordarr[x][y][1] == coord[1]:
+                        pval = pressure.data[x][y]
+
+            pressures.append(pval)
+
+        if eType == 'Min':
+            index = np.argmin(np.array(pressures))
+        if eType == 'Max':
+            index = np.argmax(np.array(pressures))
+
+        clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
+
+    return clusterExtremas
 
 ###############################################################################
 #
@@ -303,79 +459,3 @@ def make_byr_cmap():
     warnings.filters.pop(0)
 
     return cmaps.BlueYellowRed
-
-
-def set_vector_density(ds, lat_density=1, lon_density=1, minDistance=0):
-    """
-    Utility function to change density of vector plots.
-
-    Ars:
-
-        da (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains the vector plot data.
-
-        lat_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the y range.
-
-        lon_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the x range.
-
-        minDistance (:class:`int`):
-            Value in degrees that determines the distance between the vectors.
-
-    """
-    import math
-
-    if minDistance != 0 and lat_density != 1 or lon_density != 1:
-        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
-
-    # Change the density with parameter "minDistance"
-    if minDistance != 0:
-
-        lat_every = 1
-        lon_every = 1
-
-        # Get distance between points in latitude (y axis)
-        lat = ds.U['lat']
-        latdifference = (float)(lat[1] - lat[0])
-
-        # Get distance between points in longitude (x axis)
-        lon = ds.U['lon']
-        londifference = (float)(lon[1] - lon[0])
-
-        # Get distance between points that are diagonally adjacent
-        diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-        # While diagD
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
-
-            # Get distance between points in latitude (y axis)
-            lat = ds.U['lat']
-            latdifference = (float)(lat[1] - lat[0])
-
-            # Get distance between points in longitude (x axis)
-            lon = ds.U['lon']
-            londifference = (float)(lon[1] - lon[0])
-
-            # Get distance between points that are diagonally adjacent
-            diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-            ds = ds.isel(lat=slice(None, None, lat_every+1), lon=slice(None, None, lon_every+1))
-
-        return ds
-
-    # Change the density with parameters "lat_density" and "lon_density"
-    else:
-
-        if lat_density <= 0 or lat_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        if lon_density <= 0 or lon_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        lat_every = (int)(1/lat_density)
-        lon_every = (int)(1/lon_density)
-
-        ds = ds.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
-
-        return ds
