@@ -265,54 +265,68 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def plotCLabels(pressure, contours, transform, ax, proj, Clevels=[], lowClevels=[], highClevels=[]):
+
+def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], highClevels=[], cfs=14, lfs=22, hfs=22):
 
     """
-    Utility function to plot contour labels
+    Utility function to plot contour labels. Regular contour labels will be plotted using the built-in matplotlib
+    clabel function. High/Low contour labels will be plotted using text boxes for more accurate label values 
+    and placement.
 
     Args:
 
-        pressure: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat and lon values
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable data values.
 
         contours (:class:`cartopy.mpl.contour.GeoContourSet`):
-            Contours that the labels will be plotted on
+            Contour set that is being labeled.
 
         transform (:class:`cartopy._crs`):
             Projection that the input coordinates (in GPS form of lon, lat) should be transformed to
-            (ex. ccrs.Geodetic())
+            (ex. ccrs.Geodetic()).
 
         ax (:class:`matplotlib.pyplot.axis`):
-            Axis that the contour labels are being plotted on
+            Axis containing the contour set.
 
         proj (:class:`cartopy._crs`):
-            Projection that the input coordinates (in GPS form of lon, lat) are being plotted on   
+            Projection of axis.
 
         Clevels (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify where the contours with regular pressure values should be plotted  
+            that specify where the contours with regular field variable values should be plotted.
 
         lowClevels (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify where the contours with low pressure values should be plotted   
+            that specify where the contours with low field variable values should be plotted.
 
         highClevels (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify where the contours with high pressure values should be plotted        
-    
-    Returns: 
-    
+            that specify where the contours with high field variable values should be plotted.
+
+        cfs (:class:`int`):
+            Font size of regular contour labels.
+
+        lfs (:class:`int`):
+            Font size of low contour labels.
+
+        hfs (:class:`int`):
+            Font size of high contour labels.
+
+    Returns:
+
         None
-            
+
     """
 
     import numpy as np
+    import matplotlib.pyplot as plt
 
-    # Create coord arr to map to pressure values
+    # Create array of coordinates in the same shape as field variable data
+    # so each coordinate can be easily mapped to it's data value.
     coordarr = []
-    for y in np.array(pressure.lat):
+    for y in np.array(da.lat):
         temparr = []
-        for x in np.array(pressure.lon):
+        for x in np.array(da.lon):
             temparr.append((x, y))
         coordarr.append(temparr)
     coordarr = np.array(coordarr)
@@ -320,27 +334,27 @@ def plotCLabels(pressure, contours, transform, ax, proj, Clevels=[], lowClevels=
     # Plot any regular contour levels
     if Clevels != []:
         clevelpoints = proj.transform_points(transform,
-                                            np.array([x[0] for x in Clevels]),
-                                            np.array([x[1] for x in Clevels]))
+                                             np.array([x[0] for x in Clevels]),
+                                             np.array([x[1] for x in Clevels]))
         transformedClevels = [(x[0], x[1]) for x in clevelpoints]
-        ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=14, colors='k', fmt="%.0f")
+        ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=cfs, colors='k', fmt="%.0f")
 
     # Plot any low contour levels
     if lowClevels != []:
         clevelpoints = proj.transform_points(transform,
-                                            np.array([x[0] for x in lowClevels]),
-                                            np.array([x[1] for x in lowClevels]))
+                                             np.array([x[0] for x in lowClevels]),
+                                             np.array([x[1] for x in lowClevels]))
         transformedLowClevels = [(x[0], x[1]) for x in clevelpoints]
         for x in range(len(transformedLowClevels)):
             try:
-                # Find pressure data at that coordinate
+                # Find field variable data at that coordinate
                 coord = lowClevels[x]
                 for z in range(len(coordarr)):
                     for y in range(len(coordarr[z])):
                         if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
-                            p = int(round(pressure.data[z][y]))
+                            p = int(round(da.data[z][y]))
 
-                plt.text(transformedLowClevels[x][0], transformedLowClevels[x][1], "L$_{" + str(p) + "}$", fontsize=22,
+                plt.text(transformedLowClevels[x][0], transformedLowClevels[x][1], "L$_{" + str(p) + "}$", fontsize=lfs,
                          horizontalalignment='center', verticalalignment='center', rotation=0)
             except:
                 continue
@@ -348,19 +362,19 @@ def plotCLabels(pressure, contours, transform, ax, proj, Clevels=[], lowClevels=
     # Plot any high contour levels
     if highClevels != []:
         clevelpoints = proj.transform_points(transform,
-                                            np.array([x[0] for x in highClevels]),
-                                            np.array([x[1] for x in highClevels]))
+                                             np.array([x[0] for x in highClevels]),
+                                             np.array([x[1] for x in highClevels]))
         transformedHighClevels = [(x[0], x[1]) for x in clevelpoints]
         for x in range(len(transformedHighClevels)):
             try:
-                # Find pressure data at that coordinate
+                # Find field variable data at that coordinate
                 coord = highClevels[x]
                 for z in range(len(coordarr)):
                     for y in range(len(coordarr[z])):
                         if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
-                            p = int(round(pressure.data[z][y]))
+                            p = int(round(da.data[z][y]))
 
-                plt.text(transformedHighClevels[x][0], transformedHighClevels[x][1], "H$_{" + str(p) + "}$", fontsize=22,
+                plt.text(transformedHighClevels[x][0], transformedHighClevels[x][1], "H$_{" + str(p) + "}$", fontsize=hfs,
                          horizontalalignment='center', verticalalignment='center', rotation=0)
             except:
                 continue
