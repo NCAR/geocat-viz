@@ -265,23 +265,22 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
-    
+def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
     """
-    Utility function to find local low pressure coordinates on a contour map
+    Utility function to find local low/high field variable coordinates on a contour map
 
     Args:
 
-        pressure: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat and lon values
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-        maxPressure (:class:`int`):
-            Pressure value that the local maximum pressures must be greater than
-            to qualify as a high pressure location
+        maxVal (:class:`int`):
+            Data value that the local maximum must be greater than
+            to qualify as a "local high" location
 
-        minPressure (:class:`int`):
-            Pressure value that the local minimum pressures must be less than
-            to qualify as a low pressure location
+        minVal (:class:`int`):
+            Data value that the local minimum must be less than
+            to qualify as a "local low" location
 
         eType (:class:`str`):
             'Min' or 'Max'
@@ -290,22 +289,20 @@ def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
     
     Returns: 
     
-        clusterMins (:class:`list`):
-            List of coordinate tuples in GPS form (lon in degrees,
-            lat in degrees)
-            that specify low pressure areas
+        clusterExtremas (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify local minimum/maximum locations
             
     """
-
-    import xarray as xr
     import numpy as np
-    from sklearn import DBSCAN
+    from sklearn.cluster import DBSCAN
 
-    # Create a 2D array of all the coordinates with pressure data
+    # Create a 2D array of coordinates in the same shape as the field variable data
+    # so each coordinate is easily mappable to a data value
     coordarr = []
-    for y in np.array(pressure.lat):
+    for y in np.array(da.lat):
         temparr = []
-        for x in np.array(pressure.lon):
+        for x in np.array(da.lon):
             temparr.append((x, y))
         coordarr.append(temparr)
     coordarr =  np.array(coordarr)
@@ -315,7 +312,7 @@ def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
     bound = 0.0
 
     # Get global gradient of contour data
-    grad = np.gradient(pressure.data)
+    grad = np.gradient(da.data)
 
     # Gradient in the x direction
     arr1 = grad[0]
@@ -337,85 +334,65 @@ def findLocalExtrema(pressure, maxPressure=1040, minPressure=975, eType='Min'):
         if x in posfirstzeroes and x in negfirstzeroes and x in negsecondzeroes:
             commonzeroes.append(x)
 
+    # Find all zeroes that also qualify as minimum or maximum values
     extremacoords = []
-    coordsinthearray = []
-
-    # For every common zero in both gradient arrays
     for x in commonzeroes:
-
         try:
+            # xval is x index of the zero and yval is y index of the zero
             xval = x[0]
             yval = x[1]
 
-            if eType == 'Min':
-                # If the gradient value is a "zero", and if the
-                # pressure.data value is less than minPressure:
-                if wrap_pressure.data[xval][yval] < minPressure:
-
-                    coordonmap = coordarr[xval][yval]
-
-                    coordsinthearray.append((xval, yval))
-
-                    # Get coordinate from index in coordArr
-                    xcoord = coordonmap[0]
-                    ycoord = coordonmap[1]
-
-                    extremacoords.append((xcoord, ycoord))
-
-            if eType == 'Max':
-                # If the gradient value is a "zero", and if the
-                # pressure.data value is less than minPressure:
-                if wrap_pressure.data[xval][yval] > maxPressure:
-
-                    coordonmap = coordarr[xval][yval]
-
-                    coordsinthearray.append((xval, yval))
-
-                    # Get coordinate from index in coordArr
-                    xcoord = coordonmap[0]
-                    ycoord = coordonmap[1]
-
-                    extremacoords.append((xcoord, ycoord))
+            # If the field variable value at the coordinate is less than minVal:
+            if eType == 'Min' and da.data[xval][yval] < minVal:
+                # Add coordinate as an extrema
+                extremacoords.append(tuple(coordarr[xval][yval]))
+            # If the field variable value at the coordinate is greater than maxVal:
+            if eType == 'Max' and da.data[xval][yval] > maxVal:
+                # Add coordinate as an extrema
+                extremacoords.append(tuple(coordarr[xval][yval]))
         except:
             continue
 
-    # coordsAndLabels = getKClusters(extremacoords)
-    lonvals = [a_tuple[0] for a_tuple in extremacoords]
-    latvals = [a_tuple[1] for a_tuple in extremacoords]
+    # Clean up noisy data to find actual extrema
     
+    # Use Density-based spatial clustering of applications with noise
+    # to cluster and label coordinates 
     db = DBSCAN(eps=10, min_samples=1) 
-    new = db.fit(list(zip(lonvals, latvals)))
+    new = db.fit(extremacoords)
     labels = new.labels_
     
     # Create an dictionary of values with key being coordinate
     # and value being cluster label.
     coordsAndLabels = {}
-
     for x in range(len(extremacoords)):
         if labels[x] in coordsAndLabels:
             coordsAndLabels[labels[x]].append(extremacoords[x])
         else:
             coordsAndLabels[labels[x]] = [extremacoords[x]]
 
+    # Initialize array of coordinates to be returned
     clusterExtremas = []
 
+    # Iterate through the coordinates in each cluster
     for key in coordsAndLabels:
-
-        pressures = []
+        # Create array to hold all the field variable values for that cluster
+        datavals = []
         for coord in coordsAndLabels[key]:
-
+            # Find field variable value of each coordinate
             for x in range(len(coordarr)):
                 for y in range(len(coordarr[x])):
                     if coordarr[x][y][0] == coord[0] and coordarr[x][y][1] == coord[1]:
-                        pval = pressure.data[x][y]
+                        pval = da.data[x][y]
+            # Append the field variable value to the array for that cluster
+            datavals.append(pval)
 
-            pressures.append(pval)
-
+        # Find the index of the minimum/maximum field variable value of each cluster
         if eType == 'Min':
-            index = np.argmin(np.array(pressures))
+            index = np.argmin(np.array(datavals))
         if eType == 'Max':
-            index = np.argmax(np.array(pressures))
+            index = np.argmax(np.array(datavals))
 
+        # Append the coordinate corresponding to that index to the array to be returned
         clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
 
     return clusterExtremas
