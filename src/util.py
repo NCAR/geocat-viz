@@ -288,6 +288,7 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
 
     """
     import math
+    import warnings
 
     if minDistance != 0 and (lat_density != 1 or lon_density != 1):
         raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
@@ -311,6 +312,9 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
 
         # Initialize ds
         ds = data.isel(lat=slice(None, None, None), lon=slice(None, None, None))
+
+        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
+            warnings.warn('Plot spacing is alrady greater or equal to ' + (str)(minDistance))
 
         # While diagD
         while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
