@@ -333,7 +333,6 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     if (lat_range[0] > 90 or lat_range[0] < -90 or lat_range[1] > 90 or lat_range[1] < -90):
         raise ValueError("The latitudes must be within the range [-90, 90] inclusive")
     
-    
 
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
@@ -346,8 +345,8 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)         
     elif ((lon_range[0] == 180 or lon_range[0] == -180) and (lon_range[1] == 180 or lon_range[1] == -180)):  
-        verts = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
-        path = mpath.Path(verts)
+        vertices = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
+        path = mpath.Path(vertices)
     else:
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
