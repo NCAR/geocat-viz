@@ -352,7 +352,7 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
         ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=rfs, colors='k', fmt="%.0f")
         [allLabels.append(txt) for txt in contours.labelTexts]
         if rHorizontal == True:
-            [allLabels.set_rotation('horizontal') for txt in contours.labelTexts]
+            [txt.set_rotation('horizontal') for txt in contours.labelTexts]
 
     # Plot any low contour levels
     if lowClevels != []:
