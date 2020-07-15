@@ -266,7 +266,8 @@ def xr_add_cyclic_longitudes(da, coord):
     return new_da
 
 
-def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], highClevels=[], cfs=14, lfs=22, hfs=22):
+def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], highClevels=[], rfs=14, efs=22, whitebbox=False,
+                rHorizontal=False, eHorizontal=True):
 
     """
     Utility function to plot contour labels. Regular contour labels will be plotted using the built-in matplotlib
@@ -282,14 +283,15 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
             Contour set that is being labeled.
 
         transform (:class:`cartopy._crs`):
-            Projection that the input coordinates (in GPS form of lon, lat) should be transformed to
+            Instance of CRS that represents the source coordinate system of coordinates.
             (ex. ccrs.Geodetic()).
 
         ax (:class:`matplotlib.pyplot.axis`):
             Axis containing the contour set.
 
-        proj (:class:`cartopy._crs`):
-            Projection of axis.
+        proj (:class:`cartopy.crs`):
+            Projection 'ax' is defined by.
+            This is the instaance of CRS that the coordinates will be transformed to.
 
         Clevels (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
@@ -303,18 +305,25 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contours with high field variable values should be plotted.
 
-        cfs (:class:`int`):
+        rfs (:class:`int`):
             Font size of regular contour labels.
 
-        lfs (:class:`int`):
-            Font size of low contour labels.
+        efs (:class:`int`):
+            Font size of extrema contour labels.
 
-        hfs (:class:`int`):
-            Font size of high contour labels.
+        rHorizontal (:class:`bool`):
+            Setting this to "True" will cause the regular contour labels to be horizontal.
+
+        eHorizontal (:class:`bool`):
+            Setting this to "True" will cause the extrema contour labels to be horizontal.
+        
+        whitebbox (:class:`bool`):
+            Setting this to "True" will cause all labels to be plotted with white backgrounds
 
     Returns:
 
-        None
+        allLabels (:class:`list`):
+            List of text instances of all contour labels
 
     """
 
@@ -322,7 +331,7 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
     import matplotlib.pyplot as plt
 
     # Create array of coordinates in the same shape as field variable data
-    # so each coordinate can be easily mapped to it's data value.
+    # so each coordinate can be easily mapped to its data value.
     coordarr = []
     for y in np.array(da.lat):
         temparr = []
@@ -331,13 +340,19 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
         coordarr.append(temparr)
     coordarr = np.array(coordarr)
 
+    # Initialize empty array that will be filled with contour label text objects and returned
+    allLabels = []
+
     # Plot any regular contour levels
     if Clevels != []:
         clevelpoints = proj.transform_points(transform,
                                              np.array([x[0] for x in Clevels]),
                                              np.array([x[1] for x in Clevels]))
         transformedClevels = [(x[0], x[1]) for x in clevelpoints]
-        ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=cfs, colors='k', fmt="%.0f")
+        ax.clabel(contours, manual=transformedClevels, inline=True, fontsize=rfs, colors='k', fmt="%.0f")
+        [allLabels.append(txt) for txt in contours.labelTexts]
+        if rHorizontal == True:
+            [allLabels.set_rotation('horizontal') for txt in contours.labelTexts]
 
     # Plot any low contour levels
     if lowClevels != []:
@@ -354,8 +369,11 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
                         if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
                             p = int(round(da.data[z][y]))
 
-                plt.text(transformedLowClevels[x][0], transformedLowClevels[x][1], "L$_{" + str(p) + "}$", fontsize=lfs,
-                         horizontalalignment='center', verticalalignment='center', rotation=0)
+                lab = plt.text(transformedLowClevels[x][0], transformedLowClevels[x][1], "L$_{" + str(p) + "}$", fontsize=efs,
+                         horizontalalignment='center', verticalalignment='center')
+                if eHorizontal == True:
+                    lab.set_rotation('horizontal')
+                allLabels.append(lab)
             except:
                 continue
 
@@ -374,10 +392,18 @@ def plotCLabels(da, contours, transform, ax, proj, Clevels=[], lowClevels=[], hi
                         if coordarr[z][y][0] == coord[0] and coordarr[z][y][1] == coord[1]:
                             p = int(round(da.data[z][y]))
 
-                plt.text(transformedHighClevels[x][0], transformedHighClevels[x][1], "H$_{" + str(p) + "}$", fontsize=hfs,
-                         horizontalalignment='center', verticalalignment='center', rotation=0)
+                lab = plt.text(transformedHighClevels[x][0], transformedHighClevels[x][1], "H$_{" + str(p) + "}$", fontsize=efs,
+                         horizontalalignment='center', verticalalignment='center')
+                if eHorizontal == True:
+                    lab.set_rotation('horizontal')
+                allLabels.append(lab)
             except:
                 continue
+
+    if whitebbox == True:
+        [txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2)) for txt in allLabels]
+
+    return allLabels
 
 ###############################################################################
 #
