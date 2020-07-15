@@ -265,34 +265,36 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
+
+def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
     """
-    Utility function to find local low/high field variable coordinates on a contour map
+    Utility function to find local low/high field variable coordinates on a contour map. To classify as a local high, the data
+    point must be greater than highVal, and to classify as a local low, the data point must be less than lowVal.
 
     Args:
 
         da: (:class:`xarray.DataArray`):
             Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-        maxVal (:class:`int`):
-            Data value that the local maximum must be greater than
-            to qualify as a "local high" location
+        highVal (:class:`int`):
+            Data value that the local high must be greater than to qualify as a "local high" location.
+            Default highVal is 1040.
 
-        minVal (:class:`int`):
-            Data value that the local minimum must be less than
-            to qualify as a "local low" location
+        lowVal (:class:`int`):
+            Data value that the local low must be less than to qualify as a "local low" location.
+            Default lowVal is 975.
 
         eType (:class:`str`):
-            'Min' or 'Max'
-            Determines which extrema are being found- minimum or maximum,
-            respectively
-    
-    Returns: 
-    
+            'Low' or 'High'
+            Determines which extrema are being found- minimum or maximum, respectively.
+            Default eType is 'Low'.
+
+    Returns:
+
         clusterExtremas (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify local minimum/maximum locations
-            
+            that specify local low/high locations
+
     """
     import numpy as np
     from sklearn.cluster import DBSCAN
@@ -305,7 +307,7 @@ def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
         for x in np.array(da.lon):
             temparr.append((x, y))
         coordarr.append(temparr)
-    coordarr =  np.array(coordarr)
+    coordarr = np.array(coordarr)
 
     # Set number that a derivative must be less than in order to
     # classify as a "zero"
@@ -334,7 +336,7 @@ def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
         if x in posfirstzeroes and x in negfirstzeroes and x in negsecondzeroes:
             commonzeroes.append(x)
 
-    # Find all zeroes that also qualify as minimum or maximum values
+    # Find all zeroes that also qualify as low or high values
     extremacoords = []
     for x in commonzeroes:
         try:
@@ -342,25 +344,25 @@ def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
             xval = x[0]
             yval = x[1]
 
-            # If the field variable value at the coordinate is less than minVal:
-            if eType == 'Min' and da.data[xval][yval] < minVal:
+            # If the field variable value at the coordinate is less than lowVal:
+            if eType == 'Low' and da.data[xval][yval] < lowVal:
                 # Add coordinate as an extrema
                 extremacoords.append(tuple(coordarr[xval][yval]))
             # If the field variable value at the coordinate is greater than maxVal:
-            if eType == 'Max' and da.data[xval][yval] > maxVal:
+            if eType == 'High' and da.data[xval][yval] > highVal:
                 # Add coordinate as an extrema
                 extremacoords.append(tuple(coordarr[xval][yval]))
         except:
             continue
 
     # Clean up noisy data to find actual extrema
-    
+
     # Use Density-based spatial clustering of applications with noise
-    # to cluster and label coordinates 
-    db = DBSCAN(eps=10, min_samples=1) 
+    # to cluster and label coordinates
+    db = DBSCAN(eps=10, min_samples=1)
     new = db.fit(extremacoords)
     labels = new.labels_
-    
+
     # Create an dictionary of values with key being coordinate
     # and value being cluster label.
     coordsAndLabels = {}
@@ -386,10 +388,10 @@ def findLocalExtrema(da, maxVal=1040, minVal=975, eType='Min'):
             # Append the field variable value to the array for that cluster
             datavals.append(pval)
 
-        # Find the index of the minimum/maximum field variable value of each cluster
-        if eType == 'Min':
+        # Find the index of the smallest/greatest field variable value of each cluster
+        if eType == 'Low':
             index = np.argmin(np.array(datavals))
-        if eType == 'Max':
+        if eType == 'High':
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
