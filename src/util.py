@@ -298,6 +298,7 @@ def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
     """
     import numpy as np
     from sklearn.cluster import DBSCAN
+    import warnings
 
     # Create a 2D array of coordinates in the same shape as the field variable data
     # so each coordinate is easily mappable to a data value
@@ -354,6 +355,14 @@ def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
                 extremacoords.append(tuple(coordarr[xval][yval]))
         except:
             continue
+
+    if extremacoords == []:
+        if eType == 'Low':
+            warnings.warn('No local extrema with data value less than given lowVal')
+            return []
+        if eType == 'High':
+            warnings.warn('No local extrema with data value greater than given highVal')
+            return []
 
     # Clean up noisy data to find actual extrema
 
