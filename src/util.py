@@ -278,11 +278,11 @@ def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
 
         highVal (:class:`int`):
             Data value that the local high must be greater than to qualify as a "local high" location.
-            Default highVal is 1040.
+            Default highVal is a pressure value of 1040 hectopascals.
 
         lowVal (:class:`int`):
             Data value that the local low must be less than to qualify as a "local low" location.
-            Default lowVal is 975.
+            Default lowVal is a pressure value of 975 hectopascals.
 
         eType (:class:`str`):
             'Low' or 'High'
