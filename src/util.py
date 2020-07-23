@@ -43,13 +43,13 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
             If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
         linthreshx (:class:`int`):
-            A kwarg passed to SymmetricalLogLocator if the xaxis scale is
+            An argument passed to SymmetricalLogLocator if the xaxis scale is
             `symlog`. Defines the range (-x, x), within which the plot is
             linear. This avoids having the plot go to infinity around zero.
             Defaults to 2.
 
         linthreshy (:class:`int`):
-            A kwarg passed to SymmetricalLogLocator if the yaxis scale is
+            An argument passed to SymmetricalLogLocator if the yaxis scale is
             `symlog`. Defines the range (-x, x), within which the plot is
             linear. This avoids having the plot go to infinity around zero.
             Defaults to 2.
