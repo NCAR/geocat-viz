@@ -265,7 +265,8 @@ def xr_add_cyclic_longitudes(da, coord):
 
     return new_da
 
-def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherVars=[]):
+
+def set_vector_density(data, minDistance=0, otherVars=[]):
     """
     Utility function to change density of vector plots.
 
@@ -274,15 +275,9 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
         data (:class:`xarray.core.dataarray.DataArray`):
             Data array that contains the vector plot latitude/longitude data.
 
-        lat_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the y range.
-
-        lon_density (:class:`int`):
-            Value in range (0,1] that determines the density of the vectors in the x range.
-
         minDistance (:class:`int`):
             Value in degrees that determines the distance between the vectors.
-        
+
         otherVars (:class: array of `xarray.core.dataarray.DataArray`):
             Other variables that require the same density reduction as the lat/lon data
 
@@ -290,8 +285,8 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
     import math
     import warnings
 
-    if minDistance != 0 and (lat_density != 1 or lon_density != 1):
-        raise Exception("minDistance and lat/lon_density parameters cannot be used simulatenously.")
+    if minDistance < 0:
+        raise Exception("minDistance cannot be negative.")
 
     # Change the density with parameter "minDistance"
     if minDistance != 0:
@@ -311,7 +306,7 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
         # Initialize ds
-        ds = data.isel(lat=slice(None, None, None), lon=slice(None, None, None))
+        ds = data
 
         if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' + (str)(minDistance))
@@ -340,27 +335,6 @@ def set_vector_density(data, lat_density=1, lon_density=1, minDistance=0, otherV
 
         for variable in range(len(otherVars)):
             otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
-
-    # Change the density with parameters "lat_density" and "lon_density"
-    else:
-
-        if lat_density <= 0 or lat_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        if lon_density <= 0 or lon_density > 1:
-            raise Exception("Vector density must be within the range (0, 1]")
-
-        lat_every = (int)(1/lat_density)
-        lon_every = (int)(1/lon_density)
-
-        ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
-
-        lon_size = data['lon'].size
-        lat_size = data['lat'].size
-
-        for variable in range(len(otherVars)):
-            otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
-
 
     if otherVars != []:
         return ds, otherVars
