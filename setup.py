@@ -18,5 +18,6 @@ setup(
                       'matplotlib',
                       'cartopy',
                       'cmaps',
-                      'xarray'],
+                      'xarray',
+                      'scikit-learn'],
 )

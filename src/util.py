@@ -21,6 +21,7 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
+
 def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small", basex=10, basey=10, linthreshx=2, linthreshy=2):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
@@ -94,6 +95,7 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
         left=True,
         right=True,
     )
+
 
 def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=None, lefttitlefontsize=18, righttitle=None, righttitlefontsize=18,
                           xlabel=None, ylabel=None, labelfontsize=16):
@@ -172,6 +174,7 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
     if ylabel is not None:
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
+
 def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
     """
     Utility function to determine axis limits, tick values and labels
@@ -225,6 +228,7 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
     if ylim is not None:
         ax.set_ylim(ylim)
 
+
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     """
     Utility function that truncates a colormap.
@@ -255,13 +259,14 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     from matplotlib import cm
 
     if not name:
-        name="trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
+        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name,
         colors=cmap(np.linspace(minval, maxval, n)),
     )
     cm.register_cmap(name, new_cmap)
     return new_cmap
+
 
 def xr_add_cyclic_longitudes(da, coord):
     """
@@ -289,6 +294,7 @@ def xr_add_cyclic_longitudes(da, coord):
     new_da.encoding = da.encoding
 
     return new_da
+
 
 def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
     """
@@ -347,8 +353,6 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     """
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
-    import matplotlib.patches as mpatches
-    import numpy as np
 
     if (lon_range[0] >= lon_range[1]): 
         if not (lon_range[0] > 0 and lon_range[1] < 0):
@@ -392,11 +396,109 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
                   lat_range[0] - south_pad, lat_range[1] + north_pad],
                   crs=ccrs.PlateCarree())
 
+
+def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
+    """
+    Utility function to find local low/high field variable coordinates on a contour map. To classify as a local high, the data
+    point must be greater than highVal, and to classify as a local low, the data point must be less than lowVal.
+
+    Args:
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
+        highVal (:class:`int`):
+            Data value that the local high must be greater than to qualify as a "local high" location.
+            Default highVal is 0.
+        lowVal (:class:`int`):
+            Data value that the local low must be less than to qualify as a "local low" location.
+            Default lowVal is 1000.
+        eType (:class:`str`):
+            'Low' or 'High'
+            Determines which extrema are being found- minimum or maximum, respectively.
+            Default eType is 'Low'.
+    Returns:
+        clusterExtremas (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify local low/high locations
+    """
+    
+    import numpy as np
+    from sklearn.cluster import DBSCAN
+    import warnings
+
+    # Create a 2D array of coordinates in the same shape as the field variable data
+    # so each coordinate is easily mappable to a data value
+    # ex:
+    # (1, 1), (2, 1), (3, 1)
+    # (1, 2)................
+    # (1, 3)................
+    lons, lats = np.meshgrid(np.array(da.lon), np.array(da.lat))
+    coordarr = np.dstack((lons, lats))
+
+    # Find all zeroes that also qualify as low or high values
+    extremacoords = []
+
+    if eType == 'Low':
+        coordlist = np.argwhere(da.data < lowVal)
+        extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
+    if eType == 'High':
+        coordlist = np.argwhere(da.data > highVal)
+        extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
+
+    if extremacoords == []:
+        if eType == 'Low':
+            warnings.warn('No local extrema with data value less than given lowVal')
+            return []
+        if eType == 'High':
+            warnings.warn('No local extrema with data value greater than given highVal')
+            return []
+
+    # Clean up noisy data to find actual extrema
+
+    # Use Density-based spatial clustering of applications with noise
+    # to cluster and label coordinates
+    db = DBSCAN(eps=10, min_samples=1)
+    new = db.fit(extremacoords)
+    labels = new.labels_
+
+    # Create an dictionary of values with key being coordinate
+    # and value being cluster label.
+    coordsAndLabels = {label: [] for label in labels}
+    for label, coord in zip(labels, extremacoords):
+        coordsAndLabels[label].append(coord)
+
+    # Initialize array of coordinates to be returned
+    clusterExtremas = []
+
+    # Iterate through the coordinates in each cluster
+    for key in coordsAndLabels:
+
+        # Create array to hold all the field variable values for that cluster
+        datavals = []
+        for coord in coordsAndLabels[key]:
+
+            # Find pressure data at that coordinate
+            cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
+            x, y = np.where(cond)
+            datavals.append(da.data[x[0]][y[0]])
+
+        # Find the index of the smallest/greatest field variable value of each cluster
+        if eType == 'Low':
+            index = np.argmin(np.array(datavals))
+        if eType == 'High':
+            index = np.argmax(np.array(datavals))
+
+        # Append the coordinate corresponding to that index to the array to be returned
+        clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
+
+    return clusterExtremas
+
+
 ###############################################################################
 #
-# The following functions are deprecated and should eventually be removed 
+# The following functions are deprecated and should eventually be removed
 #
 ###############################################################################
+
 
 def nclize_axis(ax, minor_per_major=3):
     """
@@ -412,6 +514,7 @@ def nclize_axis(ax, minor_per_major=3):
     warnings.filters.pop(0)
 
     add_major_minor_ticks(ax, x_minor_per_major=minor_per_major, y_minor_per_major=minor_per_major)
+
 
 def make_byr_cmap():
     """
