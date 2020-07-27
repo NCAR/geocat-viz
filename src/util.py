@@ -285,12 +285,9 @@ def set_vector_density(data, minDistance=0, otherVars=[]):
     import math
     import warnings
 
-    if minDistance < 0:
-        raise Exception("minDistance cannot be negative.")
-
-    # Change the density with parameter "minDistance"
-    if minDistance != 0:
-
+    if minDistance <= 0:
+        raise Exception("minDistance cannot be negative or zero.")
+    else:
         lat_every = 1
         lon_every = 1
 
