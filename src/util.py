@@ -266,95 +266,52 @@ def xr_add_cyclic_longitudes(da, coord):
     return new_da
 
 
-def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
+def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
     """
     Utility function to find local low/high field variable coordinates on a contour map. To classify as a local high, the data
     point must be greater than highVal, and to classify as a local low, the data point must be less than lowVal.
 
     Args:
-
         da: (:class:`xarray.DataArray`):
             Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
-
         highVal (:class:`int`):
             Data value that the local high must be greater than to qualify as a "local high" location.
-            Default highVal is a pressure value of 1040 hectopascals.
-
+            Default highVal is 0.
         lowVal (:class:`int`):
             Data value that the local low must be less than to qualify as a "local low" location.
-            Default lowVal is a pressure value of 975 hectopascals.
-
+            Default lowVal is 1000.
         eType (:class:`str`):
             'Low' or 'High'
             Determines which extrema are being found- minimum or maximum, respectively.
             Default eType is 'Low'.
-
     Returns:
-
         clusterExtremas (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify local low/high locations
-
     """
+    
     import numpy as np
     from sklearn.cluster import DBSCAN
     import warnings
 
     # Create a 2D array of coordinates in the same shape as the field variable data
     # so each coordinate is easily mappable to a data value
-    coordarr = []
-    for y in np.array(da.lat):
-        temparr = []
-        for x in np.array(da.lon):
-            temparr.append((x, y))
-        coordarr.append(temparr)
-    coordarr = np.array(coordarr)
-
-    # Set number that a derivative must be less than in order to
-    # classify as a "zero"
-    bound = 0.0
-
-    # Get global gradient of contour data
-    grad = np.gradient(da.data)
-
-    # Gradient in the x direction
-    arr1 = grad[0]
-
-    # Gradient in the y direction
-    arr2 = grad[1]
-
-    # Get all array 1 indexes where gradient value is between -bound and +bound
-    posfirstzeroes = np.argwhere(arr1 <= bound)
-    negfirstzeroes = np.argwhere(-bound <= arr1)
-
-    # Get all array 2 indexes where gradient value is between -bound and +bound
-    possecondzeroes = np.argwhere(arr2 <= bound)
-    negsecondzeroes = np.argwhere(-bound <= arr2)
-
-    # Find zeroes of all four gradient arrays
-    commonzeroes = []
-    for x in possecondzeroes:
-        if x in posfirstzeroes and x in negfirstzeroes and x in negsecondzeroes:
-            commonzeroes.append(x)
+    # ex:
+    # (1, 1), (2, 1), (3, 1)
+    # (1, 2)................
+    # (1, 3)................
+    lons, lats = np.meshgrid(np.array(da.lon), np.array(da.lat))
+    coordarr = np.dstack((lons, lats))
 
     # Find all zeroes that also qualify as low or high values
     extremacoords = []
-    for x in commonzeroes:
-        try:
-            # xval is x index of the zero and yval is y index of the zero
-            xval = x[0]
-            yval = x[1]
 
-            # If the field variable value at the coordinate is less than lowVal:
-            if eType == 'Low' and da.data[xval][yval] < lowVal:
-                # Add coordinate as an extrema
-                extremacoords.append(tuple(coordarr[xval][yval]))
-            # If the field variable value at the coordinate is greater than maxVal:
-            if eType == 'High' and da.data[xval][yval] > highVal:
-                # Add coordinate as an extrema
-                extremacoords.append(tuple(coordarr[xval][yval]))
-        except:
-            continue
+    if eType == 'Low':
+        coordlist = np.argwhere(da.data < lowVal)
+        extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
+    if eType == 'High':
+        coordlist = np.argwhere(da.data > highVal)
+        extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
 
     if extremacoords == []:
         if eType == 'Low':
@@ -374,28 +331,24 @@ def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
 
     # Create an dictionary of values with key being coordinate
     # and value being cluster label.
-    coordsAndLabels = {}
-    for x in range(len(extremacoords)):
-        if labels[x] in coordsAndLabels:
-            coordsAndLabels[labels[x]].append(extremacoords[x])
-        else:
-            coordsAndLabels[labels[x]] = [extremacoords[x]]
+    coordsAndLabels = {label: [] for label in labels}
+    for label, coord in zip(labels, extremacoords):
+        coordsAndLabels[label].append(coord)
 
     # Initialize array of coordinates to be returned
     clusterExtremas = []
 
     # Iterate through the coordinates in each cluster
     for key in coordsAndLabels:
+
         # Create array to hold all the field variable values for that cluster
         datavals = []
         for coord in coordsAndLabels[key]:
-            # Find field variable value of each coordinate
-            for x in range(len(coordarr)):
-                for y in range(len(coordarr[x])):
-                    if coordarr[x][y][0] == coord[0] and coordarr[x][y][1] == coord[1]:
-                        pval = da.data[x][y]
-            # Append the field variable value to the array for that cluster
-            datavals.append(pval)
+
+            # Find pressure data at that coordinate
+            cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
+            x, y = np.where(cond)
+            datavals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
         if eType == 'Low':
@@ -407,6 +360,7 @@ def findLocalExtrema(da, highVal=1040, lowVal=975, eType='Low'):
         clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
 
     return clusterExtremas
+
 
 ###############################################################################
 #
