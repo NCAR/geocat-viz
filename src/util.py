@@ -266,12 +266,14 @@ def xr_add_cyclic_longitudes(da, coord):
     return new_da
 
 
-def plotCLabels(da, contours, transform, ax, proj, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
+def plotCLabels(ax, contours, transform, proj, da, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
 
     """
     Utility function to plot contour labels by passing in a coordinate to the clabel function.
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
+
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
 
     Args:
         da: (:class:`xarray.DataArray`):
@@ -285,7 +287,7 @@ def plotCLabels(da, contours, transform, ax, proj, clabel_locations=[], fontsize
             Axis containing the contour set.
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
-            This is the instaance of CRS that the coordinates will be transformed to.
+            This is the instance of CRS that the coordinates will be transformed to.
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contours with regular field variable values should be plotted.
@@ -323,11 +325,13 @@ def plotCLabels(da, contours, transform, ax, proj, clabel_locations=[], fontsize
     return cLabels
 
 
-def plotELabels(da, contours, transform, ax, proj, clabel_locations=[], eType='Low', fontsize=22, horizontal=True, whitebbox=False):
+def plotELabels(ax, contours, transform, proj, da, clabel_locations=[], label='L', fontsize=22, whitebbox=False, horizontal=True):
 
     """
     Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
+
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
 
     Args:
         da: (:class:`xarray.DataArray`):
@@ -341,14 +345,13 @@ def plotELabels(da, contours, transform, ax, proj, clabel_locations=[], eType='L
             Axis containing the contour set.
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
-            This is the instaance of CRS that the coordinates will be transformed to.
+            This is the instance of CRS that the coordinates will be transformed to.
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contour labels should be plotted.
-        type (:class:`list`):
-            'high' or 'low'
-            High contour labels will be plotted with an H
-            Low contour labels will be plotted with an L
+        label (:class:`str`):
+            ex. 'L' or 'H'
+            The pressure value will be plotted as a subscript of this label.
         fontsize (:class:`int`):
             Font size of regular contour labels.
         horizontal (:class:`bool`):
@@ -390,12 +393,8 @@ def plotELabels(da, contours, transform, ax, proj, clabel_locations=[], eType='L
             z, y = np.where(cond)
             p = int(round(da.data[z[0]][y[0]]))
 
-            if eType == 'High':
-                lab = plt.text(transformed_locations[x][0], transformed_locations[x][1], "H$_{" + str(p) + "}$", fontsize=fontsize,
-                               horizontalalignment='center', verticalalignment='center')
-            elif eType == 'Low':
-                lab = plt.text(transformed_locations[x][0], transformed_locations[x][1], "L$_{" + str(p) + "}$", fontsize=fontsize,
-                               horizontalalignment='center', verticalalignment='center')
+            lab = plt.text(transformed_locations[x][0], transformed_locations[x][1], label+"$_{" + str(p) + "}$", fontsize=fontsize,
+                           horizontalalignment='center', verticalalignment='center')
 
             if horizontal is True:
                 lab.set_rotation('horizontal')
