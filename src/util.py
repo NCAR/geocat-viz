@@ -475,7 +475,6 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
         # Create array to hold all the field variable values for that cluster
         datavals = []
         for coord in coordsAndLabels[key]:
-
             # Find pressure data at that coordinate
             cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
             x, y = np.where(cond)
@@ -491,6 +490,152 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
         clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
 
     return clusterExtremas
+
+
+def plotCLabels(ax, contours, transform, proj, da, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
+
+    """
+    Utility function to plot contour labels by passing in a coordinate to the clabel function.
+    This allows the user to specify the exact locations of the labels, rather than having matplotlib
+    plot them automatically.
+
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
+
+    Args:
+        ax (:class:`matplotlib.pyplot.axis`):
+            Axis containing the contour set.
+        contours (:class:`cartopy.mpl.contour.GeoContourSet`):
+            Contour set that is being labeled.
+        transform (:class:`cartopy._crs`):
+            Instance of CRS that represents the source coordinate system of coordinates.
+            (ex. ccrs.Geodetic()).
+        proj (:class:`cartopy.crs`):
+            Projection 'ax' is defined by.
+            This is the instance of CRS that the coordinates will be transformed to.
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable data values.
+        clabel_locations (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify where the contours with regular field variable values should be plotted.
+        fontsize (:class:`int`):
+            Font size of contour labels.
+        whitebbox (:class:`bool`):
+            Setting this to "True" will cause all labels to be plotted with white backgrounds
+        horizontal (:class:`bool`):
+            Setting this to "True" will cause the contour labels to be horizontal.
+    Returns:
+        cLabels (:class:`list`):
+            List of text instances of all contour labels
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # Initialize empty array that will be filled with contour label text objects and returned
+    cLabels = []
+
+    # Plot any regular contour levels
+    if clabel_locations != []:
+        clevelpoints = proj.transform_points(transform,
+                                             np.array([x[0] for x in clabel_locations]),
+                                             np.array([x[1] for x in clabel_locations]))
+        transformed_locations = [(x[0], x[1]) for x in clevelpoints]
+        ax.clabel(contours, manual=transformed_locations, inline=True, fontsize=fontsize, colors='k', fmt="%.0f")
+        [cLabels.append(txt) for txt in contours.labelTexts]
+
+        if horizontal is True:
+            [txt.set_rotation('horizontal') for txt in contours.labelTexts]
+
+    if whitebbox is True:
+        [txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2)) for txt in cLabels]
+
+    return cLabels
+
+
+def plotELabels(ax, contours, transform, proj, da, clabel_locations=[], label='L', fontsize=22, whitebbox=False, horizontal=True):
+
+    """
+    Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
+    and placement.
+
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
+
+    Args:
+        ax (:class:`matplotlib.pyplot.axis`):
+            Axis containing the contour set.
+        contours (:class:`cartopy.mpl.contour.GeoContourSet`):
+            Contour set that is being labeled.
+        transform (:class:`cartopy._crs`):
+            Instance of CRS that represents the source coordinate system of coordinates.
+            (ex. ccrs.Geodetic()).
+        proj (:class:`cartopy.crs`):
+            Projection 'ax' is defined by.
+            This is the instance of CRS that the coordinates will be transformed to.
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable data values.
+        clabel_locations (:class:`list`):
+            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+            that specify where the contour labels should be plotted.
+        label (:class:`str`):
+            ex. 'L' or 'H'
+            The data value will be plotted as a subscript of this label.
+        fontsize (:class:`int`):
+            Font size of regular contour labels.
+        horizontal (:class:`bool`):
+            Setting this to "True" will cause the contour labels to be horizontal.
+        whitebbox (:class:`bool`):
+            Setting this to "True" will cause all labels to be plotted with white backgrounds
+    Returns:
+        extremaLabels (:class:`list`):
+            List of text instances of all contour labels
+    """
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # Create array of coordinates in the same shape as field variable data
+    # so each coordinate can be easily mapped to its data value.
+    # ex:
+    # (1, 1), (2, 1), (3, 1)
+    # (1, 2)................
+    # (1, 3)................
+    lons, lats = np.meshgrid(np.array(da.lon), np.array(da.lat))
+    coordarr = np.dstack((lons, lats))
+
+    # Initialize empty array that will be filled with contour label text objects and returned
+    extremaLabels = []
+
+    # Plot any low contour levels
+    clabel_points = proj.transform_points(transform,
+                                          np.array([x[0] for x in clabel_locations]),
+                                          np.array([x[1] for x in clabel_locations]))
+    transformed_locations = [(x[0], x[1]) for x in clabel_points]
+
+    for x in range(len(transformed_locations)):
+
+        try:
+            # Find field variable data at that coordinate
+            coord = clabel_locations[x]
+            cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
+            z, y = np.where(cond)
+            p = int(round(da.data[z[0]][y[0]]))
+
+            lab = plt.text(transformed_locations[x][0], transformed_locations[x][1], label + "$_{" + str(p) + "}$",
+                           fontsize=fontsize,
+                           horizontalalignment='center', verticalalignment='center')
+
+            if horizontal is True:
+                lab.set_rotation('horizontal')
+
+            extremaLabels.append(lab)
+
+        except Exception as E:
+            print(E)
+            continue
+
+    if whitebbox is True:
+        [txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2)) for txt in extremaLabels]
+
+    return extremaLabels
 
 
 ###############################################################################
