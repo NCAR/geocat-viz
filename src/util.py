@@ -351,7 +351,7 @@ def plotELabels(ax, contours, transform, proj, da, clabel_locations=[], label='L
             that specify where the contour labels should be plotted.
         label (:class:`str`):
             ex. 'L' or 'H'
-            The pressure value will be plotted as a subscript of this label.
+            The data value will be plotted as a subscript of this label.
         fontsize (:class:`int`):
             Font size of regular contour labels.
         horizontal (:class:`bool`):
