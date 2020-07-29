@@ -492,7 +492,7 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
     return clusterExtremas
 
 
-def plotCLabels(ax, contours, transform, proj, da, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
+def plotCLabels(ax, contours, transform, proj, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
 
     """
     Utility function to plot contour labels by passing in a coordinate to the clabel function.
@@ -512,8 +512,6 @@ def plotCLabels(ax, contours, transform, proj, da, clabel_locations=[], fontsize
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
             This is the instance of CRS that the coordinates will be transformed to.
-        da: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat, lon, and field variable data values.
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contours with regular field variable values should be plotted.
@@ -551,7 +549,7 @@ def plotCLabels(ax, contours, transform, proj, da, clabel_locations=[], fontsize
     return cLabels
 
 
-def plotELabels(ax, contours, transform, proj, da, clabel_locations=[], label='L', fontsize=22, whitebbox=False, horizontal=True):
+def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22, whitebbox=False, horizontal=True):
 
     """
     Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
@@ -560,18 +558,14 @@ def plotELabels(ax, contours, transform, proj, da, clabel_locations=[], label='L
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
 
     Args:
-        ax (:class:`matplotlib.pyplot.axis`):
-            Axis containing the contour set.
-        contours (:class:`cartopy.mpl.contour.GeoContourSet`):
-            Contour set that is being labeled.
+        da: (:class:`xarray.DataArray`):
+            Xarray data array containing the lat, lon, and field variable data values.
         transform (:class:`cartopy._crs`):
             Instance of CRS that represents the source coordinate system of coordinates.
             (ex. ccrs.Geodetic()).
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
             This is the instance of CRS that the coordinates will be transformed to.
-        da: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat, lon, and field variable data values.
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contour labels should be plotted.
