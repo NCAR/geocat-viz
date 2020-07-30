@@ -498,9 +498,7 @@ def plotCLabels(ax, contours, transform, proj, clabel_locations=[], fontsize=12,
     Utility function to plot contour labels by passing in a coordinate to the clabel function.
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
-
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
-
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
     Args:
         ax (:class:`matplotlib.pyplot.axis`):
             Axis containing the contour set.
@@ -554,9 +552,7 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
     """
     Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
-
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png 
-
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
     Args:
         da: (:class:`xarray.DataArray`):
             Xarray data array containing the lat, lon, and field variable data values.
@@ -632,6 +628,66 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
     return extremaLabels
 
 
+def set_vector_density(data, minDistance=0):
+    """
+    Utility function to change density of vector plots.
+    Args:
+        data (:class:`xarray.core.dataarray.DataArray`):
+            Data array that contains the vector plot latitude/longitude data.
+        minDistance (:class:`int`):
+            Value in degrees that determines the distance between the vectors.
+    Returns:
+        ds (:class:`xarray.core.dataarray.DataArray`):
+            Sliced version of the input data array.
+    """
+    import math
+    import warnings
+
+    if minDistance <= 0:
+        raise Exception("minDistance cannot be negative or zero.")
+    else:
+        lat_every = 1
+        lon_every = 1
+
+        # Get distance between points in latitude (y axis)
+        lat = data['lat']
+        latdifference = (float)(lat[1] - lat[0])
+
+        # Get distance between points in longitude (x axis)
+        lon = data['lon']
+        londifference = (float)(lon[1] - lon[0])
+
+        # Get distance between points that are diagonally adjacent
+        diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+        # Initialize ds
+        ds = data
+
+        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
+            warnings.warn('Plot spacing is alrady greater or equal to ' + (str)(minDistance))
+
+        # While the difference between two vectors is smaller than minDistance, increment the value that
+        # the data arrays will be sliced by
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
+
+            # Get distance between points in latitude (y axis)
+            latdifference = (float)(lat[lat_every] - lat[0])
+
+            # Get distance between points in longitude (x axis)
+            londifference = (float)(lon[lon_every] - lon[0])
+
+            # Get distance between points that are diagonally adjacent
+            diagDifference = math.sqrt(latdifference**2 + londifference**2)
+
+            lat_every += 1
+            lon_every += 1
+
+        # Slice data arrays
+        ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
+
+        return ds
+
+
 ###############################################################################
 #
 # The following functions are deprecated and should eventually be removed
@@ -642,7 +698,6 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
 def nclize_axis(ax, minor_per_major=3):
     """
     Utility function to make plots look like NCL plots
-
     Deprecated, use `add_major_minor_ticks` instead
     """
     import warnings
