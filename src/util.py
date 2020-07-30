@@ -266,11 +266,11 @@ def xr_add_cyclic_longitudes(da, coord):
     return new_da
 
 
-def set_vector_density(data, minDistance=0, otherVars=[]):
+def set_vector_density(data, minDistance=0):
     """
     Utility function to change density of vector plots.
 
-    Ars:
+    Args:
 
         data (:class:`xarray.core.dataarray.DataArray`):
             Data array that contains the vector plot latitude/longitude data.
@@ -278,8 +278,10 @@ def set_vector_density(data, minDistance=0, otherVars=[]):
         minDistance (:class:`int`):
             Value in degrees that determines the distance between the vectors.
 
-        otherVars (:class: array of `xarray.core.dataarray.DataArray`):
-            Other variables that require the same density reduction as the lat/lon data
+    Returns:
+
+        ds (:class:`xarray.core.dataarray.DataArray`):
+            Sliced version of the input data array.
 
     """
     import math
@@ -308,15 +310,14 @@ def set_vector_density(data, minDistance=0, otherVars=[]):
         if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' + (str)(minDistance))
 
-        # While diagD
+        # While the difference between two vectors is smaller than minDistance, increment the value that
+        # the data arrays will be sliced by
         while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
 
             # Get distance between points in latitude (y axis)
-            lat = data['lat']
             latdifference = (float)(lat[lat_every] - lat[0])
 
             # Get distance between points in longitude (x axis)
-            lon = data['lon']
             londifference = (float)(lon[lon_every] - lon[0])
 
             # Get distance between points that are diagonally adjacent
@@ -325,17 +326,9 @@ def set_vector_density(data, minDistance=0, otherVars=[]):
             lat_every += 1
             lon_every += 1
 
-            ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
+        # Slice data arrays
+        ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
 
-        lon_size = data['lon'].size
-        lat_size = data['lat'].size
-
-        for variable in range(len(otherVars)):
-            otherVars[variable] = otherVars[variable][0:lat_size:lat_every, 0:lon_size:lon_every]
-
-    if otherVars != []:
-        return ds, otherVars
-    else:
         return ds
 
 ###############################################################################
