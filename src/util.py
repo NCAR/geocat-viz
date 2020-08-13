@@ -1,4 +1,6 @@
-def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_label=False):
+def add_lat_lon_ticklabels(ax,
+                           zero_direction_label=False,
+                           dateline_direction_label=False):
     """
     Utility function to make plots look like NCL plots by using latitude, longitude tick labels
 
@@ -15,13 +17,18 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
-    lon_formatter = LongitudeFormatter(zero_direction_label=zero_direction_label,
-                                       dateline_direction_label=dateline_direction_label)
+    lon_formatter = LongitudeFormatter(
+        zero_direction_label=zero_direction_label,
+        dateline_direction_label=dateline_direction_label)
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
-def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small"):
+
+def add_major_minor_ticks(ax,
+                          x_minor_per_major=3,
+                          y_minor_per_major=3,
+                          labelsize="small"):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
 
@@ -65,8 +72,17 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
         right=True,
     )
 
-def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=None, lefttitlefontsize=18, righttitle=None, righttitlefontsize=18,
-                          xlabel=None, ylabel=None, labelfontsize=16):
+
+def set_titles_and_labels(ax,
+                          maintitle=None,
+                          maintitlefontsize=18,
+                          lefttitle=None,
+                          lefttitlefontsize=18,
+                          righttitle=None,
+                          righttitlefontsize=18,
+                          xlabel=None,
+                          ylabel=None,
+                          labelfontsize=16):
     """
     Utility function to handle axis titles, left/right aligned titles, and labels as they appear in NCL plots.
 
@@ -134,7 +150,10 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
         ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=1.04, loc='left')
 
     if righttitle is not None:
-        ax.set_title(righttitle, fontsize=righttitlefontsize, y=1.04, loc='right')
+        ax.set_title(righttitle,
+                     fontsize=righttitlefontsize,
+                     y=1.04,
+                     loc='right')
 
     if xlabel is not None:
         ax.set_xlabel(xlabel, fontsize=labelfontsize)
@@ -142,7 +161,14 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
     if ylabel is not None:
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
-def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
+
+def set_axes_limits_and_ticks(ax,
+                              xlim=None,
+                              ylim=None,
+                              xticks=None,
+                              yticks=None,
+                              xticklabels=None,
+                              yticklabels=None):
     """
     Utility function to determine axis limits, tick values and labels
 
@@ -195,6 +221,7 @@ def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None
     if ylim is not None:
         ax.set_ylim(ylim)
 
+
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     """
     Utility function that truncates a colormap.
@@ -225,13 +252,16 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     from matplotlib import cm
 
     if not name:
-        name="trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
+        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name,
+                                                   a=minval,
+                                                   b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name,
         colors=cmap(np.linspace(minval, maxval, n)),
     )
     cm.register_cmap(name, new_cmap)
     return new_cmap
+
 
 def xr_add_cyclic_longitudes(da, coord):
     """
@@ -250,21 +280,27 @@ def xr_add_cyclic_longitudes(da, coord):
     import xarray as xr
     import cartopy.util as cutil
 
-    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values, coord=da[coord])
+    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values,
+                                                       coord=da[coord])
 
     coords = da.coords.to_dataset()
     coords[coord] = cyclic_coord
 
-    new_da = xr.DataArray(cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs)
+    new_da = xr.DataArray(cyclic_data,
+                          dims=da.dims,
+                          coords=coords.coords,
+                          attrs=da.attrs)
     new_da.encoding = da.encoding
 
     return new_da
 
+
 ###############################################################################
 #
-# The following functions are deprecated and should eventually be removed 
+# The following functions are deprecated and should eventually be removed
 #
 ###############################################################################
+
 
 def nclize_axis(ax, minor_per_major=3):
     """
@@ -274,12 +310,18 @@ def nclize_axis(ax, minor_per_major=3):
     """
     import warnings
     warnings.simplefilter('always', DeprecationWarning)
-    warnings.warn('geocat.viz.util.nclize_axis: This function has been '
-                  'deprecated, please use geocat.viz.util.add_major_minor_ticks'
-                  ' instead.', DeprecationWarning, stacklevel=2)
+    warnings.warn(
+        'geocat.viz.util.nclize_axis: This function has been '
+        'deprecated, please use geocat.viz.util.add_major_minor_ticks'
+        ' instead.',
+        DeprecationWarning,
+        stacklevel=2)
     warnings.filters.pop(0)
 
-    add_major_minor_ticks(ax, x_minor_per_major=minor_per_major, y_minor_per_major=minor_per_major)
+    add_major_minor_ticks(ax,
+                          x_minor_per_major=minor_per_major,
+                          y_minor_per_major=minor_per_major)
+
 
 def make_byr_cmap():
     """
@@ -290,9 +332,12 @@ def make_byr_cmap():
 
     import warnings
     warnings.simplefilter('always', DeprecationWarning)
-    warnings.warn('geocat.viz.util.make_byr_cmap: This function has been '
-                  'deprecated, please use geocat.viz.cmaps.BlueYellowRed '
-                  'instead.', DeprecationWarning, stacklevel=2)
+    warnings.warn(
+        'geocat.viz.util.make_byr_cmap: This function has been '
+        'deprecated, please use geocat.viz.cmaps.BlueYellowRed '
+        'instead.',
+        DeprecationWarning,
+        stacklevel=2)
     warnings.filters.pop(0)
 
     return cmaps.BlueYellowRed
