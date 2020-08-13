@@ -1,4 +1,6 @@
-def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_label=False):
+def add_lat_lon_ticklabels(ax,
+                           zero_direction_label=False,
+                           dateline_direction_label=False):
     """
     Utility function to make plots look like NCL plots by using latitude, longitude tick labels
 
@@ -15,14 +17,22 @@ def add_lat_lon_ticklabels(ax, zero_direction_label=False, dateline_direction_la
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
-    lon_formatter = LongitudeFormatter(zero_direction_label=zero_direction_label,
-                                       dateline_direction_label=dateline_direction_label)
+    lon_formatter = LongitudeFormatter(
+        zero_direction_label=zero_direction_label,
+        dateline_direction_label=dateline_direction_label)
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsize="small", basex=10, basey=10, linthreshx=2, linthreshy=2):
+def add_major_minor_ticks(ax,
+                          x_minor_per_major=3,
+                          y_minor_per_major=3,
+                          labelsize="small",
+                          basex=10,
+                          basey=10,
+                          linthreshx=2,
+                          linthreshy=2):
     """
     Utility function to make plots look like NCL plots by adding minor and major tick lines
 
@@ -60,17 +70,29 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
 
     ax.tick_params(labelsize=labelsize)
     ax.minorticks_on()
-    if (ax.xaxis.get_scale()=='log'):
-        ax.xaxis.set_minor_locator(tic.LogLocator(base=basex, subs=np.linspace(1, basex, x_minor_per_major + 1)))
-    elif (ax.xaxis.get_scale()=='symlog'):
-        ax.xaxis.set_minor_locator(tic.SymmetricalLogLocator(base=basex, subs=np.linspace(1, basex, x_minor_per_major + 1), linthresh=linthreshx))
+    if (ax.xaxis.get_scale() == 'log'):
+        ax.xaxis.set_minor_locator(
+            tic.LogLocator(base=basex,
+                           subs=np.linspace(1, basex, x_minor_per_major + 1)))
+    elif (ax.xaxis.get_scale() == 'symlog'):
+        ax.xaxis.set_minor_locator(
+            tic.SymmetricalLogLocator(base=basex,
+                                      subs=np.linspace(1, basex,
+                                                       x_minor_per_major + 1),
+                                      linthresh=linthreshx))
     else:
         ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
 
-    if (ax.yaxis.get_scale()=='log'):
-        ax.yaxis.set_minor_locator(tic.LogLocator(base=basey, subs=np.linspace(1, basey, y_minor_per_major + 1)))
-    elif (ax.yaxis.get_scale()=='symlog'):
-        ax.yaxis.set_minor_locator(tic.SymmetricalLogLocator(base=basey, subs=np.linspace(1, basey, y_minor_per_major + 1), linthresh=linthreshy))
+    if (ax.yaxis.get_scale() == 'log'):
+        ax.yaxis.set_minor_locator(
+            tic.LogLocator(base=basey,
+                           subs=np.linspace(1, basey, y_minor_per_major + 1)))
+    elif (ax.yaxis.get_scale() == 'symlog'):
+        ax.yaxis.set_minor_locator(
+            tic.SymmetricalLogLocator(base=basey,
+                                      subs=np.linspace(1, basey,
+                                                       y_minor_per_major + 1),
+                                      linthresh=linthreshy))
     else:
         ax.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
 
@@ -97,8 +119,16 @@ def add_major_minor_ticks(ax, x_minor_per_major=3, y_minor_per_major=3, labelsiz
     )
 
 
-def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=None, lefttitlefontsize=18, righttitle=None, righttitlefontsize=18,
-                          xlabel=None, ylabel=None, labelfontsize=16):
+def set_titles_and_labels(ax,
+                          maintitle=None,
+                          maintitlefontsize=18,
+                          lefttitle=None,
+                          lefttitlefontsize=18,
+                          righttitle=None,
+                          righttitlefontsize=18,
+                          xlabel=None,
+                          ylabel=None,
+                          labelfontsize=16):
     """
     Utility function to handle axis titles, left/right aligned titles, and labels as they appear in NCL plots.
 
@@ -166,7 +196,10 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
         ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=1.04, loc='left')
 
     if righttitle is not None:
-        ax.set_title(righttitle, fontsize=righttitlefontsize, y=1.04, loc='right')
+        ax.set_title(righttitle,
+                     fontsize=righttitlefontsize,
+                     y=1.04,
+                     loc='right')
 
     if xlabel is not None:
         ax.set_xlabel(xlabel, fontsize=labelfontsize)
@@ -175,7 +208,13 @@ def set_titles_and_labels(ax, maintitle=None, maintitlefontsize=18, lefttitle=No
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
 
-def set_axes_limits_and_ticks(ax, xlim=None, ylim=None, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
+def set_axes_limits_and_ticks(ax,
+                              xlim=None,
+                              ylim=None,
+                              xticks=None,
+                              yticks=None,
+                              xticklabels=None,
+                              yticklabels=None):
     """
     Utility function to determine axis limits, tick values and labels
 
@@ -259,7 +298,9 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     from matplotlib import cm
 
     if not name:
-        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
+        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name,
+                                                   a=minval,
+                                                   b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name,
         colors=cmap(np.linspace(minval, maxval, n)),
@@ -285,18 +326,29 @@ def xr_add_cyclic_longitudes(da, coord):
     import xarray as xr
     import cartopy.util as cutil
 
-    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values, coord=da[coord])
+    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values,
+                                                       coord=da[coord])
 
     coords = da.coords.to_dataset()
     coords[coord] = cyclic_coord
 
-    new_da = xr.DataArray(cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs)
+    new_da = xr.DataArray(cyclic_data,
+                          dims=da.dims,
+                          coords=coords.coords,
+                          attrs=da.attrs)
     new_da.encoding = da.encoding
 
     return new_da
 
 
-def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pad=0, west_pad=0, res=1):
+def set_map_boundary(ax,
+                     lon_range,
+                     lat_range,
+                     north_pad=0,
+                     south_pad=0,
+                     east_pad=0,
+                     west_pad=0,
+                     res=1):
     """
     Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordinates. This
@@ -354,31 +406,40 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
 
-    if (lon_range[0] >= lon_range[1]): 
+    if (lon_range[0] >= lon_range[1]):
         if not (lon_range[0] > 0 and lon_range[1] < 0):
-            raise ValueError("The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian")
+            raise ValueError(
+                "The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian"
+            )
 
     if (lat_range[0] >= lat_range[1]):
-        raise ValueError("The first latitude value must be strictly less than the second latitude value")
+        raise ValueError(
+            "The first latitude value must be strictly less than the second latitude value"
+        )
 
-    if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or lon_range[1] < -180):
-        raise ValueError("The longitudes must be within the range [-180, 180] inclusive")
+    if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or
+            lon_range[1] < -180):
+        raise ValueError(
+            "The longitudes must be within the range [-180, 180] inclusive")
 
-    if (lat_range[0] > 90 or lat_range[0] < -90 or lat_range[1] > 90 or lat_range[1] < -90):
-        raise ValueError("The latitudes must be within the range [-90, 90] inclusive")
-    
+    if (lat_range[0] > 90 or lat_range[0] < -90 or lat_range[1] > 90 or
+            lat_range[1] < -90):
+        raise ValueError(
+            "The latitudes must be within the range [-90, 90] inclusive")
 
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
-    if (lon_range[0] >= 0 and lon_range[1] <= 0): # Case when range crosses antimeridian
+    if (lon_range[0] >= 0 and
+            lon_range[1] <= 0):  # Case when range crosses antimeridian
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
                    [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
-        path = mpath.Path(vertices)         
-    elif ((lon_range[0] == 180 or lon_range[0] == -180) and (lon_range[1] == 180 or lon_range[1] == -180)):  
+        path = mpath.Path(vertices)
+    elif ((lon_range[0] == 180 or lon_range[0] == -180) and
+          (lon_range[1] == 180 or lon_range[1] == -180)):
         vertices = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
         path = mpath.Path(vertices)
     else:
@@ -387,13 +448,14 @@ def set_map_boundary(ax, lon_range, lat_range, north_pad=0, south_pad=0, east_pa
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
                    [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)
-    
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
     ax.set_boundary(proj_to_data.transform_path(path))
 
-    ax.set_extent([lon_range[0] - west_pad, lon_range[1] + east_pad,
-                  lat_range[0] - south_pad, lat_range[1] + north_pad],
+    ax.set_extent([
+        lon_range[0] - west_pad, lon_range[1] + east_pad,
+        lat_range[0] - south_pad, lat_range[1] + north_pad
+    ],
                   crs=ccrs.PlateCarree())
 
 
@@ -420,7 +482,7 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify local low/high locations
     """
-    
+
     import numpy as np
     from sklearn.cluster import DBSCAN
     import warnings
@@ -446,10 +508,12 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
 
     if extremacoords == []:
         if eType == 'Low':
-            warnings.warn('No local extrema with data value less than given lowVal')
+            warnings.warn(
+                'No local extrema with data value less than given lowVal')
             return []
         if eType == 'High':
-            warnings.warn('No local extrema with data value greater than given highVal')
+            warnings.warn(
+                'No local extrema with data value greater than given highVal')
             return []
 
     # Clean up noisy data to find actual extrema
@@ -476,7 +540,8 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
         datavals = []
         for coord in coordsAndLabels[key]:
             # Find pressure data at that coordinate
-            cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
+            cond = np.logical_and(coordarr[:, :, 0] == coord[0],
+                                  coordarr[:, :, 1] == coord[1])
             x, y = np.where(cond)
             datavals.append(da.data[x[0]][y[0]])
 
@@ -487,13 +552,20 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
-        clusterExtremas.append((coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
+        clusterExtremas.append(
+            (coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
 
     return clusterExtremas
 
 
-def plotCLabels(ax, contours, transform, proj, clabel_locations=[], fontsize=12, whitebbox=False, horizontal=False):
-
+def plotCLabels(ax,
+                contours,
+                transform,
+                proj,
+                clabel_locations=[],
+                fontsize=12,
+                whitebbox=False,
+                horizontal=False):
     """
     Utility function to plot contour labels by passing in a coordinate to the clabel function.
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
@@ -531,24 +603,38 @@ def plotCLabels(ax, contours, transform, proj, clabel_locations=[], fontsize=12,
 
     # Plot any regular contour levels
     if clabel_locations != []:
-        clevelpoints = proj.transform_points(transform,
-                                             np.array([x[0] for x in clabel_locations]),
-                                             np.array([x[1] for x in clabel_locations]))
+        clevelpoints = proj.transform_points(
+            transform, np.array([x[0] for x in clabel_locations]),
+            np.array([x[1] for x in clabel_locations]))
         transformed_locations = [(x[0], x[1]) for x in clevelpoints]
-        ax.clabel(contours, manual=transformed_locations, inline=True, fontsize=fontsize, colors='k', fmt="%.0f")
+        ax.clabel(contours,
+                  manual=transformed_locations,
+                  inline=True,
+                  fontsize=fontsize,
+                  colors='k',
+                  fmt="%.0f")
         [cLabels.append(txt) for txt in contours.labelTexts]
 
         if horizontal is True:
             [txt.set_rotation('horizontal') for txt in contours.labelTexts]
 
     if whitebbox is True:
-        [txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2)) for txt in cLabels]
+        [
+            txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2))
+            for txt in cLabels
+        ]
 
     return cLabels
 
 
-def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22, whitebbox=False, horizontal=True):
-
+def plotELabels(da,
+                transform,
+                proj,
+                clabel_locations=[],
+                label='L',
+                fontsize=22,
+                whitebbox=False,
+                horizontal=True):
     """
     Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
@@ -595,9 +681,9 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
     extremaLabels = []
 
     # Plot any low contour levels
-    clabel_points = proj.transform_points(transform,
-                                          np.array([x[0] for x in clabel_locations]),
-                                          np.array([x[1] for x in clabel_locations]))
+    clabel_points = proj.transform_points(
+        transform, np.array([x[0] for x in clabel_locations]),
+        np.array([x[1] for x in clabel_locations]))
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
 
     for x in range(len(transformed_locations)):
@@ -605,13 +691,17 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
         try:
             # Find field variable data at that coordinate
             coord = clabel_locations[x]
-            cond = np.logical_and(coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1])
+            cond = np.logical_and(coordarr[:, :, 0] == coord[0],
+                                  coordarr[:, :, 1] == coord[1])
             z, y = np.where(cond)
             p = int(round(da.data[z[0]][y[0]]))
 
-            lab = plt.text(transformed_locations[x][0], transformed_locations[x][1], label + "$_{" + str(p) + "}$",
+            lab = plt.text(transformed_locations[x][0],
+                           transformed_locations[x][1],
+                           label + "$_{" + str(p) + "}$",
                            fontsize=fontsize,
-                           horizontalalignment='center', verticalalignment='center')
+                           horizontalalignment='center',
+                           verticalalignment='center')
 
             if horizontal is True:
                 lab.set_rotation('horizontal')
@@ -623,7 +713,10 @@ def plotELabels(da, transform, proj, clabel_locations=[], label='L', fontsize=22
             continue
 
     if whitebbox is True:
-        [txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2)) for txt in extremaLabels]
+        [
+            txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2))
+            for txt in extremaLabels
+        ]
 
     return extremaLabels
 
@@ -664,7 +757,8 @@ def set_vector_density(data, minDistance=0):
         ds = data
 
         if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
-            warnings.warn('Plot spacing is alrady greater or equal to ' + (str)(minDistance))
+            warnings.warn('Plot spacing is alrady greater or equal to ' +
+                          (str)(minDistance))
 
         # While the difference between two vectors is smaller than minDistance, increment the value that
         # the data arrays will be sliced by
@@ -683,6 +777,7 @@ def set_vector_density(data, minDistance=0):
             lon_every += 1
 
         # Slice data arrays
-        ds = data.isel(lat=slice(None, None, lat_every), lon=slice(None, None, lon_every))
+        ds = data.isel(lat=slice(None, None, lat_every),
+                       lon=slice(None, None, lon_every))
 
         return ds
