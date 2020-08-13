@@ -14,10 +14,7 @@ setup(
     package_dir={'geocat.viz': 'src'},
     namespace_packages=['geocat'],
     zip_safe=False,
-    install_requires=['numpy',
-                      'matplotlib',
-                      'cartopy',
-                      'cmaps',
-                      'xarray',
-                      'scikit-learn'],
+    install_requires=[
+        'numpy', 'matplotlib', 'cartopy', 'cmaps', 'xarray', 'scikit-learn'
+    ],
 )
