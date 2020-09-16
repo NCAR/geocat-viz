@@ -23,4 +23,4 @@ which are implemented in `$GEOCAT_VIZ/src/util.py`.
 
 # Installation instructions
 
-Please see our documentation for [installation instructions](https://github.com/NCAR/geocat-viz/INSTALLATION.md). 
+Please see our documentation for [installation instructions](https://github.com/NCAR/geocat-viz/blob/master/INSTALLATION.md). 
