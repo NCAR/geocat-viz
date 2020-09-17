@@ -611,7 +611,7 @@ def plotCLabels(ax,
                   manual=transformed_locations,
                   inline=True,
                   fontsize=fontsize,
-                  colors='k',
+                  colors='black',
                   fmt="%.0f")
         [cLabels.append(txt) for txt in contours.labelTexts]
 
@@ -620,7 +620,7 @@ def plotCLabels(ax,
 
     if whitebbox is True:
         [
-            txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2))
+            txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=2))
             for txt in cLabels
         ]
 
@@ -714,7 +714,7 @@ def plotELabels(da,
 
     if whitebbox is True:
         [
-            txt.set_bbox(dict(facecolor='w', edgecolor='none', pad=2))
+            txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=2))
             for txt in extremaLabels
         ]
 
