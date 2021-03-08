@@ -73,11 +73,11 @@ def add_major_minor_ticks(ax,
     if (ax.xaxis.get_scale() == 'log'):
         ax.xaxis.set_minor_locator(
             tic.LogLocator(base=basex,
-                           subs=np.linspace(1, basex, x_minor_per_major + 1)))
+                           subs=np.linspace(0, basex, x_minor_per_major + 1)))
     elif (ax.xaxis.get_scale() == 'symlog'):
         ax.xaxis.set_minor_locator(
             tic.SymmetricalLogLocator(base=basex,
-                                      subs=np.linspace(1, basex,
+                                      subs=np.linspace(0, basex,
                                                        x_minor_per_major + 1),
                                       linthresh=linthreshx))
     else:
@@ -86,11 +86,11 @@ def add_major_minor_ticks(ax,
     if (ax.yaxis.get_scale() == 'log'):
         ax.yaxis.set_minor_locator(
             tic.LogLocator(base=basey,
-                           subs=np.linspace(1, basey, y_minor_per_major + 1)))
+                           subs=np.linspace(0, basey, y_minor_per_major + 1)))
     elif (ax.yaxis.get_scale() == 'symlog'):
         ax.yaxis.set_minor_locator(
             tic.SymmetricalLogLocator(base=basey,
-                                      subs=np.linspace(1, basey,
+                                      subs=np.linspace(0, basey,
                                                        y_minor_per_major + 1),
                                       linthresh=linthreshy))
     else:
