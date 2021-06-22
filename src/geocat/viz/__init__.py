@@ -1,3 +1,2 @@
-from ._version import __version__
 from . import util
-import cmaps
+from . import contourf
