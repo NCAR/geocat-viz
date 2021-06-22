@@ -7,6 +7,8 @@ taylor
 
 import numpy as np
 import matplotlib.pyplot as plt
+from taylor_statistics import taylor_stats
+import matplotlib.ticker as mticker
 
 
 class TaylorDiagram(object):
@@ -68,15 +70,17 @@ class TaylorDiagram(object):
         ax.axis["top"].set_axis_direction("bottom")  # "Angle axis"
         ax.axis["top"].toggle(ticklabels=True, label=True)
         ax.axis["top"].major_ticklabels.set_axis_direction("top")
+        ax.axis["top"].minor_ticklabels.set_axis_direction("top")
         ax.axis["top"].label.set_axis_direction("top")
         ax.axis["top"].label.set_text("Correlation")
 
         ax.axis["left"].set_axis_direction("bottom")  # "X axis"
-        ax.axis["left"].label.set_text("Standard deviation")
+        ax.axis["left"].label.set_text("")
 
         ax.axis["right"].set_axis_direction("top")  # "Y axis"
-        ax.axis["right"].toggle(ticklabels=True)
+        ax.axis["right"].toggle(ticklabels=True, label=True)
         ax.axis["right"].major_ticklabels.set_axis_direction("left")
+        ax.axis["right"].label.set_text("Standard deviation (Normalized)")
 
         ax.axis["bottom"].set_visible(False)  # Useless
 
@@ -86,14 +90,17 @@ class TaylorDiagram(object):
         # Add reference point and stddev contour
         l, = self.ax.plot([0],
                           self.refstd,
-                          'b*',
-                          mec='b',
+                          marker='$REF$',
+                          mec='k',
+                          mew=1,
+                          mfc='k',
                           ls='',
-                          ms=10,
+                          ms=15,
                           label=label)
+
         t = np.linspace(0, np.pi / 2)
         r = np.zeros_like(t) + self.refstd
-        self.ax.plot(t, r, 'k--', label='_')
+        self.ax.plot(t, r, 'k--', label='REF', zorder=1)
 
         # Collect sample points for latter use (e.g. legend)
         self.samplePoints = [l]
@@ -234,8 +241,60 @@ def test2():
     return fig
 
 
+def test3():
+    p_samp = [[0.60, 0.24, '1'], [0.50, 0.75, '2'], [0.45, 1.00, '3'],
+              [0.75, 0.93, '4'], [1.15, 0.37, '5']]  # p dataset ratios stddev
+
+    t_samp = [[0.75, 0.24, '1'], [0.64, 0.75, '2'], [0.40, 0.47, '3'],
+              [0.85, 0.88, '4'], [1.15, 0.73, '5']]  # t data set stddev (REF)
+
+    stdref = 1
+
+    fig = plt.figure()
+
+    dia = TaylorDiagram(stdref, fig=fig, label='REF')
+    dia.samplePoints[0].set_color('r')  # Mark reference point as a red star
+
+    # samples = [p_rat, p_cc, t_rat, t_cc]
+
+    # Add models to Taylor diagram
+    for i, (stddev, corrcoef, name) in enumerate(p_samp):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$%d$' % (i + 1),
+                       ms=7,
+                       ls='',
+                       mfc='red',
+                       mec='red',
+                       label=name)
+
+    # Add second model data to Taylor diagram
+    for m, (stddev, corrcoef, name) in enumerate(t_samp):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$%d$' % (m + 1),
+                       ms=7,
+                       ls='',
+                       mfc='blue',
+                       mec='blue',
+                       label=name)
+
+    # Add RMS contours, and label them
+    # contours = dia.add_contours(levels=5, colors='0.5')  # 5 levels in grey
+    # plt.clabel(contours, inline=1, fontsize=10, fmt='%.1f')
+
+    # Add a figure legend and title
+    fig.legend(dia.samplePoints, [p.get_label() for p in dia.samplePoints],
+               numpoints=1,
+               prop=dict(size='small'),
+               loc='upper right')
+    fig.suptitle("Taylor diagram", size='x-large')  # Figure title
+
+    return fig
+
+
 if __name__ == '__main__':
 
-    test2()
+    test3()
 
     plt.show()
