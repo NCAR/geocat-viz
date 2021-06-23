@@ -1,26 +1,25 @@
-{% set version = "0.1" %}
+{% set version = '2021.07.0' %}
 
 package:
   name: geocat-viz
   version: {{ version }}
 
 source:
-  url: https://github.com/NCAR/geocat-viz/archive/v{{ version }}.tar.gz
+  git_rev: restructure # https://github.com/NCAR/geocat-viz/archive/v{{ version }}.tar.gz
+  git_url: https://github.com/ncar/geocat-viz.git
 
 build:
-  noarch: python
   number: 0
-  script: python -m pip install --no-deps --ignore-installed .
+  skip: True # [py<35]
 
 requirements:
   host:
     - python
     - setuptools
     - pip
-    - numpy
   run:
     - python
-    - {{ pin_compatible('numpy') }}
+    - numpy
     - matplotlib
     - cmaps
     - cartopy
