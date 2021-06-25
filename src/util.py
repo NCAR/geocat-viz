@@ -34,7 +34,7 @@ def set_tick_orientation_visibility(ax,
     ax.spines['bottom'].set_visible(bottom_spine_visible)
     ax.spines['left'].set_visible(left_spine_visible)
     ax.spines['right'].set_visible(right_spine_visible)
-    
+
     if top_spine_visible and bottom_spine_visible:
         ax.xaxis.set_ticks_position('default')
     elif bottom_spine_visible and (not top_spine_visible):
@@ -44,7 +44,7 @@ def set_tick_orientation_visibility(ax,
     else:
         ax.xaxis.set_ticks_position('none')
         #ax.get_xaxis().set_visible(False)
-    
+
     if left_spine_visible and right_spine_visible:
         ax.yaxis.set_ticks_position('default')
     elif not right_spine_visible and left_spine_visible:
