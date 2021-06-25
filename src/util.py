@@ -118,14 +118,16 @@ def add_major_minor_ticks(ax,
         right=True,
     )
 
-
 def set_titles_and_labels(ax,
                           maintitle=None,
                           maintitlefontsize=18,
+                          maintitle_y=1.04,
                           lefttitle=None,
                           lefttitlefontsize=18,
+                          lefttitle_y=1.04,
                           righttitle=None,
                           righttitlefontsize=18,
+                          righttitle_y=1.04,
                           xlabel=None,
                           ylabel=None,
                           labelfontsize=16):
@@ -161,6 +163,10 @@ def set_titles_and_labels(ax,
 
         maintitlefontsize (:class:`int`):
             Text font size for maintitle. A default value of 18 is used if nothing is set.
+            
+        maintitle_y (:class:`float`):
+            Vertical Axes loation for the title. A default value of 1.04 is used when left and right titles are none.
+            A default value of 1.12 is used if either lefttitle or righttitle is not none.
 
         lefttitle (:class:`str`):
             Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
@@ -168,6 +174,9 @@ def set_titles_and_labels(ax,
 
         lefttitlefontsize (:class:`int`):
             Text font size for lefttitle. A default value of 18 is used if nothing is set.
+        
+        lefttitle_y (:class:`float`):
+            Vertical Axes loation for the lefttitle. A default value of 1.04 is used.
 
         righttitle (:class:`str`):
             Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
@@ -175,6 +184,9 @@ def set_titles_and_labels(ax,
 
         righttitlefontsize (:class:`int`):
             Text font size for righttitle. A default value of 18 is used if nothing is set.
+            
+        righttitle_y (:class:`float`):
+            Vertical Axes loation for the righttitle. A default value of 1.04 is used.
 
         xlabel (:class:`str`):
             Text for the x-axis label.
@@ -188,17 +200,17 @@ def set_titles_and_labels(ax,
 
     if maintitle is not None:
         if lefttitle is not None or righttitle is not None:
-            ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=1.12)
+            ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=maintitle_y+0.08)
         else:
-            ax.set_title(maintitle, fontsize=maintitlefontsize, y=1.04)
+            ax.set_title(maintitle, fontsize=maintitlefontsize, y=maintitle_y)
 
     if lefttitle is not None:
-        ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=1.04, loc='left')
+        ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=lefttitle_y, loc='left')
 
     if righttitle is not None:
         ax.set_title(righttitle,
                      fontsize=righttitlefontsize,
-                     y=1.04,
+                     y=righttitle_y,
                      loc='right')
 
     if xlabel is not None:
