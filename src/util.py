@@ -118,6 +118,7 @@ def add_major_minor_ticks(ax,
         right=True,
     )
 
+
 def set_titles_and_labels(ax,
                           maintitle=None,
                           maintitlefontsize=18,
@@ -200,12 +201,17 @@ def set_titles_and_labels(ax,
 
     if maintitle is not None:
         if lefttitle is not None or righttitle is not None:
-            ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=maintitle_y+0.08)
+            ax.set_title(maintitle,
+                         fontsize=maintitlefontsize + 2,
+                         y=maintitle_y + 0.08)
         else:
             ax.set_title(maintitle, fontsize=maintitlefontsize, y=maintitle_y)
 
     if lefttitle is not None:
-        ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=lefttitle_y, loc='left')
+        ax.set_title(lefttitle,
+                     fontsize=lefttitlefontsize,
+                     y=lefttitle_y,
+                     loc='left')
 
     if righttitle is not None:
         ax.set_title(righttitle,
