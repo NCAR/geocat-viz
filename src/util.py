@@ -39,22 +39,21 @@ def add_right_hand_axis(ax,
     """
     from geocat.viz import util as gvutil
     import matplotlib.ticker as tic
-    
+
     axRHS = ax.twinx()
     if label is not None:
-        axRHS.set_ylabel(ylabel=label, 
-                         labelpad=labelpad, 
+        axRHS.set_ylabel(ylabel=label,
+                         labelpad=labelpad,
                          fontsize=axislabelsize)
-    gvutil.set_axes_limits_and_ticks(axRHS,
-                                     ylim=ylim,
-                                     yticks=yticks)
+    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
     axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
-    if y_minor_per_major is not None:  
+    if y_minor_per_major is not None:
         axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
         axRHS.tick_params(length=4, width=0.4, which="minor")
-    
+
     return axRHS
-    
+
+
 def set_lat_lon_gridlines(ax,
                           zero_direction_label=False,
                           dateline_direction_label=False):
@@ -75,16 +74,17 @@ def set_lat_lon_gridlines(ax,
     import numpy as np
     import cartopy.crs as ccrs
     import matplotlib.ticker as mticker
-    
-    gl = ax.gridlines(crs=ccrs.PlateCarree(), 
-                      linewidth=1, 
-                      color='black', 
+
+    gl = ax.gridlines(crs=ccrs.PlateCarree(),
+                      linewidth=1,
+                      color='black',
                       alpha=0.5)
-    
+
     gl.xlocator = mticker.FixedLocator(np.arange(-180, 181, 30))
     gl.ylocator = mticker.FixedLocator(np.arange(-90, 91, 30))
-    
+
     return gl
+
 
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
