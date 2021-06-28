@@ -25,23 +25,33 @@ def add_right_hand_axis(ax,
         yticks (:class:`list`):
             List of y-axis tick locations. See Matplotlib documentation for further information.
             
-        
-        
+        ticklabelsize (:class:`int`):
+            Text font size of tick labels. A default value of 12 is used if nothing is set.
+            
+        labelpad (:class:`float`):
+            Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
+            
+        axislabelsize (:class:`int`):
+            Text font size for y-axes. A default value of 16 is used if nothing is set.
+            
+        y_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on y-axis.
     """
     from geocat.viz import util as gvutil
+    import matplotlib.ticker as tic
     
     axRHS = ax.twinx()
     if label is not None:
         axRHS.set_ylabel(ylabel=label, 
                          labelpad=labelpad, 
                          fontsize=axislabelsize)
-    if ylim is not None and yticks is not None:
-        gvutil.set_axes_limits_and_ticks(axRHS,
-                                         ylim=ylim,
-                                         yticks=yticks)
+    gvutil.set_axes_limits_and_ticks(axRHS,
+                                     ylim=ylim,
+                                     yticks=yticks)
     axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
-    if y_minor_per_major is not None:
-       gvutil.add_major_minor_ticks(ax, y_minor_per_major=y_minor_per_major)
+    if y_minor_per_major is not None:  
+        axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
+        axRHS.tick_params(length=4, width=0.4, which="minor")
     
     return axRHS
     
