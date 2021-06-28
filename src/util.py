@@ -1,3 +1,81 @@
+def add_right_hand_axis(ax,
+                        label=None,
+                        ylim=None,
+                        yticks=None,
+                        ticklabelsize=12,
+                        labelpad=10,
+                        axislabelsize=16,
+                        y_minor_per_major=None):
+    """
+    Utility function that adds a right hand axis to the plot.
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        label (:class:`str`):
+            Text to use for the right hand side label.
+
+        ylim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
+            
+        yticks (:class:`list`):
+            List of y-axis tick locations. See Matplotlib documentation for further information.
+            
+        
+        
+    """
+    from geocat.viz import util as gvutil
+    
+    axRHS = ax.twinx()
+    if label is not None:
+        axRHS.set_ylabel(ylabel=label, 
+                         labelpad=labelpad, 
+                         fontsize=axislabelsize)
+    if ylim is not None and yticks is not None:
+        gvutil.set_axes_limits_and_ticks(axRHS,
+                                         ylim=ylim,
+                                         yticks=yticks)
+    axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
+    if y_minor_per_major is not None:
+       gvutil.add_major_minor_ticks(ax, y_minor_per_major=y_minor_per_major)
+    
+    return axRHS
+    
+def set_lat_lon_gridlines(ax,
+                          zero_direction_label=False,
+                          dateline_direction_label=False):
+    """
+    Utility function that adds latitude and longtitude gridlines to the plot.
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        zero_direction_label (:class:`bool`):
+            Set True to get 0 E / O W or False to get 0 only.
+
+        dateline_direction_label (:class:`bool`):
+            Set True to get 180 E / 180 W or False to get 180 only.
+    """
+    import numpy as np
+    import cartopy.crs as ccrs
+    import matplotlib.ticker as mticker
+    
+    gl = ax.gridlines(crs=ccrs.PlateCarree(), 
+                      linewidth=1, 
+                      color='black', 
+                      alpha=0.5)
+    
+    gl.xlocator = mticker.FixedLocator(np.arange(-180, 181, 30))
+    gl.ylocator = mticker.FixedLocator(np.arange(-90, 91, 30))
+    
+    return gl
+
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
