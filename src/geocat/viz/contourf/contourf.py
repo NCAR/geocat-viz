@@ -28,6 +28,7 @@ class Contour(NCL_Plot):
 
         # if in xarray, format as numpy array
         if isinstance(self.data, xr.DataArray):
+            self.orig = self.data
             self.data = self.data.values
 
         # Read in or calculate filled levels
@@ -79,6 +80,8 @@ class Contour(NCL_Plot):
         # set colorbar if specified
         if self.colorbar is not False and self.colorbar is not 'off':
             self._add_colorbar(mappable=self.cf)
+            
+        self.add_titles()
             
     def _estimate_flevels(self):
         # TODO: flesh out

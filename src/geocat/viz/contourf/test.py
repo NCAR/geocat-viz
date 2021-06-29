@@ -27,7 +27,8 @@ cplot = Contour(ds.U,
                 cmap=gvcmaps.ncl_default,
                 maintitle="Default Color",
                 lefttitle=ds.U.long_name,
-                righttitle=ds.U.units)
+                righttitle=ds.U.units
+                )
 
 cplot._add_colorbar(cbshrink=0.75)
 cplot._add_colorbar(cborientation='vertical')
@@ -35,7 +36,6 @@ cplot._add_colorbar(cbticks=[-12,0,40])
 #cplot._add_colorbar(cbticklabels=["Low", "none", "hi"])
 
 cplot.show()
-
 
 
         

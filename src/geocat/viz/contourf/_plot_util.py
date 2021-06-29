@@ -54,8 +54,6 @@ class NCL_Plot:
         self.cbpad = kwargs.get('cbpad')
         self.cbdrawedges = kwargs.get('cbdrawedges')
         self.cbticks = kwargs.get('cbticks')
-        
-        print(self.cbticks)
 
         # Set up figure
         self._set_up_fig()
@@ -134,8 +132,6 @@ class NCL_Plot:
                       cbdrawedges=True,
                       cbticks=None,
                       cbticklabels=None):
-       
-        print(self.cbticks)
         
         if self.cbar is not None:
             self.cbar.remove()
@@ -166,8 +162,6 @@ class NCL_Plot:
             
         if cbdrawedges is not True:
             self.cbdrawedges = cbdrawedges
-            
-        print(self.cbticks)
             
         self.cbar = self.fig.colorbar(self.mappable, 
                                       orientation=self.cborientation, 
@@ -212,14 +206,47 @@ class NCL_Plot:
                    ylabel=None,
                    labelfontsize=16):
         
-        if isinstance(self.data, xr.core.dataarray.DataArray):
+        if isinstance(self.orig, xr.core.dataarray.DataArray):
+            first = True
             if maintitle is None:
-                maintitle = self.data.attrs.title
+                try:
+                    maintitle = self.orig.attrs["title"]
+                except:
+                    pass
             if lefttitle is None:
-                maintitle = self.data.attrs.long_name
+                try:
+                    lefttitle = self.orig.attrs["long_name"]
+                except:
+                    pass
             if righttitle is None:
-                righttitle = self.data.attrs.units
-           # if xlabel is None:
+                try:
+                    righttitle = self.orig.attrs["units"]
+                except:
+                    pass
+                
+            print(maintitle, lefttitle, righttitle)
+                
+            coordinates = self.orig.coords
+            keys = list(coordinates.keys())
+            
+            for i in range(len(keys)):
+                if (coordinates[keys[i-1]].size > 1) and first:
+                    try:
+                        ylabel = coordinates[keys[i-1]].long_name
+                    except:
+                        pass
+                    
+                    while i < len(keys):
+                        if (coordinates[keys[i]].size > 1) and first:
+                            try:
+                                xlabel = coordinates[keys[i]].long_name
+                            except:
+                                pass
+                            first = False
+                        else:
+                            i +=1
+                else:
+                    i += 1
                 
                 
     
