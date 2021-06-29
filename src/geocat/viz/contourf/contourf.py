@@ -8,6 +8,11 @@ import cartopy.crs as ccrs
 
 from _plot_util import NCL_Plot
 
+from geocat.viz.util import add_major_minor_ticks
+from geocat.viz.util import set_titles_and_labels
+from geocat.viz.util import set_axes_limits_and_ticks
+from geocat.viz.util import add_lat_lon_ticklabels
+
 
 class Contour(NCL_Plot):
     # child class constructor
@@ -52,31 +57,29 @@ class Contour(NCL_Plot):
 
         # Create plot
         if kwargs.get('contour_fill') is not False:
-            self.cf = self.ax.contourf(
-                self.data,
-                levels=self.levels,
-                cmap=self.cmap,
-                transform=self.projection,
-                extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
+            self.cf = self.ax.contourf(self.data,
+                                       levels=self.levels,
+                                       cmap=self.cmap,
+                                       transform=self.projection,
+                                       extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
 
         if kwargs.get('contour_lines') is not False:
-            self.cl = self.ax.contour(
-                self.data,
-                levels=self.levels,
-                colors='black',
-                alpha=0.8,
-                linewidths=0.4,
-                linestyles='solid',
-                transform=self.projection,
-                extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
+            self.cl = self.ax.contour(self.data,
+                                      levels=self.levels,
+                                      colors='black',
+                                      alpha=0.8,
+                                      linewidths=0.4,
+                                      linestyles='solid',
+                                      transform=self.projection,
+                                      extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
 
         self._set_NCL_style(self.ax)
 
         # call colorbar creation from parent class
         # set colorbar if specified
         if self.colorbar is not False and self.colorbar is not 'off':
-            self._add_colorbar(self.cf)
-
+            self._add_colorbar(mappable=self.cf)
+            
     def _estimate_flevels(self):
         # TODO: flesh out
         print("estimate flevels")

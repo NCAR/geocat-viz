@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import cartopy.feature as cfeature
 import numpy as np
 import warnings
+import xarray as xr
 
 from geocat.viz.util import add_major_minor_ticks
 from geocat.viz.util import set_titles_and_labels
@@ -20,8 +21,11 @@ class NCL_Plot:
         # TODO: address all input arguments and run checks
         # Pull out title arguments
         self.maintitle = kwargs.get('maintitle')
+        self.maintitlefontsize = kwargs.get('maintitlefontsize')
         self.lefttitle = kwargs.get('lefttitle')
+        self.lefttitlefontsize = kwargs.get('lefttitlefontsize')
         self.righttitle = kwargs.get('righttitle')
+        self.righttitlefontsize = kwargs.get('righttitlefontsize')
 
         # Pull out axes info
         self.xlim = kwargs.get('xlim')
@@ -30,8 +34,7 @@ class NCL_Plot:
         # Make sure x and y limits specified (for now)
         #TODO: make x and y limits self-determinable somehow
         if self.xlim is None or self.ylim is None:
-            raise AttributeError(
-                "For now, xlim and ylim must be specified as kwargs")
+            raise AttributeError("For now, xlim and ylim must be specified as kwargs")
 
         # Pull out tick arguments if specified
         self.xticks = kwargs.get('xticks')
@@ -40,9 +43,19 @@ class NCL_Plot:
         # Pull out axes label arguments
         self.xlabel = kwargs.get('xlabel')
         self.ylabel = kwargs.get('ylabel')
+        self.labelfontsize = kwargs.get('labelfontsize')
 
         # pull out colorbar arguments
+        self.cbar = None
         self.colorbar = kwargs.get('colorbar')
+        self.mappable = kwargs.get('mappable')
+        self.cborientation = kwargs.get('cborientation')
+        self.cbshrink = kwargs.get('cbshrink')
+        self.cbpad = kwargs.get('cbpad')
+        self.cbdrawedges = kwargs.get('cbdrawedges')
+        self.cbticks = kwargs.get('cbticks')
+        
+        print(self.cbticks)
 
         # Set up figure
         self._set_up_fig()
@@ -113,15 +126,67 @@ class NCL_Plot:
         # format axes as lat lon
         add_lat_lon_ticklabels(self.ax)
 
-    def _add_colorbar(self, mappable):
-        self.cbar = self.fig.colorbar(mappable,
-                                      orientation="horizontal",
-                                      shrink=0.75,
-                                      pad=0.11,
-                                      drawedges=True)
+    def _add_colorbar(self, 
+                      mappable = None, 
+                      cborientation="horizontal",
+                      cbshrink=0.75,
+                      cbpad=0.11,
+                      cbdrawedges=True,
+                      cbticks=None,
+                      cbticklabels=None):
+       
+        print(self.cbticks)
+        
+        if self.cbar is not None:
+            self.cbar.remove()
+        
+        if mappable is not None:
+            self.mappable = mappable
+        
+        if self.cborientation is None:
+            self.cborientation = cborientation
+            
+        if cborientation != "horizontal":
+            self.cborientation = cborientation
+            
+        if self.cbshrink is None:
+            self.cbshrink = cbshrink
+            
+        if cbshrink != 0.75:
+            self.cbshrink = cbshrink
+        
+        if self.cbpad is None:
+            self.cbpad = cbpad
+            
+        if cbpad != 0.11:
+            self.cbpad = cbpad
+            
+        if self.cbdrawedges is None:
+            self.cbdrawedges = cbdrawedges
+            
+        if cbdrawedges is not True:
+            self.cbdrawedges = cbdrawedges
+            
+        print(self.cbticks)
+            
+        self.cbar = self.fig.colorbar(self.mappable, 
+                                      orientation=self.cborientation, 
+                                      shrink=self.cbshrink, 
+                                      pad=self.cbpad, 
+                                      drawedges=self.cbdrawedges)
+        
+        if (cbticks is None) and (self.cbticks is None):
+            self.cbticks = self.cbar.boundaries[1:-1]
+        else:
+            self.cbticks = cbticks
 
         # label every boundary except the ones on the end of the colorbar
-        self.cbar.set_ticks(ticks=self.cbar.boundaries[1:-1])
+        self.cbar.set_ticks(ticks=self.cbticks)
+        
+        if cbticklabels is not None:
+            self.cbticklabels = cbticklabels
+            
+            self.cbar.set_ticklabels(ticklabels=self.cbticklabels)
 
     def show_land(self, color='lightgrey'):
         self.ax.add_feature(cfeature.LAND, facecolor=color)
@@ -135,31 +200,68 @@ class NCL_Plot:
                             edgecolor=ec,
                             facecolor=fc)
 
-    # TODO: allow changes in font size from external call
+    
     def add_titles(self,
-                   maintitle=None,
-                   lefttitle=None,
-                   righttitle=None,
-                   xlabel=None,
-                   ylabel=None):
-        set_titles_and_labels(self.ax, maintitle, lefttitle, righttitle, xlabel,
-                              ylabel)
-
+                   maintitle=None, 
+                   maintitlefontsize=18,
+                   lefttitle=None, 
+                   lefttitlefontsize=18,
+                   righttitle=None, 
+                   righttitlefontsize=18,
+                   xlabel=None, 
+                   ylabel=None,
+                   labelfontsize=16):
+        
+        if isinstance(self.data, xr.core.dataarray.DataArray):
+            if maintitle is None:
+                maintitle = self.data.attrs.title
+            if lefttitle is None:
+                maintitle = self.data.attrs.long_name
+            if righttitle is None:
+                righttitle = self.data.attrs.units
+           # if xlabel is None:
+                
+                
+    
         # update object definitions
         if maintitle is not None:
             self.maintitle = maintitle
+            
+        if maintitlefontsize != 18:
+            self.maintitlefontsize = maintitlefontsize
 
         if lefttitle is not None:
             self.lefttitle = lefttitle
+            
+        if lefttitlefontsize != 18:
+            self.lefttitlefontsize = lefttitlefontsize
 
         if righttitle is not None:
             self.righttitle = righttitle
+            
+        if righttitlefontsize != 18:
+            self.righttitlefontsize = righttitlefontsize
 
         if xlabel is not None:
             self.xlabel = xlabel
 
         if ylabel is not None:
             self.ylabel = ylabel
+            
+        if labelfontsize != 16:
+            self.labelfontsize = labelfontsize
+        
+        # Add titles with appropriate font sizes
+        set_titles_and_labels(self.ax,
+                              self.maintitle, 
+                              maintitlefontsize,
+                              self.lefttitle, 
+                              lefttitlefontsize,
+                              self.righttitle, 
+                              righttitlefontsize,
+                              self.xlabel, 
+                              self.ylabel,
+                              labelfontsize)
 
     def show(self):
         plt.show()
