@@ -26,18 +26,14 @@ class Contour(NCL_Plot):
             self.data = self.data.values
 
         # Read in or calculate filled levels
-        if kwargs.get('flevels') is None:
-            # levels defined by kwargs
-            self.flevels = self._estimate_flevels()
-        else:
-            # take a guess at filled levels
+        if kwargs.get('flevels') is None and kwargs.get('clevels') is None:
+            # take a guess at levels
+            self.flevels = self._estimate_levels()
+            self.clevels = self.flevels
+        # Set user input values
+        if kwargs.get('flevels') is not None:
             self.flevels = kwargs.get('flevels')
-        
-        # Read in or calculate contour levels
-        if kwargs.get('clevels') is None:
-            # levels defined by kwargs
-            self.clevels = self._estimate_flevels()
-        elif kwargs.get('clevels') is not None:
+        if kwargs.get('clevels') is not None:
             # take a guess at filled levels
             self.clevels = kwargs.get('clevels')
         
@@ -77,7 +73,7 @@ class Contour(NCL_Plot):
         if self.colorbar is not False and self.colorbar is not 'off' and kwargs.get('contour_fill') is not False:
             self._add_colorbar(self.cf)
 
-    def _estimate_flevels(self):
+    def _estimate_levels(self):
         
         # set lower, upper bounds, and stepsize
         lb = np.nanmin(self.data)
@@ -96,9 +92,3 @@ class Contour(NCL_Plot):
         ub = np.true_divide(np.ceil(ub * 10**precision + 1), 10**precision) + step
         
         return np.arange(lb, ub, step)
-
-    def _estimate_clevels(self):
-        flevels = self._estimate_flevels()
-        step = flevels[-1]-flevels[-2]
-        clevels = np.append(flevels, step+flevels[-1])
-        return clevels
