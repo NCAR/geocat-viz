@@ -26,26 +26,26 @@ class Contour(NCL_Plot):
             self.data = self.data.values
 
         # Read in or calculate filled levels
-        if kwargs.get('flevels') is not 'auto':
+        if kwargs.get('flevels') is None:
             # levels defined by kwargs
-            self.levels = kwargs.get('flevels')
-        elif kwargs.get('flevels') is not None:
+            self.flevels = self._estimate_flevels()
+        else:
             # take a guess at filled levels
-            self._estimate_flevels
-
+            self.flevels = kwargs.get('flevels')
+        
         # Read in or calculate contour levels
-        if kwargs.get('clevels') is not 'auto':
+        if kwargs.get('clevels') is None:
             # levels defined by kwargs
-            self.levels = kwargs.get('clevels')
+            self.clevels = self._estimate_flevels()
         elif kwargs.get('clevels') is not None:
             # take a guess at filled levels
-            self._estimate_clevels
-
+            self.clevels = kwargs.get('clevels')
+        
         # Pull out child-class specific kwargs
         if kwargs.get('cmap') is not None:
             self.cmap = kwargs.get('cmap')
         else:
-            self.cmap = self._default_cmap
+            self.cmap = self._default_cmap      
 
         # Call parent class constructor
         NCL_Plot.__init__(self, *args, **kwargs)
@@ -54,7 +54,7 @@ class Contour(NCL_Plot):
         if kwargs.get('contour_fill') is not False:
             self.cf = self.ax.contourf(
                 self.data,
-                levels=self.levels,
+                levels=self.flevels,
                 cmap=self.cmap,
                 transform=self.projection,
                 extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
@@ -62,7 +62,7 @@ class Contour(NCL_Plot):
         if kwargs.get('contour_lines') is not False:
             self.cl = self.ax.contour(
                 self.data,
-                levels=self.levels,
+                levels=self.clevels,
                 colors='black',
                 alpha=0.8,
                 linewidths=0.4,
@@ -74,13 +74,31 @@ class Contour(NCL_Plot):
 
         # call colorbar creation from parent class
         # set colorbar if specified
-        if self.colorbar is not False and self.colorbar is not 'off':
+        if self.colorbar is not False and self.colorbar is not 'off' and kwargs.get('contour_fill') is not False:
             self._add_colorbar(self.cf)
 
     def _estimate_flevels(self):
-        # TODO: flesh out
-        print("estimate flevels")
+        
+        # set lower, upper bounds, and stepsize
+        lb = np.nanmin(self.data)
+        ub = np.nanmax(self.data)
+        step = np.nanstd(self.data)
+
+        # If the dataset is smaller than integer scale, set
+        # precision to get more precise lb, ub and step values
+        if step < 1:
+            precision = np.ceil(abs(np.log10(abs(step))))
+        else:
+            precision = 0
+        
+        step = np.true_divide(np.floor(step / 2 * 10**precision), 10**precision)
+        lb = np.true_divide(np.floor(lb * 10**precision), 10**precision)
+        ub = np.true_divide(np.ceil(ub * 10**precision + 1), 10**precision) + step
+        
+        return np.arange(lb, ub, step)
 
     def _estimate_clevels(self):
-        # TODO: flesh out
-        print("estimate clevels")
+        flevels = self._estimate_flevels()
+        step = flevels[-1]-flevels[-2]
+        clevels = np.append(flevels, step+flevels[-1])
+        return clevels
