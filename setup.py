@@ -3,6 +3,10 @@ from setuptools import setup
 with open('README.md') as f:
     long_description = f.read()
 
+with open('requirements.txt') as f:
+    requirements = f.read().strip().split('\n')
+
+
 # ''' moved into function, can now be used other places
 def version():
     for line in open('meta.yaml').readlines():
