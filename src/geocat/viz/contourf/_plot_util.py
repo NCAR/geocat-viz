@@ -31,11 +31,6 @@ class NCL_Plot:
         self.xlim = kwargs.get('xlim')
         self.ylim = kwargs.get('ylim')
 
-        # Make sure x and y limits specified (for now)
-        #TODO: make x and y limits self-determinable somehow
-        if self.xlim is None or self.ylim is None:
-            raise AttributeError("For now, xlim and ylim must be specified as kwargs")
-
         # Pull out tick arguments if specified
         self.xticks = kwargs.get('xticks')
         self.yticks = kwargs.get('yticks')
@@ -66,13 +61,6 @@ class NCL_Plot:
         else:
             self.ax = plt.axes()
 
-        # TODO: un-hardcode
-        set_axes_limits_and_ticks(self.ax,
-                                  xlim=self.xlim,
-                                  ylim=self.ylim,
-                                  xticks=self.xticks,
-                                  yticks=self.yticks)
-
         # Set specified features
         if kwargs.get('show_land') is True:
             self.show_land()
@@ -82,6 +70,41 @@ class NCL_Plot:
 
         if kwargs.get('show_lakes') is True:
             self.show_lakes()
+            
+        if self.ylim is None:
+            y_max = self.data.shape[0]
+            self.ylim = [0, y_max]
+            
+        if self.xlim is None:
+            x_max = self.data.shape[1]
+            self.xlim = [0, x_max]
+            
+            
+        def factor(num):
+            factor_list = []
+            distance = []
+            for i in range(1, num+1):
+                if num%i ==0:
+                    factor_list.append(i)
+            print(factor_list)
+            for entry in factor_list:
+                distance.append(abs(entry-6))
+            min_number = min(distance)
+            index = distance.index(min_number)
+            return factor_list[index]
+                
+            
+        if self.xticks is None:
+            self.xticks = np.linspace(0, self.xlim[1], factor(self.xlim[1]))
+            
+        if self.yticks is None:
+            self.yticks = np.linspace(0, self.ylim[1], factor(self.ylim[1]))
+            
+        set_axes_limits_and_ticks(self.ax,
+                                  xlim=self.xlim,
+                                  ylim=self.ylim,
+                                  xticks=self.xticks,
+                                  yticks=self.yticks)
 
     def _set_up_fig(self, w=None, h=None):
 
@@ -224,8 +247,6 @@ class NCL_Plot:
                 except:
                     pass
                 
-            print(maintitle, lefttitle, righttitle)
-                
             coordinates = self.orig.coords
             keys = list(coordinates.keys())
             
@@ -247,8 +268,6 @@ class NCL_Plot:
                             i +=1
                 else:
                     i += 1
-                
-                
     
         # update object definitions
         if maintitle is not None:
