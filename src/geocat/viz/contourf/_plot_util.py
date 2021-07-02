@@ -100,8 +100,6 @@ class NCL_Plot:
                                   yticks=self.yticks)
 
     def _set_up_fig(self, w=None, h=None):
-        
-        print(w, h)
 
         # Use default figure height and width if none provided
         if h is None:
@@ -294,15 +292,15 @@ class NCL_Plot:
         
         # Add titles with appropriate font sizes
         set_titles_and_labels(self.ax,
-                              self.maintitle, 
-                              maintitlefontsize,
-                              self.lefttitle, 
-                              lefttitlefontsize,
-                              self.righttitle, 
-                              righttitlefontsize,
-                              self.xlabel, 
-                              self.ylabel,
-                              labelfontsize)
+                              maintitle = self.maintitle, 
+                              maintitlefontsize = self.maintitlefontsize,
+                              lefttitle = self.lefttitle, 
+                              lefttitlefontsize = self.lefttitlefontsize,
+                              righttitle = self.righttitle, 
+                              righttitlefontsize = self.righttitlefontsize,
+                              xlabel = self.xlabel, 
+                              ylabel = self.ylabel,
+                              labelfontsize = self.labelfontsize)
 
     def show(self):
         plt.show()

@@ -30,22 +30,24 @@ class Contour(NCL_Plot):
         if isinstance(self.data, xr.DataArray):
             self.orig = self.data
             self.data = self.data.values
-
+            
         # Read in or calculate filled levels
-        if kwargs.get('flevels') != 'auto':
-            # levels defined by kwargs
-            self.levels = kwargs.get('flevels')
-        elif kwargs.get('flevels') is not None:
-            # take a guess at filled levels
-            self._estimate_flevels
+        if kwargs.get('contour_fill') is not False:
+            if kwargs.get('flevels') is not None:
+                # levels defined by kwargs
+                self.levels = kwargs.get('flevels')
+            elif kwargs.get('flevels') is None:
+                # take a guess at filled levels
+                self._estimate_flevels
 
         # Read in or calculate contour levels
-        if kwargs.get('clevels') != 'auto':
-            # levels defined by kwargs
-            self.levels = kwargs.get('clevels')
-        elif kwargs.get('clevels') is not None:
-            # take a guess at filled levels
-            self._estimate_clevels
+        if kwargs.get('contour_lines') is not False:
+            if kwargs.get('clevels') is not None:
+                # levels defined by kwargs
+                self.levels = kwargs.get('clevels')
+            elif kwargs.get('clevels') is None:
+                # take a guess at filled levels
+                self._estimate_clevels
 
         # Pull out child-class specific kwargs
         if kwargs.get('cmap') is not None:
@@ -63,7 +65,8 @@ class Contour(NCL_Plot):
                                        cmap=self.cmap,
                                        transform=self.projection,
                                        extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                       extend = self.cbextend
+                                       extend = self.cbextend,
+                                       add_colorbar = False
                                        )
 
         if kwargs.get('contour_lines') is not False:
@@ -75,7 +78,8 @@ class Contour(NCL_Plot):
                                       linestyles='solid',
                                       transform=self.projection,
                                       extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                      extend = self.cbextend
+                                      extend = self.cbextend,
+                                      add_colorbar = False
                                        )
 
         self._set_NCL_style(self.ax)
