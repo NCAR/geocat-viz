@@ -32,7 +32,7 @@ class Contour(NCL_Plot):
             self.data = self.data.values
 
         # Read in or calculate filled levels
-        if kwargs.get('flevels') is not 'auto':
+        if kwargs.get('flevels') != 'auto':
             # levels defined by kwargs
             self.levels = kwargs.get('flevels')
         elif kwargs.get('flevels') is not None:
@@ -40,7 +40,7 @@ class Contour(NCL_Plot):
             self._estimate_flevels
 
         # Read in or calculate contour levels
-        if kwargs.get('clevels') is not 'auto':
+        if kwargs.get('clevels') != 'auto':
             # levels defined by kwargs
             self.levels = kwargs.get('clevels')
         elif kwargs.get('clevels') is not None:
@@ -62,7 +62,9 @@ class Contour(NCL_Plot):
                                        levels=self.levels,
                                        cmap=self.cmap,
                                        transform=self.projection,
-                                       extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
+                                       extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                       extend = self.cbextend
+                                       )
 
         if kwargs.get('contour_lines') is not False:
             self.cl = self.ax.contour(self.data,
@@ -72,13 +74,15 @@ class Contour(NCL_Plot):
                                       linewidths=0.4,
                                       linestyles='solid',
                                       transform=self.projection,
-                                      extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]])
+                                      extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                      extend = self.cbextend
+                                       )
 
         self._set_NCL_style(self.ax)
 
         # call colorbar creation from parent class
         # set colorbar if specified
-        if self.colorbar is not False and self.colorbar is not 'off':
+        if (self.colorbar is not False) and (self.colorbar != 'off'):
             self._add_colorbar(mappable=self.cf)
             
         self.add_titles()

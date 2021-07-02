@@ -18,8 +18,7 @@ class NCL_Plot:
         self._default_height = 8
         self._default_width = 10
 
-        # TODO: address all input arguments and run checks
-        # Pull out title arguments
+        # Pull out title and title font arguments
         self.maintitle = kwargs.get('maintitle')
         self.maintitlefontsize = kwargs.get('maintitlefontsize')
         self.lefttitle = kwargs.get('lefttitle')
@@ -27,7 +26,7 @@ class NCL_Plot:
         self.righttitle = kwargs.get('righttitle')
         self.righttitlefontsize = kwargs.get('righttitlefontsize')
 
-        # Pull out axes info
+        # Pull out axes limits info
         self.xlim = kwargs.get('xlim')
         self.ylim = kwargs.get('ylim')
 
@@ -49,9 +48,14 @@ class NCL_Plot:
         self.cbpad = kwargs.get('cbpad')
         self.cbdrawedges = kwargs.get('cbdrawedges')
         self.cbticks = kwargs.get('cbticks')
+        self.cbextend = kwargs.get('cbextend')
+        
+        # Pull out figure size arguments
+        self.h = kwargs.get('h')
+        self.w = kwargs.get('w')
 
         # Set up figure
-        self._set_up_fig()
+        self._set_up_fig(w = self.w, h = self.h)
 
         # Set up axes with projection if specified
         if kwargs.get('projection') is not None:
@@ -71,6 +75,7 @@ class NCL_Plot:
         if kwargs.get('show_lakes') is True:
             self.show_lakes()
             
+        # If xlim/ylim is not specified, set it to the mix and max of the data
         if self.ylim is None:
             y_max = self.data.shape[0]
             self.ylim = [0, y_max]
@@ -79,27 +84,15 @@ class NCL_Plot:
             x_max = self.data.shape[1]
             self.xlim = [0, x_max]
             
-            
-        def factor(num):
-            factor_list = []
-            distance = []
-            for i in range(1, num+1):
-                if num%i ==0:
-                    factor_list.append(i)
-            print(factor_list)
-            for entry in factor_list:
-                distance.append(abs(entry-6))
-            min_number = min(distance)
-            index = distance.index(min_number)
-            return factor_list[index]
-                
-            
+         # If x and y ticks are not specified, set to have 4 ticks over full range  
         if self.xticks is None:
-            self.xticks = np.linspace(0, self.xlim[1], factor(self.xlim[1]))
+            self.xticks = np.linspace(0, self.xlim[1], 4)
             
         if self.yticks is None:
-            self.yticks = np.linspace(0, self.ylim[1], factor(self.ylim[1]))
+            self.yticks = np.linspace(0, self.ylim[1], 4)
             
+            
+        # Use utility function ot set limits and ticks
         set_axes_limits_and_ticks(self.ax,
                                   xlim=self.xlim,
                                   ylim=self.ylim,
@@ -107,6 +100,8 @@ class NCL_Plot:
                                   yticks=self.yticks)
 
     def _set_up_fig(self, w=None, h=None):
+        
+        print(w, h)
 
         # Use default figure height and width if none provided
         if h is None:
@@ -119,7 +114,6 @@ class NCL_Plot:
 
     def _set_NCL_style(self, ax, fontsize=18, subfontsize=18, labelfontsize=16):
         # Set NCL-style tick marks
-        # TODO: switch from using geocat-viz to using a geocat-lynx specific tick function
         add_major_minor_ticks(ax, labelsize=10)
 
         # Set NLC-style titles set from from initialization call (based on geocat-viz function)
@@ -128,7 +122,7 @@ class NCL_Plot:
                 plt.title(self.maintitle, fontsize=fontsize + 2, y=1.12)
             else:
                 plt.title(self.maintitle, fontsize=fontsize, y=1.04)
-
+        
         if self.lefttitle is not None:
             plt.title(self.lefttitle, fontsize=subfontsize, y=1.04, loc='left')
 
@@ -144,7 +138,7 @@ class NCL_Plot:
         if self.ylabel is not None:
             plt.ylabel(self.ylabel, fontsize=labelfontsize)
 
-        # format axes as lat lon
+        # format axes as lat, lon
         add_lat_lon_ticklabels(self.ax)
 
     def _add_colorbar(self, 
@@ -154,52 +148,46 @@ class NCL_Plot:
                       cbpad=0.11,
                       cbdrawedges=True,
                       cbticks=None,
-                      cbticklabels=None):
-        
+                      cbticklabels=None,
+                      cbextend = "neither"):
+        # Set values for colorbar while maintaining previously set values
         if self.cbar is not None:
             self.cbar.remove()
         
         if mappable is not None:
             self.mappable = mappable
         
-        if self.cborientation is None:
+        if (self.cborientation is None) or (cborientation != "horizontal"):
             self.cborientation = cborientation
             
-        if cborientation != "horizontal":
-            self.cborientation = cborientation
-            
-        if self.cbshrink is None:
-            self.cbshrink = cbshrink
-            
-        if cbshrink != 0.75:
+        if (self.cbshrink is None) or (cbshrink != 0.75):
             self.cbshrink = cbshrink
         
-        if self.cbpad is None:
+        if (self.cbpad is None) or (cbpad != 0.11):
             self.cbpad = cbpad
             
-        if cbpad != 0.11:
-            self.cbpad = cbpad
-            
-        if self.cbdrawedges is None:
+        if (self.cbdrawedges is None) or (cbdrawedges is not True):
             self.cbdrawedges = cbdrawedges
             
-        if cbdrawedges is not True:
-            self.cbdrawedges = cbdrawedges
-            
+        if (cbextend != "neither") or (self.cbextend is None):
+            self.cbextend = cbextend
+        
+        # Create colorbar
         self.cbar = self.fig.colorbar(self.mappable, 
                                       orientation=self.cborientation, 
                                       shrink=self.cbshrink, 
                                       pad=self.cbpad, 
-                                      drawedges=self.cbdrawedges)
+                                      drawedges=self.cbdrawedges
+                                      )
         
+        # Set colorbar ticks
         if (cbticks is None) and (self.cbticks is None):
             self.cbticks = self.cbar.boundaries[1:-1]
-        else:
-            self.cbticks = cbticks
 
-        # label every boundary except the ones on the end of the colorbar
+        # Label every boundary except the ones on the end of the colorbar
         self.cbar.set_ticks(ticks=self.cbticks)
         
+        # Set colorbar tick labesls
         if cbticklabels is not None:
             self.cbticklabels = cbticklabels
             
@@ -229,47 +217,7 @@ class NCL_Plot:
                    ylabel=None,
                    labelfontsize=16):
         
-        if isinstance(self.orig, xr.core.dataarray.DataArray):
-            first = True
-            if maintitle is None:
-                try:
-                    maintitle = self.orig.attrs["title"]
-                except:
-                    pass
-            if lefttitle is None:
-                try:
-                    lefttitle = self.orig.attrs["long_name"]
-                except:
-                    pass
-            if righttitle is None:
-                try:
-                    righttitle = self.orig.attrs["units"]
-                except:
-                    pass
-                
-            coordinates = self.orig.coords
-            keys = list(coordinates.keys())
-            
-            for i in range(len(keys)):
-                if (coordinates[keys[i-1]].size > 1) and first:
-                    try:
-                        ylabel = coordinates[keys[i-1]].long_name
-                    except:
-                        pass
-                    
-                    while i < len(keys):
-                        if (coordinates[keys[i]].size > 1) and first:
-                            try:
-                                xlabel = coordinates[keys[i]].long_name
-                            except:
-                                pass
-                            first = False
-                        else:
-                            i +=1
-                else:
-                    i += 1
-    
-        # update object definitions
+        # Update object definitions
         if maintitle is not None:
             self.maintitle = maintitle
             
@@ -296,6 +244,53 @@ class NCL_Plot:
             
         if labelfontsize != 16:
             self.labelfontsize = labelfontsize
+            
+        # If xarray file, use labels within file
+        if isinstance(self.orig, xr.core.dataarray.DataArray):
+            if self.maintitle is None:
+                try:
+                    self.maintitle = self.orig.attrs["title"]
+                except:
+                    pass
+            if self.lefttitle is None:
+                try:
+                    self.lefttitle = self.orig.attrs["long_name"]
+                except:
+                    pass
+            if self.righttitle is None:
+                try:
+                    self.righttitle = self.orig.attrs["units"]
+                except:
+                    pass
+                
+            # Set variables for x and y labels
+            first = True    
+            coordinates = self.orig.coords
+            keys = list(coordinates.keys())
+            
+            # Loop through coordinates in xarray file
+            for i in range(len(keys)):
+                # If coordinate is first label with multiple values, set y label
+                if (coordinates[keys[i-1]].size > 1) and first:
+                    try:
+                        if self.ylabel is None:
+                            self.ylabel = coordinates[keys[i-1]].long_name
+                    except:
+                        pass
+                    
+                    while i < len(keys):
+                        # If coordinate is second label with multiple values, set x label
+                        if (coordinates[keys[i]].size > 1) and first:
+                            try:
+                                if self.xlabel is None:
+                                    self.xlabel = coordinates[keys[i]].long_name
+                            except:
+                                pass
+                            first = False
+                        else:
+                            i +=1
+                else:
+                    i += 1
         
         # Add titles with appropriate font sizes
         set_titles_and_labels(self.ax,
