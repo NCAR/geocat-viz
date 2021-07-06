@@ -39,6 +39,16 @@ class Contour(NCL_Plot):
             elif kwargs.get('flevels') is None:
                 # take a guess at filled levels
                 self._estimate_flevels
+        
+        if kwargs.get("X") is not None:
+            self.X = kwargs.get("X")
+            if kwargs.get("Y") is None:
+                raise AttributeError("If X is defined, Y must also be defined.")
+            
+        if kwargs.get("Y") is not None:
+            self.Y = kwargs.get("Y")
+            if kwargs.get("X") is None:
+                raise AttributeError("If Y is defined, X must also be defined.")
 
         # Read in or calculate contour levels
         if kwargs.get('contour_lines') is not False:
@@ -54,42 +64,129 @@ class Contour(NCL_Plot):
             self.cmap = kwargs.get('cmap')
         else:
             self.cmap = self._default_cmap
+            
+        # Pull out contour label specific kwargs
+        if kwargs.get("drawcontourlabels") is not None:
+            self.draw_contour_labels = kwargs.get("drawcontourlabels")
+        else:
+            self.draw_contour_labels = False
+        if kwargs.get("manualcontourlabels") is not None:
+            self.manualcontourlabels = kwargs.get("manualcontourlabels")
+        else:
+            self.manualcontourlabels = False
+        
+        self.contourlabels = kwargs.get("contourlabels")
+        self.contourfontsize = kwargs.get("contourfontsize")
+        self.contourbackground = kwargs.get("contourbackground")
+            
+        
 
         # Call parent class constructor
         NCL_Plot.__init__(self, *args, **kwargs)
-
-        # Create plot
-        if kwargs.get('contour_fill') is not False:
-            self.cf = self.ax.contourf(self.data,
-                                       levels=self.levels,
-                                       cmap=self.cmap,
-                                       transform=self.projection,
-                                       extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                       extend = self.cbextend,
-                                       add_colorbar = False
-                                       )
-
-        if kwargs.get('contour_lines') is not False:
-            self.cl = self.ax.contour(self.data,
-                                      levels=self.levels,
-                                      colors='black',
-                                      alpha=0.8,
-                                      linewidths=0.4,
-                                      linestyles='solid',
-                                      transform=self.projection,
-                                      extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                      extend = self.cbextend,
-                                      add_colorbar = False
-                                       )
+        
+        if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
+            # Create plot
+            if kwargs.get('contour_fill') is not False:
+                self.cf = self.ax.contourf(self.X,
+                                           self.Y,
+                                           self.data,
+                                           levels=self.levels,
+                                           cmap=self.cmap,
+                                           transform=self.projection,
+                                           extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                           extend = self.cbextend,
+                                           add_colorbar = False
+                                           )
+    
+            if kwargs.get('contour_lines') is not False:
+                self.cl = self.ax.contour(self.X,
+                                           self.Y,
+                                           self.data,
+                                          levels=self.levels,
+                                          colors='black',
+                                          alpha=0.8,
+                                          linewidths=0.4,
+                                          linestyles='solid',
+                                          transform=self.projection,
+                                          extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                          extend = self.cbextend,
+                                          add_colorbar = False
+                                           )
+        else:
+            # Create plot
+            if kwargs.get('contour_fill') is not False:
+                self.cf = self.ax.contourf(self.data,
+                                           levels=self.levels,
+                                           cmap=self.cmap,
+                                           transform=self.projection,
+                                           extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                           extend = self.cbextend,
+                                           add_colorbar = False
+                                           )
+    
+            if kwargs.get('contour_lines') is not False:
+                self.cl = self.ax.contour(self.data,
+                                          levels=self.levels,
+                                          colors='black',
+                                          alpha=0.8,
+                                          linewidths=0.4,
+                                          linestyles='solid',
+                                          transform=self.projection,
+                                          extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                          extend = self.cbextend,
+                                          add_colorbar = False
+                                           )
 
         self._set_NCL_style(self.ax)
+        
+        # If contour labels are requested, set them based on label arguments provided
+        if self.draw_contour_labels is True:
+            try:
+                self.cl
+            except:
+                raise AttributeError("Contour lines must be plotted to add contour labels.")
+                
+            if (self.contourlabels is None) and (self.manualcontourlabels is None):
+                raise AttributeError("Contour labels must be defined if adding them.")
+            
+            if self.contourlabels is not None:
+                self._add_contour_labels(self.ax, 
+                                        self.cl, 
+                                        contourlabels = self.contourlabels, 
+                                        fontsize = self.contourfontsize,
+                                        background = self.contourbackground)
+            elif self.manualcontourlabels is not None:
+                self._add_contour_labels(self.ax, 
+                                        self.cl, 
+                                        manualcontourlabels = self.manualcontourlabels, 
+                                        fontsize = self.contourfontsize,
+                                        background = self.contourbackground)
+            else:
+                raise AttributeError("Contour labels must be defined if adding them.")
 
         # call colorbar creation from parent class
         # set colorbar if specified
-        if (self.colorbar is not False) and (self.colorbar != 'off'):
+        if (self.colorbar is not False) and (self.colorbar != 'off') and (kwargs.get('contour_fill') is not False):
             self._add_colorbar(mappable=self.cf)
             
         self.add_titles()
+        
+    def _add_contour_labels(self, ax, lines, contourlabels = None, background=True, fontsize=12):
+        if self.contourfontsize is not None:
+            fontsize = self.contourfontsize
+        
+        if self.manualcontourlabels is False:
+            ax.clabel(lines, contourlabels, fontsize=fontsize, fmt='%d', inline=True)
+        elif self.manualcontourlabels is True:
+            ax.clabel(lines, fontsize=fontsize, fmt='%d', inline=True, manual = contourlabels)
+        else:
+            raise AttributeError("Manualcontourlabels, if set, must be True or False.")
+        
+        if background is True:
+            [
+                txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=2))
+                for txt in lines.labelTexts
+            ]
             
     def _estimate_flevels(self):
         # TODO: flesh out

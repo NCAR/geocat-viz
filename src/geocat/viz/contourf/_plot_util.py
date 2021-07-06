@@ -38,6 +38,7 @@ class NCL_Plot:
         self.xlabel = kwargs.get('xlabel')
         self.ylabel = kwargs.get('ylabel')
         self.labelfontsize = kwargs.get('labelfontsize')
+        self.ticklabelfontsize = kwargs.get("ticklabelfontsize")
 
         # pull out colorbar arguments
         self.cbar = None
@@ -56,12 +57,15 @@ class NCL_Plot:
 
         # Set up figure
         self._set_up_fig(w = self.w, h = self.h)
+        
+        self.set_coastlines = kwargs.get("set_coastlines")
 
         # Set up axes with projection if specified
         if kwargs.get('projection') is not None:
             self.projection = kwargs.get('projection')
             self.ax = plt.axes(projection=self.projection)
-            self.ax.coastlines(linewidths=0.5, alpha=0.6)
+            if self.set_coastlines is not False:
+                self.ax.coastlines(linewidths=0.5, alpha=0.6)
         else:
             self.ax = plt.axes()
 
@@ -74,6 +78,8 @@ class NCL_Plot:
 
         if kwargs.get('show_lakes') is True:
             self.show_lakes()
+            
+        self.set_extent = kwargs.get("set_extent")
             
         # If xlim/ylim is not specified, set it to the mix and max of the data
         if self.ylim is None:
@@ -91,13 +97,16 @@ class NCL_Plot:
         if self.yticks is None:
             self.yticks = np.linspace(0, self.ylim[1], 4)
             
-            
         # Use utility function ot set limits and ticks
         set_axes_limits_and_ticks(self.ax,
                                   xlim=self.xlim,
                                   ylim=self.ylim,
                                   xticks=self.xticks,
                                   yticks=self.yticks)
+        
+        # Set extent of figure
+        if self.set_extent is not None:
+            self.ax.set_extent(self.set_extent, crs=self.projection)
 
     def _set_up_fig(self, w=None, h=None):
 
@@ -110,9 +119,11 @@ class NCL_Plot:
 
         self.fig = plt.figure(figsize=(w, h))
 
-    def _set_NCL_style(self, ax, fontsize=18, subfontsize=18, labelfontsize=16):
+    def _set_NCL_style(self, ax, fontsize=18, subfontsize=18, ticklabelfontsize=16, labelfontsize=16):
         # Set NCL-style tick marks
-        add_major_minor_ticks(ax, labelsize=10)
+        if self.ticklabelfontsize is None:
+            self.ticklabelfontsize = ticklabelfontsize
+        add_major_minor_ticks(ax, labelsize=self.ticklabelfontsize)
 
         # Set NLC-style titles set from from initialization call (based on geocat-viz function)
         if self.maintitle is not None:
@@ -147,7 +158,8 @@ class NCL_Plot:
                       cbdrawedges=True,
                       cbticks=None,
                       cbticklabels=None,
-                      cbextend = "neither"):
+                      cbextend = "neither",
+                      cbticklabelsize=None):
         # Set values for colorbar while maintaining previously set values
         if self.cbar is not None:
             self.cbar.remove()
@@ -169,6 +181,9 @@ class NCL_Plot:
             
         if (cbextend != "neither") or (self.cbextend is None):
             self.cbextend = cbextend
+            
+        if self.mappable is None:
+            raise AttributeError("Mappable must be defined when first creating colorbar.")
         
         # Create colorbar
         self.cbar = self.fig.colorbar(self.mappable, 
@@ -190,15 +205,22 @@ class NCL_Plot:
             self.cbticklabels = cbticklabels
             
             self.cbar.set_ticklabels(ticklabels=self.cbticklabels)
+        
+        # Set labelsize
+        if cbticklabelsize is not None:
+            self.cbticklabelsize = cbticklabelsize
+            self.cbar.ax.tick_params(labelsize=self.cbticklabelsize)
 
-    def show_land(self, color='lightgrey'):
-        self.ax.add_feature(cfeature.LAND, facecolor=color)
+    def show_land(self, scale = "110m", color='lightgrey'):
+        self.ax.add_feature(cfeature.LAND.with_scale(scale), facecolor=color)
 
-    def show_coastline(self, lw=0.5):
-        self.ax.add_feature(cfeature.COASTLINE, linewidths=lw)
+    def show_coastline(self, scale = "110m", lw=0.5, edgecolor="black"):
+        self.ax.add_feature(cfeature.COASTLINE.with_scale(scale), 
+                            linewidths=lw,
+                            edgecolor=edgecolor)
 
-    def show_lakes(self, lw=0.5, ec='black', fc='None'):
-        self.ax.add_feature(cfeature.LAKES,
+    def show_lakes(self, scale = "110m", lw=0.5, ec='black', fc='None'):
+        self.ax.add_feature(cfeature.LAKES.with_scale(scale),
                             linewidth=lw,
                             edgecolor=ec,
                             facecolor=fc)
@@ -214,24 +236,24 @@ class NCL_Plot:
                    xlabel=None, 
                    ylabel=None,
                    labelfontsize=16):
-        
+       
         # Update object definitions
         if maintitle is not None:
             self.maintitle = maintitle
             
-        if maintitlefontsize != 18:
+        if (maintitlefontsize != 18) or (self.maintitlefontsize is None):
             self.maintitlefontsize = maintitlefontsize
 
         if lefttitle is not None:
             self.lefttitle = lefttitle
             
-        if lefttitlefontsize != 18:
+        if (lefttitlefontsize != 18) or (self.lefttitlefontsize is None):
             self.lefttitlefontsize = lefttitlefontsize
 
         if righttitle is not None:
             self.righttitle = righttitle
             
-        if righttitlefontsize != 18:
+        if (righttitlefontsize != 18) or (self.righttitlefontsize is None):
             self.righttitlefontsize = righttitlefontsize
 
         if xlabel is not None:
@@ -240,8 +262,9 @@ class NCL_Plot:
         if ylabel is not None:
             self.ylabel = ylabel
             
-        if labelfontsize != 16:
+        if (labelfontsize != 16) or (self.labelfontsize is None):
             self.labelfontsize = labelfontsize
+
             
         # If xarray file, use labels within file
         if isinstance(self.orig, xr.core.dataarray.DataArray):
