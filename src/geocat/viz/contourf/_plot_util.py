@@ -17,6 +17,7 @@ class NCL_Plot:
         # Set class defaults
         self._default_height = 8
         self._default_width = 10
+        self._nested = 0
 
         # Pull out title and title font arguments
         self.maintitle = kwargs.get('maintitle')
@@ -75,6 +76,13 @@ class NCL_Plot:
             else:
                 self.ax = plt.axes()
                 self.ax.set_aspect("auto")
+        else:
+            try:
+                parent_ax = str(self.ax)[:-3]
+                # so you can input an ax and I want to add 1 to x._nested
+                # to do this, I am trying to remove the .ax by converting to a string
+                # don't know how to convert back to variable
+                # at the end, i want to call that number of plt.closes()
             
         # Set up axes with scale if specified
         if self.yscale == "log":
