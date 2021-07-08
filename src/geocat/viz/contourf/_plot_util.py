@@ -29,6 +29,8 @@ class NCL_Plot:
         # Pull out axes limits info
         self.xlim = kwargs.get('xlim')
         self.ylim = kwargs.get('ylim')
+        self.yscale = kwargs.get("yscale")
+        self.xscale = kwargs.get("xscale")
 
         # Pull out tick arguments if specified
         self.xticks = kwargs.get('xticks')
@@ -42,7 +44,7 @@ class NCL_Plot:
 
         # pull out colorbar arguments
         self.cbar = None
-        self.colorbar = kwargs.get('colorbar')
+        self.add_colorbar = kwargs.get('add_colorbar')
         self.mappable = kwargs.get('mappable')
         self.cborientation = kwargs.get('cborientation')
         self.cbshrink = kwargs.get('cbshrink')
@@ -61,14 +63,25 @@ class NCL_Plot:
         self.set_coastlines = kwargs.get("set_coastlines")
 
         # Set up axes with projection if specified
-        if kwargs.get('projection') is not None:
-            self.projection = kwargs.get('projection')
-            self.ax = plt.axes(projection=self.projection)
-            if self.set_coastlines is not False:
-                self.ax.coastlines(linewidths=0.5, alpha=0.6)
-        else:
-            self.ax = plt.axes()
-
+        self.ax = kwargs.get("ax")
+        
+        if self.ax is None:
+            if kwargs.get('projection') is not None:
+                self.projection = kwargs.get('projection')
+                self.ax = plt.axes(projection=self.projection)
+                if self.set_coastlines is not False:
+                    self.ax.coastlines(linewidths=0.5, alpha=0.6)
+                self.ax.set_aspect("auto")
+            else:
+                self.ax = plt.axes()
+                self.ax.set_aspect("auto")
+            
+        # Set up axes with scale if specified
+        if self.yscale == "log":
+            plt.yscale("log")
+        if self.xscale == "log":
+            plt.xscale("log")
+        
         # Set specified features
         if kwargs.get('show_land') is True:
             self.show_land()
@@ -83,12 +96,10 @@ class NCL_Plot:
             
         # If xlim/ylim is not specified, set it to the mix and max of the data
         if self.ylim is None:
-            y_max = self.data.shape[0]
-            self.ylim = [0, y_max]
+            self.ylim = self.ax.get_ylim()[::-1]
             
         if self.xlim is None:
-            x_max = self.data.shape[1]
-            self.xlim = [0, x_max]
+            self.ylim = self.ax.get_xlim()[::-1]
             
          # If x and y ticks are not specified, set to have 4 ticks over full range  
         if self.xticks is None:
@@ -326,6 +337,7 @@ class NCL_Plot:
                               labelfontsize = self.labelfontsize)
 
     def show(self):
+        plt.tight_layout()
         plt.show()
 
     def get_mpl_obj(self):

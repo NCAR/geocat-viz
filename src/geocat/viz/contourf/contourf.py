@@ -58,7 +58,18 @@ class Contour(NCL_Plot):
             elif kwargs.get('clevels') is None:
                 # take a guess at filled levels
                 self._estimate_clevels
+                
+        # Read in style of contour lines
+        if kwargs.get("linecolor") is None:
+            self.linecolor = "black"
+        else:
+            self.linecolor = kwargs.get("linecolor")
 
+        if kwargs.get("linestyle") is None:
+            self.linestyle = "solid"
+        else:
+            self.linestyle = kwargs.get("linestyle")
+            
         # Pull out child-class specific kwargs
         if kwargs.get('cmap') is not None:
             self.cmap = kwargs.get('cmap')
@@ -84,59 +95,109 @@ class Contour(NCL_Plot):
         # Call parent class constructor
         NCL_Plot.__init__(self, *args, **kwargs)
         
-        if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
-            # Create plot
-            if kwargs.get('contour_fill') is not False:
-                self.cf = self.ax.contourf(self.X,
-                                           self.Y,
-                                           self.data,
-                                           levels=self.levels,
-                                           cmap=self.cmap,
-                                           transform=self.projection,
-                                           extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                           extend = self.cbextend,
-                                           add_colorbar = False
-                                           )
-    
-            if kwargs.get('contour_lines') is not False:
-                self.cl = self.ax.contour(self.X,
-                                           self.Y,
-                                           self.data,
-                                          levels=self.levels,
-                                          colors='black',
-                                          alpha=0.8,
-                                          linewidths=0.4,
-                                          linestyles='solid',
-                                          transform=self.projection,
-                                          extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                          extend = self.cbextend,
-                                          add_colorbar = False
-                                           )
+        if (kwargs.get("projection") is not None):
+            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
+                # Create plot
+                if kwargs.get('contour_fill') is not False:
+                    self.cf = self.ax.contourf(self.X,
+                                               self.Y,
+                                               self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               transform=self.projection,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend,
+                                               add_colorbar = False
+                                               )
+        
+                if kwargs.get('contour_lines') is not False:
+                    self.cl = self.ax.contour(self.X,
+                                               self.Y,
+                                               self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=0.4,
+                                              linestyles=self.linestyle,
+                                              transform=self.projection,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend,
+                                              add_colorbar = False
+                                               )
+            else:
+                # Create plot
+                if kwargs.get('contour_fill') is not False:
+                    self.cf = self.ax.contourf(self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               transform=self.projection,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend,
+                                               add_colorbar = False
+                                               )
+        
+                if kwargs.get('contour_lines') is not False:
+                    self.cl = self.ax.contour(self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=0.4,
+                                              linestyles=self.linestyle,
+                                              transform=self.projection,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend,
+                                              add_colorbar = False
+                                               )
         else:
-            # Create plot
-            if kwargs.get('contour_fill') is not False:
-                self.cf = self.ax.contourf(self.data,
-                                           levels=self.levels,
-                                           cmap=self.cmap,
-                                           transform=self.projection,
-                                           extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                           extend = self.cbextend,
-                                           add_colorbar = False
-                                           )
-    
-            if kwargs.get('contour_lines') is not False:
-                self.cl = self.ax.contour(self.data,
-                                          levels=self.levels,
-                                          colors='black',
-                                          alpha=0.8,
-                                          linewidths=0.4,
-                                          linestyles='solid',
-                                          transform=self.projection,
-                                          extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                          extend = self.cbextend,
-                                          add_colorbar = False
-                                           )
-
+            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
+                # Create plot
+                if kwargs.get('contour_fill') is not False:
+                    self.cf = self.ax.contourf(self.X,
+                                               self.Y,
+                                               self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend,
+                                               add_colorbar = False
+                                               )
+        
+                if kwargs.get('contour_lines') is not False:
+                    self.cl = self.ax.contour(self.X,
+                                               self.Y,
+                                               self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=0.4,
+                                              linestyles=self.linestyle,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend,
+                                              add_colorbar = False
+                                               )
+            else:
+                # Create plot
+                if kwargs.get('contour_fill') is not False:
+                    self.cf = self.ax.contourf(self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend,
+                                               add_colorbar = False
+                                               )
+        
+                if kwargs.get('contour_lines') is not False:
+                    self.cl = self.ax.contour(self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=0.4,
+                                              linestyles=self.linestyle,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend,
+                                              add_colorbar = False
+                                               )
+        
         self._set_NCL_style(self.ax)
         
         # If contour labels are requested, set them based on label arguments provided
@@ -166,7 +227,7 @@ class Contour(NCL_Plot):
 
         # call colorbar creation from parent class
         # set colorbar if specified
-        if (self.colorbar is not False) and (self.colorbar != 'off') and (kwargs.get('contour_fill') is not False):
+        if (self.add_colorbar is not False) and (self.add_colorbar != 'off') and (kwargs.get('contour_fill') is not False):
             self._add_colorbar(mappable=self.cf)
             
         self.add_titles()

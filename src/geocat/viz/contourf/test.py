@@ -39,7 +39,7 @@ from contourf import *
 
 # # Open a netCDF data file using xarray default engine and load the data into xarrays
 # ds = xr.open_dataset(gdf.get('netcdf_files/h_avg_Y0191_D000.00.nc'),
-#                      decode_times=False)
+#                       decode_times=False)
 # # Extract a slice of the data
 # t = ds.T.isel(time=0, z_t=0).sel(lat_t=slice(-60, 30), lon_t=slice(30, 120))
 # X = t.lon_t.data
@@ -83,9 +83,9 @@ from contourf import *
 # bplot.show()
 
 
-# Recreated Geo-CAT Examples Plot: NCL_conLab_4.py
+# # Recreated Geo-CAT Examples Plot: NCL_conLab_4.py
 
-# Open a netCDF data file using xarray default engine and load the data into xarrays
+# # Open a netCDF data file using xarray default engine and load the data into xarrays
 # ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc"), decode_times=False)
 # U = ds.isel(time=1, drop=True).U
 
@@ -126,7 +126,7 @@ from contourf import *
 #                 ylabel="",
 #                 drawcontourlabels = True,
 #                 contourlabels = [(25, 28), (30, -17), (40, -21), (40, -5), (42, -13), (10, 50),
-#                                  (62, -15), (65, -2)],
+#                                   (62, -15), (65, -2)],
 #                 manualcontourlabels=True,
 #                 contourbackground=True
 #                 )
@@ -134,11 +134,11 @@ from contourf import *
 # cplot.show_lakes(scale="110m")
 # cplot.show()
 
-# Recreated Geo-CAT Examples Plot: NCL_conLab_4.py
+# # Recreated Geo-CAT Examples Plot: NCL_conLab_4.py
 
-# Open a netCDF data file using xarray default engine and load the data into xarrays
+# # Open a netCDF data file using xarray default engine and load the data into xarrays
 # ds = xr.open_dataset(gdf.get("netcdf_files/b003_TS_200-299.nc"),
-#                      decode_times=False)
+#                       decode_times=False)
 # # Extract slice of the data
 # temp = ds.TS.isel(time=43).drop_vars(names=['time'])
 # # Convert from Celsius to Kelvin
@@ -190,81 +190,192 @@ from contourf import *
 #                       facecolor='white',
 #                       edgecolor='black'))
 
-# Recreated Geo-CAT Examples Plot: NCL_conLev_3.py
+# # Recreated Geo-CAT Examples Plot: NCL_conLev_3.py
+
+# # Open a netCDF data file using xarray default engine and load the data into xarrays
+# ds = xr.open_dataset(gdf.get("netcdf_files/Tstorm.cdf"))
+
+# # Extract temperature data at the first timestep
+# T = ds.t.isel(timestep=0, drop=True)
+# X = T.lon.data
+# Y = T.lat.data
+# projection = ccrs.PlateCarree()
+# levels = np.linspace(244, 308, 17)
+# newcmp = 'plasma'
+
+# eplot = Contour(T,
+#                 X = X,
+#                 Y = Y,
+#                 h = 8,
+#                 w = 8,
+#                 clevels = levels,
+#                 xlim=(-140, -50),
+#                 ylim=(20, 60),
+#                 xticks=[-135, -90],
+#                 yticks=np.arange(20, 70, 10),
+#                 ticklabelfontsize = 10,
+#                 projection=projection,
+#                 cmap = newcmp,
+#                 set_coastlines = False,
+#                 cbticks = np.arange(248, 308, 4),
+#                 cborientation = "vertical",
+#                 cbpad = 0.005,
+#                 cbticklabelsize = 11,
+#                 cbshrink = 1,
+#                 maintitle = "Explanation of Python contour levels",
+#                 xlabel="",
+#                 ylabel=""
+#                 )
+
+# # Create labels by colorbar
+# size = 8
+# num_lev = 16
+# cbticks = np.arange(248, 308, 4)
+# y = 1 / num_lev / 2  # Offset from x axis in axes coordinates
+# eplot.ax.text(0.949,
+#         y,
+#         'T < 248',
+#         fontsize=size,
+#         horizontalalignment='center',
+#         verticalalignment='center',
+#         transform=eplot.ax.transAxes,
+#         bbox=dict(boxstyle='square, pad=0.25',
+#                   facecolor='papayawhip',
+#                   edgecolor='papayawhip'))
+# text = '{} <= T < {}'
+# for i in range(0, 14):
+#     y = y + 1 / num_lev  # Vertical spacing between the labels
+#     eplot.ax.text(0.904,
+#             y,
+#             text.format(cbticks[i], cbticks[i + 1]),
+#             fontsize=size,
+#             horizontalalignment='center',
+#             verticalalignment='center',
+#             transform=eplot.ax.transAxes,
+#             bbox=dict(boxstyle='square, pad=0.25',
+#                       facecolor='papayawhip',
+#                       edgecolor='papayawhip'))
+
+# y = y + 1 / num_lev  # Increment height once more for top label
+# eplot.ax.text(0.94,
+#         y,
+#         'T >= 304',
+#         fontsize=size,
+#         horizontalalignment='center',
+#         verticalalignment='center',
+#         transform=eplot.ax.transAxes,
+#         bbox=dict(boxstyle='square, pad=0.25',
+#                   facecolor='papayawhip',
+#                   edgecolor='papayawhip'))
+
+# eplot.show()
+
+# # Recreated Geo-CAT Examples Plot: NCL_conLev_4.py
+
+# # Open a netCDF data file using xarray default engine and load the data into xarrays
+# ds = xr.open_dataset(gdf.get("netcdf_files/b003_TS_200-299.nc"),
+#                      decode_times=False)
+# x = ds.TS
+
+# # Apply mean reduction from coordinates as performed in NCL's dim_rmvmean_n_Wrap(x,0)
+# # Apply this only to x.isel(time=0) because NCL plot plots only for time=0
+# newx = x.mean('time')
+# newx = x.isel(time=0) - newx
+
+# # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
+# newx = gvutil.xr_add_cyclic_longitudes(newx, "lon")
+
+# X = newx.lon.data
+# Y = newx.lat.data
+# projection = ccrs.PlateCarree()
+# levels = [-12, -10, -8, -6, -4, -2, -1, 1, 2, 4, 6, 8, 10, 12]
+# newcmp = gvcmaps.BlRe
+# newcmp.colors[len(newcmp.colors) //
+#               2] = [1, 1, 1]  # Set middle value to white to match NCL
+
+# fplot = Contour(newx,
+#                 X = X,
+#                 Y = Y,
+#                 h = 7.2,
+#                 w = 12,
+#                 clevels = levels,
+#                 xlim=(-180, 180),
+#                 ylim=(-90, 90),
+#                 xticks=np.linspace(-180, 180, 13),
+#                 yticks=np.linspace(-90, 90, 7),
+#                 ticklabelfontsize = 10,
+#                 projection=projection,
+#                 cmap = newcmp,
+#                 cbticks = levels,
+#                 # cbpad = 0.005,
+#                 cbticklabelsize = 11,
+#                 cbshrink = 0.5,
+#                 cbextend = "both",
+#                 lefttitle = "Anomalies: Surface Temperature",
+#                 righttitle = "K",
+#                 xlabel="",
+#                 ylabel=""
+#                 )
+
+# fplot.show()
+
+# Recreated Geo-CAT Examples Plot: NCL_conOncon_1.py
 
 # Open a netCDF data file using xarray default engine and load the data into xarrays
-ds = xr.open_dataset(gdf.get("netcdf_files/Tstorm.cdf"))
+ds = xr.open_dataset(gdf.get("netcdf_files/mxclim.nc"))
+# Extract variables
+U = ds.U[0, :, :]
+UY = U.lev.data
+UX = U.lat.data
 
-# Extract temperature data at the first timestep
-T = ds.t.isel(timestep=0, drop=True)
-X = T.lon.data
-Y = T.lat.data
-projection = ccrs.PlateCarree()
-levels = np.linspace(244, 308, 17)
-newcmp = 'plasma'
+V = ds.V[0, :, :]
+VY = V.lev.data
+VX = V.lat.data
 
-eplot = Contour(T,
-                X = X,
-                Y = Y,
-                h = 8,
-                w = 8,
-                clevels = levels,
-                xlim=(-140, -50),
-                ylim=(20, 60),
-                xticks=[-135, -90],
-                yticks=np.arange(20, 70, 10),
-                ticklabelfontsize = 10,
-                projection=projection,
-                cmap = newcmp,
-                set_coastlines = False,
-                cbticks = np.arange(248, 308, 4),
-                cborientation = "vertical",
-                cbpad = 0.005,
-                cbticklabelsize = 11,
-                maintitle = "Explanation of Python contour levels",
+gplot = Contour(U,
+                # X = UX,
+                # Y = UY,
+                h = 12,
+                w = 12,
+                clevels = 16,
+                xlim=(-90, 90),
+                #ylim=self.ax.get_ylim()[::-1],
+                yscale = "log",
+                xticks=np.linspace(-60, 60, 5),
+                #xticklabels = ['60S', '30S', '0', '30N', '60N'],
+                yticks=U["lev"],
+                linecolor = "red",
+                contour_fill = False,
+                add_colorbar= False,
+                maintitle="Ensemble Average 1987-89",
+                maintitlefontsize=20,
+                lefttitlefontsize=18,
+                righttitlefontsize=18,
                 xlabel="",
-                ylabel=""
                 )
 
-# Create labels by colorbar
-size = 8
-num_lev = 16
-cbticks = np.arange(248, 308, 4)
-y = 1 / num_lev / 2  # Offset from x axis in axes coordinates
-eplot.ax.text(0.949,
-        y,
-        'T < 248',
-        fontsize=size,
-        horizontalalignment='center',
-        verticalalignment='center',
-        transform=eplot.ax.transAxes,
-        bbox=dict(boxstyle='square, pad=0.25',
-                  facecolor='papayawhip',
-                  edgecolor='papayawhip'))
-text = '{} <= T < {}'
-for i in range(0, 14):
-    y = y + 1 / num_lev  # Vertical spacing between the labels
-    eplot.ax.text(0.904,
-            y,
-            text.format(cbticks[i], cbticks[i + 1]),
-            fontsize=size,
-            horizontalalignment='center',
-            verticalalignment='center',
-            transform=eplot.ax.transAxes,
-            bbox=dict(boxstyle='square, pad=0.25',
-                      facecolor='papayawhip',
-                      edgecolor='papayawhip'))
+hplot = Contour(V,
+                # X = UX,
+                # Y = UY,
+                ax = gplot.ax,
+                h = 12,
+                w = 12,
+                clevels = 16,
+                xlim=(-90, 90),
+                #ylim=self.ax.get_ylim()[::-1],
+                yscale = "log",
+                xticks=np.linspace(-60, 60, 5),
+                #xticklabels = ['60S', '30S', '0', '30N', '60N'],
+                yticks=U["lev"],
+                linecolor = "blue",
+                contour_fill = False,
+                add_colorbar= False,
+                maintitle="Ensemble Average 1987-89",
+                maintitlefontsize=20,
+                lefttitlefontsize=18,
+                righttitlefontsize=18,
+                xlabel="",
+                )
 
-y = y + 1 / num_lev  # Increment height once more for top label
-eplot.ax.text(0.94,
-        y,
-        'T >= 304',
-        fontsize=size,
-        horizontalalignment='center',
-        verticalalignment='center',
-        transform=eplot.ax.transAxes,
-        bbox=dict(boxstyle='square, pad=0.25',
-                  facecolor='papayawhip',
-                  edgecolor='papayawhip'))
-
-eplot.show()
+gplot.show()
+plt.close()
