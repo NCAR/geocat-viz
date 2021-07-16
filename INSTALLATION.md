@@ -53,7 +53,7 @@ The GeoCAT-viz source code includes a conda environment definition file,
 development environment containing all of the packages required to build GeoCAT-viz.
 
     conda env create -f conda_environment.yml
-    conda activate geocat-viz
+    conda activate geocat_viz_build
 
 ### Installing GeoCAT-viz
 

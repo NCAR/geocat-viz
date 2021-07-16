@@ -1,4 +1,4 @@
-name: geocat-viz
+name: geocat_viz_build
 channels:
   - conda-forge
   - ncar
