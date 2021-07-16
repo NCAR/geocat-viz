@@ -23,7 +23,7 @@ following contribution guidelines:
 
 2. Define a new function and implement it under the `$GEOCAT_VIZ/src/geocat/viz/util/util.py`.
 
-# Adding new plotting functionality to the Geocat-viz repo
+# Adding new plotting utility functionality to the Geocat-viz repo
 
 1. Please check the followings to ensure that the functionality you are about to work on has not been ported yet:
 
