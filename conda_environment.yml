@@ -13,5 +13,6 @@ dependencies:
   - scikit-learn
   - sphinx
   - wrf-python
+  - pip
   - pip:
       - pre-commit
