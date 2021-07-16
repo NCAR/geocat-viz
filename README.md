@@ -11,10 +11,7 @@ plotting packages. GeoCAT-viz functionality is used by
 
 [GeoCAT Contributor's Guide](https://geocat.ucar.edu/pages/contributing.html)
 
-[GeoCAT-comp documentation on Read the Docs](https://geocat-comp.readthedocs.io)
-
-[GeoCAT-Examples Gallery](https://geocat-viz.readthedocs.io)
-
+[GeoCAT-viz documentation on Read the Docs](https://geocat-viz.readthedocs.io)
 
 # Installation instructions
 
