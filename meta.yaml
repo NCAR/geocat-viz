@@ -5,7 +5,7 @@ package:
   version: {{ version }}
 
 source:
-  git_rev: restructure # https://github.com/NCAR/geocat-viz/archive/v{{ version }}.tar.gz
+  git_rev: main # https://github.com/NCAR/geocat-viz/archive/v{{ version }}.tar.gz
   git_url: https://github.com/ncar/geocat-viz.git
 
 build:
