@@ -1,6 +1,5 @@
 .idea/
 .DS_Store
-/docs/_build/
 .ipynb_checkpoints/
 
 # Sphinx documentation
