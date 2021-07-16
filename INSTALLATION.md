@@ -38,8 +38,6 @@ installed.
 ### Required dependencies for building and testing GeoCAT-viz
 
 - Python 3.6+
-- [GeoCAT-datafiles](https://github.com/NCAR/geocat-datafiles)  (For tests only)
-- [netcdf4](https://unidata.github.io/netcdf4-python/)  (For tests only)
 - [numpy](https://numpy.org/doc/stable/)
 - [xarray](http://xarray.pydata.org/en/stable/)
 - [matplotlib](https://matplotlib.org/stable/)

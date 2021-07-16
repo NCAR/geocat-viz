@@ -4,15 +4,10 @@ channels:
   - ncar
 dependencies:
   - python=3
-  - geocat-comp
-  - geocat-datafiles
   - cartopy
   - make
   - matplotlib
-  - netcdf4
-  - scikit-learn
   - sphinx
-  - wrf-python
   - pip
   - pip:
       - pre-commit

@@ -3,9 +3,5 @@ channels:
   - ncar
 dependencies:
   - python
-  - geocat-datafiles  # for tests
-  - metpy
-  - netcdf4  # for tests
   - numpy
-  - pytest  # for tests
   - xarray
