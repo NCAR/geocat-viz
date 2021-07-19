@@ -9,5 +9,6 @@ dependencies:
   - matplotlib
   - sphinx
   - pip
+  - cmaps
   - pip:
       - pre-commit
