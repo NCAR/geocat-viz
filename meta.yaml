@@ -11,6 +11,7 @@ source:
   #url: https://github.com/NCAR/geocat-viz/archive/v{{ version }}.tar.gz   # For building from a specific tag's tarball
 
 build:
+  noarch: python
   number: 0
   skip: True # [py<35]
 
