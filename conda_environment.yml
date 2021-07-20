@@ -1,0 +1,14 @@
+name: geocat_viz_build
+channels:
+  - conda-forge
+  - ncar
+dependencies:
+  - python=3
+  - cartopy
+  - make
+  - matplotlib
+  - sphinx
+  - pip
+  - cmaps
+  - pip:
+      - pre-commit
