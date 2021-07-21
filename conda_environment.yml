@@ -1,25 +1,14 @@
-name: geocat-viz
+name: geocat_viz_build
 channels:
   - conda-forge
   - ncar
 dependencies:
   - python=3
-  - geocat-comp
-  - geocat-datafiles
   - cartopy
-  - geographiclib
-  - jupyter
   - make
-  - matplotlib=3.3.0
-  - metpy
-  - mock
-  - netcdf4
-  - pillow
-  - pip
-  - scikit-learn
+  - matplotlib
   - sphinx
-  - sphinx-gallery
-  - sphinx_rtd_theme
-  - wrf-python
+  - pip
+  - cmaps
   - pip:
       - pre-commit
