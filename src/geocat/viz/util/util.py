@@ -1,8 +1,8 @@
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
-    """
-    Utility function to make plots look like NCL plots by using latitude, longitude tick labels
+    """Utility function to make plots look like NCL plots by using latitude,
+    longitude tick labels.
 
     Args:
 
@@ -33,8 +33,8 @@ def add_major_minor_ticks(ax,
                           basey=10,
                           linthreshx=2,
                           linthreshy=2):
-    """
-    Utility function to make plots look like NCL plots by adding minor and major tick lines
+    """Utility function to make plots look like NCL plots by adding minor and
+    major tick lines.
 
     Args:
 
@@ -132,8 +132,8 @@ def set_titles_and_labels(ax,
                           xlabel=None,
                           ylabel=None,
                           labelfontsize=16):
-    """
-    Utility function to handle axis titles, left/right aligned titles, and labels as they appear in NCL plots.
+    """Utility function to handle axis titles, left/right aligned titles, and
+    labels as they appear in NCL plots.
 
     The intent of this function is to help make the plot look like an NCL plot as well as to help developers use only
     this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
@@ -233,8 +233,7 @@ def set_axes_limits_and_ticks(ax,
                               yticks=None,
                               xticklabels=None,
                               yticklabels=None):
-    """
-    Utility function to determine axis limits, tick values and labels
+    """Utility function to determine axis limits, tick values and labels.
 
     The intent of this function is to help developers use only this convenience function instead of multiple
     matplotlib.axes.Axes functions, when applicable.
@@ -287,9 +286,8 @@ def set_axes_limits_and_ticks(ax,
 
 
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
-    """
-    Utility function that truncates a colormap.
-    Registers the new colormap by name in plt.cm, and also returns the updated map.
+    """Utility function that truncates a colormap. Registers the new colormap
+    by name in plt.cm, and also returns the updated map.
 
     Copied from  https://stackoverflow.com/questions/18926031/how-to-extract-a-subset-of-a-colormap-as-a-new-colormap-in-matplotlib
 
@@ -328,8 +326,8 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
 
 
 def xr_add_cyclic_longitudes(da, coord):
-    """
-    Utility function to handle the no-shown-data artifact of 0 and 360-degree longitudes
+    """Utility function to handle the no-shown-data artifact of 0 and
+    360-degree longitudes.
 
     Args:
 
@@ -367,15 +365,14 @@ def set_map_boundary(ax,
                      east_pad=0,
                      west_pad=0,
                      res=1):
-    """
-    Utility function to set the boundary of ax to a path that surrounds a
-    given region specified by latitude and longitude coordinates. This
-    boundary is drawn in the projection coordinates and therefore follows
-    any curves created by the projection. As of now, this only works
-    consistently for the Lambert Conformal Projection and North/South
-    Polar Stereographic Projections.
+    """Utility function to set the boundary of ax to a path that surrounds a
+    given region specified by latitude and longitude coordinates. This boundary
+    is drawn in the projection coordinates and therefore follows any curves
+    created by the projection. As of now, this only works consistently for the
+    Lambert Conformal Projection and North/South Polar Stereographic
+    Projections.
 
-    Note: Due to the behavior of cartopy's set_extent() function, the curved 
+    Note: Due to the behavior of cartopy's set_extent() function, the curved
     edges of the boundary may be flattened and cut off. To solve this, use the
     kwargs north_pad, south_pad, east_pad, and west_pad. These will modify the
     coordinates passed to set_extent(). For the Lambert Conformal and Polar
@@ -411,7 +408,7 @@ def set_map_boundary(ax,
         east_pad (:class:`int`):
             A constant to be added to the second entry in lon_range. Use this
             if the eastern edge of the plot is cut off. Defaults to 0.
-        
+
         west_pad (:class:`int`):
             A constant to be subtracted from the first entry in lon_range. Use
             this if the western edge of the plot is cut off. Defaults to 0.
@@ -478,9 +475,10 @@ def set_map_boundary(ax,
 
 
 def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
-    """
-    Utility function to find local low/high field variable coordinates on a contour map. To classify as a local high, the data
-    point must be greater than highVal, and to classify as a local low, the data point must be less than lowVal.
+    """Utility function to find local low/high field variable coordinates on a
+    contour map. To classify as a local high, the data point must be greater
+    than highVal, and to classify as a local low, the data point must be less
+    than lowVal.
 
     Args:
         da: (:class:`xarray.DataArray`):
@@ -584,8 +582,9 @@ def plotCLabels(ax,
                 fontsize=12,
                 whitebbox=False,
                 horizontal=False):
-    """
-    Utility function to plot contour labels by passing in a coordinate to the clabel function.
+    """Utility function to plot contour labels by passing in a coordinate to
+    the clabel function.
+
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
@@ -653,8 +652,9 @@ def plotELabels(da,
                 fontsize=22,
                 whitebbox=False,
                 horizontal=True):
-    """
-    Utility function to plot contour labels. High/Low contour labels will be plotted using text boxes for more accurate label values
+    """Utility function to plot contour labels.
+
+    High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
     Args:
@@ -740,8 +740,8 @@ def plotELabels(da,
 
 
 def set_vector_density(data, minDistance=0):
-    """
-    Utility function to change density of vector plots.
+    """Utility function to change density of vector plots.
+
     Args:
         data (:class:`xarray.core.dataarray.DataArray`):
             Data array that contains the vector plot latitude/longitude data.
