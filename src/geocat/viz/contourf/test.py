@@ -1,10 +1,13 @@
 import xarray as xr
 import numpy as np
 import cartopy.crs as ccrs
+from matplotlib.ticker import ScalarFormatter
+import matplotlib.pyplot as plt
 
 import geocat.datafiles as gdf
 from geocat.viz import cmaps as gvcmaps
 from geocat.viz import util as gvutil
+from geocat.comp import eofunc_eofs, eofunc_pcs, month_to_season
 from contourf import *
 
 
@@ -42,8 +45,8 @@ from contourf import *
 #                       decode_times=False)
 # # Extract a slice of the data
 # t = ds.T.isel(time=0, z_t=0).sel(lat_t=slice(-60, 30), lon_t=slice(30, 120))
-# X = t.lon_t.data
-# Y = t.lat_t.data
+# X = t.lon_t
+# Y = t.lat_t
 
 # projection = ccrs.PlateCarree()
 # newcmp = gvcmaps.BlAqGrYeOrRe
@@ -96,8 +99,8 @@ from contourf import *
 # U = U.where(U.lat >= -33)
 # U = U.where(U.lat <= 33)
 
-# X = U.lon.data
-# Y = U.lat.data
+# X = U.lon
+# Y = U.lat
 
 # levels = np.arange(-16, 48, 4)
 
@@ -127,7 +130,7 @@ from contourf import *
 #                 drawcontourlabels = True,
 #                 contourlabels = [(25, 28), (30, -17), (40, -21), (40, -5), (42, -13), (10, 50),
 #                                   (62, -15), (65, -2)],
-#                 manualcontourlabels=True,
+#                 manualcontourlabels = True,
 #                 contourbackground=True
 #                 )
 
@@ -147,8 +150,8 @@ from contourf import *
 # # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
 # temp = gvutil.xr_add_cyclic_longitudes(temp, "lon")
 
-# X = temp.lon.data
-# Y = temp.lat.data
+# X = temp.lon
+# Y = temp.lat
 # projection = ccrs.PlateCarree()
 # levels = np.arange(-5, 35, 5)
 
@@ -197,8 +200,8 @@ from contourf import *
 
 # # Extract temperature data at the first timestep
 # T = ds.t.isel(timestep=0, drop=True)
-# X = T.lon.data
-# Y = T.lat.data
+# X = T.lon
+# Y = T.lat
 # projection = ccrs.PlateCarree()
 # levels = np.linspace(244, 308, 17)
 # newcmp = 'plasma'
@@ -274,7 +277,7 @@ from contourf import *
 
 # # Open a netCDF data file using xarray default engine and load the data into xarrays
 # ds = xr.open_dataset(gdf.get("netcdf_files/b003_TS_200-299.nc"),
-#                      decode_times=False)
+#                       decode_times=False)
 # x = ds.TS
 
 # # Apply mean reduction from coordinates as performed in NCL's dim_rmvmean_n_Wrap(x,0)
@@ -285,8 +288,8 @@ from contourf import *
 # # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
 # newx = gvutil.xr_add_cyclic_longitudes(newx, "lon")
 
-# X = newx.lon.data
-# Y = newx.lat.data
+# X = newx.lon
+# Y = newx.lat
 # projection = ccrs.PlateCarree()
 # levels = [-12, -10, -8, -6, -4, -2, -1, 1, 2, 4, 6, 8, 10, 12]
 # newcmp = gvcmaps.BlRe
@@ -319,63 +322,213 @@ from contourf import *
 
 # fplot.show()
 
-# Recreated Geo-CAT Examples Plot: NCL_conOncon_1.py
+# # Recreated Geo-CAT Examples Plot: NCL_conOncon_1.py
+
+# # Open a netCDF data file using xarray default engine and load the data into xarrays
+# ds = xr.open_dataset(gdf.get("netcdf_files/mxclim.nc"))
+# # Extract variables
+# U = ds.U[0, :, :]
+# UY = U.lev
+# UX = U.lat
+
+# V = ds.V[0, :, :]
+# VY = V.lev
+# VX = V.lat
+
+# levels = 16
+# xlim = (-90, 90)
+# ylim = (1000,10)
+# xticks = np.linspace(-60, 60, 5)
+
+# gplot = Contour(U,
+#                 h = 12,
+#                 w = 12,
+#                 clevels = levels,
+#                 xlim = xlim,
+#                 ylim = ylim,
+#                 yscale = "log",
+#                 xticks=xticks,
+#                 yticks=U["lev"],
+#                 y_lat_lon = True,
+#                 linecolor = "red",
+#                 linewidth = 1,
+#                 contour_fill = False,
+#                 add_colorbar= False,
+#                 maintitle="Ensemble Average 1987-89",
+#                 maintitlefontsize=20,
+#                 lefttitlefontsize=18,
+#                 righttitlefontsize=18,
+#                 ylabel= (str(U.lev.long_name) + " [" + str(U.lev.units) + "]"),
+#                 xlabel = "",
+#                 drawcontourlabels = True,
+#                 )
+
+# hplot = Contour(V,
+#                 ref_fig = gplot,
+#                 clevels = levels,
+#                 xlim = xlim,
+#                 ylim = ylim,
+#                 yscale = "log",
+#                 xticks=xticks,
+#                 yticks=V["lev"],
+#                 linecolor = "blue",
+#                 linewidth = 1,
+#                 contour_fill = False,
+#                 add_colorbar= False,
+#                 drawcontourlabels = True,
+#                 ylabel= (str(U.lev.long_name) + " [" + str(U.lev.units) + "]"),
+#                 xlabel = "",
+#                 )
+# hplot.ax.yaxis.set_major_formatter(ScalarFormatter())
+
+# axRHS = gplot.ax.twinx()
+# dummy = 10
+# mn, mx =gplot. ax.get_ylim()
+# axRHS.set_ylim(mn * dummy, mx * dummy)
+# axRHS.set_ylim(axRHS.get_ylim()[::-1])
+# axRHS.set_ylabel('Height (km)')
+# axRHS.yaxis.label.set_size(20)
+# axRHS.tick_params('both', length=20, width=2, which='major', labelsize=18)
+
+# gplot.show()
+
+# Recreated Geo-CAT Examples Plot:NCL_eof_1_1.py
+
+# In order to specify region of the globe, time span, etc.
+latS = 25.
+latN = 80.
+lonL = -70.
+lonR = 40.
+
+yearStart = 1979
+yearEnd = 2003
+
+neof = 3  # number of EOFs
 
 # Open a netCDF data file using xarray default engine and load the data into xarrays
-ds = xr.open_dataset(gdf.get("netcdf_files/mxclim.nc"))
-# Extract variables
-U = ds.U[0, :, :]
-UY = U.lev.data
-UX = U.lat.data
+ds = xr.open_dataset(gdf.get('netcdf_files/slp.mon.mean.nc'))
 
-V = ds.V[0, :, :]
-VY = V.lev.data
-VX = V.lat.data
+# To facilitate data subsetting
 
-gplot = Contour(U,
-                # X = UX,
-                # Y = UY,
-                h = 12,
-                w = 12,
-                clevels = 16,
-                xlim=(-90, 90),
-                #ylim=self.ax.get_ylim()[::-1],
-                yscale = "log",
-                xticks=np.linspace(-60, 60, 5),
-                #xticklabels = ['60S', '30S', '0', '30N', '60N'],
-                yticks=U["lev"],
-                linecolor = "red",
-                contour_fill = False,
-                add_colorbar= False,
-                maintitle="Ensemble Average 1987-89",
-                maintitlefontsize=20,
-                lefttitlefontsize=18,
-                righttitlefontsize=18,
-                xlabel="",
+ds["lon"] = ((ds["lon"] + 180) % 360) - 180
+
+# Sort longitudes, so that subset operations end up being simpler.
+ds = ds.sortby("lon")
+
+# To facilitate data subsetting
+
+ds = ds.sortby("lat", ascending=True)
+
+startDate = f'{yearStart}-01-01'
+endDate = f'{yearEnd}-12-31'
+
+ds = ds.sel(time=slice(startDate, endDate))
+
+# Choose the winter season (December-January-February)
+season = "DJF"
+SLP = month_to_season(ds, season)
+
+clat = SLP['lat'].astype(np.float64)
+clat = np.sqrt(np.cos(np.deg2rad(clat)))
+
+# Xarray will apply latitude-based weights to all longitudes and timesteps automatically.
+# This is called "broadcasting".
+
+wSLP = SLP
+wSLP['slp'] = SLP['slp'] * clat
+
+# For now, metadata for slp must be copied over explicitly; it is not preserved by binary operators like multiplication.
+wSLP['slp'].attrs = ds['slp'].attrs
+wSLP['slp'].attrs['long_name'] = 'Wgt: ' + wSLP['slp'].attrs['long_name']
+
+xw = wSLP.sel(lat=slice(latS, latN), lon=slice(lonL, lonR))
+
+# Transpose data to have 'time' in the first dimension
+# as `eofunc` functions expects so for xarray inputs for now
+xw_slp = xw["slp"].transpose('time', 'lat', 'lon')
+
+eofs = eofunc_eofs(xw_slp, neofs=neof, meta=True)
+
+pcs = eofunc_pcs(xw_slp, npcs=neof, meta=True)
+
+# Change the sign of the second EOF and its time-series for
+# consistent visualization purposes. See this explanation:
+# https://www.ncl.ucar.edu/Support/talk_archives/2009/2015.html
+# about that EOF signs are arbitrary and do not change the physical
+# interpretation.
+eofs[1, :, :] = eofs[1, :, :] * (-1)
+pcs[1, :] = pcs[1, :] * (-1)
+
+# Sum spatial weights over the area used.
+nLon = xw.sizes["lon"]
+
+# Bump the upper value of the slice, so that latitude values equal to latN are included.
+clat_subset = clat.sel(lat=slice(latS, latN + 0.01))
+weightTotal = clat_subset.sum() * nLon
+pcs = pcs / weightTotal
+
+xlim = (-70, 45)
+ylim = (20,80)
+
+pct = eofs.attrs['varianceFraction'].values[0] * 100
+
+iplot = Contour(eofs.sel(eof=0),
+                flevels = np.linspace(-0.08, 0.08, 9, endpoint=True),
+                projection = ccrs.PlateCarree(),
+                w = 6,
+                h = 10.6,
+                subplot = [3,1,1],
+                xlim = xlim,
+                ylim = ylim,
+                xticks=[-60, -30, 0, 30],
+                yticks=[40, 60, 80],
+                ticklabelfontsize = 10,
+                linewidth = 1.5,
+                cmap = gvcmaps.BlWhRe,
+                contour_lines = False,
+                draw_contour_labels = True,
+                cbextend = "both",
+                xlabel = "",
+                ylabel = "",
+                lefttitle=f'EOF {0}',
+                lefttitlefontsize=10,
+                righttitle=f'{pct:.1f}%',
+                righttitlefontsize=10,
+                maintitle = "SLP: DJF: 1979-2003",
+                maintitlefontsize = 14,
+                #add_colorbar=False
                 )
 
-hplot = Contour(V,
-                # X = UX,
-                # Y = UY,
-                ax = gplot.ax,
-                h = 12,
-                w = 12,
-                clevels = 16,
-                xlim=(-90, 90),
-                #ylim=self.ax.get_ylim()[::-1],
-                yscale = "log",
-                xticks=np.linspace(-60, 60, 5),
-                #xticklabels = ['60S', '30S', '0', '30N', '60N'],
-                yticks=U["lev"],
-                linecolor = "blue",
-                contour_fill = False,
-                add_colorbar= False,
-                maintitle="Ensemble Average 1987-89",
-                maintitlefontsize=20,
-                lefttitlefontsize=18,
-                righttitlefontsize=18,
-                xlabel="",
-                )
+for i in range(neof-1):
+    eof_single = eofs.sel(eof=(i+1))
+    pct = eofs.attrs['varianceFraction'].values[i] * 100
+    
+    Contour(eof_single,
+            flevels = np.linspace(-0.08, 0.08, 9, endpoint=True),
+            projection = ccrs.PlateCarree(),
+            w = 6,
+            h = 10.6,
+            ref_fig = iplot,
+            subplot = [3,1,i+2],
+            xlim = xlim,
+            ylim = ylim,
+            xticks=[-60, -30, 0, 30],
+            yticks=[40, 60, 80],
+            ticklabelfontsize = 10,
+            linewidth = 1.5,
+            cmap = gvcmaps.BlWhRe,
+            contour_lines = False,
+            draw_contour_labels = True,
+            cbextend = "both",
+            xlabel = "",
+            ylabel = "",
+            lefttitle=f'EOF {i + 1}',
+            lefttitlefontsize=10,
+            righttitle=f'{pct:.1f}%',
+            righttitlefontsize=10,
+            add_colorbar=False
+            )
+    
+#plt.subplots_adjust(bottom=0.07, top=0.95, hspace=0.15)
 
-gplot.show()
-plt.close()
+iplot.show()
