@@ -169,7 +169,10 @@ class NCL_Plot:
         if kwargs.get('ref_fig') is None:
             self._set_up_fig(w = self.w, h = self.h)
         else:
+            # Assign values so can use the same variables in code while referencing to same object
             self.fig = self.ref_fig.fig
+            self.add_colorbar = self.ref_fig.add_colorbar
+            self.cborientation = self.ref_fig.cborientation
         
         # If there is not reference figure, either get axis from plt.subplot or create axis
         if kwargs.get("ref_fig") is None:
@@ -258,22 +261,102 @@ class NCL_Plot:
 
         if w is None:
             w = self._default_width
+         
+        def generate_gridspec(rows, columns, cborientation, cbshrink):
+            if cbshrink is None:
+                cbshrink=0.75
+            
+            height_list = [1] * rows
+            width_list = [1] * columns
+            
+            if (cborientation == "horizontal") or (cborientation is None):
+                height_list.append(0.1)
+            elif (cborientation == "vertical"):
+                width_list.append(0.1)
+            
             
         # If not a subplot, set up figure with specified width and height
         if self.subplot is None:
             self.fig = plt.figure(figsize=(w, h))
-            
+        
+        
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
             if self.projection is None:
-                self.fig, self.axes = plt.subplots(self.subplot[0], 
-                                                 self.subplot[1],
-                                                 figsize=(w,h))
+                if self.add_colorbar is False:
+                    self.fig, self.axes = plt.subplots(self.subplot[0], 
+                                                     self.subplot[1],
+                                                     figsize=(w,h))
+                else:
+                    if (self.cborientation == "horizontal") or (self.cborientation is None):
+                        # Create list of 1s the same length as the number of rows in the subplot + 0.1 to size the colorbar
+                        gridspec_list = [0] * self.subplot[0]
+                        gridspec_list_2 = [x+1 for x in gridspec_list]
+                        gridspec_list_2.append(0.1)
+                        
+                        # Use list to create gridspec ratio
+                        gridspec = {'height_ratios': gridspec_list_2}
+                        
+                        # Create figure and axes with subplots
+                        self.fig, self.axes = plt.subplots(self.subplot[0]+1, 
+                                                     self.subplot[1],
+                                                     figsize=(w,h),
+                                                     gridspec_kw = gridspec)
+                    elif self.cborientation == "vertical":
+                        # Create list of 1s the same length as the number of columns in the subplot + 0.1 to size the colorbar
+                        gridspec_list = [0] * self.subplot[1]
+                        gridspec_list_2 = [x+1 for x in gridspec_list]
+                        gridspec_list_2.append(0.1)
+                        
+                        # Use list to create gridspec ratio
+                        gridspec = {'width_ratios': gridspec_list_2}
+                        
+                        # Create figure and axes with subplots
+                        self.fig, self.axes = plt.subplots(self.subplot[0]+1, 
+                                                     self.subplot[1],
+                                                     figsize=(w,h),
+                                                     gridspec_kw = gridspec)
+                    else:
+                        raise ValueError("Invalid cborientation. Must be horizontal or vertical")
             else:
-                self.fig, self.axes = plt.subplots(self.subplot[0],
-                                                 self.subplot[1],
-                                                 subplot_kw={"projection": self.projection},
-                                                 figsize=(w,h))
+                if self.add_colorbar is False:
+                    self.fig, self.axes = plt.subplots(self.subplot[0],
+                                                     self.subplot[1],
+                                                     subplot_kw={"projection": self.projection},
+                                                     figsize=(w,h))
+                else:
+                    if (self.cborientation == "horizontal") or (self.cborientation is None):
+                        # Create list of 1s the same length as the number of rows in the subplot + 0.1 to size the colorbar
+                        gridspec_list = [0] * self.subplot[0]
+                        gridspec_list_2 = [x+1 for x in gridspec_list]
+                        gridspec_list_2.append(0.1)
+                        
+                        # Use list to create gridspec ratio
+                        gridspec = {'height_ratios': gridspec_list_2}
+                        
+                        # Create figure and axes with subplots
+                        self.fig, self.axes = plt.subplots(self.subplot[0]+1, 
+                                                     self.subplot[1],
+                                                     figsize=(w,h),
+                                                     gridspec_kw = gridspec,
+                                                     subplot_kw={"projection": self.projection})
+                    elif self.cborientation == "vertical":
+                        # Create list of 1s the same length as the number of columns in the subplot + 0.1 to size the colorbar
+                        gridspec_list = [0] * self.subplot[1]
+                        gridspec_list_2 = [x+1 for x in gridspec_list]
+                        gridspec_list_2.append(0.1)
+                        
+                        # Use list to create gridspec ratio
+                        gridspec = {'width_ratios': gridspec_list_2}
+                        
+                        # Create figure and axes with subplots
+                        self.fig, self.axes = plt.subplots(self.subplot[0]+1, 
+                                                     self.subplot[1],
+                                                     figsize=(w,h),
+                                                     gridspec_kw = gridspec,
+                                                     subplot_kw={"projection": self.projection})
+                    else:
+                        raise ValueError("Invalid cborientation. Must be horizontal or vertical")
 
     def _set_NCL_style(self, ax, ticklabelfontsize=16):
         
@@ -336,13 +419,13 @@ class NCL_Plot:
                                           pad=self.cbpad, 
                                           drawedges=self.cbdrawedges
                                           )
-        # If subplot, specify axis
+        # If subplot, specify caxis as extra subplot added during fig creation
         else:
             self.cbar = self.fig.colorbar(self.mappable, 
-                                          ax = self.ref_fig.axes,
+                                          cax = self.ref_fig.axes[-1],
                                           orientation=self.cborientation, 
                                           shrink=self.cbshrink, 
-                                          pad=self.cbpad, 
+                                          pad= self.cbpad, 
                                           drawedges=self.cbdrawedges
                                           )
             

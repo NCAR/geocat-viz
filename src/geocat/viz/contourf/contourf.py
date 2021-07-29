@@ -278,8 +278,8 @@ class Contour(NCL_Plot):
             (self.subplot is None)) or 
         # If subplot, check if in last position in subplot and that add_colorbar is not False and plot
             ((self.subplot[2] == self.subplot[0]) and 
-             (self.ref_fig.add_colorbar is not False) and 
-             (self.ref_fig.add_colorbar != "off"))):
+             (self.add_colorbar is not False) and 
+             (self.add_colorbar != "off"))):
             
             self._add_colorbar(mappable=self.cf)
             
