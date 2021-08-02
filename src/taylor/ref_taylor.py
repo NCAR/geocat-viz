@@ -19,7 +19,7 @@ class TaylorDiagram(object):
     theta=arccos(correlation).
     """
 
-    def __init__(self, refstd, fig=None, rect=111, label='_', srange=(0, 1.5)):
+    def __init__(self, refstd=1, fig=None, rect=111, label='_', stdrange=(0, 1.6)):
         """Set up Taylor diagram axes, i.e. single quadrant polar plot, using
         `mpl_toolkits.axisartist.floating_axes`.
 
@@ -40,15 +40,19 @@ class TaylorDiagram(object):
 
         tr = PolarAxes.PolarTransform()
 
-        # Correlation labels
-        rlocs = np.concatenate((np.arange(10) / 10., [0.95, 0.99]))
+        # Set correlation labels
+        rlocs = np.concatenate((np.arange(10) / 10., [0.95, 0.99, 1]))
         tlocs = np.arccos(rlocs)  # Conversion to polar angles
         gl1 = gf.FixedLocator(tlocs)  # Positions
         tf1 = gf.DictFormatter(dict(list(zip(tlocs, list(map(str, rlocs))))))
-
+        
+        # Standard devation labels
+        stdlocs = np.arange(0, 1.51, 0.25)
+        gl2 = gf.FixedLocator(stdlocs)
+        
         # Standard deviation axis extent (in units of reference stddev)
-        self.smin = srange[0] * self.refstd
-        self.smax = srange[1] * self.refstd
+        self.smin = stdrange[0]
+        self.smax = stdrange[1]
 
         ghelper = fa.GridHelperCurveLinear(
             tr,
@@ -58,15 +62,17 @@ class TaylorDiagram(object):
                 self.smin,
                 self.smax),
             grid_locator1=gl1,
-            tick_formatter1=tf1)
+            tick_formatter1=tf1,
+            grid_locator2=gl2)
 
         if fig is None:
-            fig = plt.figure()
+            fig = plt.figure(figsize=(8,8))
 
         ax = fa.FloatingSubplot(fig, rect, grid_helper=ghelper)
         fig.add_subplot(ax)
 
         # Adjust axes
+        # Correlation
         ax.axis["top"].set_axis_direction("bottom")  # "Angle axis"
         ax.axis["top"].toggle(ticklabels=True, label=True)
         ax.axis["top"].major_ticklabels.set_axis_direction("top")
@@ -74,10 +80,12 @@ class TaylorDiagram(object):
         ax.axis["top"].label.set_axis_direction("top")
         ax.axis["top"].label.set_text("Correlation")
 
-        ax.axis["left"].set_axis_direction("bottom")  # "X axis"
+        # "X axis"
+        ax.axis["left"].set_axis_direction("bottom")
         ax.axis["left"].label.set_text("")
-
-        ax.axis["right"].set_axis_direction("top")  # "Y axis"
+        
+        # Standard deviation ("Y axis")
+        ax.axis["right"].set_axis_direction("top")
         ax.axis["right"].toggle(ticklabels=True, label=True)
         ax.axis["right"].major_ticklabels.set_axis_direction("left")
         ax.axis["right"].label.set_text("Standard deviation (Normalized)")
@@ -101,6 +109,9 @@ class TaylorDiagram(object):
         t = np.linspace(0, np.pi / 2)
         r = np.zeros_like(t) + self.refstd
         self.ax.plot(t, r, 'k--', label='REF', zorder=1)
+        
+        # Set aspect ratio
+        self.ax.set_aspect(1)
 
         # Collect sample points for latter use (e.g. legend)
         self.samplePoints = [l]
@@ -137,8 +148,7 @@ class TaylorDiagram(object):
         contours = self.ax.contour(ts, rs, rms, levels, **kwargs)
 
         return contours
-
-
+    
 def test1():
     """Display a Taylor diagram in a separate axis."""
 
@@ -242,15 +252,16 @@ def test2():
 
 
 def test3():
+    # p dataset ratios stddev
     p_samp = [[0.60, 0.24, '1'], [0.50, 0.75, '2'], [0.45, 1.00, '3'],
-              [0.75, 0.93, '4'], [1.15, 0.37, '5']]  # p dataset ratios stddev
-
+              [0.75, 0.93, '4'], [1.15, 0.37, '5']]
+    # t data set stddev (REF)
     t_samp = [[0.75, 0.24, '1'], [0.64, 0.75, '2'], [0.40, 0.47, '3'],
-              [0.85, 0.88, '4'], [1.15, 0.73, '5']]  # t data set stddev (REF)
+              [0.85, 0.88, '4'], [1.15, 0.73, '5']]
 
     stdref = 1
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8,8))
 
     dia = TaylorDiagram(stdref, fig=fig, label='REF')
     dia.samplePoints[0].set_color('r')  # Mark reference point as a red star
@@ -284,11 +295,12 @@ def test3():
     # plt.clabel(contours, inline=1, fontsize=10, fmt='%.1f')
 
     # Add a figure legend and title
-    fig.legend(dia.samplePoints, [p.get_label() for p in dia.samplePoints],
-               numpoints=1,
-               prop=dict(size='small'),
-               loc='upper right')
-    fig.suptitle("Taylor diagram", size='x-large')  # Figure title
+    # fig.legend(dia.samplePoints, 
+    #            [p.get_label() for p in dia.samplePoints],
+    #             numpoints=1,
+    #             prop=dict(size='small'),
+    #             loc='upper right')
+    # fig.suptitle("Taylor diagram", size='x-large')  # Figure title
 
     return fig
 
