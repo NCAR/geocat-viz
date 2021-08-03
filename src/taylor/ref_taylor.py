@@ -10,8 +10,6 @@ taylor
 import numpy as np
 import matplotlib.pyplot as plt
 from taylor_statistics import taylor_stats
-import matplotlib.ticker as mticker
-
 
 class TaylorDiagram(object):
     """Taylor diagram.
@@ -113,14 +111,48 @@ class TaylorDiagram(object):
         # Add reference point stddev contour
         t = np.linspace(0, np.pi / 2)
         r = np.zeros_like(t) + self.refstd
-        h, = self.ax.plot(t, r, '--k', zorder=1)
+        h, = self.ax.plot(t, r, 
+                          linewidth=1,
+                          linestyle=(0, (9, 5)),
+                          color='black',
+                          zorder=1)
+        
+        # Store the reference line
+        self.referenceLine = h
 
         # Collect sample points for latter use (e.g. legend)
         self.samplePoints = []
         
         # Set aspect ratio
         self.ax.set_aspect(1)
+        
+    def add_xgrid(self, arr, *args, **kwargs):
+        """Add gridlines (radii) to the Y axis (standard deviation)
+        specified by array *arr*
 
+        *args* and *kwargs* are directly propagated to the
+        `matplotlib.axes.Axes.vlines` command.
+        """
+        for value in arr:                
+            self.ax.vlines([np.arccos(value)], 
+                           ymin=self.smin, ymax=self.smax,
+                           *args, **kwargs)
+        
+    def add_ygrid(self, arr, *args, **kwargs):
+        """Add gridlines (radii) to the Y axis (standard deviation)
+        specified by array *arr*
+
+        *args* and *kwargs* are directly propagated to the
+        `matplotlib.axes.Axes.plot` command.
+        """
+        
+        t = np.linspace(0, np.pi / 2)
+        for value in arr:
+            r = np.zeros_like(t) + value
+            h, = self.ax.plot(t, r,
+                              *args, **kwargs,
+                              zorder=1)
+            
     def add_sample(self, stddev, corrcoef, *args, **kwargs):
         """Add sample (*stddev*,*corrcoeff*) to the Taylor diagram.
 
@@ -136,8 +168,9 @@ class TaylorDiagram(object):
         return l
 
     def add_grid(self, *args, **kwargs):
-        """Add a grid."""
-
+        """Add a grid.
+        
+        """     
         self._ax.grid(*args, **kwargs)
 
     def add_contours(self, levels=5, **kwargs):
@@ -145,20 +178,87 @@ class TaylorDiagram(object):
 
         *levels*.
         
-        *args* and *kwargs* are directly propagated to the
-        `matplotlib.axes.Axes.contour` command.
+        *kwargs* are directly propagated to the `matplotlib.axes.Axes.contour` command.
         """
-
+        # Return coordinate matrices from coordinate vectors
         rs, ts = np.meshgrid(np.linspace(self.smin, self.smax),
                              np.linspace(0, np.pi / 2))
+        
         # Compute centered RMS difference
         rms = np.sqrt(self.refstd**2 + rs**2 -
                       2 * self.refstd * rs * np.cos(ts))
-
+        
+        # Create contour lines
         contours = self.ax.contour(ts, rs, rms, levels, **kwargs)
 
         return contours
+
+
+###############################################################################
+# Testing
+
+#import mpl_toolkits.axisartist.floating_axes as fa
+
+def taylor_2():
+    # p dataset
+    p_samp = [[0.60, 0.24, '1'], [0.50, 0.75, '2'], [0.45, 1.00, '3'],
+              [0.75, 0.93, '4'], [1.15, 0.37, '5']]
+    # t dataset
+    t_samp = [[0.75, 0.24, '1'], [0.64, 0.75, '2'], [0.40, 0.47, '3'],
+              [0.85, 0.88, '4'], [1.15, 0.73, '5']]
+
+    # Create figure and TaylorDiagram instance
+    fig = plt.figure(figsize=(8,8))
+    stdref = 1
+    dia = TaylorDiagram(stdref, fig=fig, label='REF')
+
+    # Add models to Taylor diagram
+    for i, (stddev, corrcoef, name) in enumerate(p_samp):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$\genfrac{}{}{0}{}{%d}{+}$' % (i + 1),
+                       ms=25,
+                       mfc='red',
+                       mec='none',
+                       label=name)
+
+    # Add second model data to Taylor diagram
+    for m, (stddev, corrcoef, name) in enumerate(t_samp):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$\genfrac{}{}{0}{}{%d}{*}$' % (m + 1),
+                       ms=25,
+                       mfc='blue',
+                       mec='none',
+                       label=name)
+        
+    # Add RMS contours, and label them
+    dia.add_contours(levels=np.arange(0, 1.1, 0.25), colors='lightgrey', linewidths=0.5)
     
+    # Add y axis grid
+    dia.add_ygrid(np.array([0.5, 1.5]),
+                  color="lightgray",
+                  linestyle=(0, (9,5)),
+                  linewidth=1)
+    
+    # Add x axis grid
+    dia.add_xgrid(np.array([0.6, 0.9]), 
+                  color='lightgray', linestyle=(0, (9,5)),
+                  lw=0.5)
+    
+    return fig
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################
 def test1():
     """Display a Taylor diagram in a separate axis."""
 
@@ -261,43 +361,10 @@ def test2():
     return fig
 
 
-def taylor_1():
-    # p dataset
-    p_samp = [[0.60, 0.24, '1'], [0.50, 0.75, '2'], [0.45, 1.00, '3'],
-              [0.75, 0.93, '4'], [1.15, 0.37, '5']]
-    # t dataset
-    t_samp = [[0.75, 0.24, '1'], [0.64, 0.75, '2'], [0.40, 0.47, '3'],
-              [0.85, 0.88, '4'], [1.15, 0.73, '5']]
-
-    # Create figure and TaylorDiagram instance
-    fig = plt.figure(figsize=(8,8))
-    stdref = 1
-    dia = TaylorDiagram(stdref, fig=fig, label='REF')
-
-    # Add models to Taylor diagram
-    for i, (stddev, corrcoef, name) in enumerate(p_samp):
-        dia.add_sample(stddev,
-                       corrcoef,
-                       marker='$\genfrac{}{}{0}{}{%d}{+}$' % (i + 1),
-                       ms=20,
-                       mfc='red',
-                       mec='none',
-                       label=name)
-
-    # Add second model data to Taylor diagram
-    for m, (stddev, corrcoef, name) in enumerate(t_samp):
-        dia.add_sample(stddev,
-                       corrcoef,
-                       marker='$\genfrac{}{}{0}{}{%d}{-}$' % (m + 1),
-                       ms=20,
-                       mfc='blue',
-                       mec='none',
-                       label=name)
-    return fig
 
 
 if __name__ == '__main__':
 
-    taylor_1()
+    taylor_2()
 
     plt.show()
