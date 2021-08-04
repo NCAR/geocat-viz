@@ -2,8 +2,15 @@
 # https://matplotlib.org/stable/gallery/axisartist/demo_floating_axes.html#sphx-glr-gallery-axisartist-demo-floating-axes-py
 
 """
-taylor
-==========
+Taylor Diagram
+==============
+Functionality:
+    - The constructor creates the default classic Taylor diagram
+    - add_xgrid adds gridlines to the X axis (standard deviation)
+    - add_ygrid adds gridlines to the Y axis (correlation)
+    - add_sample adds sample models to the diagram
+    - add_grid adds a complete set of gridlines
+    - add_contours adds contour lines to the diagram
 
 """
 
@@ -52,7 +59,7 @@ class TaylorDiagram(object):
         stdlocs = np.arange(0, 1.51, 0.25)
         gl2 = gf.FixedLocator(stdlocs)
         format_string = list(map(str, stdlocs))
-        index = np.where(stdlocs == refstd)[0][0]
+        index = np.where(stdlocs == self.refstd)[0][0]
         format_string[index] = 'REF'
         tf2 = gf.DictFormatter(dict(list(zip(stdlocs, format_string))))
         
@@ -127,7 +134,7 @@ class TaylorDiagram(object):
         self.ax.set_aspect(1)
         
     def add_xgrid(self, arr, *args, **kwargs):
-        """Add gridlines (radii) to the Y axis (standard deviation)
+        """Add gridlines (radii) to the X axis (standard deviation)
         specified by array *arr*
 
         *args* and *kwargs* are directly propagated to the
@@ -197,8 +204,61 @@ class TaylorDiagram(object):
 ###############################################################################
 # Testing
 
-#import mpl_toolkits.axisartist.floating_axes as fa
+def taylor_3():
+    # Case A
+    CA_ratio= [1.230, 0.988, 1.092, 1.172, 1.064, 0.966, 1.079, 0.781]
+    CA_cc = [0.958, 0.973, 0.740, 0.743, 0.922, 0.982, 0.952, 0.433]
 
+    # Case B
+    CB_ratio = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962, 1.048, 0.852]
+    CB_cc = [0.963, 0.975, 0.801, 0.814, 0.946, 0.984, 0.968, 0.647]
+
+    # Create figure and TaylorDiagram instance
+    fig = plt.figure(figsize=(8,8))
+    stdref = 1
+    dia = TaylorDiagram(stdref, fig=fig, label='REF')
+
+    # Add models to Taylor diagram
+    for i, (stddev, corrcoef, name) in zip(CA_ratio, CA_cc):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$\genfrac{}{}{0}{}{%d}{+}$' % (i + 1),
+                       ms=25,
+                       mfc='red',
+                       mec='none',
+                       label=name)
+
+    # Add second model data to Taylor diagram
+    for m, (stddev, corrcoef, name) in enumerate(t_samp):
+        dia.add_sample(stddev,
+                       corrcoef,
+                       marker='$\genfrac{}{}{0}{}{%d}{*}$' % (m + 1),
+                       ms=25,
+                       mfc='blue',
+                       mec='none',
+                       label=name)
+        
+    # Add RMS contours, and label them
+    dia.add_contours(levels=np.arange(0, 1.1, 0.25), colors='lightgrey', linewidths=0.5)
+    
+    # Add y axis grid
+    dia.add_ygrid(np.array([0.5, 1.5]),
+                  color="lightgray",
+                  linestyle=(0, (9,5)),
+                  linewidth=1)
+    
+    # Add x axis grid
+    dia.add_xgrid(np.array([0.6, 0.9]), 
+                  color='lightgray', linestyle=(0, (9,5)),
+                  lw=0.5)
+    
+    return fig
+
+
+
+
+
+###############################################################################
 def taylor_2():
     # p dataset
     p_samp = [[0.60, 0.24, '1'], [0.50, 0.75, '2'], [0.45, 1.00, '3'],
@@ -352,7 +412,8 @@ def test2():
     plt.clabel(contours, inline=1, fontsize=10, fmt='%.1f')
 
     # Add a figure legend and title
-    fig.legend(dia.samplePoints, [p.get_label() for p in dia.samplePoints],
+    fig.legend(dia.samplePoints, 
+               [p.get_label() for p in dia.samplePoints],
                numpoints=1,
                prop=dict(size='small'),
                loc='upper right')
@@ -365,6 +426,6 @@ def test2():
 
 if __name__ == '__main__':
 
-    taylor_2()
+    test2()
 
     plt.show()
