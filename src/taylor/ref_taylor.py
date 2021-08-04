@@ -171,6 +171,15 @@ class TaylorDiagram(object):
                           *args,
                           **kwargs)
         self.samplePoints.append(l)
+        
+        index = 0
+        
+        # Annotate model markers
+        for x, y in zip(stddev, corrcoef):
+            text = '1'
+            self.ax.annotate(text, (np.arccos(y), x), 
+                             textcoords="offset points",
+                             xytext=(0,10))
 
         return l
 
@@ -212,46 +221,31 @@ def taylor_3():
     # Case B
     CB_ratio = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962, 1.048, 0.852]
     CB_cc = [0.963, 0.975, 0.801, 0.814, 0.946, 0.984, 0.968, 0.647]
+    
+    # Create label list
+    npts = len(CA_ratio)
+    label = list(map(str, range(1, npts+1)))
 
     # Create figure and TaylorDiagram instance
     fig = plt.figure(figsize=(8,8))
     stdref = 1
     dia = TaylorDiagram(stdref, fig=fig, label='REF')
 
-    # Add models to Taylor diagram
-    for i, (stddev, corrcoef, name) in zip(CA_ratio, CA_cc):
-        dia.add_sample(stddev,
-                       corrcoef,
-                       marker='$\genfrac{}{}{0}{}{%d}{+}$' % (i + 1),
-                       ms=25,
-                       mfc='red',
-                       mec='none',
-                       label=name)
+    # Add models to Taylor diagram  
+    dia.add_sample(CB_ratio, CB_cc, color='blue', marker='o',
+           linestyle='none', label='case B')
+    
+    dia.add_sample(CA_ratio, CA_cc, color='red', marker='o',
+                   linestyle='none', label='case A')
 
-    # Add second model data to Taylor diagram
-    for m, (stddev, corrcoef, name) in enumerate(t_samp):
-        dia.add_sample(stddev,
-                       corrcoef,
-                       marker='$\genfrac{}{}{0}{}{%d}{*}$' % (m + 1),
-                       ms=25,
-                       mfc='blue',
-                       mec='none',
-                       label=name)
+    # Add figure legend
+    fig.legend(handles=dia.samplePoints, 
+               labels=[p.get_label() for p in dia.samplePoints],
+               loc='upper right',
+               bbox_to_anchor=(0.95,0.85),
+               fontsize=14,
+               frameon=False)
         
-    # Add RMS contours, and label them
-    dia.add_contours(levels=np.arange(0, 1.1, 0.25), colors='lightgrey', linewidths=0.5)
-    
-    # Add y axis grid
-    dia.add_ygrid(np.array([0.5, 1.5]),
-                  color="lightgray",
-                  linestyle=(0, (9,5)),
-                  linewidth=1)
-    
-    # Add x axis grid
-    dia.add_xgrid(np.array([0.6, 0.9]), 
-                  color='lightgray', linestyle=(0, (9,5)),
-                  lw=0.5)
-    
     return fig
 
 
@@ -426,6 +420,6 @@ def test2():
 
 if __name__ == '__main__':
 
-    test2()
+    taylor_3()
 
     plt.show()
