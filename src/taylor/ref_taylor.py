@@ -329,14 +329,16 @@ def taylor_6():
         
         # Add models case by case
         for j in range(stddev.shape[0]-1, -1, -1):
-            da.add_sample(stddev[j], corrcoef[j], color=colors[j],
-                          label=labels[j], marker='o', linestyle='none')
+            da.add_sample(stddev[j], corrcoef[j], xytext=(-4,5), fontsize=10, color=colors[j],
+                          label=labels[j], marker='o', markersize=5, linestyle='none')
         # Add legend
         da.add_legend(1.1, 1.05, fontsize=9)
         # Set fontsize and pad
         da.set_fontsizes_and_pad(11, 13, 2)
         # Add title
         da.add_title(maintitles[i], 14, 1.05)
+        # Add model names
+        da.add_model_name(namearr, x_loc=0.08, y_loc=0.4, fontsize=8)
     
     return fig
         
