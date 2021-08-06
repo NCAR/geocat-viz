@@ -6,7 +6,6 @@ Taylor Diagram
 ==============
 Functionality:
     - The constructor creates the default classic Taylor diagram
-    - get_axes returns the getter for the axes
     - add_sample adds sample models to the diagram
     - add_xgrid adds gridlines to the X axis (standard deviation)
     - add_ygrid adds gridlines to the Y axis (correlation)
@@ -147,23 +146,35 @@ class TaylorDiagram(object):
         
     ### Create instance methods
         
-    def get_axes(self):
-        ''' Getter for the axes'''
-        
-        return self.ax
-        
     def add_sample(self, stddev, corrcoef,
                    fontsize=14, xytext=(-5,7), annotate_on=True, 
                    *args, **kwargs):
-        """Add sample (*stddev*,*corrcoeff*) to the Taylor diagram.
+        """Add a model set (*stddev*,*corrcoeff*) to the Taylor diagram. NCL-style model markers and labels are
+        achieved through Matplotlib markers and annotations. *xytext* argument can be used to adjust the 
+        positioning of the label relative to the markers if *annotate_on* argument is set to True.
         
-        *fontsize* and *xytext* are arguments supplied to 
-        `matplotlib.axes.Axes.annotate` command.
+        Parameters
+        ----------
+        stddev : array-like, list, float
+            An array of vertical coordinates of the data points that denote the standard deviation
+        corrcoef : array-like, list, float
+            An array of horizontal coordinates of the data points that denote correlation
+        fontsize : float, default to 14
+            Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command
+        xytext : (float, float), default to (-5,7)
+            The position (x, y) to place the marker label at. The coordinate system is set to pixels.
+            This argument is supplied to `matplotlib.axes.Axes.annotate` command.
+        annotate_on : boolean, default to True
+            Determine whether model labels are added    
+        args and kwargs are directly propagated to the `matplotlib.axes.Axes.plot` command.
         
-        *args* and *kwargs* are directly propagated to the
-        `matplotlib.axes.Axes.plot` command.
+        
+        Returns
+        -------
+        modelset : list of Line2D
+            A list of lines representing the plotted data.
         """
-        # Add model markers
+        # Add a set of model markers
         modelset, = self.ax.plot(np.arccos(corrcoef), # theta
                           stddev, # radius
                           *args,
@@ -185,45 +196,91 @@ class TaylorDiagram(object):
                                  xytext=xytext)
         return modelset
         
-    def add_xgrid(self, arr, *args, **kwargs):
-        """Add gridlines (radii) to the X axis (standard deviation)
+    def add_xgrid(self, arr, color='lightgray', linestyle=(0, (9,5)),
+                  linewidth=0.5, **kwargs):
+        """Add gridlines to the X axis (correlation)
         specified by array *arr*
-
-        *args* and *kwargs* are directly propagated to the
-        `matplotlib.axes.Axes.vlines` command.
+        
+        Parameters
+        ----------
+        arr : array-like, list, float
+            An array of horizontal coordinates of the data points that denote correlation 
+        color : str, default to "lightgray"
+            Color of the gridline
+        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
+            See matplotlib Linestyle examples
+        linewidth : float, default to 0.5
+            Set the line width in points
+        kwargs are directly propagated to the `matplotlib.axes.Axes.vlines` command.
+        
+        Returns
+        -------
+        None
+        
         """
+        
         for value in arr:                
             self.ax.vlines([np.arccos(value)], 
                            ymin=self.smin, ymax=self.smax,
-                           *args, **kwargs)
+                           color=color, linestyle=linestyle,
+                           linewidth=linewidth, **kwargs)
         
-    def add_ygrid(self, arr, *args, **kwargs):
+    def add_ygrid(self, arr, color='lightgray', linestyle=(0, (9,5)),
+                  linewidth=1, **kwargs):
         """Add gridlines (radii) to the Y axis (standard deviation)
         specified by array *arr*
-
-        *args* and *kwargs* are directly propagated to the
-        `matplotlib.axes.Axes.plot` command.
-        """
         
+        Parameters
+        ----------
+        arr : array-like, list, float
+            An array of vertical coordinates of the data points that denote standard deviation
+        color : str, default to "lightgray"
+            Color of the gridline
+        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
+            See matplotlib Linestyle examples
+        linewidth : float, default to 1
+            Set the line width in points
+        *kwargs* are directly propagated to the `matplotlib.axes.Axes.plot` command.
+        
+        Returns
+        -------
+        None
+        
+        """
         t = np.linspace(0, np.pi / 2)
         for value in arr:
             r = np.zeros_like(t) + value
-            h, = self.ax.plot(t, r,
-                              *args, **kwargs,
-                              zorder=1)
+            h, = self.ax.plot(t, r, color=color, linestyle=linestyle,
+                              linewidth=linewidth, **kwargs)
 
     def add_grid(self, *args, **kwargs):
-        """Add a grid.
+        """Add a grid
+        
+        Parameters
+        ----------
+        *args* and *kwargs* are propagated to `matplotlib.axes.Axes.grid`
+        
+        Returns
+        -------
+        None
         
         """     
         self._ax.grid(*args, **kwargs)
 
     def add_contours(self, levels=5, **kwargs):
-        """Add constant centered RMS difference contours, defined by.
-
-        *levels*.
+        """Add constant centered RMS difference contours, defined by *levels*.
         
-        *kwargs* are directly propagated to the `matplotlib.axes.Axes.contour` command.
+        Parameters
+        ----------
+        levels : int or array-like, default to 5
+            Determines the number and positions of the contour lines / regions
+            
+        *args* and *kwargs* are propagated to `matplotlib.axes.Axes.contour`
+        
+        Returns
+        -------
+        QuadContourSet
+
         """
         # Return coordinate matrices from coordinate vectors
         rs, ts = np.meshgrid(np.linspace(self.smin, self.smax),
@@ -243,11 +300,25 @@ class TaylorDiagram(object):
                        **kwargs):
         """Add texts of model names
         
-        The coordinate system of the Axes(transAxes) is used for more intuitive positioning
-        (x_loc=0, y_loc=0) is bottom left of the axes, 
-        and (x_loc=1, y_loc=1) is top right of the axes.
+        The coordinate system of the Axes(transAxes) is used for more intuitive positioning of the texts.
+        (x_loc=0, y_loc=0) is bottom left of the axes, and (x_loc=1, y_loc=1) is top right of the axes.
         
-        *kwargs* are directly propagated to the `matplotlib.axes.Axes.text` command.
+        Parameters
+        ----------
+        namearr : array-like
+            List of model names
+        x_loc, y_loc : float,  default to 0.1, 0.31
+            Text position
+        verticalalignment : str, default to 'top'
+            Vertical alignment. Options: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+        fontsize : float, default to 13
+            Text fontsize
+        *kwargs* are directly propagated to the `matplotlib.axes.Axes.text` command
+        
+        Return
+        ------
+        None
+        
         """
         text = [str(i+1)+' - '+namearr[i] for i in range(len(namearr))]
         text = '\n'.join(text)
@@ -260,6 +331,23 @@ class TaylorDiagram(object):
     def add_legend(self, xloc=1.1, yloc=0.95, loc="upper right",
                    fontsize=14, **kwargs):
         """Add a figure legend
+        
+        The coordinate system is Axes(transAxes).
+        (x_loc=0, y_loc=0) is bottom left of the axes, and (x_loc=1, y_loc=1) is top right of the axes.
+        
+        Parameters
+        ----------
+        x_loc, y_loc : float,  default to 1.1, 0.95
+            Legend position. Supplied to argument bbox_to_anchor().
+        loc : str, default to 'upper right'
+            See Matplotlib legend documentations
+        fontsize : float, default to 14
+            Text fontsize
+        *kwargs* are directly propagated to the `matplotlib.axes.Axes.legend` command
+        
+        Return
+        ------
+        None
 
         *kwargs* are directly propagated to the `matplotlib.pyplot.legend` command.
         """
@@ -277,23 +365,50 @@ class TaylorDiagram(object):
     def add_title(self, maintitle, fontsize=18, y_loc=None,
                   **kwargs):
         """Add a main title
+        
+        Parameters
+        ----------
+        maintitle : str
+            Title text
+        fontsize : float
+            Text fontsize
+        y_loc : float, default to None
+            Vertical Axes location. 1.0 is the top.
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.set_title` command.
+        
+        Return
+        ------
+        None
+        
         """
         
         self._ax.set_title(maintitle, fontsize=fontsize,
                            y=y_loc, **kwargs)
         
     def set_fontsizes_and_pad(self, ticklabel_fontsize=14,
-                           title_fontsize=16, pad=8):
-        """Reset ticklabel and title fontsizes, and ticklabel padding
+                           axislabel_fontsize=16, axislabel_pad=8):
+        """Reset ticklabel and axis label fontsizes, and axis label padding
+        
+        Parameters
+        ----------
+        ticklabel_fontsize : float, default to 14
+            Fontsize of all tick labels
+        axislabel_fontsize : float, default to 16
+            Fontsize of axis labels
+        axislabel_pad : float, default to 8
+            Padding between axis labels and axis
+        
+        Return
+        ------
+        None
+        
         """
         self._ax.axis['top', 'right', 'left'].major_ticklabels.set_fontsize(ticklabel_fontsize)
-        self._ax.axis['top', 'right'].label.set_fontsize(title_fontsize)
-        self._ax.axis['top', 'right'].label.set_pad(pad)
+        self._ax.axis['top', 'right'].label.set_fontsize(axislabel_fontsize)
+        self._ax.axis['top', 'right'].label.set_pad(axislabel_pad)
 
         
-
 
 ###############################################################################
 # NCL taylor plots
@@ -409,15 +524,10 @@ def taylor_2():
     dia.add_contours(levels=np.arange(0, 1.1, 0.25), colors='lightgrey', linewidths=0.5)
     
     # Add y axis grid
-    dia.add_ygrid(np.array([0.5, 1.5]),
-                  color="lightgray",
-                  linestyle=(0, (9,5)),
-                  linewidth=1)
+    dia.add_ygrid(np.array([0.5, 1.5]))
     
     # Add x axis grid
-    dia.add_xgrid(np.array([0.6, 0.9]), 
-                  color='lightgray', linestyle=(0, (9,5)),
-                  lw=0.5)
+    dia.add_xgrid(np.array([0.6, 0.9]))
     
     # Add figure title
     fig.suptitle("Example", size=24)
@@ -565,6 +675,6 @@ def test2():
 
 if __name__ == '__main__':
 
-    taylor_6()
+    taylor_2()
 
     plt.show()
