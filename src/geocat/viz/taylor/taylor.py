@@ -30,13 +30,26 @@ class TaylorDiagram(object):
         """Set up Taylor diagram axes, i.e. single quadrant polar plot, using
         `mpl_toolkits.axisartist.floating_axes`.
 
-        Parameters:
+        Parameters
+        ----------
 
-        * refstd: reference standard deviation to be compared to
-        * fig: input Figure or None
-        * rect: subplot definition
-        * label: reference label
-        * srange: stddev axis extension, in units of *refstd*
+        refstd : float
+            reference standard deviation
+
+        fig : matplotlib.figure.Figure, Optional
+            Optional input figure. Default is None
+
+        rect : int, Optional
+            Optional subplot definition
+
+        label : string, Optional
+            Optional reference label string indentifier
+
+        stdrange : Tuple, Optional
+            Optional stddev axis range
+
+        stdlevel : list, Optional
+            Optional list of tick locations for stddev axis
         """
 
         from matplotlib.projections import PolarAxes
