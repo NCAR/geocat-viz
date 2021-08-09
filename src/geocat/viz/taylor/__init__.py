@@ -1,1 +1,1 @@
-from taylor import *
+from .taylor import *
