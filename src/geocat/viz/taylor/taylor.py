@@ -27,8 +27,7 @@ class TaylorDiagram(object):
                  label='REF',
                  stdrange=(0, 1.6),
                  stdlevel=np.arange(0, 1.51, 0.25)):
-        """Set up Taylor diagram axes, i.e. single quadrant polar plot, using
-        `mpl_toolkits.axisartist.floating_axes`.
+        """Create base Taylor Diagram.
 
         Parameters
         ----------
@@ -46,7 +45,7 @@ class TaylorDiagram(object):
             Optional reference label string indentifier
 
         stdrange : Tuple, Optional
-            Optional stddev axis range
+            Optional stddev axis extent
 
         stdlevel : list, Optional
             Optional list of tick locations for stddev axis
@@ -56,14 +55,16 @@ class TaylorDiagram(object):
         import mpl_toolkits.axisartist.floating_axes as fa
         import mpl_toolkits.axisartist.grid_finder as gf
 
-        ### Extract instance variables
+        # Pull and set optional constructor variables
         # Set figure
         if fig is None:
             fig = plt.figure(figsize=(8, 8))
         else:
             self.fig = fig
+
         # Reference standard deviation
         self.refstd = refstd
+
         # Standard deviation axis extent (in units of reference stddev)
         self.smin = stdrange[0]
         self.smax = stdrange[1]
@@ -77,20 +78,21 @@ class TaylorDiagram(object):
         gl1 = gf.FixedLocator(tlocs)  # Positions
         tf1 = gf.DictFormatter(dict(list(zip(tlocs, list(map(str, rlocs))))))
 
-        # Set standard devation labels
+        # Set standard deviation labels
         gl2 = gf.FixedLocator(stdlevel)
+
         # format each label with 2 decimal places
         format_string = list(map(lambda x: "{0:0.2f}".format(x), stdlevel))
         index = np.where(stdlevel == self.refstd)[0][0]
         format_string[index] = label
         tf2 = gf.DictFormatter(dict(list(zip(stdlevel, format_string))))
 
-        # Use customized gridhelper to define a curvilinear coordinate
+        # Use customized GridHelperCurveLinear to define curved axis
         ghelper = fa.GridHelperCurveLinear(
             tr,
             extremes=(
                 0,
-                np.pi / 2,  # 1st quadrant
+                np.pi / 2,  # 1st quadrant only
                 self.smin,
                 self.smax),
             grid_locator1=gl1,
@@ -99,8 +101,6 @@ class TaylorDiagram(object):
             tick_formatter2=tf2)
 
         # Create graphical axes
-        # Note: for Matplotlib > 3.4.0, this is achieved through:
-        # ax = fig.add_subplot(rect, axes_class=fa.FloatingSubplot, grid_helper=ghelper)
         ax = fa.FloatingSubplot(fig, rect, grid_helper=ghelper)
         fig.add_subplot(ax)
 
@@ -120,7 +120,7 @@ class TaylorDiagram(object):
         ax.axis["right"].major_ticklabels.set_axis_direction("left")
         ax.axis["right"].label.set_text("Standard deviation (Normalized)")
 
-        # Set fonsizes, ticksizes and padding
+        # Set font sizes, tick sizes, and padding
         ax.axis['top', 'right'].label.set_fontsize(18)
         ax.axis['top', 'right', 'left'].major_ticklabels.set_fontsize(16)
         ax.axis['top', 'right', 'left'].major_ticks.set_ticksize(10)
@@ -151,8 +151,6 @@ class TaylorDiagram(object):
 
         # Set aspect ratio
         self.ax.set_aspect(1)
-
-    ### Create instance methods
 
     def add_sample(self,
                    stddev,
@@ -622,6 +620,6 @@ def taylor_2():
 
 if __name__ == '__main__':
 
-    taylor_6()
+    taylor_2()
 
     plt.show()
