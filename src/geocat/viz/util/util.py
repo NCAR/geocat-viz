@@ -1,11 +1,11 @@
 def set_tick_orientation_visibility(ax,
-                                    tick_mark_direction='out',
+                                    tickmark_direction='out',
                                     top_spine_visible=True,
                                     bottom_spine_visible=True,
                                     left_spine_visible=True,
                                     right_spine_visible=True):
     """
-    Utility function to make plots look like NCL plots by using latitude, longitude tick labels
+    Utility function to turn off axes spines and set tickmark orientations
 
     Args:
 
@@ -29,7 +29,7 @@ def set_tick_orientation_visibility(ax,
         right_spine_visible (:class:`bool`):
             Set False to turn off right spine.
     """
-    ax.tick_params(direction=tick_mark_direction, axis='both', which='both')
+    ax.tick_params(direction=tickmark_direction, axis='both', which='both')
     ax.spines['top'].set_visible(top_spine_visible)
     ax.spines['bottom'].set_visible(bottom_spine_visible)
     ax.spines['left'].set_visible(left_spine_visible)
