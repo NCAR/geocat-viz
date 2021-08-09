@@ -31,23 +31,22 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
-        refstd : float
+        refstd : float, optional
             reference standard deviation
 
-        fig : matplotlib.figure.Figure, Optional
+        fig : matplotlib.figure.Figure, optional
             Optional input figure. Default is None
 
-        rect : int, Optional
+        rect : int, optional
             Optional subplot definition
 
-        label : string, Optional
+        label : string, optional
             Optional reference label string indentifier
 
-        stdrange : Tuple, Optional
+        stdrange : Tuple, optional
             Optional stddev axis extent
 
-        stdlevel : list, Optional
+        stdlevel : list, optional
             Optional list of tick locations for stddev axis
         """
 
@@ -174,14 +173,14 @@ class TaylorDiagram(object):
         corrcoef : array-like, list, float
             An array of horizontal coordinates of the data points that denote correlation
 
-        fontsize : float, default to 14
+        fontsize : float, optional, default to 14
             Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command
 
-        xytext : (float, float), default to (-5,7)
+        xytext : (float, float), optional, default to (-5,7)
             The position (x, y) to place the marker label at. The coordinate system is set to pixels.
             This argument is supplied to `matplotlib.axes.Axes.annotate` command.
 
-        annotate_on : boolean, default to True
+        annotate_on : boolean, optional, default to True
             Determine whether model labels are added
 
         args and kwargs are directly propagated to the `matplotlib.axes.Axes.plot` command.
@@ -226,17 +225,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
         arr : array-like, list, float
             An array of horizontal coordinates of the data points that denote correlation
 
-        color : str, default to "lightgray"
+        color : str, optional, default to "lightgray"
             Color of the gridline
 
-        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
+        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, optional, default to (0, (9,5))
             See matplotlib Linestyle examples
 
-        linewidth : float, default to 0.5
+        linewidth : float, optional, default to 0.5
             Set the line width in points
 
         kwargs are directly propagated to the `matplotlib.axes.Axes.vlines` command.
@@ -266,17 +264,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
         arr : array-like, list, float
             An array of vertical coordinates of the data points that denote standard deviation
 
-        color : str, default to "lightgray"
+        color : str, optional, default to "lightgray"
             Color of the gridline
 
-        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
+        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, optional, default to (0, (9,5))
             See matplotlib Linestyle examples
 
-        linewidth : float, default to 1
+        linewidth : float, optional, default to 1
             Set the line width in points
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.plot` command.
@@ -302,10 +299,6 @@ class TaylorDiagram(object):
         ----------
 
         *args* and *kwargs* are propagated to `matplotlib.axes.Axes.grid`
-
-        Returns
-        -------
-        None
         """
         self._ax.grid(*args, **kwargs)
 
@@ -314,8 +307,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
-        levels : int or array-like, default to 5
+        levels : int or array-like, optional, default to 5
             Determines the number and positions of the contour lines
 
         *args* and *kwargs* are propagated to `matplotlib.axes.Axes.contour`
@@ -351,17 +343,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
         namearr : array-like
             List of model names
 
-        x_loc, y_loc : float,  default to 0.1, 0.31
-            Text position
+        x_loc : float, optional, default to 0.1
+            x component of text position
 
-        verticalalignment : str, default to 'top'
+        y_loc : float, optional, default to 0.31
+            y component of text position
+
+        verticalalignment : str, optional, default to 'top'
             Vertical alignment. Options: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
 
-        fontsize : float, default to 13
+        fontsize : float, optional, default to 13
             Text fontsize
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.text` command
@@ -394,17 +388,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
-        xloc : float
+        xloc : float, optional, default to 1.1
             x location of legend position, supplied to bbox_to_anchor()
 
-        yloc : float, optional, default to 1.1, 0.95
+        yloc : float, optional, default to 0.95
             y location of legend position, upplied to bbox_to_anchor().
 
         loc : str, optional, default to 'upper right'
             See Matplotlib legend documentations
 
-        fontsize : float, default to 14
+        fontsize : float, optional, default to 14
             Text fontsize
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.legend` command
@@ -415,6 +408,7 @@ class TaylorDiagram(object):
 
         *kwargs* are directly propagated to the `matplotlib.pyplot.legend` command.
         """
+
         if kwargs.get('handles') is None:
             handles = self.modelList
         if kwargs.get('labels') is None:
@@ -435,10 +429,10 @@ class TaylorDiagram(object):
         maintitle : str
             Title text
 
-        fontsize : float
+        fontsize : float, optional
             Text fontsize
 
-        y_loc : float, default to None
+        y_loc : float, optional, default to None
             Vertical Axes location. 1.0 is the top.
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.set_title` command.
@@ -458,17 +452,20 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        ticklabel_fontsize : float, default to 14
+        ticklabel_fontsize : float, optional, default to 14
             Fontsize of all tick labels
-        axislabel_fontsize : float, default to 16
+
+        axislabel_fontsize : float, optional, default to 16
             Fontsize of axis labels
-        axislabel_pad : float, default to 8
+
+        axislabel_pad : float, optional, default to 8
             Padding between axis labels and axis
 
         Return
         ------
         None
         """
+
         self._ax.axis['top', 'right',
                       'left'].major_ticklabels.set_fontsize(ticklabel_fontsize)
         self._ax.axis['top', 'right'].label.set_fontsize(axislabel_fontsize)
