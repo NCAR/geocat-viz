@@ -54,38 +54,6 @@ def add_right_hand_axis(ax,
     return axRHS
 
 
-def set_lat_lon_gridlines(ax,
-                          zero_direction_label=False,
-                          dateline_direction_label=False):
-    """
-    Utility function that adds latitude and longtitude gridlines to the plot.
-
-    Args:
-
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
-
-        zero_direction_label (:class:`bool`):
-            Set True to get 0 E / O W or False to get 0 only.
-
-        dateline_direction_label (:class:`bool`):
-            Set True to get 180 E / 180 W or False to get 180 only.
-    """
-    import numpy as np
-    import cartopy.crs as ccrs
-    import matplotlib.ticker as mticker
-
-    gl = ax.gridlines(crs=ccrs.PlateCarree(),
-                      linewidth=1,
-                      color='black',
-                      alpha=0.5)
-
-    gl.xlocator = mticker.FixedLocator(np.arange(-180, 181, 30))
-    gl.ylocator = mticker.FixedLocator(np.arange(-90, 91, 30))
-
-    return gl
-
-
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
