@@ -1,9 +1,9 @@
-def set_tick_orientation_visibility(ax,
-                                    tickmark_direction='out',
-                                    top_spine_visible=True,
-                                    bottom_spine_visible=True,
-                                    left_spine_visible=True,
-                                    right_spine_visible=True):
+def set_tick_direction_spine_visibility(ax,
+                                        tickmark_direction='out',
+                                        top_spine_visible=True,
+                                        bottom_spine_visible=True,
+                                        left_spine_visible=True,
+                                        right_spine_visible=True):
     """
     Utility function to turn off axes spines and set tickmark orientations
 
