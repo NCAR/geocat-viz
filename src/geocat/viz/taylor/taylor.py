@@ -160,7 +160,7 @@ class TaylorDiagram(object):
                    annotate_on=True,
                    *args,
                    **kwargs):
-        """Add a model set (*stddev*,*corrcoeff*) to the Taylor diagram. NCL-
+        """Add a model set (*stddev*, *corrcoeff*) to the Taylor diagram. NCL-
         style model markers and labels are achieved through Matplotlib markers
         and annotations. *xytext* argument can be used to adjust the
         positioning of the label relative to the markers if *annotate_on*
@@ -170,15 +170,20 @@ class TaylorDiagram(object):
         ----------
         stddev : array-like, list, float
             An array of vertical coordinates of the data points that denote the standard deviation
+
         corrcoef : array-like, list, float
             An array of horizontal coordinates of the data points that denote correlation
+
         fontsize : float, default to 14
             Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command
+
         xytext : (float, float), default to (-5,7)
             The position (x, y) to place the marker label at. The coordinate system is set to pixels.
             This argument is supplied to `matplotlib.axes.Axes.annotate` command.
+
         annotate_on : boolean, default to True
             Determine whether model labels are added
+
         args and kwargs are directly propagated to the `matplotlib.axes.Axes.plot` command.
 
 
@@ -187,6 +192,7 @@ class TaylorDiagram(object):
         modelset : list of Line2D
             A list of lines representing the plotted data.
         """
+
         # Add a set of model markers
         modelset, = self.ax.plot(
             np.arccos(corrcoef),  # theta
@@ -220,14 +226,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
+
         arr : array-like, list, float
             An array of horizontal coordinates of the data points that denote correlation
+
         color : str, default to "lightgray"
             Color of the gridline
+
         linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
             See matplotlib Linestyle examples
+
         linewidth : float, default to 0.5
             Set the line width in points
+
         kwargs are directly propagated to the `matplotlib.axes.Axes.vlines` command.
 
         Returns
@@ -255,14 +266,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
+
         arr : array-like, list, float
             An array of vertical coordinates of the data points that denote standard deviation
+
         color : str, default to "lightgray"
             Color of the gridline
+
         linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}, default to (0, (9,5))
             See matplotlib Linestyle examples
+
         linewidth : float, default to 1
             Set the line width in points
+
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.plot` command.
 
         Returns
@@ -284,6 +300,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
+
         *args* and *kwargs* are propagated to `matplotlib.axes.Axes.grid`
 
         Returns
@@ -293,12 +310,13 @@ class TaylorDiagram(object):
         self._ax.grid(*args, **kwargs)
 
     def add_contours(self, levels=5, **kwargs):
-        """Add constant centered RMS difference contours, defined by *levels*.
+        """Add constant centered RMS difference contours.
 
         Parameters
         ----------
+
         levels : int or array-like, default to 5
-            Determines the number and positions of the contour lines / regions
+            Determines the number and positions of the contour lines
 
         *args* and *kwargs* are propagated to `matplotlib.axes.Axes.contour`
 
@@ -333,14 +351,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
+
         namearr : array-like
             List of model names
+
         x_loc, y_loc : float,  default to 0.1, 0.31
             Text position
+
         verticalalignment : str, default to 'top'
             Vertical alignment. Options: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+
         fontsize : float, default to 13
             Text fontsize
+
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.text` command
 
         Return
@@ -371,12 +394,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        x_loc, y_loc : float,  default to 1.1, 0.95
-            Legend position. Supplied to argument bbox_to_anchor().
-        loc : str, default to 'upper right'
+
+        xloc : float
+            x location of legend position, supplied to bbox_to_anchor()
+
+        yloc : float, optional, default to 1.1, 0.95
+            y location of legend position, upplied to bbox_to_anchor().
+
+        loc : str, optional, default to 'upper right'
             See Matplotlib legend documentations
+
         fontsize : float, default to 14
             Text fontsize
+
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.legend` command
 
         Return
@@ -385,9 +415,9 @@ class TaylorDiagram(object):
 
         *kwargs* are directly propagated to the `matplotlib.pyplot.legend` command.
         """
-        if kwargs.get('handles') == None:
+        if kwargs.get('handles') is None:
             handles = self.modelList
-        if kwargs.get('labels') == None:
+        if kwargs.get('labels') is None:
             labels = [p.get_label() for p in self.modelList]
 
         self.ax.legend(handles,
@@ -404,8 +434,10 @@ class TaylorDiagram(object):
         ----------
         maintitle : str
             Title text
+
         fontsize : float
             Text fontsize
+
         y_loc : float, default to None
             Vertical Axes location. 1.0 is the top.
 
@@ -461,7 +493,7 @@ def taylor_6():
     casearr = ["Case A", "Case B", "Case C", "Case D", "Case E"]
     nCase = len(casearr)
 
-    # Create lists of colors, labels, and maintitles
+    # Create lists of colors, labels, and main titles
     colors = ["red", "blue", "green", "magenta", "orange"]
     labels = ["Case A", "Case B", "Case C", "Case D", "Case E"]
     maintitles = ["DJF", "JJA", "MAM", "SON"]
@@ -598,7 +630,7 @@ def taylor_2():
     #           [0.85, 0.88, '4'], [1.15, 0.73, '5']]
 
     # Add models to Taylor diagram
-    #for i, (stddev, corrcoef, name) in enumerate(p_samp):
+    # for i, (stddev, corrcoef, name) in enumerate(p_samp):
     # dia.add_sample(stddev,
     #                corrcoef,
     #                marker='$\genfrac{}{}{0}{}{%d}{+}$' % (i + 1),
@@ -619,7 +651,6 @@ def taylor_2():
 
 
 if __name__ == '__main__':
-
     taylor_2()
 
     plt.show()
