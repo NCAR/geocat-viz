@@ -1,32 +1,23 @@
-# https://validate-climate-model-validation.readthedocs.io/en/latest/_modules/validate/taylor.html
-# https://matplotlib.org/stable/gallery/axisartist/demo_floating_axes.html#sphx-glr-gallery-axisartist-demo-floating-axes-py
-"""
-Taylor Diagram
-==============
-Functionality:
-    - The constructor creates the default classic Taylor diagram
-    - add_sample adds sample models to the diagram
-    - add_xgrid adds gridlines to the X axis (standard deviation)
-    - add_ygrid adds gridlines to the Y axis (correlation)
-    - add_grid adds a complete set of gridlines
-    - add_contours adds contour lines to the diagram
-    - add_model_name adds texts of model names to the diagram
-    - add_legend adds a figure legend
-    - add_title adds a main title
-    - set_fontsizes_and_pad sets the fontsizes and padding of labels and ticklabels
-
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 class TaylorDiagram(object):
-    """Taylor diagram.
+    """Taylor Diagram.
 
-    Plot model standard deviation and correlation to reference (data)
-    sample in a single-quadrant polar plot, with r=stddev and
-    theta=arccos(correlation).
+    Taylor diagrams provide a visual framework for comparing a suite of variables from one or more test data sets to
+    one or more reference data sets. Commonly, the test data sets are model experiments while the reference data set
+    is a control experiment or some reference observations (eg, ECMWF Reanalyses). Generally, the plotted values are
+    derived from climatological monthly, seasonal or annual means. Because the different variables (eg:
+    precipitation, temperature) may have widely varying numerical values, the results are normalized by the reference
+    variables. The ratio of the normalized variances indicates the relative amplitude of the model and observed
+    variations.
+
+    References
+    ----------
+    - https://validate-climate-model-validation.readthedocs.io/en/latest/_modules/validate/taylor.html
+    - https://matplotlib.org/stable/gallery/axisartist/demo_floating_axes.html#sphx-glr-gallery-axisartist-demo-floating-axes-py
+    - https://www.ncl.ucar.edu/Applications/taylor.shtml
     """
 
     def __init__(self,
