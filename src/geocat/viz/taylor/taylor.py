@@ -57,7 +57,7 @@ class TaylorDiagram(object):
         # Pull and set optional constructor variables
         # Set figure
         if fig is None:
-            fig = plt.figure(figsize=(8, 8))
+            self.fig = plt.figure(figsize=(8, 8))
         else:
             self.fig = fig
 
@@ -150,6 +150,9 @@ class TaylorDiagram(object):
 
         # Set aspect ratio
         self.ax.set_aspect('equal')
+        
+        # Set number for models outside axes
+        self.modelOutside = -1
 
     def add_sample(self,
                    stddev,
@@ -188,41 +191,72 @@ class TaylorDiagram(object):
 
         Returns
         -------
-        modelset : list of Line2D
-            A list of lines representing the plotted data.
+        modelTexts, modelset : array of matplotlib.text.Annotation,
+                               array of matplotlib.lines.Line2D
+            A list of text objects representing model labels, and
+            a list of sets of markers representing sets of models
         """
         # Convert to np arrays
         np_std = np.array(stddev)
         np_corr = np.array(corrcoef)
-        # Create a dictionary of key: std, value: annotated number
-        stdAndNumber = dict(zip(np_std, range(1, len(np_std))))
         # Select data points within the range of taylor diagram
         cond = np.logical_and(np_std <= 1.65, np_corr >= 0)
-        std_bool = np_std(cond)
-        corr_bool = np_corr(cond)
+        # Split arrays into points inside and outside of taylor diagram
+        std_inside = np_std[cond]
+        corr_inside = np_corr[cond]
+        std_outside = np_std[np.bitwise_not(cond)]
+        corr_outside = np_corr[np.bitwise_not(cond)]
         
-        # Add a set of model markers
+        # Add a set of model markers inside taylor diagram axes
         modelset, = self.ax.plot(
-            np.arccos(corr_np),  # theta
-            std_np,  # radius
+            np.arccos(corr_inside),  # theta
+            std_inside,  # radius
             *args,
             **kwargs)
         self.modelList.append(modelset)
+        
+        # Create a dictionary of key: std, value: annotated number
+        stdAndNumber = dict(zip(np_std, range(1, len(np_std)+1)))
 
+        # Annotate model markers
         if annotate_on:
-            index = 0
             color = kwargs.get('color')
-
-            # Annotate model markers
-            for std, corr in zip(std_np, corr_np):
-                index = index + 1
-                text = str(index)
-                self.ax.annotate(text, (np.arccos(corr), std),
-                                 fontsize=fontsize,
-                                 color=color,
-                                 textcoords="offset pixels",
-                                 xytext=xytext)
-        return modelset
+            # Initialize empty array that will be filled with model label text objects and returned
+            modelTexts = []
+            
+            for std, corr in zip(std_inside, corr_inside):
+                label = str(stdAndNumber[std])
+                textObject = self.ax.annotate(
+                    label, 
+                    (np.arccos(corr), std),
+                    fontsize=fontsize,
+                    color=color,
+                    textcoords="offset pixels",
+                    xytext=xytext)
+                modelTexts.append(textObject)
+        
+        # Plot model stats outisde the range of taylor diagram
+        if len(std_outside)>0:
+            for std, corr in zip(std_outside, corr_outside):
+                self.modelOutside += 1 # outside model number increases
+                
+                self.ax.plot(0.185+self.modelOutside*0.16, 0.045,
+                             *args,**kwargs,
+                             clip_on=False,
+                             transform=self.fig.transFigure
+                             )
+                
+                textObject = self.fig.text(
+                    0.18+self.modelOutside*0.16, 0.065,
+                    str(stdAndNumber[std]),
+                    fontsize=fontsize)
+                modelTexts.append(textObject)
+                
+                self.fig.text(0.2+self.modelOutside*0.16, 0.05,
+                              r'$\frac{%.2f}{%.2f}$' % (std, corr),
+                              fontsize=19)
+                
+        return modelTexts, modelset
 
     def add_xgrid(self,
                   arr,
@@ -410,25 +444,26 @@ class TaylorDiagram(object):
             Text fontsize
 
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.legend` command
+        *kwargs* are directly propagated to the `matplotlib.pyplot.legend` command.
 
         Return
         ------
-        None
-
-        *kwargs* are directly propagated to the `matplotlib.pyplot.legend` command.
+        legend : matplotlib.legend.Legend
+            Matplotlib legend object
         """
 
         if kwargs.get('handles') is None:
-            handles = self.modelList
+            handles = self.modelList[::-1]
         if kwargs.get('labels') is None:
-            labels = [p.get_label() for p in self.modelList]
+            labels = [p.get_label() for p in handles]
 
-        self.ax.legend(handles,
+        legend = self.ax.legend(handles,
                        labels,
                        loc=loc,
                        bbox_to_anchor=(xloc, yloc),
                        fontsize=fontsize,
                        frameon=False)
+        return legend
 
     def add_title(self, maintitle, fontsize=18, y_loc=None, **kwargs):
         """Add a main title.
@@ -481,6 +516,21 @@ class TaylorDiagram(object):
         self._ax.axis['top', 'right'].label.set_pad(axislabel_pad)
         
 ###############################################################################
+def biasToMarkerSize(bias):
+    '''Helper function to return marker size and sign based on input bias'''
+    
+    ab=abs(bias)
+    if ab > 20:
+        ms = 12
+    elif ab > 10 and ab <= 20:
+        ms = 11
+    elif ab > 5 and ab <= 10:
+        ms = 10
+    else:
+        ms = 9
+    sign = bias > 0
+    
+    return ms, sign
 
 def taylor_8():
     # https://www.ncl.ucar.edu/Applications/Scripts/taylor_8.ncl
@@ -488,12 +538,12 @@ def taylor_8():
     # Case A                       
     CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
     CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
-    BA = [2.7, -1.5, 17.31, -20.11, 12.5, 8.341]
+    #BA = [2.7, -1.5, 17.31, -20.11, 12.5, 8.341]
 
     # Case B
     CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
     CB_corr = [0.963, 0.975, 0.801, 0.814, -0.946, 0.984]
-    BB = [1.7, 2.5, -17.31, 20.11, 19.5, 7.341]
+    #BB = [1.7, 2.5, -17.31, 20.11, 19.5, 7.341]
     
     # Create a list of model names
     namearr = ["Globe", "20S-20N", "Land", "Ocean", "N. America", "Africa"]
@@ -502,17 +552,42 @@ def taylor_8():
     fig = plt.figure(figsize=(8, 8))
     dia = TaylorDiagram(fig=fig)
     
-    dia.add_sample(CA_std,
+    # Add model sets
+    modelTextsA, _ = dia.add_sample(CA_std,
                    CA_corr,
-                   14, (-5, 7),
+                   13, (-3.5, 8),
                    color='red',
-                   marker='*',
+                   marker='^',
                    markerfacecolor='none',
-                   markersize=13,
-                   linestyle='none')
+                   markersize=11,
+                   linestyle='none',
+                   label='Data A')
+    modelTextsB, _ = dia.add_sample(CB_std,
+                   CB_corr,
+                   13, (-3.5, 8),
+                   color='blue',
+                   marker='D',
+                   markerfacecolor='none',
+                   markersize=9,
+                   linestyle='none',
+                   label='Data B')
     
-    dia.ax.set_aspect(1)
+    # Change properties of model labels to add bounding boxes
+    for txt in modelTextsA:
+        txt.set_bbox(dict(facecolor='red', edgecolor='none',
+                          pad=0.05, boxstyle='square'))
+        txt.set_color('white')
+    for txt in modelTextsB:
+        txt.set_bbox(dict(facecolor='blue', edgecolor='none',
+                          pad=0.05, boxstyle='square'))
+        txt.set_color('white')
     
+    # Add legned
+    dia.add_legend()
     
+    # Add model name text
+    dia.add_model_name(namearr, 0.06, 0.24, fontsize=12)
+
+
 if __name__ == "__main__":
     taylor_8()
