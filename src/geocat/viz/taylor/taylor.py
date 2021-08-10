@@ -140,15 +140,15 @@ class TaylorDiagram(object):
                           linestyle=(0, (9, 5)),
                           color='black',
                           zorder=1)
+        
+        # Set aspect ratio
+        self.ax.set_aspect('equal')
 
         # Store the reference line
         self.referenceLine = h
 
         # Collect sample points for latter use (e.g. legend)
-        self.modelList = []
-
-        # Set aspect ratio
-        self.ax.set_aspect('equal')
+        self.modelMarkerSet = []
         
         # Set number for models outside axes
         self.modelOutside = -1
@@ -207,12 +207,12 @@ class TaylorDiagram(object):
         corr_outside = np_corr[np.bitwise_not(cond)]
         
         # Add a set of model markers inside taylor diagram axes
-        modelset, = self.ax.plot(
+        modelset = self.ax.scatter(
             np.arccos(corr_inside), std_inside,  # theta, radius
             *args, **kwargs)
             
-        # Add modelset to modelList for legend handles
-        self.modelList.append(modelset)
+        # Add modelset to modelMarkerSet for legend handles
+        self.modelMarkerSet.append(modelset)
         
         # Create a dictionary of key: std, value: annotated number
         stdAndNumber = dict(zip(np_std, range(1, len(np_std)+1)))
@@ -239,10 +239,10 @@ class TaylorDiagram(object):
             for std, corr in zip(std_outside, corr_outside):
                 self.modelOutside += 1 # outside model number increases
                 
-                self.ax.plot(0.185+self.modelOutside*0.16, 0.045,
-                             *args,**kwargs,
-                             clip_on=False,
-                             transform=self.fig.transFigure)
+                self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                              *args,**kwargs,
+                              clip_on=False,
+                              transform=self.fig.transFigure)
                 
                 textObject = self.fig.text(
                     0.18+self.modelOutside*0.16, 0.065,
@@ -451,7 +451,7 @@ class TaylorDiagram(object):
         """
 
         if kwargs.get('handles') is None:
-            handles = self.modelList[::-1]
+            handles = self.modelMarkerSet[::-1]
         if kwargs.get('labels') is None:
             
             labels = [p.get_label() for p in handles]
@@ -537,6 +537,7 @@ def taylor_8():
     # Case A                       
     CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
     CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
+    BA = [2.7, -1.5, 17.31, -20.11, 12.5 , 8.341]
 
     # Case B
     CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
@@ -551,21 +552,17 @@ def taylor_8():
     # Add model sets
     modelTextsA, _ = dia.add_model_set(
         CA_std, CA_corr,
-        13, (-3.5, 8),
+        13, (-3.5, 8), # mode label fontsize and offset from marker
         marker='^',
-        color='red',
-        markerfacecolor='none',
-        markersize=9,
-        linestyle='none',
+        edgecolors='red',
+        facecolors='none',
         label='Data A')
     modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
         13, (-3.5, 8),
-        color='blue',
         marker='D',
-        markerfacecolor='none',
-        markersize=9,
-        linestyle='none',
+        edgecolors='blue',
+        facecolors='none',
         label='Data B')
     
     # Change properties of model labels to add bounding boxes
