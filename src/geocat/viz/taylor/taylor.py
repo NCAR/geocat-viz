@@ -177,6 +177,7 @@ class TaylorDiagram(object):
                       fontsize=14,
                       xytext=(-5, 7),
                       annotate_on=True,
+                      model_outside_on=False,
                       *args,
                       **kwargs):
         """Add a model set (*stddev*, *corrcoeff*) to the Taylor diagram. NCL-
@@ -213,16 +214,23 @@ class TaylorDiagram(object):
             A list of text objects representing model labels, and
             a list of sets of markers representing sets of models
         """
-        # Convert to np arrays
+        # Convert to np arrays and make copies
         np_std = np.array(stddev)
         np_corr = np.array(corrcoef)
-        # Select data points within the range of taylor diagram
-        cond = np.logical_and(np_std <= self.smax, np_corr >= self.smin)
-        # Split arrays into points inside and outside of taylor diagram
-        std_inside = np_std[cond]
-        corr_inside = np_corr[cond]
-        std_outside = np_std[np.bitwise_not(cond)]
-        corr_outside = np_corr[np.bitwise_not(cond)]
+        std_inside = np_std
+        corr_inside = np_corr
+        
+        # Create a dictionary of key: std, value: annotated number
+        stdAndNumber = dict(zip(np_std, range(1, len(np_std)+1)))
+        
+        if model_outside_on:       
+            # Select data points within the range of taylor diagram
+            cond = np.logical_and(np_std <= self.smax, np_corr >= self.smin)
+            # Split arrays into points inside and outside of taylor diagram
+            std_inside = np_std[cond]
+            corr_inside = np_corr[cond]
+            std_outside = np_std[np.bitwise_not(cond)]
+            corr_outside = np_corr[np.bitwise_not(cond)]
         
         # Add a set of model markers inside taylor diagram axes
         modelset = self.ax.scatter(
@@ -231,9 +239,6 @@ class TaylorDiagram(object):
             
         # Add modelset to modelMarkerSet for legend handles
         self.modelMarkerSet.append(modelset)
-        
-        # Create a dictionary of key: std, value: annotated number
-        stdAndNumber = dict(zip(np_std, range(1, len(np_std)+1)))
 
         # Annotate model markers
         if annotate_on:
@@ -253,24 +258,25 @@ class TaylorDiagram(object):
                 modelTexts.append(textObject)
         
         # Plot model stats outisde the range of taylor diagram
-        if len(std_outside)>0:
-            for std, corr in zip(std_outside, corr_outside):
-                self.modelOutside += 1 # outside model number increases
-                
-                self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
-                              *args,**kwargs,
-                              clip_on=False,
-                              transform=self.fig.transFigure)
-                
-                textObject = self.fig.text(
-                    0.18+self.modelOutside*0.16, 0.065,
-                    str(stdAndNumber[std]),
-                    fontsize=fontsize)
-                modelTexts.append(textObject)
-                
-                self.fig.text(0.2+self.modelOutside*0.16, 0.05,
-                              r'$\frac{%.2f}{%.2f}$' % (std, corr),
-                              fontsize=19)
+        if model_outside_on:
+            if len(std_outside)>0:
+                for std, corr in zip(std_outside, corr_outside):
+                    self.modelOutside += 1 # outside model number increases
+                    
+                    self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                                  *args,**kwargs,
+                                  clip_on=False,
+                                  transform=self.fig.transFigure)
+                    
+                    textObject = self.fig.text(
+                        0.18+self.modelOutside*0.16, 0.065,
+                        str(stdAndNumber[std]),
+                        fontsize=fontsize)
+                    modelTexts.append(textObject)
+                    
+                    self.fig.text(0.2+self.modelOutside*0.16, 0.05,
+                                  r'$\frac{%.2f}{%.2f}$' % (std, corr),
+                                  fontsize=19)
                 
         return modelTexts, modelset
 
@@ -556,14 +562,16 @@ def taylor_8():
     modelTextsA, _ = dia.add_model_set(
         CA_std, CA_corr,
         13, (-3.5, 8), # mode label fontsize and offset from marker
+        model_outside_on=True,
         marker='^',
-        s=60,
+        s=60, # marker size
         edgecolors='red',
         facecolors='none',
         label='Data A')
     modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
-        13, (-3.5, 8),
+        13, (-3.5, 8), 
+        model_outside_on=True,
         marker='D',
         s=60,
         edgecolors='blue',
@@ -585,6 +593,7 @@ def taylor_8():
     
     # Add model name text
     dia.add_model_name(namearr, 0.06, 0.24, fontsize=12)
+    
 
 
 if __name__ == "__main__":
