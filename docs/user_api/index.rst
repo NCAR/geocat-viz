@@ -1,4 +1,4 @@
-.. currentmodule:: geocat.comp
+.. currentmodule:: geocat.viz
 
 User API
 ========
@@ -12,4 +12,4 @@ GeoCAT-viz routines
 .. autosummary::
    :toctree: ./generated/
 
-   geocat.viz.TaylorDiagram
+   geocat.viz.taylor.TaylorDiagram
