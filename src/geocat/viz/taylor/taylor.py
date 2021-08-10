@@ -208,10 +208,8 @@ class TaylorDiagram(object):
         
         # Add a set of model markers inside taylor diagram axes
         modelset, = self.ax.plot(
-            np.arccos(corr_inside),  # theta
-            std_inside,  # radius
-            *args,
-            **kwargs)
+            np.arccos(corr_inside), std_inside,  # theta, radius
+            *args, **kwargs)
             
         # Add modelset to modelList for legend handles
         self.modelList.append(modelset)
