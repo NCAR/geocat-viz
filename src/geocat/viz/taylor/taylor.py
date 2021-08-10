@@ -152,6 +152,24 @@ class TaylorDiagram(object):
         
         # Set number for models outside axes
         self.modelOutside = -1
+        
+    def biasToMarkerSize(self, biasarr):
+        '''Helper function to return marker size and sign based on input bias'''
+        out_arr = []
+        for bias in biasarr:
+            ab=abs(bias)
+            if ab > 20:
+                out_arr.append(70)
+            elif ab > 10 and ab <= 20:
+                out_arr.append(60)
+            elif ab > 5 and ab <= 10:
+                out_arr.append(50)
+            elif ab > 1 and ab <= 5:
+                out_arr.append(40)
+            else:
+                out_arr.append('o')
+        
+        return out_arr
 
     def add_model_set(self,
                       stddev,
@@ -515,21 +533,6 @@ class TaylorDiagram(object):
         self._ax.axis['top', 'right'].label.set_pad(axislabel_pad)
         
 ###############################################################################
-def biasToMarkerSize(biasarr):
-    '''Helper function to return marker size and sign based on input bias'''
-    out_arr = []
-    for bias in biasarr:
-        ab=abs(bias)
-        if ab > 20:
-            out_arr.append(12)
-        elif ab > 10 and ab <= 20:
-            out_arr.append(11)
-        elif ab > 5 and ab <= 10:
-            out_arr.append(10)
-        else:
-            out_arr.append(9)
-    
-    return out_arr
 
 def taylor_8():
     # https://www.ncl.ucar.edu/Applications/Scripts/taylor_8.ncl
@@ -537,7 +540,7 @@ def taylor_8():
     # Case A                       
     CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
     CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
-    BA = [2.7, -1.5, 17.31, -20.11, 12.5 , 8.341]
+    #BA = [2.7, -1.5, 17.31, -20.11, 12.5 , 8.341]
 
     # Case B
     CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
@@ -554,6 +557,7 @@ def taylor_8():
         CA_std, CA_corr,
         13, (-3.5, 8), # mode label fontsize and offset from marker
         marker='^',
+        s=60,
         edgecolors='red',
         facecolors='none',
         label='Data A')
@@ -561,6 +565,7 @@ def taylor_8():
         CB_std, CB_corr,
         13, (-3.5, 8),
         marker='D',
+        s=60,
         edgecolors='blue',
         facecolors='none',
         label='Data B')
