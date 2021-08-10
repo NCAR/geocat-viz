@@ -153,14 +153,14 @@ class TaylorDiagram(object):
         # Set number for models outside axes
         self.modelOutside = -1
 
-    def add_sample(self,
-                   stddev,
-                   corrcoef,
-                   fontsize=14,
-                   xytext=(-5, 7),
-                   annotate_on=True,
-                   *args,
-                   **kwargs):
+    def add_model_set(self,
+                      stddev,
+                      corrcoef,
+                      fontsize=14,
+                      xytext=(-5, 7),
+                      annotate_on=True,
+                      *args,
+                      **kwargs):
         """Add a model set (*stddev*, *corrcoeff*) to the Taylor diagram. NCL-
         style model markers and labels are achieved through Matplotlib markers
         and annotations. *xytext* argument can be used to adjust the
@@ -549,7 +549,7 @@ def taylor_8():
     dia = TaylorDiagram()
     
     # Add model sets
-    modelTextsA, _ = dia.add_sample(
+    modelTextsA, _ = dia.add_model_set(
         CA_std, CA_corr,
         13, (-3.5, 8),
         marker='^',
@@ -558,7 +558,7 @@ def taylor_8():
         markersize=9,
         linestyle='none',
         label='Data A')
-    modelTextsB, _ = dia.add_sample(
+    modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
         13, (-3.5, 8),
         color='blue',
