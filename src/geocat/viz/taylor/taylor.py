@@ -25,7 +25,7 @@ class TaylorDiagram(object):
                  fig=None,
                  rect=111,
                  label='REF',
-                 stdrange=(0, 1.6),
+                 stdrange=(0, 1.65),
                  stdlevel=np.arange(0, 1.51, 0.25)):
         """Create base Taylor Diagram.
 
@@ -149,7 +149,7 @@ class TaylorDiagram(object):
         self.modelList = []
 
         # Set aspect ratio
-        self.ax.set_aspect(1)
+        self.ax.set_aspect('equal')
 
     def add_sample(self,
                    stddev,
@@ -191,11 +191,20 @@ class TaylorDiagram(object):
         modelset : list of Line2D
             A list of lines representing the plotted data.
         """
-
+        # Convert to np arrays
+        np_std = np.array(stddev)
+        np_corr = np.array(corrcoef)
+        # Create a dictionary of key: std, value: annotated number
+        stdAndNumber = dict(zip(np_std, range(1, len(np_std))))
+        # Select data points within the range of taylor diagram
+        cond = np.logical_and(np_std <= 1.65, np_corr >= 0)
+        std_bool = np_std(cond)
+        corr_bool = np_corr(cond)
+        
         # Add a set of model markers
         modelset, = self.ax.plot(
-            np.arccos(corrcoef),  # theta
-            stddev,  # radius
+            np.arccos(corr_np),  # theta
+            std_np,  # radius
             *args,
             **kwargs)
         self.modelList.append(modelset)
@@ -205,7 +214,7 @@ class TaylorDiagram(object):
             color = kwargs.get('color')
 
             # Annotate model markers
-            for std, corr in zip(stddev, corrcoef):
+            for std, corr in zip(std_np, corr_np):
                 index = index + 1
                 text = str(index)
                 self.ax.annotate(text, (np.arccos(corr), std),
@@ -470,3 +479,40 @@ class TaylorDiagram(object):
                       'left'].major_ticklabels.set_fontsize(ticklabel_fontsize)
         self._ax.axis['top', 'right'].label.set_fontsize(axislabel_fontsize)
         self._ax.axis['top', 'right'].label.set_pad(axislabel_pad)
+        
+###############################################################################
+
+def taylor_8():
+    # https://www.ncl.ucar.edu/Applications/Scripts/taylor_8.ncl
+    
+    # Case A                       
+    CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
+    CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
+    BA = [2.7, -1.5, 17.31, -20.11, 12.5, 8.341]
+
+    # Case B
+    CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
+    CB_corr = [0.963, 0.975, 0.801, 0.814, -0.946, 0.984]
+    BB = [1.7, 2.5, -17.31, 20.11, 19.5, 7.341]
+    
+    # Create a list of model names
+    namearr = ["Globe", "20S-20N", "Land", "Ocean", "N. America", "Africa"]
+    
+    # Create figure and TaylorDiagram instance
+    fig = plt.figure(figsize=(8, 8))
+    dia = TaylorDiagram(fig=fig)
+    
+    dia.add_sample(CA_std,
+                   CA_corr,
+                   14, (-5, 7),
+                   color='red',
+                   marker='*',
+                   markerfacecolor='none',
+                   markersize=13,
+                   linestyle='none')
+    
+    dia.ax.set_aspect(1)
+    
+    
+if __name__ == "__main__":
+    taylor_8()
