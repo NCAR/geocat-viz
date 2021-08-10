@@ -25,8 +25,8 @@ class TaylorDiagram(object):
                  fig=None,
                  rect=111,
                  label='REF',
-                 stdrange=(0, 1.65),
-                 stdlevel=np.arange(0, 1.51, 0.25)):
+                 stdRange=(0, 1.65),
+                 stdLevel=np.arange(0, 1.51, 0.25)):
         """Create base Taylor Diagram.
 
         Parameters
@@ -43,10 +43,10 @@ class TaylorDiagram(object):
         label : string, optional
             Optional reference label string indentifier
 
-        stdrange : Tuple, optional
+        stdRange : Tuple, optional
             Optional stddev axis extent
 
-        stdlevel : list, optional
+        stdLevel : list, optional
             Optional list of tick locations for stddev axis
         """
 
@@ -56,17 +56,16 @@ class TaylorDiagram(object):
 
         # Pull and set optional constructor variables
         # Set figure
+        self.fig = fig
         if fig is None:
             self.fig = plt.figure(figsize=(8, 8))
-        else:
-            self.fig = fig
 
         # Reference standard deviation
         self.refstd = refstd
 
         # Standard deviation axis extent (in units of reference stddev)
-        self.smin = stdrange[0]
-        self.smax = stdrange[1]
+        self.smin = stdRange[0]
+        self.smax = stdRange[1]
 
         # Set polar transform
         tr = PolarAxes.PolarTransform()
@@ -78,13 +77,13 @@ class TaylorDiagram(object):
         tf1 = gf.DictFormatter(dict(list(zip(tlocs, list(map(str, rlocs))))))
 
         # Set standard deviation labels
-        gl2 = gf.FixedLocator(stdlevel)
+        gl2 = gf.FixedLocator(stdLevel)
 
         # format each label with 2 decimal places
-        format_string = list(map(lambda x: "{0:0.2f}".format(x), stdlevel))
-        index = np.where(stdlevel == self.refstd)[0][0]
+        format_string = list(map(lambda x: "{0:0.2f}".format(x), stdLevel))
+        index = np.where(stdLevel == self.refstd)[0][0]
         format_string[index] = label
-        tf2 = gf.DictFormatter(dict(list(zip(stdlevel, format_string))))
+        tf2 = gf.DictFormatter(dict(list(zip(stdLevel, format_string))))
 
         # Use customized GridHelperCurveLinear to define curved axis
         ghelper = fa.GridHelperCurveLinear(
@@ -100,8 +99,8 @@ class TaylorDiagram(object):
             tick_formatter2=tf2)
 
         # Create graphical axes
-        ax = fa.FloatingSubplot(fig, rect, grid_helper=ghelper)
-        fig.add_subplot(ax)
+        ax = fa.FloatingSubplot(self.fig, rect, grid_helper=ghelper)
+        self.fig.add_subplot(ax)
 
         # Adjust axes for Correlation
         ax.axis["top"].set_axis_direction("bottom")  # "Angle axis"
@@ -200,7 +199,7 @@ class TaylorDiagram(object):
         np_std = np.array(stddev)
         np_corr = np.array(corrcoef)
         # Select data points within the range of taylor diagram
-        cond = np.logical_and(np_std <= 1.65, np_corr >= 0)
+        cond = np.logical_and(np_std <= self.smax, np_corr >= self.smin)
         # Split arrays into points inside and outside of taylor diagram
         std_inside = np_std[cond]
         corr_inside = np_corr[cond]
@@ -245,8 +244,7 @@ class TaylorDiagram(object):
                 self.ax.plot(0.185+self.modelOutside*0.16, 0.045,
                              *args,**kwargs,
                              clip_on=False,
-                             transform=self.fig.transFigure
-                             )
+                             transform=self.fig.transFigure)
                 
                 textObject = self.fig.text(
                     0.18+self.modelOutside*0.16, 0.065,
@@ -550,8 +548,7 @@ def taylor_8():
     namearr = ["Globe", "20S-20N", "Land", "Ocean", "N. America", "Africa"]
     
     # Create figure and TaylorDiagram instance
-    fig = plt.figure(figsize=(8, 8))
-    dia = TaylorDiagram(fig=fig)
+    dia = TaylorDiagram()
     
     # Add model sets
     modelTextsA, _ = dia.add_sample(
