@@ -213,6 +213,8 @@ class TaylorDiagram(object):
             std_inside,  # radius
             *args,
             **kwargs)
+            
+        # Add modelset to modelList for legend handles
         self.modelList.append(modelset)
         
         # Create a dictionary of key: std, value: annotated number
@@ -455,6 +457,7 @@ class TaylorDiagram(object):
         if kwargs.get('handles') is None:
             handles = self.modelList[::-1]
         if kwargs.get('labels') is None:
+            
             labels = [p.get_label() for p in handles]
 
         legend = self.ax.legend(handles,
@@ -516,21 +519,21 @@ class TaylorDiagram(object):
         self._ax.axis['top', 'right'].label.set_pad(axislabel_pad)
         
 ###############################################################################
-def biasToMarkerSize(bias):
+def biasToMarkerSize(biasarr):
     '''Helper function to return marker size and sign based on input bias'''
+    out_arr = []
+    for bias in biasarr:
+        ab=abs(bias)
+        if ab > 20:
+            out_arr.append(12)
+        elif ab > 10 and ab <= 20:
+            out_arr.append(11)
+        elif ab > 5 and ab <= 10:
+            out_arr.append(10)
+        else:
+            out_arr.append(9)
     
-    ab=abs(bias)
-    if ab > 20:
-        ms = 12
-    elif ab > 10 and ab <= 20:
-        ms = 11
-    elif ab > 5 and ab <= 10:
-        ms = 10
-    else:
-        ms = 9
-    sign = bias > 0
-    
-    return ms, sign
+    return out_arr
 
 def taylor_8():
     # https://www.ncl.ucar.edu/Applications/Scripts/taylor_8.ncl
@@ -538,12 +541,10 @@ def taylor_8():
     # Case A                       
     CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
     CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
-    #BA = [2.7, -1.5, 17.31, -20.11, 12.5, 8.341]
 
     # Case B
     CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
     CB_corr = [0.963, 0.975, 0.801, 0.814, -0.946, 0.984]
-    #BB = [1.7, 2.5, -17.31, 20.11, 19.5, 7.341]
     
     # Create a list of model names
     namearr = ["Globe", "20S-20N", "Land", "Ocean", "N. America", "Africa"]
@@ -553,24 +554,24 @@ def taylor_8():
     dia = TaylorDiagram(fig=fig)
     
     # Add model sets
-    modelTextsA, _ = dia.add_sample(CA_std,
-                   CA_corr,
-                   13, (-3.5, 8),
-                   color='red',
-                   marker='^',
-                   markerfacecolor='none',
-                   markersize=11,
-                   linestyle='none',
-                   label='Data A')
-    modelTextsB, _ = dia.add_sample(CB_std,
-                   CB_corr,
-                   13, (-3.5, 8),
-                   color='blue',
-                   marker='D',
-                   markerfacecolor='none',
-                   markersize=9,
-                   linestyle='none',
-                   label='Data B')
+    modelTextsA, _ = dia.add_sample(
+        CA_std, CA_corr,
+        13, (-3.5, 8),
+        marker='^',
+        color='red',
+        markerfacecolor='none',
+        markersize=9,
+        linestyle='none',
+        label='Data A')
+    modelTextsB, _ = dia.add_sample(
+        CB_std, CB_corr,
+        13, (-3.5, 8),
+        color='blue',
+        marker='D',
+        markerfacecolor='none',
+        markersize=9,
+        linestyle='none',
+        label='Data B')
     
     # Change properties of model labels to add bounding boxes
     for txt in modelTextsA:
