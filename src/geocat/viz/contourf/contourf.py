@@ -1,17 +1,9 @@
 """Plotting wrapper for matplotlib contourf function."""
 
-import matplotlib.pyplot as plt
 import xarray as xr
 import warnings
-import numpy as np
-import cartopy.crs as ccrs
 
 from _plot_util import NCL_Plot
-
-from geocat.viz.util import add_major_minor_ticks
-from geocat.viz.util import set_titles_and_labels
-from geocat.viz.util import set_axes_limits_and_ticks
-from geocat.viz.util import add_lat_lon_ticklabels
 
 
 class Contour(NCL_Plot):
@@ -22,6 +14,7 @@ class Contour(NCL_Plot):
                 data (:class:`xarray.DataArray` or :class:`numpy.ndarray`): The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
                 
             Kwargs:
+                
                 add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
                 
                 clevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contour function.
@@ -48,7 +41,7 @@ class Contour(NCL_Plot):
                 
                 linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
                 
-                manualcontourlabels (:obj:`bool`): Whether contour line labels should eb manually drawn. Default False.
+                manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
                 
                 projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
                 
@@ -57,12 +50,54 @@ class Contour(NCL_Plot):
                 Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
                    
             Return:
-                (:class:`contourf.Contour`) A contour plot with specified style.
+                (:class:`contourf.Contour`) A contour plot with specified input style.
 
      """
     
-    
     def __init__(self, *args, **kwargs):
+        """ Create contour figure. Generate filled contours and/or contour lines for figure. Add colorbar and contour labels if specified.
+        
+                Args:
+                    
+                    data (:class:`xarray.DataArray` or :class:`numpy.ndarray`): The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
+                    
+                Kwargs:
+                    
+                    add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
+                
+                    clevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contour function.
+                
+                    cmap (:class:`cmaps.colormap.Colormap`): Colormap for the filled contour graph.
+                    
+                    contour_fill (:obj:`bool`): Whether filled contours will be drawn. Default True.
+                    
+                    contour_lines (:obj:`bool`): Whether contours lines will be drawn. Default True.
+                    
+                    contourbackground (:obj:`bool`): Whether a white background for the contour labels will be drawn. Default False.
+                    
+                    contourfontsize (:obj:`int`): Font size of the contour line labels. Default 12.
+                    
+                    contourlabels (:obj:`list` or :class:`numpy.ndarray`): List or array of labels to use for contour line labels.
+                    
+                    drawcontourlabels(:obj:`bool`): Whether add contour line labels to the figure.
+                    
+                    flevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contourf function.
+                    
+                    linecolor (:obj:`str`): Color of the contour line. Default "black".
+                    
+                    linestyle (:obj:`str`): Linestyle of the contour line. Default solid for positive values, dashed for negative values.
+                    
+                    linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
+                    
+                    manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
+                    
+                    projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+                    
+                    X (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The X axis data for the dataset. To be specified if not inferred correctly automatically.
+                       
+                    Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
+                        
+        """
 
         # Set default flevels, clevels, and colormap
         self._default_cmap = 'coolwarm'
@@ -100,6 +135,10 @@ class Contour(NCL_Plot):
                 raise AttributeError("If Y is defined, X must also be defined.")
         else:
             self.Y = kwargs.get("Y")
+            
+        # Pull in whether to draw filled contours and/or contour lines
+        self.contour_lines = kwargs.get('contour_lines')
+        self.contour_fill = kwargs.get('contour_fill')
 
         # Read in or calculate contour levels using built in function
         if kwargs.get('contour_lines') is not False:
@@ -143,110 +182,15 @@ class Contour(NCL_Plot):
         self.contourlabels = kwargs.get("contourlabels")
         self.contourfontsize = kwargs.get("contourfontsize")
         self.contourbackground = kwargs.get("contourbackground")
-            
+        
         
 
         # Call parent class constructor
         NCL_Plot.__init__(self, *args, **kwargs)
         
-        # If there is no projection and specified X and Y data, plot filled contours and contour lines unless otherwise specified
-        if (kwargs.get("projection") is not None):
-            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
-                # Create plot
-                if kwargs.get('contour_fill') is not False:
-                    self.cf = self.ax.contourf(self.X.data,
-                                               self.Y.data,
-                                               self.data,
-                                               levels=self.levels,
-                                               cmap=self.cmap,
-                                               transform=self.projection,
-                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                               extend = self.cbextend
-                                               )
         
-                if kwargs.get('contour_lines') is not False:
-                    self.cl = self.ax.contour(self.X.data,
-                                              self.Y.data,
-                                              self.data,
-                                              levels=self.levels,
-                                              colors=self.linecolor,
-                                              alpha=0.8,
-                                              linewidths=self.linewidth,
-                                              linestyles=self.linestyle,
-                                              transform=self.projection,
-                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                              extend = self.cbextend
-                                               )
-             # If there is no projection and no specified X and Y data, plot filled contours and contour lines unless otherwise specified 
-            else:
-                # Create plot
-                if kwargs.get('contour_fill') is not False:
-                    self.cf = self.ax.contourf(self.data,
-                                               levels=self.levels,
-                                               cmap=self.cmap,
-                                               transform=self.projection,
-                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                               extend = self.cbextend
-                                               )
-        
-                if kwargs.get('contour_lines') is not False:
-                    self.cl = self.ax.contour(self.data,
-                                              levels=self.levels,
-                                              colors=self.linecolor,
-                                              alpha=0.8,
-                                              linewidths=self.linewidth,
-                                              linestyles=self.linestyle,
-                                              transform=self.projection,
-                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                              extend = self.cbextend
-                                               )
-         # If there is a specified projection and specified X and Y data, plot filled contours and contour lines unless otherwise specified
-        else:
-            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
-                # Create plot
-                if kwargs.get('contour_fill') is not False:
-                    self.cf = self.ax.contourf(self.X.data,
-                                               self.Y.data,
-                                               self.data,
-                                               levels=self.levels,
-                                               cmap=self.cmap,
-                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                               extend = self.cbextend
-                                               )
-        
-                if kwargs.get('contour_lines') is not False:
-                    self.cl = self.ax.contour(self.X.data,
-                                               self.Y.data,
-                                               self.data,
-                                              levels=self.levels,
-                                              colors=self.linecolor,
-                                              alpha=0.8,
-                                              linewidths=self.linewidth,
-                                              linestyles=self.linestyle,
-                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                              extend = self.cbextend
-                                               )
-            # If there is a specified projection and no specified X and Y data, plot filled contours and contour lines unless otherwise specified
-            else:
-                # Create plot
-                if kwargs.get('contour_fill') is not False:
-                    self.cf = self.ax.contourf(self.data,
-                                               levels=self.levels,
-                                               cmap=self.cmap,
-                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                               extend = self.cbextend
-                                               )
-        
-                if kwargs.get('contour_lines') is not False:
-                    self.cl = self.ax.contour(self.data,
-                                              levels=self.levels,
-                                              colors=self.linecolor,
-                                              alpha=0.8,
-                                              linewidths=self.linewidth,
-                                              linestyles=self.linestyle,
-                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                              extend = self.cbextend
-                                               )
+        # Add filled contours and/or contour lines to figure, as specified
+        self._generate_contours()
         
         # Set figure in NCL style
         self._set_NCL_style(self.ax)
@@ -283,20 +227,168 @@ class Contour(NCL_Plot):
             
             self._add_colorbar(mappable=self.cf)
             
+    def _generate_contours(self, *args, **kwargs):
+        """Generate filled contours and/or contour lines for figure.
         
+                Kwargs:
+                
+                    cmap (:class:`cmaps.colormap.Colormap`): Colormap for the filled contour graph.
+                    
+                    contour_fill (:obj:`bool`): Whether filled contours will be drawn. Default True.
+                    
+                    contour_lines (:obj:`bool`): Whether contours lines will be drawn. Default True.
+                    
+                    linecolor (:obj:`str`): Color of the contour line. Default "black".
+                    
+                    linestyle (:obj:`str`): Linestyle of the contour line. Default solid for positive values, dashed for negative values.
+                    
+                    linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
+                    
+                    projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+                    
+                    X (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The X axis data for the dataset. To be specified if not inferred correctly automatically.
+                       
+                    Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
+        
+        """
+        
+        # If there is a projection and specified X and Y data, plot filled contours and contour lines unless otherwise specified
+        if (kwargs.get("projection") is not None):
+            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
+                # Create plot
+                if self.contour_fill is not False:
+                    self.cf = self.ax.contourf(self.X.data,
+                                               self.Y.data,
+                                               self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               transform=self.projection,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend
+                                               )
+        
+                if self.contour_lines is not False:
+                    self.cl = self.ax.contour(self.X.data,
+                                              self.Y.data,
+                                              self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=self.linewidth,
+                                              linestyles=self.linestyle,
+                                              transform=self.projection,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend
+                                               )
+             # If there is a projection and no specified X and Y data, plot filled contours and contour lines unless otherwise specified 
+            else:
+                # Create plot
+                if self.contour_fill is not False:
+                    self.cf = self.ax.contourf(self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               transform=self.projection,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend
+                                               )
+        
+                if self.contour_lines is not False:
+                    self.cl = self.ax.contour(self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=self.linewidth,
+                                              linestyles=self.linestyle,
+                                              transform=self.projection,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend
+                                               )
+         # If there is not a specified projection and specified X and Y data, plot filled contours and contour lines unless otherwise specified
+        else:
+            if (kwargs.get("X") is not None) and (kwargs.get("Y") is not None):
+                # Create plot
+                if self.contour_fill is not False:
+                    self.cf = self.ax.contourf(self.X.data,
+                                               self.Y.data,
+                                               self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend
+                                               )
+        
+                if self.contour_lines is not False:
+                    self.cl = self.ax.contour(self.X.data,
+                                               self.Y.data,
+                                               self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=self.linewidth,
+                                              linestyles=self.linestyle,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend
+                                               )
+            # If there is not a specified projection and no specified X and Y data, plot filled contours and contour lines unless otherwise specified
+            else:
+                # Create plot
+                if self.contour_fill is not False:
+                    self.cf = self.ax.contourf(self.data,
+                                               levels=self.levels,
+                                               cmap=self.cmap,
+                                               extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                               extend = self.cbextend
+                                               )
+        
+                if self.contour_lines is not False:
+                    self.cl = self.ax.contour(self.data,
+                                              levels=self.levels,
+                                              colors=self.linecolor,
+                                              alpha=0.8,
+                                              linewidths=self.linewidth,
+                                              linestyles=self.linestyle,
+                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
+                                              extend = self.cbextend
+                                               )
+        
+    
+    
     def _add_contour_labels(self, ax, lines, contourlabels = None, background=True, fontsize=12):
+        """Add contour line labels with an optional white background to the figure.
+        
+                Kwargs:
+                    
+                    contourbackground (:obj:`bool`): Whether a white background for the contour labels will be drawn. Default False.
+                    
+                    contourfontsize (:obj:`int`): Font size of the contour line labels. Default 12.
+                    
+                    contourlabels (:obj:`list` or :class:`numpy.ndarray`): List or array of labels to use for contour line labels.
+                    
+                    drawcontourlabels(:obj:`bool`): Whether add contour line labels to the figure.
+                    
+                    flevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contourf function.
+                    
+                    manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
+        
+        """
         
         # Update argument definitions
         if self.contourfontsize is not None:
             fontsize = self.contourfontsize
             
+        # If level range is less than 1, set labels with smaller differences between them
+        if (self.levels[-1] - self.levels[0]) <= 1:
+            fmt = '%0.2f'
+        else:
+            fmt = '%d'
+            
         # Set contour line labels based on inputted arguments. Depending on which arguments are included or not, contour labels must be created differently.
         if self.contourlabels is None:
-            ax.clabel(lines, fontsize=fontsize, fmt='%d', inline=True)
+            ax.clabel(lines, fontsize=fontsize, fmt=fmt, inline=True, colors = "black")
         elif self.manualcontourlabels is False:
-            ax.clabel(lines, contourlabels, fontsize=fontsize, fmt='%d', inline=True)
+            ax.clabel(lines, contourlabels, fontsize=fontsize, fmt=fmt, inline=True, colors = "black")
         elif self.manualcontourlabels is True:
-            ax.clabel(lines, fontsize=fontsize, fmt='%d', inline=True, manual = contourlabels)
+            ax.clabel(lines, fontsize=fontsize, fmt=fmt, inline=True, manual = contourlabels, colors = "black")
         else:
             raise AttributeError("Manualcontourlabels, if set, must be True or False.")
         
