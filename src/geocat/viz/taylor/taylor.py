@@ -157,7 +157,7 @@ class TaylorDiagram(object):
         """Internal helper function to return integer marker size 
         and string marker symbol based on input bias"""
 
-        ab=abs(bias)
+        ab = abs(bias)
         if ab > 20:
             marker_size = 140
         elif ab > 10 and ab <= 20:
