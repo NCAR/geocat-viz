@@ -324,14 +324,14 @@ class TaylorDiagram(object):
                     
                     # Plot markers
                     if not percent_bias_on: 
-                        self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
+                        self.ax.scatter(0.054+self.modelOutside*0.22, -0.105,
                                         *args,**kwargs,
                                         clip_on=False,
                                         transform=self.ax.transAxes)
                     else:
                         for i in range(len(bias_outlier)):
                             size, marker = self._biasToMarkerSize(bias_outlier[i])
-                            self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
+                            self.ax.scatter(0.054+self.modelOutside*0.22, -0.105,
                                             *args,**kwargs,
                                             s=size,
                                             marker=marker,
@@ -339,16 +339,16 @@ class TaylorDiagram(object):
                                             transform=self.ax.transAxes)
                     # Plot labels
                     textObject = self.ax.text(
-                                0.045+self.modelOutside*0.22, -0.09,
+                                0.045+self.modelOutside*0.22, -0.08,
                                 str(stdAndNumber[std]),
                                 fontsize=fontsize,
                                 transform=self.ax.transAxes)
                     modelTexts.append(textObject)
                     
                     # Plot std against corr in the form of fraction
-                    self.ax.text(0.08+self.modelOutside*0.22, -0.11,
+                    self.ax.text(0.08+self.modelOutside*0.22, -0.10,
                                   r'$\frac{%.2f}{%.2f}$' % (std, corr),
-                                  fontsize=19, transform=self.ax.transAxes)
+                                  fontsize=17, transform=self.ax.transAxes)
                 
         return modelTexts, modelset
 
