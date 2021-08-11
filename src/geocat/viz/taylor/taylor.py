@@ -316,36 +316,39 @@ class TaylorDiagram(object):
                     xytext=xytext)
                 modelTexts.append(textObject)
         
-        # Plot model stats outisde the range of taylor diagram
+        # Plot outlier model stats
         if model_outlier_on:
             if len(std_outlier)>0:
                 for std, corr in zip(std_outlier, corr_outlier):
                     self.modelOutside += 1 # outlier model number increases
                     
+                    # Plot markers
                     if not percent_bias_on: 
-                        self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                        self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
                                         *args,**kwargs,
                                         clip_on=False,
-                                        transform=self.fig.transFigure)
+                                        transform=self.ax.transAxes)
                     else:
                         for i in range(len(bias_outlier)):
                             size, marker = self._biasToMarkerSize(bias_outlier[i])
-                            self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                            self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
                                             *args,**kwargs,
                                             s=size,
                                             marker=marker,
                                             clip_on=False,
-                                            transform=self.fig.transFigure)
-                    
-                    textObject = self.fig.text(
-                        0.18+self.modelOutside*0.16, 0.065,
-                        str(stdAndNumber[std]),
-                        fontsize=fontsize)
+                                            transform=self.ax.transAxes)
+                    # Plot labels
+                    textObject = self.ax.text(
+                                0.045+self.modelOutside*0.22, -0.09,
+                                str(stdAndNumber[std]),
+                                fontsize=fontsize,
+                                transform=self.ax.transAxes)
                     modelTexts.append(textObject)
                     
-                    self.fig.text(0.2+self.modelOutside*0.16, 0.05,
+                    # Plot std against corr in the form of fraction
+                    self.ax.text(0.08+self.modelOutside*0.22, -0.11,
                                   r'$\frac{%.2f}{%.2f}$' % (std, corr),
-                                  fontsize=19)
+                                  fontsize=19, transform=self.ax.transAxes)
                 
         return modelTexts, modelset
 
