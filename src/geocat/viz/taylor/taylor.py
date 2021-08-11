@@ -324,14 +324,14 @@ class TaylorDiagram(object):
                     
                     # Plot markers
                     if not percent_bias_on: 
-                        self.ax.scatter(0.054+self.modelOutside*0.22, -0.215,
+                        self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
                                         *args,**kwargs,
                                         clip_on=False,
                                         transform=self.ax.transAxes)
                     else:
                         for i in range(len(bias_outlier)):
                             size, marker = self._biasToMarkerSize(bias_outlier[i])
-                            self.ax.scatter(0.054+self.modelOutside*0.22, -0.215,
+                            self.ax.scatter(0.054+self.modelOutside*0.22, -0.115,
                                             *args,**kwargs,
                                             s=size,
                                             marker=marker,
@@ -339,14 +339,14 @@ class TaylorDiagram(object):
                                             transform=self.ax.transAxes)
                     # Plot labels
                     textObject = self.ax.text(
-                                0.045+self.modelOutside*0.22, -0.19,
+                                0.045+self.modelOutside*0.22, -0.09,
                                 str(stdAndNumber[std]),
                                 fontsize=fontsize,
                                 transform=self.ax.transAxes)
                     modelTexts.append(textObject)
                     
                     # Plot std against corr in the form of fraction
-                    self.ax.text(0.08+self.modelOutside*0.22, -0.21,
+                    self.ax.text(0.08+self.modelOutside*0.22, -0.11,
                                   r'$\frac{%.2f}{%.2f}$' % (std, corr),
                                   fontsize=19, transform=self.ax.transAxes)
                 
@@ -668,7 +668,7 @@ def taylor_8():
     # Add model sets
     modelTextsA, _ = dia.add_model_set(
         CA_std, CA_corr,
-        14, (-5, 9), # mode label fontsize and offset from marker
+        13, (-5, 9), # mode label fontsize and offset from marker
         model_outlier_on=True,
         percent_bias_on=True,
         bias_array=BA,
@@ -678,7 +678,7 @@ def taylor_8():
         label='Data A')
     modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
-        14, (-5, 9), 
+        13, (-5, 9), 
         model_outlier_on=True,
         percent_bias_on=True,
         bias_array=BB,
