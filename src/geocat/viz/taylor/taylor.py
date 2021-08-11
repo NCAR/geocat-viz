@@ -159,15 +159,15 @@ class TaylorDiagram(object):
 
         ab = abs(bias)
         if ab > 20:
-            marker_size = 140
+            marker_size = 130
         elif ab > 10 and ab <= 20:
-            marker_size = 100
+            marker_size = 90
         elif ab > 5 and ab <= 10:
-            marker_size = 60
+            marker_size = 50
         elif ab > 1 and ab <= 5:
-            marker_size = 20
+            marker_size = 30
         else:
-            marker_size = 70
+            marker_size = 60
         
         if ab <= 1:
             marker_symbol = 'o'
@@ -521,25 +521,23 @@ class TaylorDiagram(object):
                      transform=self.ax.transAxes)
         
         y_loc=0.87
-        size=140
+        size=[130, 90, 50, 30, 60]
         marker1 = "v"
         marker2 = "^"
         for i in range(5):
             if i == 4:
                 marker1 = "o"
                 marker2 = "o"
-                size += 50
-            self.ax.scatter(0.08, y_loc, s=size, marker=marker1,
+            self.ax.scatter(0.08, y_loc, s=size[i], marker=marker1,
                             edgecolors='black', facecolors="None",
-                            transform=self.ax.transAxes)
-            self.ax.scatter(0.13, y_loc, s=size, marker=marker2,
+                            linewidths=0.5,transform=self.ax.transAxes)
+            self.ax.scatter(0.13, y_loc, s=size[i], marker=marker2,
                     edgecolors='black', facecolors="None",
-                    transform=self.ax.transAxes)
+                    linewidths=0.5, transform=self.ax.transAxes)
             self.ax.text(0.18, y_loc-0.01, percent[i], fontsize=11,
                          transform=self.ax.transAxes)
 
             y_loc -= 0.04
-            size -= 40
             
         
 
@@ -671,6 +669,7 @@ def taylor_8():
         bias_array=BA,
         edgecolors='red', # kwargs inputs start
         facecolors='none',
+        linewidths=0.5,
         label='Data A')
     modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
@@ -680,6 +679,7 @@ def taylor_8():
         bias_array=BB,
         edgecolors='blue',
         facecolors='none',
+        linewidths=0.5,
         label='Data B')
     
     # Change properties of model labels to add bounding boxes
