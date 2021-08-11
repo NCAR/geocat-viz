@@ -507,13 +507,13 @@ class TaylorDiagram(object):
                      transform=self.ax.transAxes,
                      **kwargs)
         
-    def plot_bias_legend(self):
+    def add_bias_legend(self):
         """ Add bias legend to the upper left hand corner.
         """
         text = "-  /  +     Bias\n"
         percent = [">20%", "10-20%", "5-10%", "1-5%", "<1%"]
         
-        self.ax.text(0.09,
+        self.ax.text(0.07,
                      0.92,
                      text,
                      fontsize=11,
@@ -529,13 +529,13 @@ class TaylorDiagram(object):
                 marker1 = "o"
                 marker2 = "o"
                 size += 50
-            self.ax.scatter(0.1, y_loc, s=size, marker=marker1,
+            self.ax.scatter(0.08, y_loc, s=size, marker=marker1,
                             edgecolors='black', facecolors="None",
                             transform=self.ax.transAxes)
-            self.ax.scatter(0.15, y_loc, s=size, marker=marker2,
+            self.ax.scatter(0.13, y_loc, s=size, marker=marker2,
                     edgecolors='black', facecolors="None",
                     transform=self.ax.transAxes)
-            self.ax.text(0.20, y_loc-0.01, percent[i], fontsize=11,
+            self.ax.text(0.18, y_loc-0.01, percent[i], fontsize=11,
                          transform=self.ax.transAxes)
 
             y_loc -= 0.04
@@ -699,7 +699,7 @@ def taylor_8():
     dia.add_model_name(namearr, 0.06, 0.24, fontsize=12)
     
     # Add bias legend
-    dia.plot_bias_legend()
+    dia.add_bias_legend()
     
 
 
