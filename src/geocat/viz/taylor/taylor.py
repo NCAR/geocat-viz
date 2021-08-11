@@ -285,9 +285,11 @@ class TaylorDiagram(object):
                     *args, **kwargs)
                 
         # grab color
-        color = kwargs.get('edgecolors')
+        color = kwargs.get('color')
         if color is None:
-            color = kwargs.get('facecolors')
+            color = kwargs.get('edgecolors')
+            if color is None:
+                color = kwargs.get('facecolors')
             
         # Add modelset to modelMarkerSet for legend handles
         if not percent_bias_on:
@@ -700,7 +702,6 @@ def taylor_8():
     
     # Add bias legend
     dia.add_bias_legend()
-    
 
 
 if __name__ == "__main__":
