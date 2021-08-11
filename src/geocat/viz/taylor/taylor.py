@@ -153,23 +153,30 @@ class TaylorDiagram(object):
         # Set number for models outside axes
         self.modelOutside = -1
         
-    def biasToMarkerSize(self, biasarr):
-        '''Helper function to return marker size and sign based on input bias'''
-        out_arr = []
-        for bias in biasarr:
-            ab=abs(bias)
-            if ab > 20:
-                out_arr.append(70)
-            elif ab > 10 and ab <= 20:
-                out_arr.append(60)
-            elif ab > 5 and ab <= 10:
-                out_arr.append(50)
-            elif ab > 1 and ab <= 5:
-                out_arr.append(40)
-            else:
-                out_arr.append('o')
+    def _biasToMarkerSize(self, bias):
+        """Internal helper function to return integer marker size 
+        and string marker symbol based on input bias"""
+
+        ab=abs(bias)
+        if ab > 20:
+            marker_size = 140
+        elif ab > 10 and ab <= 20:
+            marker_size = 100
+        elif ab > 5 and ab <= 10:
+            marker_size = 60
+        elif ab > 1 and ab <= 5:
+            marker_size = 20
+        else:
+            marker_size = 70
         
-        return out_arr
+        if ab <= 1:
+            marker_symbol = 'o'
+        elif bias > 0:
+            marker_symbol = '^'
+        else:
+            marker_symbol = 'v'
+    
+        return marker_size, marker_symbol
 
     def add_model_set(self,
                       stddev,
@@ -177,7 +184,9 @@ class TaylorDiagram(object):
                       fontsize=14,
                       xytext=(-5, 7),
                       annotate_on=True,
-                      model_outside_on=False,
+                      model_outlier_on=False,
+                      percent_bias_on=False,
+                      bias_array=None,
                       *args,
                       **kwargs):
         """Add a model set (*stddev*, *corrcoeff*) to the Taylor diagram. NCL-
@@ -193,6 +202,7 @@ class TaylorDiagram(object):
 
         corrcoef : array-like, list, float
             An array of horizontal coordinates of the data points that denote correlation
+            Input should have the same size as *stddev*
 
         fontsize : float, optional, default to 14
             Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command
@@ -203,50 +213,97 @@ class TaylorDiagram(object):
 
         annotate_on : boolean, optional, default to True
             Determine whether model labels are added
+            
+        model_outlier_on : boolean, optional, default to False
+            If True, models with negative correlations and standard deviations > TaylorDiagram.smax(default to 1.65)
+            are plotted as text at the bottom of the figure; if False, all models are plotted
+            according to *stddev* and *corrcoef*
+        
+        percent_bias_on : boolean, optional, default to False
+            If True, model marker and marker size is plotted based on *bias_array*
+            
+        bias_array : array-like, list, float, optional, default to None
+            If this is given, it is used to determine individual marker size and marker style internally.
+            Input should have the same size as *stddev* and *corrcoef*
 
-        args and kwargs are directly propagated to the `matplotlib.axes.Axes.plot` command.
+        *args* and *kwargs* are directly propagated to the `matplotlib.axes.Axes.scatter` command.
 
 
         Returns
         -------
         modelTexts, modelset : array of matplotlib.text.Annotation,
-                               array of matplotlib.lines.Line2D
+                               array of matplotlib.collections.PathCollection
             A list of text objects representing model labels, and
             a list of sets of markers representing sets of models
         """
+        
         # Convert to np arrays and make copies
         np_std = np.array(stddev)
         np_corr = np.array(corrcoef)
-        std_inside = np_std
-        corr_inside = np_corr
+        std_plot = np_std
+        corr_plot = np_corr
         
         # Create a dictionary of key: std, value: annotated number
         stdAndNumber = dict(zip(np_std, range(1, len(np_std)+1)))
         
-        if model_outside_on:       
-            # Select data points within the range of taylor diagram
-            cond = np.logical_and(np_std <= self.smax, np_corr >= self.smin)
-            # Split arrays into points inside and outside of taylor diagram
-            std_inside = np_std[cond]
-            corr_inside = np_corr[cond]
-            std_outside = np_std[np.bitwise_not(cond)]
-            corr_outside = np_corr[np.bitwise_not(cond)]
+        # If percent_bias_on is True, check inputted arguments
+        if percent_bias_on:
+            if bias_array is None:
+                raise AttributeError("bias_array argument cannot be None if percent_bias_on is True")
+            if kwargs.get("s") or kwargs.get("marker"):
+                raise AttributeError("Do not input s and marker arguments when percent_bias_on is True")
+            else:
+                bias_plot = np.array(bias_array)
         
-        # Add a set of model markers inside taylor diagram axes
-        modelset = self.ax.scatter(
-            np.arccos(corr_inside), std_inside,  # theta, radius
-            *args, **kwargs)
+        # if model_outlier_on is True, split all input datasets into models
+        # inside taylor diagram and outlier models
+        if model_outlier_on:       
+            # Create a list of boolean conditions
+            cond = np.logical_and(np_std <= self.smax, np_corr >= self.smin)
+
+            std_plot = np_std[cond]
+            corr_plot = np_corr[cond]
+            std_outlier = np_std[np.bitwise_not(cond)]
+            corr_outlier = np_corr[np.bitwise_not(cond)]
+            if percent_bias_on:
+                bias_plot = bias_plot[cond]
+                bias_outlier = np.array(bias_array)[np.bitwise_not(cond)]
+        
+        # Add model markers inside taylor diagram
+        if not percent_bias_on:           
+            modelset = self.ax.scatter(
+                np.arccos(corr_plot), std_plot,  # theta, radius
+                *args, **kwargs)
+        else:
+            for i in range(len(corr_plot)):
+                size, marker = self._biasToMarkerSize(bias_plot[i])
+                modelset = self.ax.scatter(
+                    np.arccos(corr_plot)[i], # theta
+                    std_plot[i],  # radius
+                    s = size,
+                    marker = marker,
+                    *args, **kwargs)
+                
+        # grab color
+        color = kwargs.get('edgecolors')
+        if color is None:
+            color = kwargs.get('facecolors')
             
         # Add modelset to modelMarkerSet for legend handles
-        self.modelMarkerSet.append(modelset)
+        if not percent_bias_on:
+            self.modelMarkerSet.append(modelset)
+        else:
+            label = kwargs.get('label')
+            if percent_bias_on:
+                handle = plt.scatter(1,2,color=color, label=label)
+                self.modelMarkerSet.append(handle)
 
-        # Annotate model markers
+        # Annotate model markers if annotate_on is True
         if annotate_on:
-            color = kwargs.get('color')
             # Initialize empty array that will be filled with model label text objects and returned
             modelTexts = []
             
-            for std, corr in zip(std_inside, corr_inside):
+            for std, corr in zip(std_plot, corr_plot):
                 label = str(stdAndNumber[std])
                 textObject = self.ax.annotate(
                     label, 
@@ -258,15 +315,25 @@ class TaylorDiagram(object):
                 modelTexts.append(textObject)
         
         # Plot model stats outisde the range of taylor diagram
-        if model_outside_on:
-            if len(std_outside)>0:
-                for std, corr in zip(std_outside, corr_outside):
-                    self.modelOutside += 1 # outside model number increases
+        if model_outlier_on:
+            if len(std_outlier)>0:
+                for std, corr in zip(std_outlier, corr_outlier):
+                    self.modelOutside += 1 # outlier model number increases
                     
-                    self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
-                                  *args,**kwargs,
-                                  clip_on=False,
-                                  transform=self.fig.transFigure)
+                    if not percent_bias_on: 
+                        self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                                        *args,**kwargs,
+                                        clip_on=False,
+                                        transform=self.fig.transFigure)
+                    else:
+                        for i in range(len(bias_outlier)):
+                            size, marker = self._biasToMarkerSize(bias_outlier[i])
+                            self.ax.scatter(0.185+self.modelOutside*0.16, 0.045,
+                                            *args,**kwargs,
+                                            s=size,
+                                            marker=marker,
+                                            clip_on=False,
+                                            transform=self.fig.transFigure)
                     
                     textObject = self.fig.text(
                         0.18+self.modelOutside*0.16, 0.065,
@@ -439,6 +506,42 @@ class TaylorDiagram(object):
                      fontsize=fontsize,
                      transform=self.ax.transAxes,
                      **kwargs)
+        
+    def plot_bias_legend(self):
+        """ Add bias legend to the upper left hand corner.
+        """
+        text = "-  /  +     Bias\n"
+        percent = [">20%", "10-20%", "5-10%", "1-5%", "<1%"]
+        
+        self.ax.text(0.09,
+                     0.92,
+                     text,
+                     fontsize=11,
+                     verticalalignment="top",
+                     transform=self.ax.transAxes)
+        
+        y_loc=0.87
+        size=140
+        marker1 = "v"
+        marker2 = "^"
+        for i in range(5):
+            if i == 4:
+                marker1 = "o"
+                marker2 = "o"
+                size += 50
+            self.ax.scatter(0.1, y_loc, s=size, marker=marker1,
+                            edgecolors='black', facecolors="None",
+                            transform=self.ax.transAxes)
+            self.ax.scatter(0.15, y_loc, s=size, marker=marker2,
+                    edgecolors='black', facecolors="None",
+                    transform=self.ax.transAxes)
+            self.ax.text(0.20, y_loc-0.01, percent[i], fontsize=11,
+                         transform=self.ax.transAxes)
+
+            y_loc -= 0.04
+            size -= 40
+            
+        
 
     def add_legend(self,
                    xloc=1.1,
@@ -546,11 +649,12 @@ def taylor_8():
     # Case A                       
     CA_std = [1.230, 0.988, 1.092, 1.172, 1.064, 0.990]
     CA_corr = [0.958, 0.973, -0.740, 0.743, 0.922, 0.950]
-    #BA = [2.7, -1.5, 17.31, -20.11, 12.5 , 8.341]
+    BA = [2.7, -1.5, 17.31, -20.11, 12.5 , 8.341]
 
     # Case B
     CB_std = [1.129, 0.996, 1.016, 1.134, 1.023, 0.962]
     CB_corr = [0.963, 0.975, 0.801, 0.814, -0.946, 0.984]
+    BB = [1.7  , 2.5  ,-17.31, 20.11, 19.5 , 7.341]
     
     # Create a list of model names
     namearr = ["Globe", "20S-20N", "Land", "Ocean", "N. America", "Africa"]
@@ -561,19 +665,19 @@ def taylor_8():
     # Add model sets
     modelTextsA, _ = dia.add_model_set(
         CA_std, CA_corr,
-        13, (-3.5, 8), # mode label fontsize and offset from marker
-        model_outside_on=True,
-        marker='^',
-        s=60, # marker size
-        edgecolors='red',
+        14, (-5, 9), # mode label fontsize and offset from marker
+        model_outlier_on=True,
+        percent_bias_on=True,
+        bias_array=BA,
+        edgecolors='red', # kwargs inputs start
         facecolors='none',
         label='Data A')
     modelTextsB, _ = dia.add_model_set(
         CB_std, CB_corr,
-        13, (-3.5, 8), 
-        model_outside_on=True,
-        marker='D',
-        s=60,
+        14, (-5, 9), 
+        model_outlier_on=True,
+        percent_bias_on=True,
+        bias_array=BB,
         edgecolors='blue',
         facecolors='none',
         label='Data B')
@@ -593,6 +697,9 @@ def taylor_8():
     
     # Add model name text
     dia.add_model_name(namearr, 0.06, 0.24, fontsize=12)
+    
+    # Add bias legend
+    dia.plot_bias_legend()
     
 
 
