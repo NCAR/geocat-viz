@@ -6,10 +6,10 @@ def add_right_hand_axis(ax,
                         labelpad=10,
                         axislabelsize=16,
                         y_minor_per_major=None):
-    """
-    Utility function that adds a right hand axis to the plot.
+    """Utility function that adds a right hand axis to the plot.
 
-    Args:
+    Parameters
+    ----------
 
         ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             Current axes to the current figure
@@ -21,21 +21,27 @@ def add_right_hand_axis(ax,
             Should be given as a tuple of numeric values (left, right), where left and right are the left and right
             y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
             documentation for further information.
-            
+
         yticks (:class:`list`):
             List of y-axis tick locations. See Matplotlib documentation for further information.
-            
+
         ticklabelsize (:class:`int`):
             Text font size of tick labels. A default value of 12 is used if nothing is set.
-            
+
         labelpad (:class:`float`):
             Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
-            
+
         axislabelsize (:class:`int`):
             Text font size for y-axes. A default value of 16 is used if nothing is set.
-            
+
         y_minor_per_major (:class:`int`):
             Number of minor ticks between adjacent major ticks on y-axis.
+
+        Returns
+        -------
+
+        axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            The created right-hand axis
     """
     from geocat.viz import util as gvutil
     import matplotlib.ticker as tic
