@@ -36,12 +36,12 @@ class Contour(NCL_Plot):
         if kwargs.get('clevels') is not None:
             # take a guess at filled levels
             self.clevels = kwargs.get('clevels')
-        
+
         # Pull out child-class specific kwargs
         if kwargs.get('cmap') is not None:
             self.cmap = kwargs.get('cmap')
         else:
-            self.cmap = self._default_cmap      
+            self.cmap = self._default_cmap
 
         # Call parent class constructor
         NCL_Plot.__init__(self, *args, **kwargs)
@@ -70,11 +70,12 @@ class Contour(NCL_Plot):
 
         # call colorbar creation from parent class
         # set colorbar if specified
-        if self.colorbar is not False and self.colorbar is not 'off' and kwargs.get('contour_fill') is not False:
+        if self.colorbar is not False and self.colorbar is not 'off' and kwargs.get(
+                'contour_fill') is not False:
             self._add_colorbar(self.cf)
 
     def _estimate_levels(self):
-        
+
         # set lower, upper bounds, and stepsize
         lb = np.nanmin(self.data)
         ub = np.nanmax(self.data)
@@ -86,9 +87,10 @@ class Contour(NCL_Plot):
             precision = np.ceil(abs(np.log10(abs(step))))
         else:
             precision = 0
-        
+
         step = np.true_divide(np.floor(step / 2 * 10**precision), 10**precision)
         lb = np.true_divide(np.floor(lb * 10**precision), 10**precision)
-        ub = np.true_divide(np.ceil(ub * 10**precision + 1), 10**precision) + step
-        
+        ub = np.true_divide(np.ceil(ub * 10**precision + 1), 10**
+                            precision) + step
+
         return np.arange(lb, ub, step)
