@@ -423,7 +423,6 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-
         *args* and *kwargs* are propagated to `matplotlib.axes.Axes.grid`
         """
         self._ax.grid(*args, **kwargs)
