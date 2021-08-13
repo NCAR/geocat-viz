@@ -1,31 +1,53 @@
+import numpy as np
+
 def add_lat_lon_gridlines(ax,
-                          zero_direction_label=False,
-                          dateline_direction_label=False):
-    """
-    Utility function that adds latitude and longtitude gridlines to the plot.
+                          projection=None,
+                          draw_labels=True,
+                          xlocator=np.arange(-180, 180, 15),
+                          ylocator=np.arange(-90, 90, 15),
+                          labelsize=12,
+                          **kwargs):
+    """Utility function that adds latitude and longtitude gridlines to the
+    plot.
 
     Args:
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+        ax (:class:`cartopy.mpl.geoaxes.GeoAxes`):
+            Current axes to the current figure.
 
-        zero_direction_label (:class:`bool`):
-            Set True to get 0 E / O W or False to get 0 only.
+        projection (:class:`cartopy.crs.CRS`):
+            Defines a Cartopy Coordinate Reference System. If not given,
+            defaults to ccrs.PlateCarree()
 
-        dateline_direction_label (:class:`bool`):
-            Set True to get 180 E / 180 W or False to get 180 only.
+        draw_labels (:class:`bool`):
+            Toggle whether to draw labels, default to True.
+
+        xlocator, ylocator (:class:`numpy.ndarray` or list):
+            Arrays of fixed locations of the gridlines in the x and y coordinate of the given CRS.
+            Default to np.arange(-180, 180, 15) and np.arange(-90, 90, 15).
+
+        labelsize (:class:`float`):
+            Fontsizes of label fontsizes of x and y coordinates.
+
+        *kwargs* control line properties and are passed through to `matplotlib.collections.Collection`.
+
+    Return:
+
+        gl (:class:`cartopy.mpl.gridliner.Gridliner`):
     """
-    import numpy as np
-    import cartopy.crs as ccrs
     import matplotlib.ticker as mticker
 
-    gl = ax.gridlines(crs=ccrs.PlateCarree(),
-                      linewidth=1,
-                      color='black',
-                      alpha=0.5)
+    # Draw gridlines
+    gl = ax.gridlines(crs=projection,
+                      draw_labels=draw_labels,
+                      x_inline=False,
+                      y_inline=False,
+                      **kwargs)
 
-    gl.xlocator = mticker.FixedLocator(np.arange(-180, 181, 30))
-    gl.ylocator = mticker.FixedLocator(np.arange(-90, 91, 30))
+    gl.xlocator = mticker.FixedLocator(xlocator)
+    gl.ylocator = mticker.FixedLocator(ylocator)
+    gl.xlabel_style = {"rotation": 0, "size": labelsize}
+    gl.ylabel_style = {"rotation": 0, "size": labelsize}
 
     return gl
 
