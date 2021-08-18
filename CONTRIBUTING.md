@@ -4,11 +4,11 @@ branching, etc.). Once you determine that a function should be contributed under
 following contribution guidelines:
 
 
-# Adding new functions to the Geocat-viz repo
+# Adding new utility functions to the Geocat-viz repo
 
 1. Please check the followings to ensure that the functionality you are about to work on has not been ported yet:
 
-    - Functions implemented in `$GEOCAT_VIZ/src/util.py`,
+    - Functions implemented in `$GEOCAT_VIZ/src/geocat/viz/util/util.py`,
 
     - The list of [GeoCAT-viz Issues](https://github.com/NCAR/GeoCAT-viz/issues) and
     [GeoCAT-examples Issues](https://github.com/NCAR/GeoCAT-examples/issues) to see if any of
@@ -21,4 +21,28 @@ following contribution guidelines:
         [GeoCAT-viz Issues](https://github.com/NCAR/GeoCAT-viz/issues)
         that describes need for the functionality you are planning to contribute.
 
-2. Define a new function and implement it under the `$GEOCAT_VIZ/src/util.py`.
+2. Define a new function and implement it under the `$GEOCAT_VIZ/src/geocat/viz/util/util.py`.
+
+# Adding new plotting utility functionality to the Geocat-viz repo
+
+1. Please check the followings to ensure that the functionality you are about to work on has not been ported yet:
+
+    - Functions implemented in `$GEOCAT_VIZ/src/geocat/viz/`
+
+    - The list of [GeoCAT-viz Issues](https://github.com/NCAR/GeoCAT-viz/issues) and
+    [GeoCAT-examples Issues](https://github.com/NCAR/GeoCAT-examples/issues) to see if any of
+    the existing to-do items are something you might be interested in working on,
+
+        - If so, please comment (or self-assign the issue if you have permissions to do so) indicating that
+        you intend to work on it.
+
+        - Otherwise, you may create and self-assign an issue under
+        [GeoCAT-viz Issues](https://github.com/NCAR/GeoCAT-viz/issues)
+        that describes need for the functionality you are planning to contribute.
+
+2. Create a new folder under `$GEOCAT_VIZ/src/geocat/viz/` and implement your plotting function inside, making
+use of the pre-defined parent classes if appropriate
+
+3. Add the function to the namespace by adding it to `$GEOCAT_VIZ/src/geocat/viz/__init__.py`
+
+4. Add tests if appropriate in `$GEOCAT_VIZ/test/`

@@ -3,7 +3,7 @@
 import xarray as xr
 import warnings
 
-from _plot_util import NCL_Plot
+from ._plot_util import NCL_Plot
 
 
 class Contour(NCL_Plot):
