@@ -4,8 +4,8 @@ import xarray as xr
 
 from geocat.viz.util import set_titles_and_labels
 
-from _set_up_fig import _fig_ax
-from _add_geo_features import add_geo_features
+from ._set_up_fig import _fig_ax
+from ._add_geo_features import add_geo_features
 
 
 class NCL_Plot(_fig_ax, add_geo_features):
