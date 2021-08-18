@@ -10,7 +10,6 @@ from geocat.viz import util as gvutil
 from geocat.comp import eofunc_eofs, eofunc_pcs, month_to_season
 from contourf import *
 
-
 # # Recreated Geo-CAT Examples Plot: NCL_color_1.py
 
 # # Open a netCDF data file using xarray default engine and load the data into xarray
@@ -78,13 +77,12 @@ from contourf import *
 #                 righttitle="Celsius",
 #                 righttitlefontsize=14,
 #                 xlabel="",
-#                 ylabel=""    
+#                 ylabel=""
 #                 )
 
 # bplot.show_land()
 
 # bplot.show()
-
 
 # # Recreated Geo-CAT Examples Plot: NCL_conLab_4.py
 
@@ -468,65 +466,65 @@ weightTotal = clat_subset.sum() * nLon
 pcs = pcs / weightTotal
 
 xlim = (-70, 45)
-ylim = (20,80)
+ylim = (20, 80)
 
 pct = eofs.attrs['varianceFraction'].values[0] * 100
 
-iplot = Contour(eofs.sel(eof=0),
-                flevels = np.linspace(-0.08, 0.08, 9, endpoint=True),
-                projection = ccrs.PlateCarree(),
-                w = 6,
-                h = 8,
-                subplot = [3,1,1],
-                xlim = xlim,
-                ylim = ylim,
-                xticks=[-60, -30, 0, 30],
-                yticks=[40, 60, 80],
-                ticklabelfontsize = 10,
-                linewidth = 1.5,
-                cmap = gvcmaps.BlWhRe,
-                contour_lines = False,
-                draw_contour_labels = True,
-                cbextend = "both",
-                xlabel = "",
-                ylabel = "",
-                lefttitle=f'EOF {0}',
-                lefttitlefontsize=10,
-                righttitle=f'{pct:.1f}%',
-                righttitlefontsize=10,
-                maintitle = "SLP: DJF: 1979-2003",
-                maintitlefontsize = 14,
-                #add_colorbar=False
-                )
+iplot = Contour(
+    eofs.sel(eof=0),
+    flevels=np.linspace(-0.08, 0.08, 9, endpoint=True),
+    projection=ccrs.PlateCarree(),
+    w=6,
+    h=8,
+    subplot=[3, 1, 1],
+    xlim=xlim,
+    ylim=ylim,
+    xticks=[-60, -30, 0, 30],
+    yticks=[40, 60, 80],
+    ticklabelfontsize=10,
+    linewidth=1.5,
+    cmap=gvcmaps.BlWhRe,
+    contour_lines=False,
+    draw_contour_labels=True,
+    cbextend="both",
+    xlabel="",
+    ylabel="",
+    lefttitle=f'EOF {0}',
+    lefttitlefontsize=10,
+    righttitle=f'{pct:.1f}%',
+    righttitlefontsize=10,
+    maintitle="SLP: DJF: 1979-2003",
+    maintitlefontsize=14,
+    #add_colorbar=False
+)
 
-for i in range(neof-1):
-    eof_single = eofs.sel(eof=(i+1))
+for i in range(neof - 1):
+    eof_single = eofs.sel(eof=(i + 1))
     pct = eofs.attrs['varianceFraction'].values[i] * 100
-    
+
     Contour(eof_single,
-            flevels = np.linspace(-0.08, 0.08, 9, endpoint=True),
-            projection = ccrs.PlateCarree(),
-            ref_fig = iplot,
-            subplot = [3,1,i+2],
-            xlim = xlim,
-            ylim = ylim,
+            flevels=np.linspace(-0.08, 0.08, 9, endpoint=True),
+            projection=ccrs.PlateCarree(),
+            ref_fig=iplot,
+            subplot=[3, 1, i + 2],
+            xlim=xlim,
+            ylim=ylim,
             xticks=[-60, -30, 0, 30],
             yticks=[40, 60, 80],
-            ticklabelfontsize = 10,
-            linewidth = 1.5,
-            cmap = gvcmaps.BlWhRe,
-            contour_lines = False,
-            draw_contour_labels = True,
-            cbextend = "both",
-            xlabel = "",
-            ylabel = "",
+            ticklabelfontsize=10,
+            linewidth=1.5,
+            cmap=gvcmaps.BlWhRe,
+            contour_lines=False,
+            draw_contour_labels=True,
+            cbextend="both",
+            xlabel="",
+            ylabel="",
             lefttitle=f'EOF {i + 1}',
             lefttitlefontsize=10,
             righttitle=f'{pct:.1f}%',
             righttitlefontsize=10,
-            add_colorbar=False
-            )
-    
+            add_colorbar=False)
+
 #plt.subplots_adjust(bottom=0.07, top=0.95, hspace=0.15)
 
 iplot.show()

@@ -476,8 +476,8 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
             Determines which extrema are being found- minimum or maximum, respectively.
             Default eType is 'Low'.
         eps (:class:`float`):
-            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples 
-            for one to be considered as in the neighborhood of the other. 
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
+            for one to be considered as in the neighborhood of the other.
             Default eps is 10.
     Returns:
         clusterExtremas (:class:`list`):
