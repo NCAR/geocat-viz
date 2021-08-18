@@ -194,18 +194,18 @@ class Contour(NCL_Plot):
         # If contour labels are requested, try to set them on contour lines. If failed, use filled contours
         if self.draw_contour_labels is True:
             try:
-                self.cl
                 self._add_contour_labels(self.ax,
                                          self.cl,
                                          contourlabels=self.contourlabels,
                                          fontsize=self.contourfontsize,
                                          background=self.contourbackground)
             except:
-                self._add_contour_labels(self.ax,
-                                         self.cf,
-                                         contourlabels=self.contourlabels,
-                                         fontsize=self.contourfontsize,
-                                         background=self.contourbackground)
+                if self.contour_fill is not False:
+                    self._add_contour_labels(self.ax,
+                                             self.cf,
+                                             contourlabels=self.contourlabels,
+                                             fontsize=self.contourfontsize,
+                                             background=self.contourbackground)
 
         # Call colorbar creation from parent class
         # Set colorbar if specified
@@ -216,11 +216,13 @@ class Contour(NCL_Plot):
              (kwargs.get('contour_fill') is not False) and
              (self.subplot is None)) or
                 # If subplot, check if in last position in subplot and that add_colorbar is not False and plot
-            ((self.subplot[2] == self.subplot[0]) and
+            ((self.subplot is not None) and
+             (self.subplot[2] == self.subplot[0]) and
              (self.add_colorbar is not False) and
              (self.add_colorbar != "off"))):
 
-            self._add_colorbar(mappable=self.cf)
+            if self.contour_fill is not False:
+                self._add_colorbar(mappable=self.cf)
 
     def _generate_contours(self, *args, **kwargs):
         """Generate filled contours and/or contour lines for figure.
