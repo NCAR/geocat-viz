@@ -3,12 +3,11 @@ import warnings
 import xarray as xr
 
 from geocat.viz.util import set_titles_and_labels
+from _set_up_fig import _fig_ax
+from _add_geo_features import add_geo_features
 
-from ._set_up_fig import _fig_ax
-from ._add_geo_features import add_geo_features
 
-
-class NCL_Plot(_fig_ax, add_geo_features):
+class NCL_Plot(_fig_ax):
     """Parent class to create figure, axes, set NCL style with constructors to
     add colorbar, add titles, and show plot.
 
@@ -119,6 +118,7 @@ class NCL_Plot(_fig_ax, add_geo_features):
 
         # Pull out colorbar arguments
         self.cbar = None
+        self.individual_cb = kwargs.get("individual_cb")
         self.add_colorbar = kwargs.get('add_colorbar')
         self.mappable = kwargs.get('mappable')
         self.cborientation = kwargs.get('cborientation')
@@ -129,9 +129,9 @@ class NCL_Plot(_fig_ax, add_geo_features):
         self.cbextend = kwargs.get('cbextend')
         self.cbticklabels = kwargs.get("cbticklabels")
         self.cbticklabelsize = kwargs.get("cbticklabelsize")
-
+        
         # Set up figure and axes with specified format
-        _fig_ax._init_(self, *args, **kwargs)
+        _fig_ax._init_(self, *args, **kwargs) 
 
         # Add geographical features to figure
         add_geo_features._init_(self, *args, **kwargs)
@@ -201,20 +201,21 @@ class NCL_Plot(_fig_ax, add_geo_features):
                 "Mappable must be defined when first creating colorbar.")
 
         # If there is no subplot, create colorbar without specifying axis
-        if self.subplot is None:
-            self.cbar = self.fig.colorbar(self.mappable,
-                                          orientation=self.cborientation,
-                                          shrink=self.cbshrink,
-                                          pad=self.cbpad,
-                                          drawedges=self.cbdrawedges)
+        if (self.subplot is None) or (self.individual_cb is True):
+            self.cbar = self.fig.colorbar(self.mappable, 
+                                          ax = self.ax,
+                                          orientation=self.cborientation, 
+                                          shrink=self.cbshrink, 
+                                          pad=self.cbpad, 
+                                          drawedges=self.cbdrawedges,
+                                          extend = self.cbextend
+                                          )
         # If subplot, specify caxis as the extra subplot added during figure creation
         else:
             self.cbar = self.fig.colorbar(self.mappable,
-                                          cax=self.ref_fig.axes[-1],
-                                          orientation=self.cborientation,
-                                          shrink=self.cbshrink,
-                                          pad=self.cbpad,
-                                          drawedges=self.cbdrawedges)
+                                          cax = self.cax,
+                                          orientation = self.cborientation)
+            
 
         # Set colorbar ticks as the boundaries of the cbar
         if (cbticks is None) and (self.cbticks is None):
