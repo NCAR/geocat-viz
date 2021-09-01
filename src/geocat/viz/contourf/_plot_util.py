@@ -222,7 +222,7 @@ class NCL_Plot(_fig_ax):
         # Label every boundary except the ones on the end of the colorbar
         self.cbar.set_ticks(ticks=self.cbticks)
 
-        # Set colorbar tick labesls
+        # Set colorbar tick labels
         if self.cbticklabels is not None:
             self.cbar.set_ticklabels(ticklabels=self.cbticklabels)
 
