@@ -118,7 +118,7 @@ class Contour(NCL_Plot):
                 self.levels = kwargs.get('flevels')
             elif kwargs.get('flevels') is None:
                 # take a guess at filled levels
-                self._estimate_flevels
+                self._estimate_flevels()
 
         # Pull in X and Y axis data if specified
         if kwargs.get("X") is not None:
