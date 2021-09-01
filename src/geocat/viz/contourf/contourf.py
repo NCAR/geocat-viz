@@ -191,7 +191,7 @@ class Contour(NCL_Plot):
 
         # Set figure in NCL style
         _fig_ax._set_NCL_style(self, self.ax)
-        
+
         # If contour labels are requested, try to set them on contour lines. If failed, use filled contours
         if self.draw_contour_labels is True:
             try:
@@ -212,21 +212,19 @@ class Contour(NCL_Plot):
         # Set colorbar if specified
 
         # If not a subplot and add_colorbar and contour_fill is not false, add colorbar
-        if (((self.add_colorbar is not False) and 
-            (self.add_colorbar != 'off') and 
-            (kwargs.get('contour_fill') is not False) and
-            (self.subplot is None)) or 
-        # If subplot, check if in last position in subplot and that add_colorbar is not False and plot
-            ((self.add_colorbar is not False) and 
-             (self.subplot[2] == self.subplot[0]*self.subplot[1]) and 
+        if (((self.add_colorbar is not False) and
+             (self.add_colorbar != 'off') and
+             (kwargs.get('contour_fill') is not False) and
+             (self.subplot is None)) or
+                # If subplot, check if in last position in subplot and that add_colorbar is not False and plot
+            ((self.add_colorbar is not False) and
+             (self.subplot[2] == self.subplot[0] * self.subplot[1]) and
              (self.add_colorbar != "off") and
              ((self.individual_cb is not True) or
-             (self.ref_fig.individual_cb is not True))
-            
-            or (self.individual_cb is True))):
-            
-            self._add_colorbar(mappable=self.cf)
+              (self.ref_fig.individual_cb is not True)) or
+             (self.individual_cb is True))):
 
+            self._add_colorbar(mappable=self.cf)
 
     def _generate_contours(self, *args, **kwargs):
         """Generate filled contours and/or contour lines for figure.
@@ -361,11 +359,12 @@ class Contour(NCL_Plot):
                                               alpha=0.8,
                                               linewidths=self.linewidth,
                                               linestyles=self.linestyle,
-                                              extent=[self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]],
-                                              extend = self.cbextend
-                                               )
-    
-    
+                                              extent=[
+                                                  self.xlim[0], self.xlim[1],
+                                                  self.ylim[0], self.ylim[1]
+                                              ],
+                                              extend=self.cbextend)
+
     def _add_contour_labels(self,
                             ax,
                             lines,

@@ -129,9 +129,9 @@ class NCL_Plot(_fig_ax):
         self.cbextend = kwargs.get('cbextend')
         self.cbticklabels = kwargs.get("cbticklabels")
         self.cbticklabelsize = kwargs.get("cbticklabelsize")
-        
+
         # Set up figure and axes with specified format
-        _fig_ax._init_(self, *args, **kwargs) 
+        _fig_ax._init_(self, *args, **kwargs)
 
         # Add geographical features to figure
         add_geo_features._init_(self, *args, **kwargs)
@@ -202,20 +202,18 @@ class NCL_Plot(_fig_ax):
 
         # If there is no subplot, create colorbar without specifying axis
         if (self.subplot is None) or (self.individual_cb is True):
-            self.cbar = self.fig.colorbar(self.mappable, 
-                                          ax = self.ax,
-                                          orientation=self.cborientation, 
-                                          shrink=self.cbshrink, 
-                                          pad=self.cbpad, 
+            self.cbar = self.fig.colorbar(self.mappable,
+                                          ax=self.ax,
+                                          orientation=self.cborientation,
+                                          shrink=self.cbshrink,
+                                          pad=self.cbpad,
                                           drawedges=self.cbdrawedges,
-                                          extend = self.cbextend
-                                          )
+                                          extend=self.cbextend)
         # If subplot, specify caxis as the extra subplot added during figure creation
         else:
             self.cbar = self.fig.colorbar(self.mappable,
-                                          cax = self.cax,
-                                          orientation = self.cborientation)
-            
+                                          cax=self.cax,
+                                          orientation=self.cborientation)
 
         # Set colorbar ticks as the boundaries of the cbar
         if (cbticks is None) and (self.cbticks is None):

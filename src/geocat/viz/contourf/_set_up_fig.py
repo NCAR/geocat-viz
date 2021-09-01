@@ -7,6 +7,7 @@ from geocat.viz.util import add_major_minor_ticks
 from geocat.viz.util import set_axes_limits_and_ticks
 from _add_geo_features import add_geo_features
 
+
 class _fig_ax(add_geo_features):
     """Class to create figure and axes and set their style.
 
@@ -129,11 +130,11 @@ class _fig_ax(add_geo_features):
 
         # Pull out subplot argument
         self.subplot = kwargs.get("subplot")
-        
+
         # If there is a subplot, set up variables for it
         if self.subplot is not None:
             self._set_up_subplot()
-            
+
         # If there is not a reference obj, create a new figure
         if kwargs.get('ref_fig') is None:
             self._set_up_fig(w=self.w, h=self.h)
@@ -142,23 +143,23 @@ class _fig_ax(add_geo_features):
             self.fig = self.ref_fig.fig
             self.axes = self.ref_fig.axes
             self.cax = self.ref_fig.cax
-            
+
             # Carry over colorbar arguments from ref obj
             self.add_colorbar = self.ref_fig.add_colorbar
             self.cborientation = self.ref_fig.cborientation
-            
+
         # Set up axes with the specified style
         self._set_axes()
-        
+
         # Add geographical features to figure
         add_geo_features._init_(self, *args, **kwargs)
-        
+
         # Set axis limits and ticks
         self._set_lim_ticks(self.ax)
-        
+
         if self.subplot is not None:
             self._create_subplot_cax()
-        
+
     def _set_up_fig(self, w=None, h=None):
         """Create figure with subplots, if specified.
 
@@ -183,60 +184,65 @@ class _fig_ax(add_geo_features):
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
             if self.projection is None:
-                self.fig, self.axes = plt.subplots(self.sp_rows, 
-                                                 self.sp_columns,
-                                                 figsize=(w,h),
-                                                 gridspec_kw = self._generate_gridspec_ratio(self.sp_rows, self.sp_columns, self.cborientation)
-                                                 )
-        
+                self.fig, self.axes = plt.subplots(
+                    self.sp_rows,
+                    self.sp_columns,
+                    figsize=(w, h),
+                    gridspec_kw=self._generate_gridspec_ratio(
+                        self.sp_rows, self.sp_columns, self.cborientation))
+
             else:
-                self.fig, self.axes = plt.subplots(self.sp_rows,
-                                                 self.sp_columns,
-                                                 subplot_kw={"projection": self.projection},
-                                                 figsize=(w,h),
-                                                 gridspec_kw = self._generate_gridspec_ratio(self.sp_rows, self.sp_columns, self.cborientation)
-                                                 )
-                
+                self.fig, self.axes = plt.subplots(
+                    self.sp_rows,
+                    self.sp_columns,
+                    subplot_kw={"projection": self.projection},
+                    figsize=(w, h),
+                    gridspec_kw=self._generate_gridspec_ratio(
+                        self.sp_rows, self.sp_columns, self.cborientation))
+
     def _generate_gridspec_ratio(self, rows, columns, cborientation):
-        """Generate gridspec for subplots, with additional cax if there is a colorbar.
-        
-                Args:
-                    
-                    cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
-                    
-                    columns (:obj:`int`): Number of columns in the subplot.
-                    
-                    rows (:obj:`int`): Number of rows in the subplot.
-        
+        """Generate gridspec for subplots, with additional cax if there is a
+        colorbar.
+
+        Args:
+
+            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+
+            columns (:obj:`int`): Number of columns in the subplot.
+
+            rows (:obj:`int`): Number of rows in the subplot.
         """
 
         height_list = [1] * rows
         width_list = [1] * columns
-        
-        if (self.add_colorbar is not False) and (self.individual_cb is not True):
+
+        if (self.add_colorbar is not False) and (self.individual_cb
+                                                 is not True):
             if (cborientation == "horizontal") or (cborientation is None):
                 height_list[-1] = 0.1
             elif (cborientation == "vertical"):
                 width_list[-1] = 0.1
-        
+
         return {'height_ratios': height_list, 'width_ratios': width_list}
-    
+
     def _create_subplot_cax(self, *args, **kwargs):
-        """Create the colorbar subplot axis when there is a subplot with a colorbar.
-        
-        """
-        
+        """Create the colorbar subplot axis when there is a subplot with a
+        colorbar."""
+
         # If adding a colorbar, create colorbar axis
-        if (self.add_colorbar != 'off') and self.add_colorbar is not False and self.individual_cb is not True:
-            
+        if (
+                self.add_colorbar != 'off'
+        ) and self.add_colorbar is not False and self.individual_cb is not True:
+
             # If a 2D subplot configuration, calculate array index from subplot position
             if self.sp_columns != 1 and self.sp_rows != 1:
-                
+
                 # Generate gridspec for bottom right subplot
                 gs = self.axes[-1, -1].get_gridspec()
-                
+
                 # If a horizontal colorbar, join last row of subplots into one as the colorbar axis
-                if (self.cborientation == "horizontal") or (self.cborientation is None):
+                if (self.cborientation
+                        == "horizontal") or (self.cborientation is None):
                     # Turn off axes in last row so they do not show under colorbar
                     for ax in self.axes[-1, :]:
                         ax.axis("off")
@@ -252,11 +258,10 @@ class _fig_ax(add_geo_features):
             else:
                 # If not a 2D subplot, set final axis in the list of axes as the colorbar axis
                 self.cax = self.axes[-1]
-                
+
                 # Configure axis
                 self.cax.set_aspect("auto")
                 self._set_lim_ticks(self.cax)
-        
 
     def _set_axes(self, *args, **kwargs):
         """Assign value for self.ax by either creating a new axis or
@@ -279,7 +284,7 @@ class _fig_ax(add_geo_features):
         # If there is not reference figure, either get axis from plt.subplot or create axis
         if self.ref_fig is None:
             if self.subplot is not None:
-                
+
                 # Set the axis as a axis from axes array or grid
                 self.ax = self.axes[self._subplot_pos()]
             else:
@@ -299,7 +304,7 @@ class _fig_ax(add_geo_features):
                     self.ax = self.ref_fig.ax
                 except:
                     self.ax = self.ref_fig.gca()
-                    
+
         # Set the aspect to auto to correct sizing
         self.ax.set_aspect("auto")
 
@@ -339,7 +344,7 @@ class _fig_ax(add_geo_features):
             self.ax.xaxis.set_major_formatter(LongitudeFormatter())
         if self.y_label_lat is not False:
             self.ax.yaxis.set_major_formatter(LatitudeFormatter())
-            
+
     def _set_lim_ticks(self, ax):
         """Set limits and ticks for axis.
 
@@ -360,7 +365,7 @@ class _fig_ax(add_geo_features):
         # If xlim/ylim is not specified, set it to the mix and max of the data
         if self.ylim is None:
             self.ylim = ax.get_ylim()[::-1]
-            
+
         if self.xlim is None:
             self.xlim = ax.get_xlim()[::-1]
 
@@ -384,29 +389,28 @@ class _fig_ax(add_geo_features):
         # Set extent of figure
         if self.set_extent is not None:
             ax.set_extent(self.set_extent, crs=self.projection)
-            
+
     def _subplot_pos(self):
         """Convert the position of a subplot to its array index.
-        
-                Kwargs:
-                    
-                    cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
-        
+
+        Kwargs:
+
+            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
         """
-        
+
         # If the cborientation is vertical, the number of rows should be used to calculate the array index. Otherwise, the number of columns should be used.
         if self.cborientation == "vertical":
             iterate = self.sp_rows
         else:
             iterate = self.sp_columns
-        
+
         # If a 2D array, find the index position
         if self.sp_columns != 1 and self.sp_rows != 1:
-            
+
             # Calculate the array indices
-            row_position = math.trunc((self.subplot[2]-1)/iterate)
-            pos_remain = (self.subplot[2]-1)%iterate
-             
+            row_position = math.trunc((self.subplot[2] - 1) / iterate)
+            pos_remain = (self.subplot[2] - 1) % iterate
+
             # Change the position of the index depending on the colorbar orientation
             if self.cborientation == "vertical":
                 return (pos_remain, row_position)
@@ -414,27 +418,28 @@ class _fig_ax(add_geo_features):
                 return (row_position, pos_remain)
         else:
             # If not a 2D array, return the subplot position minus 1 to account for indexing at 0
-            return self.subplot[2]-1
-        
-            
+            return self.subplot[2] - 1
+
     def _set_up_subplot(self):
-        """Find the number of rows and columns needed in the subplot, taking in the colorbar cax into account.
-        
-        """
-        
+        """Find the number of rows and columns needed in the subplot, taking in
+        the colorbar cax into account."""
+
         # If there is a ref_fig, set the number of rows and columns equal to values from the reference figure
         if self.ref_fig is not None:
             self.sp_rows = self.ref_fig.sp_rows
             self.sp_columns = self.ref_fig.sp_columns
-        
+
         else:
             # Set up variable for rows and columns of subplot by pulling values from subplot list
             self.sp_rows = self.subplot[0]
             self.sp_columns = self.subplot[1]
-            
+
             # If there is a colorbar, add an additional row or column, depending on cborientation
-            if (self.add_colorbar is not False) and (self.add_colorbar != 'off'):
-                if (self.cborientation is not None) and (self.cborientation == "vertical" or self.ref_fig.cborientation == "vertical"):
-                    self.sp_columns +=1
+            if (self.add_colorbar
+                    is not False) and (self.add_colorbar != 'off'):
+                if (self.cborientation is not None) and (
+                        self.cborientation == "vertical" or
+                        self.ref_fig.cborientation == "vertical"):
+                    self.sp_columns += 1
                 else:
-                    self.sp_rows +=1
+                    self.sp_rows += 1
