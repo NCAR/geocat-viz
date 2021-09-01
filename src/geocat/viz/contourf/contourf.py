@@ -146,7 +146,7 @@ class Contour(NCL_Plot):
                 self.levels = kwargs.get('clevels')
             elif kwargs.get('clevels') is None:
                 # take a guess at filled levels
-                self._estimate_clevels
+                self._estimate_clevels()
 
         # Read in style of contour lines
         if kwargs.get("linecolor") is None:
