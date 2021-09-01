@@ -1,7 +1,6 @@
 """Plotting wrapper for matplotlib contourf function."""
 
 import xarray as xr
-import warnings
 
 from _set_up_fig import _fig_ax
 from _plot_util import NCL_Plot
