@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import warnings
 import xarray as xr
 
 from geocat.viz.util import set_titles_and_labels
