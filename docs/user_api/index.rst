@@ -23,13 +23,13 @@ GeoCAT-viz Utility Functions
 .. autosummary::
    :toctree: ./generated/ 
 
-   geocat.viz.util.util.add_lat_lon_labels
+   geocat.viz.util.add_lat_lon_labels
    
-   geocat.viz.util.util.add_major_minor_ticks
+   geocat.viz.util.add_major_minor_ticks
    
-   geocat.viz.util.util.set_titles__and_labels
+   geocat.viz.util.set_titles__and_labels
    
-   geocat.viz.util.util.set_axes_limits_and_ticks
+   geocat.viz.util.set_axes_limits_and_ticks
    
    geocat.viz.util.util.truncate_colormap
    
