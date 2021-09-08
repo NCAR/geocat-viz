@@ -13,6 +13,21 @@ where "geocat" is the name of a new conda environment, which can then be
 activated using::
 
     conda activate geocat
+    
+Example code provided with this documentation frequently makes use of other
+software packages, such as geocat-datafiles, geocat-comp, and Jupyter, which you
+may wish to install into your geocat environment. The following `conda create`
+command can be used to create a new conda environment that includes some of
+these additional commonly used Python packages pre-installed::
+
+    conda create -n geocat -c conda-forge -c ncar geocat-viz geocat-comp geocat-datafiles jupyter
+
+Alternatively, if you already created a conda environment using the first
+command (without the extra packages), you can activate and install the packages
+in an existing environment with the following commands::
+
+    conda activate geocat # or whatever your environment is called
+    conda install -c conda-forge geocat-comp geocat-datafiles jupyter
 
 Please note that the use of the conda-forge channel is essential to guarantee
 compatibility between dependency packages.
