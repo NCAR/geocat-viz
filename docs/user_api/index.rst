@@ -23,7 +23,7 @@ GeoCAT-viz Utility Functions
 .. autosummary::
    :toctree: ./generated/ 
 
-   geocat.viz.util.add_lat_lon_labels
+   geocat.viz.add_lat_lon_labels
    
    geocat.viz.util.add_major_minor_ticks
    
