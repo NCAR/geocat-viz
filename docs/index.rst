@@ -22,6 +22,7 @@ plotting packages.
 
    ./installation
    ./api
+   ./examples
    ./citation
    ./support
 
