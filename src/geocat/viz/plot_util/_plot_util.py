@@ -261,8 +261,10 @@ class NCL_Plot():
         else:
             # If there is a reference obj, assign the ref obj's figure as this obj's figure
             self.fig = self.ref_fig.fig
-            self.axes = self.ref_fig.axes
-            self.cax = self.ref_fig.cax
+            if self.subplot is not None:
+                self.axes = self.ref_fig.axes
+            if self.ref_fig.add_colorbar is not False or self.add_colorbar is not False:
+                self.cax = self.ref_fig.cax
 
             # Carry over colorbar arguments from ref obj
             self.add_colorbar = self.ref_fig.add_colorbar
@@ -465,7 +467,7 @@ class NCL_Plot():
         # Set NCL-style tick marks
         if self.ticklabelfontsize is None:
             self.ticklabelfontsize = ticklabelfontsize
-
+            
         add_major_minor_ticks(ax, labelsize=self.ticklabelfontsize)
 
         # Perform same action as add_lat_lon_ticklabels geocat-viz utility function

@@ -2,8 +2,6 @@
 
 import xarray as xr
 
-from _set_up_fig import _fig_ax
-
 from _plot_util import NCL_Plot
 
 
@@ -190,7 +188,7 @@ class Contour(NCL_Plot):
         self._generate_contours()
 
         # Set figure in NCL style
-        _fig_ax._set_NCL_style(self, self.ax)
+        self._set_NCL_style(self.ax)
 
         # If contour labels are requested, try to set them on contour lines. If failed, use filled contours
         if self.draw_contour_labels is True:
