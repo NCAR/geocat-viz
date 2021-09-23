@@ -8,7 +8,7 @@ import geocat.datafiles as gdf
 from geocat.viz import cmaps as gvcmaps
 from geocat.viz import util as gvutil
 from geocat.comp import eofunc_eofs, eofunc_pcs, month_to_season
-from contourf import *
+from .contourf import *
 
 # Recreated Geo-CAT Examples Plot: NCL_color_1.py
 

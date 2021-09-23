@@ -183,7 +183,7 @@ class Contour(NCL_Plot):
         self.contourbackground = kwargs.get("contourbackground")
 
         # Call parent class constructor
-        NCL_Plot.__init__(self, *args, **kwargs)
+        super.__init__(self, *args, **kwargs)
 
         # Add filled contours and/or contour lines to figure, as specified
         self._generate_contours()
