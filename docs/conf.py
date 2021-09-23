@@ -32,15 +32,57 @@ author = u'GeoCAT'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
+    #'sphinx.ext.intersphinx', 'sphinx.ext.mathjax'
+    ]
+
+intersphinx_mapping = {
+    'python': ('http://docs.python.org/3/', None),
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+    'xarray': ('http://xarray.pydata.org/en/stable/', None),
+    }
+
+napoleon_use_admonition_for_examples = True
+napoleon_include_special_with_doc = True
+
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+# source_suffix = ['.rst', '.md']
+source_suffix = '.rst'
+
+# The master toctree document.
+master_doc = 'index'
+
+# The version info for the project being documented
+def read_version():
+    for line in open('../meta.yaml').readlines():
+        index = line.find('set version')
+        if index > -1:
+            return line[index + 15:].replace('\" %}', '').strip()
+
+# The short X.Y version.
+version = read_version()
+
+# The full version, including alpha/beta/rc tags.
+release = read_version()
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = False
 
 # -- Options for HTML output -------------------------------------------------
 
