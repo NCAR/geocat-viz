@@ -106,3 +106,5 @@ html_logo = '_static/images/nsf.png'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'geocat-vizdoc'
+
+autodoc_typehints = 'none'
