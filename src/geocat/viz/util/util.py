@@ -11,13 +11,13 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
 
     Parameters
     ----------
-    ax: matplotlib.axes._subplots.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot
+    ax: :class:`matplotlib.axes._subplots.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
             Current axes to the current figure
 
-    zero_direction_label: bool
+    zero_direction_label: :class:`bool`
         Set True to get 0 E / O W or False to get 0 only.
 
-    dateline_direction_label: bool
+    dateline_direction_label: :class:`bool`
         Set True to get 180 E / 180 W or False to get 180 only.
 
     Examples
