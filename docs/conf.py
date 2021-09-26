@@ -58,6 +58,8 @@ intersphinx_mapping = {
     'numpy': ('http://docs.scipy.org/doc/numpy/', None),
     'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
     'xarray': ('http://xarray.pydata.org/en/stable/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None)
     }
 
 napoleon_use_admonition_for_examples = True
