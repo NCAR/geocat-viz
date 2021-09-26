@@ -22,10 +22,10 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 'website<https://geocat-examples.readthedocs.io/en/latest/index.html>'.
-    - 'NCL_ce_1.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>'
-    - 'NCL_ce_3_2.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>'
-    - 'NCL_conOncon_2.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>'
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 'website <https://geocat-examples.readthedocs.io/en/latest/index.html>'_.
+    - 'NCL_ce_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>'_
+    - 'NCL_ce_3_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>'_
+    - 'NCL_conOncon_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>'_
         
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
