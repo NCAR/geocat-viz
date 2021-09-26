@@ -1,19 +1,28 @@
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
+    
     """Utility function to make plots look like NCL plots by using latitude,
     longitude tick labels.
 
-    Args:
-
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+    Parameters
+    ----------
+    ax: matplotlib.axes._subplots.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot
             Current axes to the current figure
 
-        zero_direction_label (:class:`bool`):
-            Set True to get 0 E / O W or False to get 0 only.
+    zero_direction_label: bool
+        Set True to get 0 E / O W or False to get 0 only.
 
-        dateline_direction_label (:class:`bool`):
-            Set True to get 180 E / 180 W or False to get 180 only.
+    dateline_direction_label: bool
+        Set True to get 180 E / 180 W or False to get 180 only.
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 'website<https://geocat-examples.readthedocs.io/en/latest/index.html>'.
+    - 'NCL_ce_1.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>'
+    - 'NCL_ce_3_2.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>'
+    - 'NCL_conOncon_2.py<https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>'
+        
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
