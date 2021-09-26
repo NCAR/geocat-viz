@@ -2,7 +2,7 @@ import typing
 import matplotlib
 import cartopy
 
-def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes._subplots.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot],
+def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
                            zero_direction_label: bool = False,
                            dateline_direction_label: bool = False):
     
