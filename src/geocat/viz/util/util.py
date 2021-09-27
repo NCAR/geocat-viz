@@ -165,8 +165,8 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
 
     
-    Note
-    ----
+    Notes
+    -----
     If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
 
                      maintitle
@@ -216,6 +216,16 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
 
     labelfontsize: :class:`int`
         Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
+        
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    
+    - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=set_titles_and_labels>`_
+    
+    - `NCL_vector_4.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_4.html?highlight=set_titles_and_labels>`_
+    
+    - `NCL_polar_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_polar_1.html?highlight=set_titles_and_labels>`_
     """
 
     if maintitle is not None:
