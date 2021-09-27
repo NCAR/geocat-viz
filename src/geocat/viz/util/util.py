@@ -6,7 +6,7 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
                            zero_direction_label: bool = False,
                            dateline_direction_label: bool = False):
     
-    """Utility function to make plots look like NCL plots by using latitude,
+    """Utility function to make plots look like NCL plots by adding latitude,
     longitude tick labels.
 
     Parameters
