@@ -12,7 +12,7 @@ GeoCAT-viz Plotting Routines
 .. autosummary::
    :toctree: ./generated/
 
-   geocat.viz.contourf.contourf
+   geocat.viz.contourf
    
    geocat.viz.taylor.TaylorDiagram
    
@@ -23,7 +23,7 @@ GeoCAT-viz Utility Functions
 .. autosummary::
    :toctree: ./generated/ 
 
-   geocat.viz.util.util.add_lat_lon_ticklabels
+   geocat.viz.util.add_lat_lon_ticklabels
    
    geocat.viz.util.add_major_minor_ticks
    
@@ -31,16 +31,16 @@ GeoCAT-viz Utility Functions
    
    geocat.viz.util.set_axes_limits_and_ticks
    
-   geocat.viz.util.util.truncate_colormap
+   geocat.viz.util.truncate_colormap
    
-   geocat.viz.util.util.xr_add_cyclic_longitudes
+   geocat.viz.util.xr_add_cyclic_longitudes
    
-   geocat.viz.util.util.set_map_boundary
+   geocat.viz.util.set_map_boundary
    
-   geocat.viz.util.util.findLocalExtrema
+   geocat.viz.util.findLocalExtrema
    
-   geocat.viz.util.util.plotCLabels
+   geocat.viz.util.plotCLabels
    
-   geocat.viz.util.util.plotELabels
+   geocat.viz.util.plotELabels
    
-   geocat.viz.util.util.set_vector_density
+   geocat.viz.util.set_vector_density
