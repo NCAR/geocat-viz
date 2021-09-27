@@ -41,45 +41,58 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax,
-                          x_minor_per_major=3,
-                          y_minor_per_major=3,
-                          labelsize="small",
-                          basex=10,
-                          basey=10,
-                          linthreshx=2,
-                          linthreshy=2):
+def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot],
+                          x_minor_per_major: int = 3,
+                          y_minor_per_major: int = 3,
+                          basex: int = 10,
+                          basey: int = 10,
+                          labelsize: typing.Union[str, int] = "small",
+                          linthreshx: int = 2,
+                          linthreshy: int = 2):
     """Utility function to make plots look like NCL plots by adding minor and
     major tick lines.
 
-    Args:
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+        Current axes to the current figure
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+    x_minor_per_major: :class:`int`
+        Number of minor ticks between adjacent major ticks on x-axis
 
-        x_minor_per_major (:class:`int`):
-            Number of minor ticks between adjacent major ticks on x-axis
+    y_minor_per_major: :class:`int`
+        Number of minor ticks between adjacent major ticks on y-axis
 
-        y_minor_per_major (:class:`int`):
-            Number of minor ticks between adjacent major ticks on y-axis
+    basex: :class:`int`
+        If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
-        basex (:class:`int`):
-            If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+    basey: :class:`int`
+        If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+        
+    labelsize: :class:`str` or :class:`int`
+        Size of tick labels. Default is "small".
 
-        basey (:class:`int`):
-            If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+    linthreshx: :class:`int`
+        An argument passed to SymmetricalLogLocator if the xaxis scale is
+        `symlog`. Defines the range (-x, x), within which the plot is
+        linear. This avoids having the plot go to infinity around zero.
+        Defaults to 2.
 
-        linthreshx (:class:`int`):
-            An argument passed to SymmetricalLogLocator if the xaxis scale is
-            `symlog`. Defines the range (-x, x), within which the plot is
-            linear. This avoids having the plot go to infinity around zero.
-            Defaults to 2.
-
-        linthreshy (:class:`int`):
-            An argument passed to SymmetricalLogLocator if the yaxis scale is
-            `symlog`. Defines the range (-x, x), within which the plot is
-            linear. This avoids having the plot go to infinity around zero.
-            Defaults to 2.
+    linthreshy: :class:`int`
+        An argument passed to SymmetricalLogLocator if the yaxis scale is
+        `symlog`. Defines the range (-x, x), within which the plot is
+        linear. This avoids having the plot go to infinity around zero.
+        Defaults to 2.
+        
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    
+    - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=add_major_minor_ticks>`_
+    
+    - `NCL_box_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Boxplots/NCL_box_2.html?highlight=add_major_minor_ticks>`_
+    
+    - `NCL_scatter_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_1.html?highlight=add_major_minor_ticks>`_
     """
     import matplotlib.ticker as tic
     import numpy as np
@@ -135,23 +148,26 @@ def add_major_minor_ticks(ax,
     )
 
 
-def set_titles_and_labels(ax,
-                          maintitle=None,
-                          maintitlefontsize=18,
-                          lefttitle=None,
-                          lefttitlefontsize=18,
-                          righttitle=None,
-                          righttitlefontsize=18,
-                          xlabel=None,
-                          ylabel=None,
-                          labelfontsize=16):
+def set_titles_and_labels(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot],
+                          maintitle: str = None,
+                          maintitlefontsize: int = 18,
+                          lefttitle: str = None,
+                          lefttitlefontsize: int = 18,
+                          righttitle: str = None,
+                          righttitlefontsize: int = 18,
+                          xlabel: str = None,
+                          ylabel: str = None,
+                          labelfontsize: int = 16):
     """Utility function to handle axis titles, left/right aligned titles, and
     labels as they appear in NCL plots.
 
     The intent of this function is to help make the plot look like an NCL plot as well as to help developers use only
     this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
 
-    (1) If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
+    
+    Note
+    ----
+    If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
 
                      maintitle
      ___________________________________________
@@ -167,39 +183,39 @@ def set_titles_and_labels(ax,
     |                   Axes                    |
     |                                           |
 
-    Args:
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+        Current axes to the current figure
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+    maintitle: :class:`str`
+        Text to use for the maintitle.
 
-        maintitle (:class:`str`):
-            Text to use for the maintitle.
+    maintitlefontsize: :class:`int`
+        Text font size for maintitle. A default value of 18 is used if nothing is set.
 
-        maintitlefontsize (:class:`int`):
-            Text font size for maintitle. A default value of 18 is used if nothing is set.
+    lefttitle: :class:`str`
+        Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
+        but for some plot types, a lefttitle likely with a right-aligned title, righttitle, can be used together.
 
-        lefttitle (:class:`str`):
-            Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
-            but for some plot types, a lefttitle likely with a right-aligned title, righttitle, can be used together.
+    lefttitlefontsize: :class:`int`
+        Text font size for lefttitle. A default value of 18 is used if nothing is set.
 
-        lefttitlefontsize (:class:`int`):
-            Text font size for lefttitle. A default value of 18 is used if nothing is set.
+    righttitle: :class:`str`
+        Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
+        but for some plot types, a righttitle likely with a left-aligned title, lefttitle, can be used together.
 
-        righttitle (:class:`str`):
-            Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
-            but for some plot types, a righttitle likely with a left-aligned title, lefttitle, can be used together.
+    righttitlefontsize: :class:`int`
+        Text font size for righttitle. A default value of 18 is used if nothing is set.
 
-        righttitlefontsize (:class:`int`):
-            Text font size for righttitle. A default value of 18 is used if nothing is set.
+    xlabel: :class:`str`
+        Text for the x-axis label.
 
-        xlabel (:class:`str`):
-            Text for the x-axis label.
+    ylabel: :class:`str`
+        Text for the y-axis label.
 
-        ylabel (:class:`str`):
-            Text for the y-axis label.
-
-        labelfontsize (:class:`int`):
-            Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
+    labelfontsize: :class:`int`
+        Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
     """
 
     if maintitle is not None:
