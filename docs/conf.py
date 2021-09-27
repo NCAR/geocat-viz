@@ -29,7 +29,7 @@ class Mock(MagicMock):
         return MagicMock()
 
 
-MOCK_MODULES = ["xarray"]
+MOCK_MODULES = ["xarray", "matplotlib", "cartopy"]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- Project information -----------------------------------------------------
@@ -50,7 +50,8 @@ author = u'GeoCAT'
 # ones.
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
-    #'sphinx.ext.intersphinx', 'sphinx.ext.mathjax'
+    'sphinx.ext.intersphinx', 
+    #'sphinx.ext.mathjax'
     ]
 
 intersphinx_mapping = {
