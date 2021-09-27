@@ -164,25 +164,6 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     The intent of this function is to help make the plot look like an NCL plot as well as to help developers use only
     this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
 
-    
-    Notes
-    -----
-    If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
-
-                     maintitle
-     ___________________________________________
-    |                   Axes                    |
-    |                                           |
-
-    (2) If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
-    the row of lefttitle/righttitle as follows:
-
-                     maintitle
-     lefttitle                        righttitle
-     ___________________________________________
-    |                   Axes                    |
-    |                                           |
-
     Parameters
     ----------
     ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
@@ -216,6 +197,25 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
 
     labelfontsize: :class:`int`
         Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
+        
+    Notes
+    -----
+    If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
+
+                     maintitle
+     ___________________________________________
+    |                   Axes                    |
+    |                                           |
+
+    
+    If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
+    the row of lefttitle/righttitle as follows:
+
+                     maintitle
+     lefttitle                        righttitle
+     ___________________________________________
+    |                   Axes                    |
+    |                                           |
         
     Examples
     --------
