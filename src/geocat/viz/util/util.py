@@ -41,7 +41,7 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot],
+def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
                           x_minor_per_major: int = 3,
                           y_minor_per_major: int = 3,
                           basex: int = 10,
@@ -54,7 +54,7 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
         Current axes to the current figure
 
     x_minor_per_major: :class:`int`
@@ -148,7 +148,7 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.
     )
 
 
-def set_titles_and_labels(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.mpl.geoaxes.GeoAxesSubplot],
+def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
                           maintitle: str = None,
                           maintitlefontsize: int = 18,
                           lefttitle: str = None,
@@ -185,7 +185,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.AxesSubplot, cartopy.
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
         Current axes to the current figure
 
     maintitle: :class:`str`
