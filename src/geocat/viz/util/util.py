@@ -11,7 +11,7 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes._subplots.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+    ax: :class:`matplotlib.axes.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
             Current axes to the current figure
 
     zero_direction_label: :class:`bool`
