@@ -681,7 +681,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
     
     Parameters
     ----------
-    ax: :class:`matplotlib.axis.Axes`
+    ax: :class:`matplotlib.axes.Axes`
         Axis containing the contour set.
     
     contours: :class:`matplotlib.contour.QuadContourSet`
