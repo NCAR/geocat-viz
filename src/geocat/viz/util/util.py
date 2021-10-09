@@ -1,6 +1,5 @@
 import typing
 import matplotlib.axes
-import matplotlib.pyplot
 import cartopy.mpl.geoaxes
 import xarray
 
@@ -13,7 +12,7 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+    ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
             Current axes to the current figure
 
     zero_direction_label: :class:`bool`
@@ -204,20 +203,20 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     -----
     If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
 
-    >>>                 maintitle
-    >>> ___________________________________________
-    >>>|                   Axes                    |
-    >>>|                                           |
+    >>>                  maintitle
+    >>>  ___________________________________________
+    >>> |                   Axes                    |
+    >>> |                                           |
 
     
     If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
     the row of lefttitle/righttitle as follows:
 
-    >>>                 maintitle
-    >>> lefttitle                        righttitle
-    >>> ___________________________________________
-    >>>|                   Axes                    |
-    >>>|                                           |
+    >>>                  maintitle
+    >>>  lefttitle                        righttitle
+    >>>  ___________________________________________
+    >>> |                   Axes                    |
+    >>> |                                           |
         
     Examples
     --------
@@ -257,8 +256,8 @@ def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl
                               ylim: tuple =None,
                               xticks: list =None,
                               yticks: list =None,
-                              xticklabels: list[str] =None,
-                              yticklabels: list[str] =None):
+                              xticklabels: list =None,
+                              yticklabels: list =None):
     """Utility function to determine axis limits, tick values and labels.
 
     The intent of this function is to help developers use only this convenience function instead of multiple
@@ -266,7 +265,7 @@ def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
         Current axes to the current figure
 
     xlim: :class:`tuple`
@@ -285,10 +284,10 @@ def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl
     yticks: :class:`list`
         List of y-axis tick locations. See Matplotlib documentation for further information.
 
-    xticklabels: :class:`list[str]`
+    xticklabels: :class:`list`
         List of string labels for x-axis ticks. See Matplotlib documentation for further information.
 
-    yticklabels: :class:`list[str]`
+    yticklabels: :class:`list`
         List of string labels for y-axis ticks. See Matplotlib documentation for further information.
         
     Examples
@@ -375,14 +374,14 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     return new_cmap
 
 
-def xr_add_cyclic_longitudes(da: xarray.core.dataarray.DataArray, 
+def xr_add_cyclic_longitudes(da: xarray.DataArray, 
                              coord: str):
     """Utility function to handle the no-shown-data artifact of 0 and
     360-degree longitudes.
 
     Parameters
     ----------
-    da: :class:`xarray.core.dataarray.DataArray`
+    da: :class:`xarray.DataArray`
         Data array that contains one or more coordinates, strictly including the coordinate with the name
         given with the "coord" parameter.
 
@@ -418,7 +417,7 @@ def xr_add_cyclic_longitudes(da: xarray.core.dataarray.DataArray,
     return new_da
 
 
-def set_map_boundary(ax: matplotlib.axes,
+def set_map_boundary(ax: matplotlib.axes.Axes,
                      lon_range: typing.Union[tuple, list],
                      lat_range: typing.Union[tuple, list],
                      north_pad: int = 0,
@@ -435,7 +434,7 @@ def set_map_boundary(ax: matplotlib.axes,
 
     Parameters
     ----------
-    ax: :class:`matplotlib.axes`
+    ax: :class:`matplotlib.axes.Axes`
         The axes to which the boundary will be applied.
 
     lon_range: :class:`tuple` or :class:`list`
@@ -665,10 +664,10 @@ def findLocalExtrema(da: xarray.DataArray,
     return clusterExtremas
 
 
-def plotCLabels(ax: matplotlib.pyplot.axis,
-                contours: cartopy.mpl.contour.GeoContourSet,
-                transform: cartopy.crs,
-                proj: cartopy.crs,
+def plotCLabels(ax: matplotlib.axes.Axes,
+                contours: matplotlib.contour.QuadContourSet,
+                transform: cartopy.crs.CRS,
+                proj: cartopy.crs.CRS,
                 clabel_locations: list = [],
                 fontsize: int = 12,
                 whitebbox: bool = False,
@@ -682,17 +681,17 @@ def plotCLabels(ax: matplotlib.pyplot.axis,
     
     Parameters
     ----------
-    ax: :class:`matplotlib.pyplot.axis`
+    ax: :class:`matplotlib.axis.Axes`
         Axis containing the contour set.
     
-    contours: :class:`cartopy.mpl.contour.GeoContourSet`
+    contours: :class:`matplotlib.contour.QuadContourSet`
         Contour set that is being labeled.
     
-    transform: :class:`cartopy.crs`
+    transform: :class:`cartopy.crs.CRS`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
     
-    proj: :class:`cartopy.crs`
+    proj: :class:`cartopy.crs.CRS`
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
     
@@ -753,8 +752,8 @@ def plotCLabels(ax: matplotlib.pyplot.axis,
 
 
 def plotELabels(da: xarray.DataArray,
-                transform: cartopy.crs,
-                proj: cartopy.crs,
+                transform: cartopy.crs.CRS,
+                proj: cartopy.crs.CRS,
                 clabel_locations: list = [],
                 label: str = 'L',
                 fontsize: int = 22,
@@ -771,11 +770,11 @@ def plotELabels(da: xarray.DataArray,
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable data values.
     
-    transform: :class:`cartopy.crs`
+    transform: :class:`cartopy.crs.CRS`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
     
-    proj: :class:`cartopy.crs`
+    proj: :class:`cartopy.crs.CRS`
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
     
@@ -866,13 +865,13 @@ def plotELabels(da: xarray.DataArray,
     return extremaLabels
 
 
-def set_vector_density(data: xarray.core.dataarray.DataArray, 
-                       minDistance: int = 0) -> xarray.core.dataarray.DataArray:
+def set_vector_density(data: xarray.DataArray, 
+                       minDistance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
     ----------
-    data: :class:`xarray.core.dataarray.DataArray`
+    data: :class:`xarray.DataArray`
         Data array that contains the vector plot latitude/longitude data.
     
     minDistance: :class:`int`
@@ -880,7 +879,7 @@ def set_vector_density(data: xarray.core.dataarray.DataArray,
     
     Returns
     -------
-    ds: :class:`xarray.core.dataarray.DataArray`
+    ds: :class:`xarray.DataArray`
         Sliced version of the input data array.
         
     Examples
