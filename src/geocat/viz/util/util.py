@@ -677,7 +677,6 @@ def plotCLabels(ax: matplotlib.axes.Axes,
 
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
     
     Parameters
     ----------
