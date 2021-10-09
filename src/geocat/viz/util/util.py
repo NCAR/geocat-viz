@@ -667,7 +667,7 @@ def findLocalExtrema(da: xarray.DataArray,
 
 def plotCLabels(ax: matplotlib.pyplot.axis,
                 contours: cartopy.mpl.contour.GeoContourSet,
-                transform: cartopy._crs,
+                transform: cartopy.crs,
                 proj: cartopy.crs,
                 clabel_locations: list = [],
                 fontsize: int = 12,
@@ -688,7 +688,7 @@ def plotCLabels(ax: matplotlib.pyplot.axis,
     contours: :class:`cartopy.mpl.contour.GeoContourSet`
         Contour set that is being labeled.
     
-    transform: :class:`cartopy._crs`
+    transform: :class:`cartopy.crs`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
     
@@ -753,7 +753,7 @@ def plotCLabels(ax: matplotlib.pyplot.axis,
 
 
 def plotELabels(da: xarray.DataArray,
-                transform: cartopy._crs,
+                transform: cartopy.crs,
                 proj: cartopy.crs,
                 clabel_locations: list = [],
                 label: str = 'L',
@@ -771,7 +771,7 @@ def plotELabels(da: xarray.DataArray,
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable data values.
     
-    transform: :class:`cartopy._crs`
+    transform: :class:`cartopy.crs`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
     
