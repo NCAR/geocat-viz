@@ -1,5 +1,6 @@
 import typing
 import matplotlib.axes
+import matplotlib.pyplot
 import cartopy.mpl.geoaxes
 import xarray
 
