@@ -1,1 +1,4 @@
-@media screen and (min-width: 100px).wy-nac-content{}
+@import url("theme.css")
+.wy-nav-content {
+margin-right: 0;
+}
