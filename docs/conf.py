@@ -113,4 +113,4 @@ htmlhelp_basename = 'geocat-vizdoc'
 autodoc_typehints = 'none'
 
 def setup(app):
-    app.add_stylesheet('theme_overrides.css')
+    app.add_css_file('theme_overrides.css')
