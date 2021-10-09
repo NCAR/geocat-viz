@@ -111,3 +111,6 @@ html_logo = '_static/images/nsf.png'
 htmlhelp_basename = 'geocat-vizdoc'
 
 autodoc_typehints = 'none'
+
+def setup(app):
+    app.add_stylesheet('theme_overrides.css')
