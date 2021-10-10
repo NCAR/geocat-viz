@@ -1,2 +1,2 @@
-@import url("theme.css")
-.wy-body-for-nav .wy-grid-for-nav .wy-nav-shift .wy-nav-content {max-width: none;}
+@import 'sphinx_rtd_theme.css'
+.wy-nav-content {max-width: none;}
