@@ -1,4 +1,4 @@
 @import url("theme.css")
 .wy-nav-content {
-margin-right: 0;
+max-width: 1200px;
 }
