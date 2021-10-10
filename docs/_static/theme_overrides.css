@@ -1,4 +1,4 @@
-@import 'sphinx_rtd_theme.css'
-const wy = document.querySelector('wy-nav-content');
-
-wy.style.max-width = none;
+/* @import 'sphinx_rtd_theme.css' */
+.wy-nav-content {
+max-width: none !important;
+}
