@@ -1,2 +1,4 @@
 @import 'sphinx_rtd_theme.css'
-/* .wy-nav-content {max-width: 1500px;} */
+const wy = document.querySelector('wy-nav-content');
+
+wy.style.max-width = none;

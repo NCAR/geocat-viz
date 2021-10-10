@@ -112,4 +112,4 @@ htmlhelp_basename = 'geocat-vizdoc'
 
 autodoc_typehints = 'none'
 
-#html_style = 'theme_overrides.css'
+html_css_files = 'theme_overrides.css'
