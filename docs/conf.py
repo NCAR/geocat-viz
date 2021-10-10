@@ -51,6 +51,7 @@ napoleon_use_admonition_for_examples = True
 napoleon_include_special_with_doc = True
 
 autosummary_generate = True
+autoclass_content = 'both'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -112,7 +113,6 @@ htmlhelp_basename = 'geocat-vizdoc'
 
 autodoc_typehints = 'none'
 
+# Allow for changes to be made to the css in the theme_overrides file
 def setup(app):
     app.add_css_file('theme_overrides.css')
-    
-#html_style = 'theme_overrides.css'
