@@ -12,6 +12,26 @@ class TaylorDiagram(object):
     precipitation, temperature) may have widely varying numerical values, the results are normalized by the reference
     variables. The ratio of the normalized variances indicates the relative amplitude of the model and observed
     variations.
+    
+    Parameters
+    ----------
+    refstd: :class:`float`
+        Optional reference standard deviation
+
+    fig: :class:`matplotlib.figure.Figure`
+        Optional input figure. Default is None
+
+    rect: :class:`int`
+        Optional subplot definition
+
+    label: :class:`string`
+        Optional reference label string indentifier
+
+    stdRange: :class:`tuple`
+        Optional stddev axis extent
+
+    stdLevel: :class:`list`
+        Optional list of tick locations for stddev axis
 
     References
     ----------
