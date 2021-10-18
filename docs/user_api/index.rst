@@ -11,8 +11,6 @@ GeoCAT-viz Plotting Routines
 
 .. autosummary::
    :toctree: ./generated/
-
-   geocat.viz.contourf
    
    geocat.viz.taylor.TaylorDiagram
    
