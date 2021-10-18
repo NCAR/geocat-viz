@@ -13,8 +13,6 @@ GeoCAT-viz Plotting Routines
    :toctree: ./generated/
    
    geocat.viz.taylor.TaylorDiagram
-   
-       geocat.viz.taylor.TaylorDiagram.__init__
        
        geocat.viz.taylor.TaylorDiagram.add_model_set
        
