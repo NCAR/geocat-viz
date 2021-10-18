@@ -16,6 +16,26 @@ GeoCAT-viz Plotting Routines
    
    geocat.viz.taylor.TaylorDiagram
    
+       geocat.viz.taylor.TaylorDiagram.__init__
+       
+       geocat.viz.taylor.TaylorDiagram.add_model_set
+       
+       geocat.viz.taylor.TaylorDiagram.add_xgrid
+       
+       geocat.viz.taylor.TaylorDiagram.add_ygrid
+       
+       geocat.viz.taylor.TaylorDiagram.add_grid
+       
+       geocat.viz.taylor.TaylorDiagram.add_contours
+       
+       geocat.viz.taylor.TaylorDiagram.add_model_name
+       
+       geocat.viz.taylor.TaylorDiagram.add_legend
+       
+       geocat.viz.taylor.TaylorDiagram.add_title
+       
+       geocat.viz.taylor.TaylorDiagram.set_fontsizes_and_pad
+   
    
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
