@@ -51,7 +51,7 @@ napoleon_use_admonition_for_examples = True
 napoleon_include_special_with_doc = True
 
 autosummary_generate = True
-#autoclass_content = 'both'
+autoclass_content = 'class'
 
 autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'special-members', 'inherited-members', 'show-inheritance']
 
