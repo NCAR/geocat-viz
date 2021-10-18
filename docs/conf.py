@@ -53,7 +53,7 @@ napoleon_include_special_with_doc = True
 autosummary_generate = True
 autoclass_content = 'class'
 
-autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'special-members', 'inherited-members', 'show-inheritance']
+autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
