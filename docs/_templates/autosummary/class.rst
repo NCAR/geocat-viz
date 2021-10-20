@@ -5,7 +5,10 @@
 .. autoclass:: {{ objname }} :noindex:
    :members:                                    
    :show-inheritance:                           
-   :inherited-members:      
+   :inherited-members:                          
+
+   {% block methods %}
+   .. automethod:: class
 
    {% if methods %}
    .. rubric:: {{ _('Methods') }}
