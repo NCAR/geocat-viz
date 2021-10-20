@@ -47,6 +47,28 @@ class TaylorDiagram(object):
                  label='REF',
                  stdRange=(0, 1.65),
                  stdLevel=np.arange(0, 1.51, 0.25)):
+        """Create base Taylor Diagram.
+
+        Parameters
+        ----------
+        refstd : float, optional
+            reference standard deviation
+
+        fig : matplotlib.figure.Figure, optional
+            Optional input figure. Default is None
+
+        rect : int, optional
+            Optional subplot definition
+
+        label : string, optional
+            Optional reference label string indentifier
+
+        stdRange : Tuple, optional
+            Optional stddev axis extent
+
+        stdLevel : list, optional
+            Optional list of tick locations for stddev axis
+        """
 
         from matplotlib.projections import PolarAxes
         import mpl_toolkits.axisartist.floating_axes as fa
