@@ -2,7 +2,7 @@
 
 .. currentmodule:: {{ module }}
 
-.. autoclass:: {{ objname }} :noindex:
+.. autoclass:: {{ objname }}
    :members:                             
    :show-inheritance:                          
    :inherited-members:
