@@ -3,9 +3,9 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }} :noindex:
-   :members:                                    
-   :show-inheritance:                           
-   :inherited-members:                          
+   :members:                             
+   :show-inheritance:                          
+   :inherited-members:
 
    {% block methods %}
    .. automethod:: __init__
