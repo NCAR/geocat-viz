@@ -9,7 +9,7 @@
    :exclude-members: __init__
 
    {% block methods %}
-   .. automethod:: __init__
+   .. automethod:: method
 
    {% if methods %}
    .. rubric:: {{ _('Methods') }}
