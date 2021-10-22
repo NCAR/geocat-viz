@@ -181,7 +181,7 @@ class TaylorDiagram(object):
                       stddev: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
                       corrcoef: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
                       fontsize: float =14,
-                      xytext: tuple =(-5, 7),
+                      xytext: tuple[float, float] =(-5, 7),
                       annotate_on: bool =True,
                       *args,
                       **kwargs):
