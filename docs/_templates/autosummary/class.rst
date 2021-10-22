@@ -3,9 +3,7 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
-   :members:                             
-   :show-inheritance:                          
-   :inherited-members:
+   :members:           
    :exclude-members: __init__
 
    {% block methods %}
