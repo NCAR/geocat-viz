@@ -1,5 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+import typing
+import numpy
+import xarray
 
 
 class TaylorDiagram(object):
@@ -174,8 +178,8 @@ class TaylorDiagram(object):
         self.modelOutside = -1
 
     def add_model_set(self,
-                      stddev,
-                      corrcoef,
+                      stddev: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
+                      corrcoef: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
                       fontsize: float =14,
                       xytext: tuple =(-5, 7),
                       annotate_on: bool =True,
@@ -189,10 +193,10 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        stddev: :class:`xarray.DataArray`, :class:`list`, or :class:`float`
+        stddev: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, or :class:`float`
             An array of vertical coordinates of the data points that denote the standard deviation
 
-        corrcoef: :class:`xarray.DataArray`, :class:`list`, or :class:`float`
+        corrcoef: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, or :class:`float`
             An array of horizontal coordinates of the data points that denote correlation
 
         fontsize: :class:`float`
@@ -280,7 +284,7 @@ class TaylorDiagram(object):
         return modelTexts, modelset
 
     def add_xgrid(self,
-                  arr,
+                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
                   color: str ='lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: float =0.5,
@@ -289,7 +293,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        arr: : array-like, :class:`list`, :class:`float`
+        arr: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`float`
             An array of horizontal coordinates of the data points that denote correlation
 
         color: :class:`str`
@@ -320,7 +324,7 @@ class TaylorDiagram(object):
                            **kwargs)
 
     def add_ygrid(self,
-                  arr,
+                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
                   color: str ='lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: int =1,
@@ -330,7 +334,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        arr: :class:array-like, :class:`list`, :class:`float`
+        arr: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`float`
             An array of vertical coordinates of the data points that denote standard deviation
 
         color: :class:`str`
@@ -369,12 +373,12 @@ class TaylorDiagram(object):
         """
         self._ax.grid(*args, **kwargs)
 
-    def add_contours(self, levels=5, **kwargs):
+    def add_contours(self, levels: typing.Union[xarray.DataArray, numpy.ndarray, list, int] =5, **kwargs):
         """Add constant centered RMS difference contours.
 
         Parameters
         ----------
-        levels: :class:`int` or array-like
+        levels: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`int`
             Determines the number and positions of the contour lines. Optional. Default to 5
 
         Notes
@@ -399,7 +403,7 @@ class TaylorDiagram(object):
         return contours
 
     def add_model_name(self,
-                       namearr,
+                       namearr: typing.Union[xarray.DataArray, numpy.ndarray, list],
                        x_loc: float =0.1,
                        y_loc: float =0.31,
                        verticalalignment: str ='top',
@@ -412,7 +416,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        namearr : array-like
+        namearr : :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`
             List of model names
 
         x_loc: :class:`float`
