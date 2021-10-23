@@ -58,10 +58,7 @@ Required dependencies for building GeoCAT-viz
     - cartopy
     - matplotlib
     - numpy
-    - sklearn
     - xarray
-    - math
-    - pytest
     - Any C compiler (GCC, Clang, etc)
 
 
@@ -95,12 +92,3 @@ variables (CFLAGS, CPPFLAGS, or LDFLAGS) in order for the setup.py script to
 find all of the necessary dependency packages.  Due to the potentially
 complicated nature of the build process, we strongly recommend using Conda to
 configure your build environment.
-
-
-Testing a GeoCAT-viz build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A GeoCAT-viz build can be tested from the root directory of the source code
-repository using the following command::
-
-    pytest test
