@@ -1,101 +1,140 @@
 """Plotting wrapper for matplotlib contourf function."""
 
 import xarray as xr
+import typing
 
-from _set_up_fig import _fig_ax
 from _plot_util import NCL_Plot
 
 
 class Contour(NCL_Plot):
-    """Create contour plot with optional contour labels.
+    """Create contour plot.
 
-    Args:
+    Args
+    ----
+    data: :class:`xarray.DataArray` or :class:`numpy.ndarray`
+        The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
 
-        data (:class:`xarray.DataArray` or :class:`numpy.ndarray`): The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
+    Keyword Args
+    ------------
+    add_colorbar: :obj:`bool` 
+        Whether a colorbar is added to the figure. Default True.
 
-    Kwargs:
+    clevels: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of levels to be passed into matplotlib's contour function.
 
-        add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
+    cmap: :class:`cmaps.colormap.Colormap` 
+        Colormap for the filled contour graph.
 
-        clevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contour function.
+    contour_fill: :obj:`bool` 
+            Whether filled contours will be drawn. Default True.
 
-        cmap (:class:`cmaps.colormap.Colormap`): Colormap for the filled contour graph.
+    contour_lines: :obj:`bool` 
+        Whether contours lines will be drawn. Default True.
 
-        contour_fill (:obj:`bool`): Whether filled contours will be drawn. Default True.
+    contourbackground: :obj:`bool`
+        Whether a white background for the contour labels will be drawn. Default False.
 
-        contour_lines (:obj:`bool`): Whether contours lines will be drawn. Default True.
+    contourfontsize: :obj:`int` 
+        Font size of the contour line labels. Default 12.
 
-        contourbackground (:obj:`bool`): Whether a white background for the contour labels will be drawn. Default False.
+    contourlabels :obj:`list` or :class:`numpy.ndarray` 
+        List or array of labels to use for contour line labels.
 
-        contourfontsize (:obj:`int`): Font size of the contour line labels. Default 12.
+    drawcontourlabels: :obj:`bool` 
+        Whether add contour line labels to the figure.
 
-        contourlabels (:obj:`list` or :class:`numpy.ndarray`): List or array of labels to use for contour line labels.
+    flevels: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of levels to be passed into matplotlib's contourf function.
 
-        drawcontourlabels(:obj:`bool`): Whether add contour line labels to the figure.
+    linecolor: :obj:`str`
+        Color of the contour line. Default "black".
 
-        flevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contourf function.
+    linestyle :obj:`str` 
+        Linestyle of the contour line. Default solid for positive values, dashed for negative values.
 
-        linecolor (:obj:`str`): Color of the contour line. Default "black".
+    linewidth :obj:`int` 
+        Width of the contour lines. Default 0.4.
 
-        linestyle (:obj:`str`): Linestyle of the contour line. Default solid for positive values, dashed for negative values.
+    manualcontourlabels :obj:`bool` 
+        Whether contour line labels should be manually drawn. Default False.
 
-        linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
+    projection :obj:`str` 
+        Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
 
-        manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
+    X :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
+        The X axis data for the dataset. To be specified if not inferred correctly automatically.
 
-        projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+    Y :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
+        The Y axis data for the dataset. To be specified if not inferred correctly automatically.
 
-        X (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The X axis data for the dataset. To be specified if not inferred correctly automatically.
-
-        Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
-
-    Return:
-        (:class:`contourf.Contour`) A contour plot with specified input style.
+    Return
+    ------
+    Contour_Object: :class:`contourf.Contour` 
+        A contour plot with specified input style.
     """
 
     def __init__(self, *args, **kwargs):
         """Create contour figure. Generate filled contours and/or contour lines
         for figure. Add colorbar and contour labels if specified.
 
-        Args:
+        Args
+        ----
+        data: :class:`xarray.DataArray` or :class:`numpy.ndarray`
+            The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
 
-            data (:class:`xarray.DataArray` or :class:`numpy.ndarray`): The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
+        Keyword Args
+        ------------
+        add_colorbar: :obj:`bool` 
+            Whether a colorbar is added to the figure. Default True.
 
-        Kwargs:
+        clevels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of levels to be passed into matplotlib's contour function.
 
-            add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
+        cmap: :class:`cmaps.colormap.Colormap` 
+            Colormap for the filled contour graph.
 
-            clevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contour function.
+        contour_fill: :obj:`bool` 
+                Whether filled contours will be drawn. Default True.
 
-            cmap (:class:`cmaps.colormap.Colormap`): Colormap for the filled contour graph.
+        contour_lines: :obj:`bool` 
+            Whether contours lines will be drawn. Default True.
 
-            contour_fill (:obj:`bool`): Whether filled contours will be drawn. Default True.
+        contourbackground: :obj:`bool`
+            Whether a white background for the contour labels will be drawn. Default False.
 
-            contour_lines (:obj:`bool`): Whether contours lines will be drawn. Default True.
+        contourfontsize: :obj:`int` 
+            Font size of the contour line labels. Default 12.
 
-            contourbackground (:obj:`bool`): Whether a white background for the contour labels will be drawn. Default False.
+        contourlabels :obj:`list` or :class:`numpy.ndarray` 
+            List or array of labels to use for contour line labels.
 
-            contourfontsize (:obj:`int`): Font size of the contour line labels. Default 12.
+        drawcontourlabels: :obj:`bool` 
+            Whether add contour line labels to the figure.
 
-            contourlabels (:obj:`list` or :class:`numpy.ndarray`): List or array of labels to use for contour line labels.
+        flevels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of levels to be passed into matplotlib's contourf function.
 
-            drawcontourlabels(:obj:`bool`): Whether add contour line labels to the figure.
+        linecolor: :obj:`str`
+            Color of the contour line. Default "black".
 
-            flevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contourf function.
+        linestyle :obj:`str` 
+            Linestyle of the contour line. Default solid for positive values, dashed for negative values.
 
-            linecolor (:obj:`str`): Color of the contour line. Default "black".
+        linewidth :obj:`int` 
+            Width of the contour lines. Default 0.4.
 
-            linestyle (:obj:`str`): Linestyle of the contour line. Default solid for positive values, dashed for negative values.
+        manualcontourlabels :obj:`bool` 
+            Whether contour line labels should be manually drawn. Default False.
 
-            linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
+        projection :obj:`str` 
+            Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
 
-            manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
+        X :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
+            The X axis data for the dataset. To be specified if not inferred correctly automatically.
 
-            projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+        Y :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
+            The Y axis data for the dataset. To be specified if not inferred correctly automatically.
 
-            X (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The X axis data for the dataset. To be specified if not inferred correctly automatically.
-
-            Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
         """
 
         # Set default flevels, clevels, and colormap
@@ -189,7 +228,7 @@ class Contour(NCL_Plot):
         self._generate_contours()
 
         # Set figure in NCL style
-        _fig_ax._set_NCL_style(self, self.ax)
+        super._set_NCL_style(self, self.ax)
 
         # If contour labels are requested, try to set them on contour lines. If failed, use filled contours
         if self.draw_contour_labels is True:
@@ -227,26 +266,6 @@ class Contour(NCL_Plot):
 
     def _generate_contours(self, *args, **kwargs):
         """Generate filled contours and/or contour lines for figure.
-
-        Kwargs:
-
-            cmap (:class:`cmaps.colormap.Colormap`): Colormap for the filled contour graph.
-
-            contour_fill (:obj:`bool`): Whether filled contours will be drawn. Default True.
-
-            contour_lines (:obj:`bool`): Whether contours lines will be drawn. Default True.
-
-            linecolor (:obj:`str`): Color of the contour line. Default "black".
-
-            linestyle (:obj:`str`): Linestyle of the contour line. Default solid for positive values, dashed for negative values.
-
-            linewidth (:obj:`int`): Width of the contour lines. Default 0.4.
-
-            projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
-
-            X (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The X axis data for the dataset. To be specified if not inferred correctly automatically.
-
-            Y (:class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`): The Y axis data for the dataset. To be specified if not inferred correctly automatically.
         """
 
         # If there is a projection and specified X and Y data, plot filled contours and contour lines unless otherwise specified
@@ -372,20 +391,34 @@ class Contour(NCL_Plot):
                             fontsize=12):
         """Add contour line labels with an optional white background to the
         figure.
+        
+        Args
+        ----
+        ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxes`
+            Axis to apply NCL style to.
+            
+        lines: :class:`matplotlib.contour.QuadContourSet`
+            The output of matplotlib's contour/contourf function
 
-        Kwargs:
+        Keyword Args
+        ------------
+        contourbackground: :obj:`bool` 
+            Whether a white background for the contour labels will be drawn. Default False.
 
-            contourbackground (:obj:`bool`): Whether a white background for the contour labels will be drawn. Default False.
+        contourfontsize: :obj:`int` 
+            Font size of the contour line labels. Default 12.
 
-            contourfontsize (:obj:`int`): Font size of the contour line labels. Default 12.
+        contourlabels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of labels to use for contour line labels.
 
-            contourlabels (:obj:`list` or :class:`numpy.ndarray`): List or array of labels to use for contour line labels.
+        drawcontourlabels: :obj:`bool` 
+            Whether add contour line labels to the figure.
 
-            drawcontourlabels(:obj:`bool`): Whether add contour line labels to the figure.
+        flevels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of levels to be passed into matplotlib's contourf function.
 
-            flevels (:obj:`list` or :class:`numpy.ndarray`): List or array of levels to be passed into matplotlib's contourf function.
-
-            manualcontourlabels (:obj:`bool`): Whether contour line labels should be manually drawn. Default False.
+        manualcontourlabels: :obj:`bool` 
+            Whether contour line labels should be manually drawn. Default False.
         """
 
         # Update argument definitions

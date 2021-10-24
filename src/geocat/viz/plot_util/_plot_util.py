@@ -1,9 +1,14 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import xarray as xr
+import numpy
 import numpy as np
+import cartopy
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import cartopy.feature as cfeature
 import math
+import typing
+
 
 from geocat.viz.util import set_titles_and_labels
 from geocat.viz.util import add_major_minor_ticks
@@ -17,87 +22,127 @@ class NCL_Plot():
     the axes, and _set_lim_ticks to constrain the axes. Adds geographic features
     to figure.
 
-    Kwargs:
+    Keyword Args
+    ------------
+    add_colorbar: :obj:`bool` 
+        Whether a colorbar is added to the figure. Default True.
 
-        add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
+    cbdrawedges: :obj:`bool` 
+        Whether to draw edges on the colorbar. Default True.
 
-        cbdrawedges (:obj:`bool`): Whether to draw edges on the colorbar. Default True.
+    cbextend: :obj:`str` 
+        Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
 
-        cbextend (:obj:`str`): Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
+    cborientation: :obj:`str` 
+        Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-        cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+    cbpad: :obj:`float` 
+        Padding between colorbar and figure. Default 0.11.
 
-        cbpad (:obj:`float`): Padding between colorbar and figure. Default 0.11.
+    cbshrink: :obj:`float` 
+        Percent shrinkage of colorbar. Default 0.75.
 
-        cbshrink (:obj:`float`): Percent shrinkage of colorbar. Default 0.75.
+    cbticklabels: :obj:`list` or :class:`numpy.ndarray` 
+        Labels for colorbar ticks.
 
-        cbticklabels (:obj:`list` or :class:`numpy.ndarray`): Labels for colorbar ticks.
+    cbticklabelsize: :obj:`int` 
+        Font size for colorbar tick labels.
 
-        cbticklabelsize (:obj:`int`): Font size for colorbar tick labels.
+    cbticks: :obj:`list` or :class:`numpy.ndarray` 
+        Ticks for colorbar.
 
-        cbticks (:obj:`list` or :class:`numpy.ndarray`): Ticks for colorbar.
+    h: :obj:`float` 
+        Height of figure in inches. Default 8. To be passed into figsize when creating figure.
 
-        h (:obj:`float`): Height of figure in inches. Default 8. To be passed into figsize when creating figure.
+    labelfontsize: :obj:`int` 
+        Fontsize for x and y axis labels. Default 16.
 
-        labelfontsize (:obj:`int`): Fontsize for x and y axis labels. Default 16.
+    lefttitle: :obj:`str` 
+        Title for top left subtitle.
 
-        lefttitle (:obj:`str`): Title for top left subtitle.
+    lefttitlefontsize: :obj:`int` 
+        Font size for top left subtitle. Default 18.
 
-        lefttitlefontsize (:obj:`int`): Font size for top left subtitle. Default 18.
+    maintitle: :obj:`str` 
+        Title of figure.
 
-        maintitle (:obj:`str`): Title of figure.
+    maintitlefontsize: :obj:`int` 
+        Font size for title of figure. Default 18.
 
-        maintitlefontsize (:obj:`int`): Font size for title of figure. Default 18.
+    mappable: :class:`cartopy.mpl.contour.GeoContourSet` 
+        The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
+    
+    projection: :obj:`str` 
+        Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
 
-        mappable (:class:`cartopy.mpl.contour.GeoContourSet`): The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
-        
-        projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+    ref_fig: :class:`contourf.Contour` 
+        Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the ref_fig would be the name of the first plot.
 
-        ref_fig (:class:`contourf.Contour`): Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the ref_fig would be the name of the first plot.
+    righttitle: :obj:`str` 
+        Title for top right subtitle.
 
-        righttitle (:obj:`str`): Title for top right subtitle.
+    righttitlefontsize: :obj:`int` 
+        Font size for top right subtitle. Default 18.
+    
+    set_extent: :class:`list` 
+        Extent [xmin, xmax, ymin, ymax] of figure to be shown.
+    
+    show_coastline: :obj:`bool` 
+        Whether to show coastlines in figure. Default False, unless a projection is specified.
 
-        righttitlefontsize (:obj:`int`): Font size for top right subtitle. Default 18.
-        
-        set_extent (:class:`list`): Extent [xmin, xmax, ymin, ymax] of figure to be shown.
-        
-        show_coastline (:obj:`bool`): Whether to show coastlines in figure. Default False, unless a projection is specified.
+    show_lakes: :obj:`bool` 
+        Whether to show lakes in figure. Default False.
 
-        show_lakes (:obj:`bool`): Whether to show lakes in figure. Default False.
+    show_land: :obj:`bool` 
+        Whether to show land in figure. Default false.
 
-        show_land (:obj:`bool`): Whether to show land in figure. Default false.
+    subplot: :class:`list` 
+        List [number of rows, number of columns, position] to be passed into plt.subplot().
 
-        subplot (:class:`list`): List [number of rows, number of columns, position] to be passed into plt.subplot().
+    ticklabelfontsize: :obj:`int` 
+        Font size of x and y axis ticks. Default 16.
+    
+    w: :obj:`float` 
+        Weidth of the figure. Default 10. To be passed into figsize.
+    
+    x_label_lon: :obj:`bool` 
+        Format the x axis as longitude values. Default True.
 
-        ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
-        
-        w (:obj:`float`): Weidth of the figure. Default 10. To be passed into figsize.
-        
-        x_label_lon (:obj:`bool`): Format the x axis as longitude values. Default True.
+    xlabel: :obj:`str` 
+        Label for the x axis.
+    
+    xlim: :class:`list` 
+        List [xmin, xmax] to set the limit of the x axis.
 
-        xlabel (:obj:`str`): Label for the x axis.
-        
-        xlim (:class:`list`): List [xmin, xmax] to set the limit of the x axis.
+    xscale: :obj:`str` 
+        Scale of x axis. Currently supports "log".
 
-        xscale (:obj:`str`): Scale of x axis. Currently supports "log".
+    ticklabelfontsize: :obj:`int` 
+        Font size of x and y axis ticks. Default 16.
 
-        ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
+    xticklabels: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of tick labels for the x axis.
 
-        xticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the x axis.
+    xticks: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of tick values for the x axis.
 
-        xticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the x axis.
+    y_label_lat: :obj:`bool` 
+        Format the y axis as latitude values. Default True.
 
-        y_label_lat (:obj:`bool`): Format the y axis as latitude values. Default True.
+    ylabel: :obj:`str` 
+        Label for the y axis.
+    
+    ylim: :class:`list` 
+        List [ymin, ymax] to set the limit of the y axis.
 
-        ylabel (:obj:`str`): Label for the y axis.
-        
-        ylim (:class:`list`): List [ymin, ymax] to set the limit of the y axis.
+    yscale: :obj:`str` 
+        Scale of y axis. Currently supports "log".
 
-        yscale (:obj:`str`): Scale of y axis. Currently supports "log".
+    yticklabels: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of tick labels for the y axis.
 
-        yticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the y axis.
-
-        yticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the y axis.
+    yticks: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of tick values for the y axis.
     """
 
     # Constructor
@@ -106,87 +151,127 @@ class NCL_Plot():
         and axes, add_geo_features to add geographical features to the figure,
         and adds titles.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        add_colorbar: :obj:`bool` 
+            Whether a colorbar is added to the figure. Default True.
 
-            add_colorbar (:obj:`bool`): Whether a colorbar is added to the figure. Default True.
+        cbdrawedges: :obj:`bool` 
+            Whether to draw edges on the colorbar. Default True.
 
-            cbdrawedges (:obj:`bool`): Whether to draw edges on the colorbar. Default True.
+        cbextend: :obj:`str` 
+            Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
 
-            cbextend (:obj:`str`): Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
+        cborientation: :obj:`str` 
+            Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+        cbpad: :obj:`float` 
+            Padding between colorbar and figure. Default 0.11.
 
-            cbpad (:obj:`float`): Padding between colorbar and figure. Default 0.11.
+        cbshrink: :obj:`float` 
+            Percent shrinkage of colorbar. Default 0.75.
 
-            cbshrink (:obj:`float`): Percent shrinkage of colorbar. Default 0.75.
+        cbticklabels: :obj:`list` or :class:`numpy.ndarray` 
+            Labels for colorbar ticks.
 
-            cbticklabels (:obj:`list` or :class:`numpy.ndarray`): Labels for colorbar ticks.
+        cbticklabelsize: :obj:`int` 
+            Font size for colorbar tick labels.
 
-            cbticklabelsize (:obj:`int`): Font size for colorbar tick labels.
+        cbticks: :obj:`list` or :class:`numpy.ndarray` 
+            Ticks for colorbar.
 
-            cbticks (:obj:`list` or :class:`numpy.ndarray`): Ticks for colorbar.
-            
-            h (:obj:`float`): Height of figure in inches. Default 8. To be passed into figsize when creating figure.
+        h: :obj:`float` 
+            Height of figure in inches. Default 8. To be passed into figsize when creating figure.
 
-            labelfontsize (:obj:`int`): Fontsize for x and y axis labels. Default 16.
+        labelfontsize: :obj:`int` 
+            Fontsize for x and y axis labels. Default 16.
 
-            lefttitle (:obj:`str`): Title for top left subtitle.
+        lefttitle: :obj:`str` 
+            Title for top left subtitle.
 
-            lefttitlefontsize (:obj:`int`): Font size for top left subtitle. Default 18.
+        lefttitlefontsize: :obj:`int` 
+            Font size for top left subtitle. Default 18.
 
-            maintitle (:obj:`str`): Title of figure.
+        maintitle: :obj:`str` 
+            Title of figure.
 
-            maintitlefontsize (:obj:`int`): Font size for title of figure. Default 18.
+        maintitlefontsize: :obj:`int` 
+            Font size for title of figure. Default 18.
 
-            mappable (:class:`cartopy.mpl.contour.GeoContourSet`): The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
+        mappable: :class:`cartopy.mpl.contour.GeoContourSet` 
+            The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
+        
+        projection: :obj:`str` 
+            Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
 
-            projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
+        ref_fig: :class:`contourf.Contour` 
+            Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the ref_fig would be the name of the first plot.
 
-            ref_fig (:class:`contourf.Contour`): Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the ref_fig would be the name of the first plot.
+        righttitle: :obj:`str` 
+            Title for top right subtitle.
 
-            righttitle (:obj:`str`): Title for top right subtitle.
+        righttitlefontsize: :obj:`int` 
+            Font size for top right subtitle. Default 18.
+        
+        set_extent: :class:`list` 
+            Extent [xmin, xmax, ymin, ymax] of figure to be shown.
+        
+        show_coastline: :obj:`bool` 
+            Whether to show coastlines in figure. Default False, unless a projection is specified.
 
-            righttitlefontsize (:obj:`int`): Font size for top right subtitle. Default 18.
-            
-            set_extent (:class:`list`): Extent [xmin, xmax, ymin, ymax] of figure to be shown.
-            
-            show_coastline (:obj:`bool`): Whether to show coastlines in figure. Default False, unless a projection is specified.
+        show_lakes: :obj:`bool` 
+            Whether to show lakes in figure. Default False.
 
-            show_lakes (:obj:`bool`): Whether to show lakes in figure. Default False.
+        show_land: :obj:`bool` 
+            Whether to show land in figure. Default false.
 
-            show_land (:obj:`bool`): Whether to show land in figure. Default false.
+        subplot: :class:`list` 
+            List [number of rows, number of columns, position] to be passed into plt.subplot().
 
-            subplot (:class:`list`): List [number of rows, number of columns, position] to be passed into plt.subplot().
+        ticklabelfontsize: :obj:`int` 
+            Font size of x and y axis ticks. Default 16.
+        
+        w: :obj:`float` 
+            Weidth of the figure. Default 10. To be passed into figsize.
+        
+        x_label_lon: :obj:`bool` 
+            Format the x axis as longitude values. Default True.
 
-            ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
-            
-            w (:obj:`float`): Weidth of the figure. Default 10. To be passed into figsize.
+        xlabel: :obj:`str` 
+            Label for the x axis.
+        
+        xlim: :class:`list` 
+            List [xmin, xmax] to set the limit of the x axis.
 
-            x_label_lon (:obj:`bool`): Format the x axis as longitude values. Default True.
+        xscale: :obj:`str` 
+            Scale of x axis. Currently supports "log".
 
-            xlabel (:obj:`str`): Label for the x axis.
-            
-            xlim (:class:`list`): List [xmin, xmax] to set the limit of the x axis.
+        ticklabelfontsize: :obj:`int` 
+            Font size of x and y axis ticks. Default 16.
 
-            xscale (:obj:`str`): Scale of x axis. Currently supports "log".
+        xticklabels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of tick labels for the x axis.
 
-            ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
+        xticks: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of tick values for the x axis.
 
-            xticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the x axis.
+        y_label_lat: :obj:`bool` 
+            Format the y axis as latitude values. Default True.
 
-            xticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the x axis.
+        ylabel: :obj:`str` 
+            Label for the y axis.
+        
+        ylim: :class:`list` 
+            List [ymin, ymax] to set the limit of the y axis.
 
-            y_label_lat (:obj:`bool`): Format the y axis as latitude values. Default True.
+        yscale: :obj:`str` 
+            Scale of y axis. Currently supports "log".
 
-            ylabel (:obj:`str`): Label for the y axis.
-            
-            ylim (:class:`list`): List [ymin, ymax] to set the limit of the y axis.
+        yticklabels: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of tick labels for the y axis.
 
-            yscale (:obj:`str`): Scale of y axis. Currently supports "log".
-
-            yticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the y axis.
-
-            yticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the y axis.
+        yticks: :obj:`list` or :class:`numpy.ndarray` 
+            List or array of tick values for the y axis.
         """
 
         # Pull out titles and labels and their font arguments
@@ -292,14 +377,16 @@ class NCL_Plot():
         # Add titles to figure
         self.add_titles()
 
-    def _set_up_fig(self, w=None, h=None):
+    def _set_up_fig(self, w: float =None, h: float =None):
         """Create figure with subplots, if specified.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        w: :obj:`float`
+            Width of the figure. Default 10. To be passed into figsize.
 
-            w (:obj:`float`): Weidth of the figure. Default 10. To be passed into figsize.
-
-            h (:obj:`float`): Height of figure in inches. Default 8. To be passed into figsize when creating figure.
+        h: :obj:`float` 
+            Height of figure in inches. Default 8. To be passed into figsize when creating figure.
         """
 
         # Use default figure height and width if none provided
@@ -332,17 +419,20 @@ class NCL_Plot():
                     gridspec_kw=self._generate_gridspec_ratio(
                         self.sp_rows, self.sp_columns, self.cborientation))
 
-    def _generate_gridspec_ratio(self, rows, columns, cborientation):
+    def _generate_gridspec_ratio(self, rows: int, columns: int, cborientation: str):
         """Generate gridspec for subplots, with additional cax if there is a
         colorbar.
 
-        Args:
+        Args
+        ----
+        cborientation: :obj:`str` 
+            Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+        columns: :obj:`int`
+            Number of columns in the subplot.
 
-            columns (:obj:`int`): Number of columns in the subplot.
-
-            rows (:obj:`int`): Number of rows in the subplot.
+        rows: :obj:`int` 
+            Number of rows in the subplot.
         """
 
         height_list = [1] * rows
@@ -399,18 +489,6 @@ class NCL_Plot():
         """Assign value for self.ax by either creating a new axis or
         referencing the list of axes (self.axes) generated during subplot
         creation.
-
-        Kwargs:
-
-            projection (:obj:`str`): Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
-
-            ref_fig (:class:`contourf.Contour`): Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the ref_fig would be the name of the first plot.
-
-            set_extent (:class:`list`): Extent [xmin, xmax, ymin, ymax] of figure to be shown.
-
-            xscale (:obj:`str`): Scale of x axis. Currently supports "log".
-
-            yscale (:obj:`str`): Scale of y axis. Currently supports "log".
         """
 
         # If there is not reference figure, either get axis from plt.subplot or create axis
@@ -452,17 +530,19 @@ class NCL_Plot():
             if kwargs.get("show_coastlines") is not False:
                 self.ax.coastlines(linewidths=0.5, alpha=0.6)
 
-    def _set_NCL_style(self, ax, ticklabelfontsize=16):
+    def _set_NCL_style(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], ticklabelfontsize: int =16):
         """Set tick label size, add minor ticks, and format axes as latitude
         and longitude.
+        
+        Args
+        ----
+        ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxes`
+            Axis to apply NCL style to.
 
-        Kwargs:
-
-            ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
-
-            x_label_lon (:obj:`bool`): Format the x axis as longitude values. Default True.
-
-            y_label_lat (:obj:`bool`): Format the y axis as latitude values. Default True.
+        Keyword Args
+        ------------
+        ticklabelfontsize: :obj:`int` 
+            Font size of x and y axis ticks. Default 16.
         """
         # Set NCL-style tick marks
         if self.ticklabelfontsize is None:
@@ -477,22 +557,13 @@ class NCL_Plot():
         if self.y_label_lat is not False:
             self.ax.yaxis.set_major_formatter(LatitudeFormatter())
 
-    def _set_lim_ticks(self, ax):
+    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes]):
         """Set limits and ticks for axis.
-
-        Kwargs:
-
-            xlim (:class:`list`): List [xmin, xmax] to set the limit of the x axis.
-
-            xticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the x axis.
-
-            xticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the x axis.
-
-            ylim (:class:`list`): List [ymin, ymax] to set the limit of the y axis.
-
-            yticklabels (:obj:`list` or :class:`numpy.ndarray`): List or array of tick labels for the y axis.
-
-            yticks (:obj:`list` or :class:`numpy.ndarray`): List or array of tick values for the y axis.
+        
+        Args
+        ----
+        ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxes`
+            Axis to apply NCL style to.
         """
         # If xlim/ylim is not specified, set it to the mix and max of the data
         if self.ylim is None:
@@ -523,11 +594,7 @@ class NCL_Plot():
             ax.set_extent(self.set_extent, crs=self.projection)
 
     def _subplot_pos(self):
-        """Convert the position of a subplot to its array index.
-
-        Kwargs:
-
-            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+        """Convert the position of a subplot to its subplot array index.
         """
 
         # If the cborientation is vertical, the number of rows should be used to calculate the array index. Otherwise, the number of columns should be used.
@@ -576,46 +643,55 @@ class NCL_Plot():
                 else:
                     self.sp_rows += 1
                     
-    def show_land(self, scale="110m", fc='lightgrey'):
+    def show_land(self, scale: str ="110m", fc: str ='lightgrey'):
         """Add land to figure.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        fc: :obj:`str` 
+            Facecolor of land. Default light grey.
 
-            fc(:obj:`str`): Facecolor of land. Default light grey.
-
-            scale(:obj:`str`): Scale of land set. Default 110m.
+        scale: :obj:`str` 
+            Scale of land set. Default 110m.
         """
         # Add land to figure
         self.ax.add_feature(cfeature.LAND.with_scale(scale), facecolor=fc)
 
-    def show_coastline(self, scale="110m", lw=0.5, ec="black"):
+    def show_coastline(self, scale: str ="110m", lw: float =0.5, ec: str ="black"):
         """Add coastlines to figure.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        ec: :obj:`str` 
+            Edgecolor of coastlines. Default black.
 
-            ec(:obj:`str`): Edgecolor of coastlines. Default black.
+        lw: :obj:`float` 
+            Linewidth of coastlines. Default 0.5.
 
-            lw(:obj:`float`): Linewidth of coastlines. Default 0.5.
-
-            scale(:obj:`str`): Scale of coastline set. Default 110m.
+        scale: :obj:`str` 
+            Scale of coastline set. Default 110m.
         """
         # Add coastline to figure
         self.ax.add_feature(cfeature.COASTLINE.with_scale(scale),
                             linewidths=lw,
                             edgecolor=ec)
 
-    def show_lakes(self, scale="110m", lw=0.5, ec='black', fc='None'):
+    def show_lakes(self, scale: str ="110m", lw: float =0.5, ec: str ='black', fc: str ='None'):
         """Add lakes to figure.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        ec: :obj:`str` 
+            Outline color of lakes. Default black.
 
-            ec(:obj:`str`): Outline color of lakes. Default black.
+        fc: :obj:`str` 
+            Facecolor of lakes. Default none.
 
-            fc(:obj:`str`): Facecolor of lakes. Default none.
+        lw: :obj:`float` 
+            Linewidth of lake edges. Default 0.5.
 
-            lw(:obj:`float`): Linewidth of lake edges. Default 0.5.
-
-            scale(:obj:`str`): Scale of lake set. Default 110m.
+        scale: :obj:`str` 
+            Scale of lake set. Default 110m.
         """
         # Add lakes to figure
         self.ax.add_feature(cfeature.LAKES.with_scale(scale),
@@ -624,37 +700,46 @@ class NCL_Plot():
                             facecolor=fc)
         
     def _add_colorbar(self,
-                      mappable=None,
-                      cborientation="horizontal",
-                      cbshrink=0.75,
-                      cbpad=0.11,
-                      cbdrawedges=True,
-                      cbticks=None,
-                      cbticklabels=None,
-                      cbextend="neither",
-                      cbticklabelsize=None):
+                      mappable: cartopy.mpl.contour.GeoContourSet =None,
+                      cborientation: str ="horizontal",
+                      cbshrink: float =0.75,
+                      cbpad: float =0.11,
+                      cbdrawedges: bool =True,
+                      cbticks: typing.Union[list, numpy.ndarray] =None,
+                      cbticklabels: typing.Union[list, numpy.ndarray] =None,
+                      cbextend: str ="neither",
+                      cbticklabelsize: int =None):
         """Add colorbar to figure. If figure is a subplot, uses gridspec to add
         a cax to the appropriate place on the figure.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        cbdrawedges: :obj:`bool` 
+            Whether to draw edges on the colorbar. Default True.
 
-            cbdrawedges (:obj:`bool`): Whether to draw edges on the colorbar. Default True.
+        cbextend: :obj:`str` 
+            Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
 
-            cbextend (:obj:`str`): Pointed end of the colorbar. Default "neither", which does not include pointed edges. Other options are "both" (include on both sides), "min" (include on minimum end), and "max" (include on maximum end).
+        cborientation: :obj:`str` 
+            Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-            cborientation (:obj:`str`): Placement of the colorbar. Default "horizontal". Other option is "vertical".
+        cbpad: :obj:`float` 
+            Padding between colorbar and figure. Default 0.11.
 
-            cbpad (:obj:`float`): Padding between colorbar and figure. Default 0.11.
+        cbshrink: :obj:`float` 
+            Percent shrinkage of colorbar. Default 0.75.
 
-            cbshrink (:obj:`float`): Percent shrinkage of colorbar. Default 0.75.
+        cbticklabels: :obj:`list` or :class:`numpy.ndarray` 
+            Labels for colorbar ticks.
 
-            cbticklabels (:obj:`list` or :class:`numpy.ndarray`): Labels for colorbar ticks.
+        cbticklabelsize: :obj:`int` 
+            Font size for colorbar tick labels.
 
-            cbticklabelsize (:obj:`int`): Font size for colorbar tick labels.
+        cbticks: :obj:`list` or :class:`numpy.ndarray` 
+            Ticks for colorbar.
 
-            cbticks (:obj:`list` or :class:`numpy.ndarray`): Ticks for colorbar.
-
-            mappable (:class:`cartopy.mpl.contour.GeoContourSet`): The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
+        mappable: :class:`cartopy.mpl.contour.GeoContourSet` 
+            The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
         """
 
         # Set values for colorbar arguments while maintaining potential previously set values
@@ -715,40 +800,50 @@ class NCL_Plot():
             self.cbar.ax.tick_params(labelsize=self.cbticklabelsize)
 
     def add_titles(self,
-                   maintitle=None,
-                   maintitlefontsize=18,
-                   lefttitle=None,
-                   lefttitlefontsize=18,
-                   righttitle=None,
-                   righttitlefontsize=18,
-                   xlabel=None,
-                   ylabel=None,
-                   labelfontsize=16):
+                   maintitle: str =None,
+                   maintitlefontsize: int =18,
+                   lefttitle: str =None,
+                   lefttitlefontsize: int =18,
+                   righttitle: str =None,
+                   righttitlefontsize: int=18,
+                   xlabel: str =None,
+                   ylabel: str =None,
+                   labelfontsize: int =16):
         """Add titles to figure. If inputted dataset is an xarray file (or
         netCDF converted to xarray), will attempt to pull titles and labels
         from the datafile.
 
-        Kwargs:
+        Keyword Args
+        ------------
+        labelfontsize: :obj:`int` 
+            Fontsize for x and y axis labels. Default 16.
 
-            labelfontsize (:obj:`int`): Fontsize for x and y axis labels. Default 16.
+        lefttitle: :obj:`str` 
+            Title for top left subtitle.
 
-            lefttitle (:obj:`str`): Title for top left subtitle.
+        lefttitlefontsize: :obj:`int` 
+            Font size for top left subtitle. Default 18.
 
-            lefttitlefontsize (:obj:`int`): Font size for top left subtitle. Default 18.
+        maintitle: :obj:`str` 
+            Title of figure.
 
-            maintitle (:obj:`str`): Title of figure.
+        maintitlefontsize: :obj:`int` 
+            Font size for title of figure. Default 18.
 
-            maintitlefontsize (:obj:`int`): Font size for title of figure. Default 18.
+        righttitle: :obj:`str` 
+            Title for top right subtitle.
 
-            righttitle (:obj:`str`): Title for top right subtitle.
+        righttitlefontsize: :obj:`int` 
+            Font size for top right subtitle. Default 18.
 
-            righttitlefontsize (:obj:`int`): Font size for top right subtitle. Default 18.
+        ticklabelfontsize: :obj:`int` 
+            Font size of x and y axis ticks. Default 16.
 
-            ticklabelfontsize (:obj:`int`): Font size of x and y axis ticks. Default 16.
+        xlabel: :obj:`str` 
+            Label for the x axis.
 
-            xlabel (:obj:`str`): Label for the x axis.
-
-            ylabel (:obj:`str`): Label for the y axis.
+        ylabel: :obj:`str` 
+            Label for the y axis.
         """
 
         # Update argument definitions while maintaining potential previously set values
@@ -859,6 +954,9 @@ class NCL_Plot():
                               labelfontsize=self.labelfontsize)
 
     def show(self):
+        ''' Display the plot.
+
+        '''
         # Try to show plot with tight_layout
         try:
             plt.tight_layout()
@@ -868,4 +966,6 @@ class NCL_Plot():
         self.fig.show()
 
     def get_mpl_obj(self):
+        ''' Get matplotlib object.
+        '''
         return self.fig
