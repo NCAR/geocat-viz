@@ -550,7 +550,8 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 def findLocalExtrema(da: xarray.DataArray, 
                      highVal: int = 0, 
                      lowVal:int = 1000, 
-                     eType: str = 'Low') -> list:
+                     eType: str = 'Low',
+                     eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highVal, and to classify as a local low, the data point must be less
@@ -573,6 +574,11 @@ def findLocalExtrema(da: xarray.DataArray,
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
         Default eType is 'Low'.
+
+    eps: :class:`float`
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples 
+            for one to be considered as in the neighborhood of the other. 
+            Default eps is 10.
         
     Returns
     -------
@@ -626,7 +632,7 @@ def findLocalExtrema(da: xarray.DataArray,
 
     # Use Density-based spatial clustering of applications with noise
     # to cluster and label coordinates
-    db = DBSCAN(eps=10, min_samples=1)
+    db = DBSCAN(eps=eps, min_samples=1)
     new = db.fit(extremacoords)
     labels = new.labels_
 
