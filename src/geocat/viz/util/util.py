@@ -3,10 +3,11 @@ import matplotlib.axes
 import cartopy.mpl.geoaxes
 import xarray
 
-def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+
+def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
+                                            cartopy.mpl.geoaxes.GeoAxesSubplot],
                            zero_direction_label: bool = False,
                            dateline_direction_label: bool = False):
-    
     """Utility function to make plots look like NCL plots by adding latitude,
     longitude tick labels.
 
@@ -24,13 +25,12 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_ce_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>`_
-    
+
     - `NCL_ce_3_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>`_
-    
+
     - `NCL_conOncon_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>`_
-        
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
@@ -42,7 +42,8 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.ge
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
+                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
                           x_minor_per_major: int = 3,
                           y_minor_per_major: int = 3,
                           basex: int = 10,
@@ -69,7 +70,7 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
 
     basey: :class:`int`
         If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
-        
+
     labelsize: :class:`str` or :class:`int`
         Size of tick labels. Default is "small".
 
@@ -84,15 +85,15 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
         `symlog`. Defines the range (-x, x), within which the plot is
         linear. This avoids having the plot go to infinity around zero.
         Defaults to 2.
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=add_major_minor_ticks>`_
-    
+
     - `NCL_box_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Boxplots/NCL_box_2.html?highlight=add_major_minor_ticks>`_
-    
+
     - `NCL_scatter_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_1.html?highlight=add_major_minor_ticks>`_
     """
     import matplotlib.ticker as tic
@@ -149,7 +150,8 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     )
 
 
-def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
+                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
                           maintitle: str = None,
                           maintitlefontsize: int = 18,
                           lefttitle: str = None,
@@ -198,7 +200,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
 
     labelfontsize: :class:`int`
         Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
-        
+
     Notes
     -----
     If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
@@ -208,7 +210,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     >>> |                   Axes                    |
     >>> |                                           |
 
-    
+
     If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
     the row of lefttitle/righttitle as follows:
 
@@ -217,15 +219,15 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
     >>>  ___________________________________________
     >>> |                   Axes                    |
     >>> |                                           |
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=set_titles_and_labels>`_
-    
+
     - `NCL_vector_4.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_4.html?highlight=set_titles_and_labels>`_
-    
+
     - `NCL_polar_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_polar_1.html?highlight=set_titles_and_labels>`_
     """
 
@@ -251,13 +253,15 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geo
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
 
-def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
-                              xlim: tuple =None,
-                              ylim: tuple =None,
-                              xticks: list =None,
-                              yticks: list =None,
-                              xticklabels: list =None,
-                              yticklabels: list =None):
+def set_axes_limits_and_ticks(
+        ax: typing.Union[matplotlib.axes.Axes,
+                         cartopy.mpl.geoaxes.GeoAxesSubplot],
+        xlim: tuple = None,
+        ylim: tuple = None,
+        xticks: list = None,
+        yticks: list = None,
+        xticklabels: list = None,
+        yticklabels: list = None):
     """Utility function to determine axis limits, tick values and labels.
 
     The intent of this function is to help developers use only this convenience function instead of multiple
@@ -289,15 +293,15 @@ def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl
 
     yticklabels: :class:`list`
         List of string labels for y-axis ticks. See Matplotlib documentation for further information.
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=set_axes_limits_and_ticks>`_
-    
+
     - `NCL_lb_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_5.html?highlight=set_axes_limits_and_ticks>`_
-    
+
     - `NCL_xy_4.py <https://geocat-examples.readthedocs.io/en/latest/gallery/XY/NCL_xy_4.html?highlight=set_axes_limits_and_ticks>`_
     """
 
@@ -320,10 +324,10 @@ def set_axes_limits_and_ticks(ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl
         ax.set_ylim(ylim)
 
 
-def truncate_colormap(cmap: matplotlib.colors.Colormap, 
-                      minval: typing.Union[int, float] = 0.0, 
-                      maxval: typing.Union[int, float] = 1.0, 
-                      n: int = 100, 
+def truncate_colormap(cmap: matplotlib.colors.Colormap,
+                      minval: typing.Union[int, float] = 0.0,
+                      maxval: typing.Union[int, float] = 1.0,
+                      n: int = 100,
                       name: str = None):
     """Utility function that truncates a colormap. Registers the new colormap
     by name in plt.cm, and also returns the updated map.
@@ -347,15 +351,15 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     name: :class:`str`
         Optional name of the new color map. If not set, a new name is generated by using the name of the input
         colormap as well as min and max values.
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_dev_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Panels/NCL_dev_2.html?highlight=truncate_colormap>`_
-    
+
     - `NCL_vector_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_1.html?highlight=truncate_colormap>`_
-    
+
     - `NCL_mask_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Masking/NCL_mask_1.html?highlight=truncate_colormap>`_
     """
     import numpy as np
@@ -374,8 +378,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     return new_cmap
 
 
-def xr_add_cyclic_longitudes(da: xarray.DataArray, 
-                             coord: str):
+def xr_add_cyclic_longitudes(da: xarray.DataArray, coord: str):
     """Utility function to handle the no-shown-data artifact of 0 and
     360-degree longitudes.
 
@@ -387,15 +390,15 @@ def xr_add_cyclic_longitudes(da: xarray.DataArray,
 
     coord: :class:`str`
         Name of the longitude coordinate within "da" data array.
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_lb_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_3.html?highlight=xr_add_cyclic_longitudes>`_
-    
+
     - `NCL_proj_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_proj_2.html?highlight=xr_add_cyclic_longitudes>`_
-    
+
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=xr_add_cyclic_longitudes>`_
     """
 
@@ -470,7 +473,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
         The size of the incrementation for vertices in degrees. Default is
         a vertex every one degree of longitude. A higher number results in
         a lower resolution boundary.
-            
+
     Notes
     -----
     Due to the behavior of cartopy's set_extent() function, the curved
@@ -480,15 +483,15 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
     Stereographic projections, typically only north_pad and south_pad are
     needed. If attempting to use this function for other projections
     (i.e. Othographic) east_pad and west_pad may be needed.
-    
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_conOncon_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_5.html?highlight=set_map_boundary>`_
-    
+
     - `NCL_panel_9.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Panels/NCL_panel_9.html?highlight=set_map_boundary>`_
-    
+
     - `NCL_polar_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_polar_1.html?highlight=set_map_boundary>`_
     """
     import cartopy.crs as ccrs
@@ -547,9 +550,9 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
                   crs=ccrs.PlateCarree())
 
 
-def findLocalExtrema(da: xarray.DataArray, 
-                     highVal: int = 0, 
-                     lowVal:int = 1000, 
+def findLocalExtrema(da: xarray.DataArray,
+                     highVal: int = 0,
+                     lowVal: int = 1000,
                      eType: str = 'Low',
                      eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
@@ -561,37 +564,37 @@ def findLocalExtrema(da: xarray.DataArray,
     ----------
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
-    
+
     highVal: :class:`int`
         Data value that the local high must be greater than to qualify as a "local high" location.
         Default highVal is 0.
-    
+
     lowVal: :class:`int`
         Data value that the local low must be less than to qualify as a "local low" location.
         Default lowVal is 1000.
-    
+
     eType: :class:`str`
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
         Default eType is 'Low'.
 
     eps: :class:`float`
-            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples 
-            for one to be considered as in the neighborhood of the other. 
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
+            for one to be considered as in the neighborhood of the other.
             Default eps is 10.
-        
+
     Returns
     -------
     clusterExtremas: :class:`list`
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify local low/high locations
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=findlocalextrema>`_
-    
+
     - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=findlocalextrema>`_
     """
 
@@ -683,45 +686,45 @@ def plotCLabels(ax: matplotlib.axes.Axes,
 
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
-    
+
     Parameters
     ----------
     ax: :class:`matplotlib.axes.Axes`
         Axis containing the contour set.
-    
+
     contours: :class:`matplotlib.contour.QuadContourSet`
         Contour set that is being labeled.
-    
+
     transform: :class:`cartopy.crs.CRS`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
-    
+
     proj: :class:`cartopy.crs.CRS`
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
-    
+
     clabel:_locations :class:`list`
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contours with regular field variable values should be plotted.
-    
+
     fontsize: :class:`int`
         Font size of contour labels.
-    
+
     whitebbox: :class:`bool`
         Setting this to "True" will cause all labels to be plotted with white backgrounds
-    
+
     horizontal: :class:`bool`
         Setting this to "True" will cause the contour labels to be horizontal.
-    
+
     Returns
     -------
     cLabels: :class:`list`
         List of text instances of all contour labels
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotclabels>`_
     """
     import numpy as np
@@ -769,48 +772,48 @@ def plotELabels(da: xarray.DataArray,
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
-    
+
     Parameters
     ----------
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable data values.
-    
+
     transform: :class:`cartopy.crs.CRS`
         Instance of CRS that represents the source coordinate system of coordinates.
         (ex. ccrs.Geodetic()).
-    
+
     proj: :class:`cartopy.crs.CRS`
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
-    
+
     clabel_locations: :class:`list`
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contour labels should be plotted.
-    
+
     label: :class:`str`
         ex. 'L' or 'H'
         The data value will be plotted as a subscript of this label.
-    
+
     fontsize: :class:`int`
         Font size of regular contour labels.
-    
+
     horizontal: :class:`bool`
         Setting this to "True" will cause the contour labels to be horizontal.
-    
+
     whitebbox: :class:`bool`
         Setting this to "True" will cause all labels to be plotted with white backgrounds
-    
+
     Returns
     -------
     extremaLabels: :class:`list`
         List of text instances of all contour labels
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotELabels>`_
-    
+
     - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=plotELabels>`_
     """
 
@@ -870,7 +873,7 @@ def plotELabels(da: xarray.DataArray,
     return extremaLabels
 
 
-def set_vector_density(data: xarray.DataArray, 
+def set_vector_density(data: xarray.DataArray,
                        minDistance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
@@ -878,19 +881,19 @@ def set_vector_density(data: xarray.DataArray,
     ----------
     data: :class:`xarray.DataArray`
         Data array that contains the vector plot latitude/longitude data.
-    
+
     minDistance: :class:`int`
         Value in degrees that determines the distance between the vectors.
-    
+
     Returns
     -------
     ds: :class:`xarray.DataArray`
         Sliced version of the input data array.
-        
+
     Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
-    
+
     - `NCL_vector_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_3.html?highlight=set_vector_density>`_
     """
     import math
