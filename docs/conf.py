@@ -50,7 +50,6 @@ napoleon_include_special_with_doc = True
 
 autosummary_generate = True
 
-#autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
 autodoc_default_options = {
     'exclude-members': '__init__'
 }
