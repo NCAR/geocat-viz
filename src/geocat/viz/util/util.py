@@ -396,7 +396,8 @@ def xr_add_cyclic_longitudes(da: xarray.DataArray, coord: str):
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_lb_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_3.html?highlight=xr_add_cyclic_longitudes>`_
 
