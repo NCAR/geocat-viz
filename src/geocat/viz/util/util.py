@@ -222,7 +222,8 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=set_titles_and_labels>`_
 
