@@ -297,7 +297,8 @@ def set_axes_limits_and_ticks(
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=set_axes_limits_and_ticks>`_
 
