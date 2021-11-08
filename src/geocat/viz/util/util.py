@@ -478,7 +478,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
     Notes
     -----
-    Due to the behavior of cartopy's set_extent() function, the curved
+    Due to the behavior of Cartopy's set_extent() function, the curved
     edges of the boundary may be flattened and cut off. To solve this, use the
     kwargs north_pad, south_pad, east_pad, and west_pad. These will modify the
     coordinates passed to set_extent(). For the Lambert Conformal and Polar
