@@ -482,7 +482,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
     coordinates passed to set_extent(). For the Lambert Conformal and Polar
     Stereographic projections, typically only north_pad and south_pad are
     needed. If attempting to use this function for other projections
-    (i.e. Othographic) east_pad and west_pad may be needed.
+    (i.e. Orthographic) east_pad and west_pad may be needed.
 
     Examples
     --------
