@@ -728,7 +728,6 @@ def plotCLabels(ax: matplotlib.axes.Axes,
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotclabels>`_
     """
     import numpy as np
-    import matplotlib.pyplot as plt
 
     # Initialize empty array that will be filled with contour label text objects and returned
     cLabels = []
