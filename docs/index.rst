@@ -18,7 +18,7 @@ to facilitate plotting geosciences data with Matplotlib, Cartopy, and possibly o
 plotting packages.
 
 .. toctree::
-   :maxdepth: 2]
+   :maxdepth: 2
    :caption: Contents:
 
    ./installation
