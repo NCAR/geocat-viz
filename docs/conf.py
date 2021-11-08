@@ -34,7 +34,6 @@ author = u'GeoCAT'
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx', 
-    #'sphinx.ext.mathjax'
     ]
 
 intersphinx_mapping = {
