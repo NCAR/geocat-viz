@@ -1,7 +1,6 @@
 name: geocat_viz_build
 channels:
   - conda-forge
-  - ncar
 dependencies:
   - cartopy
   - matplotlib

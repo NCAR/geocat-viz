@@ -18,7 +18,7 @@ class TaylorDiagram(object):
     precipitation, temperature) may have widely varying numerical values, the results are normalized by the reference
     variables. The ratio of the normalized variances indicates the relative amplitude of the model and observed
     variations.
-    
+
     Parameters
     ----------
     refstd: :class:`float`
@@ -47,25 +47,25 @@ class TaylorDiagram(object):
     """
 
     def __init__(self,
-                 refstd: float=1,
-                 fig: matplotlib.figure.Figure =None,
-                 rect: int =111,
-                 label: str ='REF',
-                 stdRange: tuple =(0, 1.65),
-                 stdLevel: list =np.arange(0, 1.51, 0.25)):
+                 refstd: float = 1,
+                 fig: matplotlib.figure.Figure = None,
+                 rect: int = 111,
+                 label: str = 'REF',
+                 stdRange: tuple = (0, 1.65),
+                 stdLevel: list = np.arange(0, 1.51, 0.25)):
         """Create base Taylor Diagram.
 
         Parameters
         ----------
         refstd: :class:`float`
             Optional reference standard deviation
-    
+
         fig: :class:`matplotlib.figure.Figure`
             Optional input figure. Default is None
-    
+
         rect: :class:`int`
             Optional subplot definition
-    
+
         label: :class:`string`
             Optional reference label string indentifier
 
@@ -180,14 +180,16 @@ class TaylorDiagram(object):
         self.modelOutside = -1
 
     def add_model_set(self,
-                      stddev: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
-                      corrcoef: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
-                      fontsize: float =14,
-                      xytext: tuple =(-5, 7),
-                      annotate_on: bool =True,
-                      model_outlier_on: bool =False,
-                      percent_bias_on: bool =False,
-                      bias_array: bool =None,
+                      stddev: typing.Union[xarray.DataArray, numpy.ndarray,
+                                           list, float],
+                      corrcoef: typing.Union[xarray.DataArray, numpy.ndarray,
+                                             list, float],
+                      fontsize: float = 14,
+                      xytext: tuple = (-5, 7),
+                      annotate_on: bool = True,
+                      model_outlier_on: bool = False,
+                      percent_bias_on: bool = False,
+                      bias_array: bool = None,
                       *args,
                       **kwargs):
         """Add a model set (*stddev*, *corrcoeff*) to the Taylor diagram. NCL-
@@ -236,7 +238,7 @@ class TaylorDiagram(object):
         -------
         modelTexts: array of :class:`matplotlib.text.Annotation`
             A list of text objects representing model labels
-            
+
         modelset: array of :class:`matplotlib.collections.PathCollection`
             A list of sets of markers representing sets of models
         """
@@ -369,10 +371,11 @@ class TaylorDiagram(object):
         return modelTexts, modelset
 
     def add_xgrid(self,
-                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
-                  color: str ='lightgray',
+                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                                    float],
+                  color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
-                  linewidth: float =0.5,
+                  linewidth: float = 0.5,
                   **kwargs):
         """Add gridlines to the X axis (correlation) specified by array *arr*
 
@@ -389,7 +392,7 @@ class TaylorDiagram(object):
 
         linewidth: :class:`float`
             Set the line width in points. Optional. Default to 0.5
-        
+
         Notes
         -----
         kwargs are directly propagated to the `matplotlib.axes.Axes.vlines` command.
@@ -409,10 +412,11 @@ class TaylorDiagram(object):
                            **kwargs)
 
     def add_ygrid(self,
-                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list, float],
-                  color: str ='lightgray',
+                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                                    float],
+                  color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
-                  linewidth: int =1,
+                  linewidth: int = 1,
                   **kwargs):
         """Add gridlines (radii) to the Y axis (standard deviation) specified
         by array *arr*
@@ -458,7 +462,10 @@ class TaylorDiagram(object):
         """
         self._ax.grid(*args, **kwargs)
 
-    def add_contours(self, levels: typing.Union[xarray.DataArray, numpy.ndarray, list, int] =5, **kwargs):
+    def add_contours(self,
+                     levels: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                                          int] = 5,
+                     **kwargs):
         """Add constant centered RMS difference contours.
 
         Parameters
@@ -488,11 +495,12 @@ class TaylorDiagram(object):
         return contours
 
     def add_model_name(self,
-                       namearr: typing.Union[xarray.DataArray, numpy.ndarray, list],
-                       x_loc: float =0.1,
-                       y_loc: float =0.31,
-                       verticalalignment: str ='top',
-                       fontsize: float =13,
+                       namearr: typing.Union[xarray.DataArray, numpy.ndarray,
+                                             list],
+                       x_loc: float = 0.1,
+                       y_loc: float = 0.31,
+                       verticalalignment: str = 'top',
+                       fontsize: float = 13,
                        **kwargs):
         """Add texts of model names.
 
@@ -580,10 +588,10 @@ class TaylorDiagram(object):
             y_loc -= 0.04
 
     def add_legend(self,
-                   xloc: float =1.1,
-                   yloc: float =0.95,
-                   loc: str ="upper right",
-                   fontsize: float =14,
+                   xloc: float = 1.1,
+                   yloc: float = 0.95,
+                   loc: str = "upper right",
+                   fontsize: float = 14,
                    **kwargs):
         """Add a figure legend.
 
@@ -628,7 +636,11 @@ class TaylorDiagram(object):
                                 frameon=False)
         return legend
 
-    def add_title(self, maintitle: str, fontsize: float =18, y_loc: float =None, **kwargs):
+    def add_title(self,
+                  maintitle: str,
+                  fontsize: float = 18,
+                  y_loc: float = None,
+                  **kwargs):
         """Add a main title.
 
         Parameters
@@ -643,7 +655,7 @@ class TaylorDiagram(object):
             Vertical Axes location. 1.0 is the top. Optional. Default to None
 
         Notes
-        -----        
+        -----
         *kwargs* are directly propagated to the `matplotlib.axes.Axes.set_title` command.
 
         Return
@@ -654,9 +666,9 @@ class TaylorDiagram(object):
         self._ax.set_title(maintitle, fontsize=fontsize, y=y_loc, **kwargs)
 
     def set_fontsizes_and_pad(self,
-                              ticklabel_fontsize: float =14,
-                              axislabel_fontsize: float =16,
-                              axislabel_pad: float =8):
+                              ticklabel_fontsize: float = 14,
+                              axislabel_fontsize: float = 16,
+                              axislabel_pad: float = 8):
         """Reset ticklabel and axis label fontsizes, and axis label padding.
 
         Parameters
