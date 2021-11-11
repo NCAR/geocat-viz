@@ -526,8 +526,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
-    if (lon_range[0] >= 0 and
-            lon_range[1] <= 0):  # Case when range crosses antimeridian
+    if lon_range[0] >= 0 >= lon_range[1]:  # Case when range crosses antimeridian
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
                    [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
@@ -920,9 +919,6 @@ def set_vector_density(data: xarray.DataArray,
 
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
-
-        # Initialize ds
-        ds = data
 
         if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +

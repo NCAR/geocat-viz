@@ -12,7 +12,6 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
 
 import geocat.viz
 
@@ -34,8 +33,7 @@ author = u'GeoCAT'
 # ones.
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx', 
-    #'sphinx.ext.mathjax'
+    'sphinx.ext.intersphinx'
     ]
 
 intersphinx_mapping = {
@@ -51,9 +49,7 @@ napoleon_use_admonition_for_examples = True
 napoleon_include_special_with_doc = True
 
 autosummary_generate = True
-#autoclass_content = 'class'
 
-#autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
 autodoc_default_options = {
     'exclude-members': '__init__'
 }
