@@ -211,7 +211,8 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
     >>> |                                           |
 
 
-    If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
+    If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just on top of
+    the axes, and maintitle is placed on top of
     the row of lefttitle/righttitle as follows:
 
     >>>                  maintitle
