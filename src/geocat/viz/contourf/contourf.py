@@ -3,7 +3,7 @@
 import xarray as xr
 import typing
 
-from _plot_util import NCL_Plot
+from ._plot_util import NCL_Plot
 
 
 class Contour(NCL_Plot):
@@ -73,7 +73,7 @@ class Contour(NCL_Plot):
         A contour plot with specified input style.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, linecolor = "black", linewidth = 0.4, draw_contour_labels = False, manualcontourlabels = False,**kwargs):
         """Create contour figure. Generate filled contours and/or contour lines
         for figure. Add colorbar and contour labels if specified.
 
@@ -188,17 +188,11 @@ class Contour(NCL_Plot):
                 self._estimate_clevels()
 
         # Read in style of contour lines
-        if kwargs.get("linecolor") is None:
-            self.linecolor = "black"
-        else:
-            self.linecolor = kwargs.get("linecolor")
+        self.linecolor = kwargs.get("linecolor")
 
         self.linestyle = kwargs.get("linestyle")
 
-        if kwargs.get("linewidth") is None:
-            self.linewidth = 0.4
-        else:
-            self.linewidth = kwargs.get("linewidth")
+        self.linewidth = kwargs.get("linewidth")
 
         # Set colormap to specified or default value
         if kwargs.get('cmap') is not None:
@@ -207,15 +201,9 @@ class Contour(NCL_Plot):
             self.cmap = self._default_cmap
 
         # Pull out contour line label specific kwargs
-        if kwargs.get("drawcontourlabels") is not None:
-            self.draw_contour_labels = kwargs.get("drawcontourlabels")
-        else:
-            self.draw_contour_labels = False
+        self.draw_contour_labels = kwargs.get('draw_contour_labels')
 
-        if kwargs.get("manualcontourlabels") is not None:
-            self.manualcontourlabels = kwargs.get("manualcontourlabels")
-        else:
-            self.manualcontourlabels = False
+        self.manualcontourlabels = kwargs.get('manualcontourlabels')
 
         self.contourlabels = kwargs.get("contourlabels")
         self.contourfontsize = kwargs.get("contourfontsize")
