@@ -51,8 +51,8 @@ class TaylorDiagram(object):
                  fig: matplotlib.figure.Figure = None,
                  rect: int = 111,
                  label: str = 'REF',
-                 stdRange: tuple = (0, 1.65),
-                 stdLevel: list = np.arange(0, 1.51, 0.25)):
+                 std_range: tuple = (0, 1.65),
+                 std_level: list = np.arange(0, 1.51, 0.25)):
         """Create base Taylor Diagram.
 
         Parameters
