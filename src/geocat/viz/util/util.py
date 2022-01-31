@@ -53,6 +53,68 @@ def add_lat_lon_gridlines(ax,
     return gl
 
 
+def add_right_hand_axis(ax,
+                        label=None,
+                        ylim=None,
+                        yticks=None,
+                        ticklabelsize=12,
+                        labelpad=10,
+                        axislabelsize=16,
+                        y_minor_per_major=None):
+    """Utility function that adds a right hand axis to the plot.
+
+    Parameters
+    ----------
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        label (:class:`str`):
+            Text to use for the right hand side label.
+
+        ylim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
+
+        yticks (:class:`list`):
+            List of y-axis tick locations. See Matplotlib documentation for further information.
+
+        ticklabelsize (:class:`int`):
+            Text font size of tick labels. A default value of 12 is used if nothing is set.
+
+        labelpad (:class:`float`):
+            Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
+
+        axislabelsize (:class:`int`):
+            Text font size for y-axes. A default value of 16 is used if nothing is set.
+
+        y_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on y-axis.
+
+        Returns
+        -------
+
+        axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            The created right-hand axis
+    """
+    from geocat.viz import util as gvutil
+    import matplotlib.ticker as tic
+
+    axRHS = ax.twinx()
+    if label is not None:
+        axRHS.set_ylabel(ylabel=label,
+                         labelpad=labelpad,
+                         fontsize=axislabelsize)
+    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
+    axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
+    if y_minor_per_major is not None:
+        axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
+        axRHS.tick_params(length=4, width=0.4, which="minor")
+
+    return axRHS
+
+
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
