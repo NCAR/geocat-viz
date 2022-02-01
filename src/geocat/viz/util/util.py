@@ -4,36 +4,32 @@ def set_tick_direction_spine_visibility(ax,
                                         bottom_spine_visible=True,
                                         left_spine_visible=True,
                                         right_spine_visible=True):
-    """Utility function to turn off axes spines and set tickmark orientations.
-
+    """
+    Utility function to turn off axes spines and set tickmark orientations.
+    
     Note: This function should be called after calling add_major_minor_ticks()
 
-    Parameters
-    ----------
+    Args:
 
         ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             Current axes to the current figure
 
         tick_direction (:class:`str`):
-            Set 'in' to put ticks inside the axes,
+            Set 'in' to put ticks inside the axes, 
             'out' to put ticks outside the axes,
             'inout' to put ticks both in and out of the axes.
 
         top_spine_visible (:class:`bool`):
             Set False to turn off top spine of the axes.
-
+        
         bottom_spine_visible (:class:`bool`):
             Set False to turn off bottom spine of the axes.
-
+            
         left_spine_visible (:class:`bool`):
             Set False to turn off left spine of the axes.
-
+            
         right_spine_visible (:class:`bool`):
             Set False to turn off right spine.
-
-    Returns
-    -------
-    None
     """
     ax.tick_params(direction=tick_direction, axis='both', which='both')
     ax.spines['top'].set_visible(top_spine_visible)
