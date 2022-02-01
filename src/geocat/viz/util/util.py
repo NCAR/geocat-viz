@@ -56,6 +56,123 @@ def set_tick_direction_spine_visibility(ax,
         ax.yaxis.set_ticks_position('none')
 
 
+import numpy as np
+
+
+def add_lat_lon_gridlines(ax,
+                          projection=None,
+                          draw_labels=True,
+                          xlocator=np.arange(-180, 180, 15),
+                          ylocator=np.arange(-90, 90, 15),
+                          labelsize=12,
+                          **kwargs):
+    """Utility function that adds latitude and longtitude gridlines to the
+    plot.
+
+    Args:
+
+        ax (:class:`cartopy.mpl.geoaxes.GeoAxes`):
+            Current axes to the current figure.
+
+        projection (:class:`cartopy.crs.CRS`):
+            Defines a Cartopy Coordinate Reference System. If not given,
+            defaults to ccrs.PlateCarree()
+
+        draw_labels (:class:`bool`):
+            Toggle whether to draw labels, default to True.
+
+        xlocator, ylocator (:class:`numpy.ndarray` or list):
+            Arrays of fixed locations of the gridlines in the x and y coordinate of the given CRS.
+            Default to np.arange(-180, 180, 15) and np.arange(-90, 90, 15).
+
+        labelsize (:class:`float`):
+            Fontsizes of label fontsizes of x and y coordinates.
+
+        *kwargs* control line properties and are passed through to `matplotlib.collections.Collection`.
+
+    Return:
+
+        gl (:class:`cartopy.mpl.gridliner.Gridliner`):
+    """
+    import matplotlib.ticker as mticker
+
+    # Draw gridlines
+    gl = ax.gridlines(crs=projection,
+                      draw_labels=draw_labels,
+                      x_inline=False,
+                      y_inline=False,
+                      **kwargs)
+
+    gl.xlocator = mticker.FixedLocator(xlocator)
+    gl.ylocator = mticker.FixedLocator(ylocator)
+    gl.xlabel_style = {"rotation": 0, "size": labelsize}
+    gl.ylabel_style = {"rotation": 0, "size": labelsize}
+
+    return gl
+
+
+def add_right_hand_axis(ax,
+                        label=None,
+                        ylim=None,
+                        yticks=None,
+                        ticklabelsize=12,
+                        labelpad=10,
+                        axislabelsize=16,
+                        y_minor_per_major=None):
+    """Utility function that adds a right hand axis to the plot.
+
+    Parameters
+    ----------
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        label (:class:`str`):
+            Text to use for the right hand side label.
+
+        ylim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
+
+        yticks (:class:`list`):
+            List of y-axis tick locations. See Matplotlib documentation for further information.
+
+        ticklabelsize (:class:`int`):
+            Text font size of tick labels. A default value of 12 is used if nothing is set.
+
+        labelpad (:class:`float`):
+            Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
+
+        axislabelsize (:class:`int`):
+            Text font size for y-axes. A default value of 16 is used if nothing is set.
+
+        y_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on y-axis.
+
+        Returns
+        -------
+
+        axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            The created right-hand axis
+    """
+    from geocat.viz import util as gvutil
+    import matplotlib.ticker as tic
+
+    axRHS = ax.twinx()
+    if label is not None:
+        axRHS.set_ylabel(ylabel=label,
+                         labelpad=labelpad,
+                         fontsize=axislabelsize)
+    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
+    axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
+    if y_minor_per_major is not None:
+        axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
+        axRHS.tick_params(length=4, width=0.4, which="minor")
+
+    return axRHS
+
+
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
@@ -514,7 +631,7 @@ def set_map_boundary(ax,
                   crs=ccrs.PlateCarree())
 
 
-def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
+def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highVal, and to classify as a local low, the data point must be less
@@ -533,6 +650,10 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
             'Low' or 'High'
             Determines which extrema are being found- minimum or maximum, respectively.
             Default eType is 'Low'.
+        eps (:class:`float`):
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples 
+            for one to be considered as in the neighborhood of the other. 
+            Default eps is 10.
     Returns:
         clusterExtremas (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
@@ -576,7 +697,7 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low'):
 
     # Use Density-based spatial clustering of applications with noise
     # to cluster and label coordinates
-    db = DBSCAN(eps=10, min_samples=1)
+    db = DBSCAN(eps=eps, min_samples=1)
     new = db.fit(extremacoords)
     labels = new.labels_
 
