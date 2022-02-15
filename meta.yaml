@@ -1,4 +1,4 @@
-{% set version = "2021.08.0" %}
+{% set version = "2022.02.0" %}
 
 package:
   name: geocat-viz
