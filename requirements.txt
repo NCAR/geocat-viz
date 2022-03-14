@@ -2,7 +2,7 @@ matplotlib
 xarray
 numpy>=1.20.2
 cartopy
-
 cmaps
 sphinx_rtd_theme~=0.5.2
 setuptools
+scikit-learn
