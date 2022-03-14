@@ -3,8 +3,8 @@
 import xarray as xr
 import typing
 import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
 import numpy as np
+import cartopy.crs as ccrs
 
 from _plot_util import NCL_Plot
 
@@ -17,20 +17,8 @@ class Contour(NCL_Plot):
     data: :class:`xarray.DataArray` or :class:`numpy.ndarray`
         The dataset to plot. If inputted as a Xarray file, titles and labels will be automatically inferred.
 
-    type: :class:`str`
-        Optional arg. Changes the type of contour figure from plotting lat vs lon. Valid inputs: press_height
-
     Keyword Args
     ------------
-    add_colorbar: :obj:`bool` 
-        Whether a colorbar is added to the figure. Default True.
-
-    clevels: :obj:`list` or :class:`numpy.ndarray` 
-        List or array of levels to be passed into matplotlib's contour function.
-
-    cmap: :class:`cmaps.colormap.Colormap` 
-        Colormap for the filled contour graph.
-
     contour_fill: :obj:`bool` 
             Whether filled contours will be drawn. Default True.
 
@@ -49,26 +37,13 @@ class Contour(NCL_Plot):
     draw_contour_labels: :obj:`bool` 
         Whether add contour line labels to the figure.
 
-    flevels: :obj:`list` or :class:`numpy.ndarray` 
-        List or array of levels to be passed into matplotlib's contourf function.
+    levels: :obj:`list` or :class:`numpy.ndarray` 
+        List or array of levels to be passed into matplotlib's contour and/or contourf function.
 
-    line_color: :obj:`str`
-        Color of the contour line. Default "black".
-
-    line_style :obj:`str` 
-        line_style of the contour line. Default solid for positive values, dashed for negative values.
-
-    line_width :obj:`int` 
-        Width of the contour lines. Default 0.4.
-
-    projection :obj:`str` 
-        Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
-
-    X :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
-        The X axis data for the dataset. To be specified if not inferred correctly automatically.
-
-    Y :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
-        The Y axis data for the dataset. To be specified if not inferred correctly automatically.
+    Note
+    ----
+    All other keyword args will be passed to NCL_Plot. To see its list of 
+    keyword args, see its documentation page.
 
     Return
     ------
@@ -87,12 +62,6 @@ class Contour(NCL_Plot):
 
         Keyword Args
         ------------
-        add_colorbar: :obj:`bool` 
-            Whether a colorbar is added to the figure. Default True.
-
-        cmap: :class:`cmaps.colormap.Colormap` 
-            Colormap for the filled contour graph.
-
         contour_fill: :obj:`bool` 
                 Whether filled contours will be drawn. Default True.
 
@@ -114,92 +83,59 @@ class Contour(NCL_Plot):
         levels: :obj:`list` or :class:`numpy.ndarray` 
             List or array of levels to be passed into matplotlib's contour and/or contourf function.
 
-        line_color: :obj:`str`
-            Color of the contour line. Default "black".
+        Note
+        ----
+        All other keyword args will be passed to NCL_Plot. To see its list of 
+        keyword args, see its documentation page.
 
-        line_style :obj:`str` 
-            line_style of the contour line. Default solid for positive values, dashed for negative values.
-
-        line_width :obj:`int` 
-            Width of the contour lines. Default 0.4.
-
-        projection :obj:`str` 
-            Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
-
-        X :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
-            The X axis data for the dataset. To be specified if not inferred correctly automatically.
-
-        Y :class:`xarray.core.dataarray.DataArray'>` or :class:`numpy.ndarray`
-            The Y axis data for the dataset. To be specified if not inferred correctly automatically.
+        If creating a Pressure/Height figure, pressure will be converted to
+        height using the U.S. standard atomsphere.
 
         """
 
         # Valid kwargs
-        valid_kwargs = {'add_colorbar', 'levels', 'cbar', 'cbdrawedges', 'cborientation', 
-            'cbpad', 'cbshrink', 'cbticks', 'cbticklabels', 'cbtick_label_size', 
-            'cmap', 'contour_fill', 'contour_lines', 'contour_label_background', 
-            'contour_label_fontsize', 'contour_labels', 'draw_contour_labels', 
-            'labelfontsize', 'lefttitle', 'lefttitlefontsize', 'levels', 
-            'line_color', 'line_style', 'line_width', 'h', 'individual_cb', 
-            'maintitle', 'maintitlefontsize', 'mappable', 'projection', "overlay", 
-            'righttitle', 'righttitlefontsize', "set_extent", "subplot", 
-            'tick_label_fontsize', 'type', 'w', 'X', "x_label_lon", 'xlabel', 'xlim', 
-            "xscale", 'xticks', 'xticklabels', 'Y', "y_label_lat", 'ylabel', 
-            'ylim', "yscale", 'yticks', 'yticklabels'}
+        contour_kwargs = {'contour_fill', 'contour_lines', 'contour_label_background', 
+            'contour_label_fontsize', 'contour_label_box', 'contour_labels', 
+            'draw_contour_labels', 'levels'}
         
         # Dictionary of default values
-        all_kwargs = {'cmap' : 'coolwarm', 'line_color' : "black", 
-            'line_width' : 0.4, 'levels' : 5, 'draw_contour_labels' : False,
-            'w' : 8, 'h': 8, 'cborientation' : "horizontal",
-            'cbshrink' : 0.75, 'cbpad' : 0.075, 'cbdrawedges' : True, 'projection' : ccrs.PlateCarree()}
+        default_kwargs = {'draw_contour_labels' : False, 'projection' : ccrs.PlateCarree()}
 
-        # Update dict to include inputted kwargs
-        all_kwargs.update(kwargs)
-
-        # Create self.kwarg for all kwargs in valid_kwargs
-        self.__dict__.update((k, None) for k in valid_kwargs)
-        self.__dict__.update((k, v) for k, v in all_kwargs.items() if k in valid_kwargs)
-
-        # Read in kwargs from overlay plot
-        if self.overlay is not None:
-            self.__dict__.update((k,v) for k, v in kwargs.get('overlay').__dict__.items() if (k not in self.__dict__.keys() or self.__dict__[k] is None))
-
-        # Print unused kwargs
-        unused_kwargs = [unused for unused in kwargs if unused not in valid_kwargs]
-        if len(unused_kwargs) > 0:
-            print("--------------UNUSED KWARGS--------------" + 
-                "\n".join(unused_kwargs))
-
-        # Pull out args from data
-        self.data = args[0]
+        # set up all args and kwargs
+        super()._setup_args_kwargs(contour_kwargs, default_kwargs, *args, **kwargs)
 
         # if the type is press_height, set projection to none
         if self.type == "press_height":
             self.projection = None
+            if self.yscale is None:
+                self.yscale = "log"
+            if self.ylim == [-90, 90]:
+                self.ylim = (1000,10)
+            if self.yticks is None:
+                self.yticks = [1000, 850, 700, 500, 400, 300, 250, 150, 100, 70, 50, 30, 10]
+            if self.yticklabels is None:
+                self.yticklabels = [1000, 850, 700, 500, 400, 300, 250, 150, 100, 70, 50, 30, 10]
+            if self.xlabel is None:
+                self.xlabel = ""
+            if self.ylabel is None:
+                self.ylabel = str(self.orig.lev.long_name) + " [" + str(self.orig.lev.units) + "]"
+            if self.overlay is None:
+                if kwargs.get('xlim') is None and 'at' in self.X.name:
+                    self.xlim = [-90, 90]
+                elif kwargs.get('xlim') is None and 'on' in self.X.name:
+                    self.xlim = [-180, 180]
         
+        # if there aren't filled contours, don't draw colorbar
         if self.contour_fill is False and self.add_colorbar is None:
             self.add_colorbar = False
-
-        # If xarray file, format as Numpy array
-        if isinstance(self.data, xr.DataArray):
-            self.orig = self.data
-            self.data = self.data.values
-            if self.X is None:
-                self.__dict__.update({'X' : self.orig.coords[self.orig.dims[1]]})
-            if self.Y is None:
-                self.__dict__.update({'Y': self.orig.coords[self.orig.dims[0]]})
 
         # If levels aren't specified, calculate them
         if self.levels is None:
             # take a guess at filled levels
             self._estimate_levels()
 
-        # Check that if X is defined, Y is (and vice versa)
-        if (self.X is None) ^ (self.Y is None):
-            raise AttributeError("If X is defined, Y must also be defined and vice versa.")
-
         # Call parent class constructor
-        super().__init__(self, *args, **kwargs)
+        super().__init__(self, args, kwargs)
 
         # Add filled contours and/or contour lines to figure, as specified
         self._generate_contours()
@@ -214,16 +150,16 @@ class Contour(NCL_Plot):
             or self.contour_label_fontsize is not None):
             # Try to draw contour labels on contour lines
             if hasattr(self, 'cl'):
-                self._add_contour_labels(self.ax,
-                                         self.cl,
+                self.add_contour_labels(ax = self.ax,
+                                         lines = self.cl,
                                          contour_labels=self.contour_labels,
                                          fontsize=self.contour_label_fontsize,
                                          background=self.contour_label_background)
             # If there aren't any, try to draw them on filled contours
             else:
                 if self.contour_fill is not False:
-                    self._add_contour_labels(self.ax,
-                                             self.cf,
+                    self.add_contour_labels(ax = self.ax,
+                                             lines = self.cf,
                                              contour_labels=self.contour_labels,
                                              fontsize=self.contour_label_fontsize,
                                              background=self.contour_label_background)
@@ -277,11 +213,11 @@ class Contour(NCL_Plot):
                                             self.ylim[0], self.ylim[1]
                                         ])
 
-    def _add_contour_labels(self,
-                            ax,
-                            lines,
-                            contour_labels,
-                            background,
+    def add_contour_labels(self,
+                            ax = None,
+                            lines = None,
+                            contour_labels = None,
+                            background = None,
                             fontsize = 12):
         """Add contour line labels with an optional white background to the
         figure.
@@ -308,6 +244,23 @@ class Contour(NCL_Plot):
         draw_contour_labels: :obj:`bool` 
             Whether add contour line labels to the figure.
         """
+        # Set up kwargs so that function can be called outside of initial contour creation
+        if ax is None:
+            ax = self.ax
+        
+        if lines is None:
+            # add contour labels to contour lines before filled contours
+            if hasattr(self, 'cl'):
+                lines = self.cl
+            else:
+                lines = self.cf
+        
+        if contour_labels is None:
+            contour_labels = self.contour_labels
+
+        if background is None:
+            background = self.contour_label_background
+
         if self.contour_label_fontsize is not None:
             fontsize = self.contour_label_fontsize
 
@@ -348,15 +301,16 @@ class Contour(NCL_Plot):
             ]
 
         # if a map projection without filled contours, add RHS box label
-        if self.contour_fill is False and self.type is None:
+        if ((self.contour_fill is False and self.type is None and self.contour_label_box is not False) 
+            or self.contour_label_box is True):
             if self.contour_labels is None:
-                title = ("CONTOUR FROM " + str(self.levels[0]) + " TO " + 
-                        str(self.levels[-1]) + " BY " + 
-                        str((self.levels[-1]-self.levels[0])/(len(self.levels)-1)))
+                title = ("CONTOUR FROM " + str(round(lines.levels[0],1)) + " TO " + 
+                        str(round(lines.levels[-1],1)) + " BY " + 
+                        str(round((lines.levels[-1]-lines.levels[0])/(len(lines.levels)-1), 1)))
             else:
-                title = ("CONTOUR FROM " + str(self.contour_labels[0]) + " TO " + 
-                        str(self.contour_labels[-1]) + " BY " + 
-                        str((self.contour_labels[-1]-self.contour_labels[0])/(len(self.contour_labels)-1)))
+                title = ("CONTOUR FROM " + str(round(self.contour_labels[0],1)) + " TO " + 
+                        str(round(self.contour_labels[-1],1)) + " BY " + 
+                        str(round((self.contour_labels[-1]-self.contour_labels[0])/(len(self.contour_labels)-1), 1)))
             
             self.ax.text(1,
                         -0.15,

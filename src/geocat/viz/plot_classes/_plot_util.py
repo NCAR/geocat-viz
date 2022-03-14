@@ -9,6 +9,11 @@ import cartopy.feature as cfeature
 import math
 import typing
 from textwrap import wrap
+from metpy.units import units
+import metpy
+from metpy.calc import pressure_to_height_std, height_to_pressure_std
+import pint
+
 
 
 from geocat.viz.util import set_titles_and_labels
@@ -291,13 +296,77 @@ class NCL_Plot():
             self.show_lakes()
 
         # Set axis limits and ticks
-        self._set_lim_ticks(self.ax)
+        self._set_lim_ticks(self.ax, kwargs)
 
         if self.subplot is not None:
             self._create_subplot_cax()
 
         # Add titles to figure
         self.add_titles()
+
+    def _setup_args_kwargs(self, class_specific_kwargs_set : set, class_specific_kwarg_defaults : dict, *args, **kwargs):
+        """Set up args and kwargs
+
+        Args
+        ----
+        class_specific_kwargs_list: :obj:`list`
+            Set of valid kwargs specific to subclass
+
+        class_specific_kwarg_defaults: :obj`dict`
+            Dictionary of kwargs specific to subclass
+        """
+
+        # List of valid kwargs
+        valid_kwargs = {'add_colorbar', 'cbar', 'cbdrawedges', 'cborientation', 
+            'cbpad', 'cbshrink', 'cbticks', 'cbticklabels', 'cbtick_label_size', 
+            'cmap', 'labelfontsize', 'lefttitle', 'lefttitlefontsize', 
+            'line_color', 'line_style', 'line_width', 'h', 'individual_cb', 
+            'maintitle', 'maintitlefontsize', 'mappable', "overlay", 'projection',  
+            'righttitle', 'righttitlefontsize', "set_extent", "subplot", 
+            'tick_label_fontsize', 'type', 'w', 'X',  'xlabel', 'xlim', 
+            "xscale", 'xticks', 'xticklabels', 'Y',  'ylabel', 
+            'ylim', "yscale", 'yticks', 'yticklabels'} | class_specific_kwargs_set
+
+        # Dictionary of default values
+        all_kwargs = {'cmap' : 'coolwarm', 'line_color' : "black", 
+            'line_width' : 0.4, 'w' : 8, 'h': 8, 'cborientation' : "horizontal",
+            'cbshrink' : 0.75, 'cbpad' : 0.075, 'cbdrawedges' : True, 'xlim': [-180,180],
+            'ylim': [-90,90]}
+
+        overlay_keys = {}
+
+        # add in class specific defaults
+        all_kwargs.update(class_specific_kwarg_defaults)
+
+        # Update dict to include inputted kwargs
+        all_kwargs.update(kwargs)
+
+        # Read in kwargs from overlay plot
+        if kwargs.get('overlay') is not None:
+            overlay_keys = kwargs.get('overlay').__dict__.keys()
+            all_kwargs.update((k,v) for k, v in kwargs.get('overlay').__dict__.items() if (k not in kwargs.keys()))
+
+        # Create self.kwarg for all kwargs in valid_kwargs
+        self.__dict__.update((k, None) for k in valid_kwargs)
+        self.__dict__.update((k, v) for k, v in all_kwargs.items() if k in valid_kwargs or k in overlay_keys)
+        
+        # Print unused kwargs
+        unused_kwargs = [unused for unused in kwargs if unused not in valid_kwargs]
+        if len(unused_kwargs) > 0:
+            print("--------------UNUSED KWARGS--------------" + 
+                "\n".join(unused_kwargs))
+
+        # Pull out args from data
+        self.data = args[0]
+
+        # If xarray file, format as Numpy array
+        if isinstance(self.data, xr.DataArray):
+            self.orig = self.data
+            self.data = self.data.values
+            if self.X is None:
+                self.__dict__.update({'X' : self.orig.coords[self.orig.dims[1]]})
+            if self.Y is None:
+                self.__dict__.update({'Y': self.orig.coords[self.orig.dims[0]]})
 
     def _set_up_fig(self, w: float =None, h: float =None):
         """Create figure with subplots, if specified.
@@ -399,7 +468,7 @@ class NCL_Plot():
 
                 # Configure axis
                 self.cax.set_aspect("auto")
-                self._set_lim_ticks(self.cax)
+                self._set_lim_ticks(self.cax, kwargs)
 
     def _set_axes(self, *args, **kwargs):
         """Assign value for self.ax by either creating a new axis or
@@ -429,11 +498,11 @@ class NCL_Plot():
         self.ax.set_aspect("auto")
 
         # Set up axes with scale if specified/needed
-        if self.yscale == "log" or self.type == "press_height":
-            plt.yscale("log")
+        if self.yscale == "log":
+            self.ax.set_yscale("log")
 
         if self.xscale == "log":
-            plt.xscale("log")
+            self.ax.set_xscale("log")
 
         # If there is a projection, add coastlines to the figure as long as it is not specified not to
         if self.projection is not None:
@@ -460,15 +529,23 @@ class NCL_Plot():
             
         add_major_minor_ticks(ax, labelsize=self.tick_label_fontsize)
 
+        # if pressure height, remove right hand ticks on original axis
+        if self.type == "press_height":
+            self.ax.tick_params(axis='y', right=False)
+
         # Perform same action as add_lat_lon_ticklabels geocat-viz utility function
-        # Manually set x and y axis format as lat and long unless specified not to
-        self.ax.xaxis.set_major_formatter(LongitudeFormatter())
+        if 'on' in self.X.name:
+            self.ax.xaxis.set_major_formatter(LongitudeFormatter())
+
+        if 'at' in self.X.name:
+            self.ax.xaxis.set_major_formatter(LatitudeFormatter())
 
         # only set yaxis NCL plot if type is none
-        if self.type is None:
+        if self.type is None and 'at' in self.Y.name:
             self.ax.yaxis.set_major_formatter(LatitudeFormatter())
 
-    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], **kwargs):
+
+    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], kwargs):
         """Set limits and ticks for axis.
         
         Args
@@ -501,19 +578,20 @@ class NCL_Plot():
                 # else, make ticks every 15 deg
                 else:
                     self.yticks = np.arange(self.ylim[0], self.ylim[1] + 15, 15)
+            
             # if there is no set width or height
             if kwargs.get('w') is None and kwargs.get('h') is None:
                 # get the ratio of x and y limits
-                ratio = (self.ylim[1]-self.ylim[0])/(self.xlim[1]-self.xlim[0])
-                self.w = 6/ratio
-                self.h = 6
+                if self.subplot is None:
+                    ratio = (self.ylim[1]-self.ylim[0])/(self.xlim[1]-self.xlim[0])
+                    self.w = 6/ratio
+                    self.h = 6
+                else:
+                    ratio = (self.ylim[1]-self.ylim[0])/(self.xlim[1]-self.xlim[0])
+                    self.w = 6/ratio*self.sp_columns
+                    self.h = 6*self.sp_rows
                 # set figure based on ratio
                 self.fig.set_size_inches(self.w, self.h)
-        # if pressure/height diagram, manually set yaxis
-        elif self.type == "press_height":
-            self.ylim = (1000,10)
-            self.yticks = [1000, 850, 700, 500, 400, 300, 250, 150, 100, 70, 50, 30, 10]
-            self.yticklabels = [1000, 850, 700, 500, 400, 300, 250, 150, 100, 70, 50, 30, 10]
 
         # If xlim/ylim is not specified, set it to the mix and max of the data
         else:
@@ -540,20 +618,21 @@ class NCL_Plot():
                                   yticklabels=self.yticklabels,
                                   xticklabels=self.xticklabels)
 
-        # Add RHS axis to pressure/height diagrams -- CURRENTLY DUMMY DATA
+
         if self.type == "press_height" and self.overlay is None:
+            pressure = self.orig.lev
+            height = pressure_to_height_std(pressure)
+
+
             axRHS = ax.twinx()
-            dummy = 10
-            mn, mx = ax.get_ylim()
-            axRHS.set_ylim(mn * dummy, mx * dummy)
-            axRHS.set_ylim(axRHS.get_ylim()[::-1])
+            axRHS.set_yscale("linear")
+            axRHS.set_ylim(np.min(height.values), np.max(height.values))
             axRHS.set_ylabel('Height (km)')
-            axRHS.set_yticklabels(np.linspace(0,10000,6))
-            if self.labelfontsize is None:
+            if self.labelfontsize is not None:
                 axRHS.yaxis.label.set_size(self.labelfontsize)
             else: 
-                axRHS.yaxis.label.set_size(20)
-            axRHS.tick_params('both', length=20, width=2, which='major', labelsize=18)
+                axRHS.yaxis.label.set_size(18)
+            axRHS.tick_params('both', labelsize=18)
         
 
     def _subplot_pos(self):
@@ -585,11 +664,6 @@ class NCL_Plot():
     def _set_up_subplot(self):
         """Find the number of rows and columns needed in the subplot, taking in
         the colorbar cax into account."""
-
-        # If there is a overlay, set the number of rows and columns equal to values from the reference figure
-        # if self.overlay is not None:
-        #     self.sp_rows = self.overlay.sp_rows
-        #     self.sp_columns = self.overlay.sp_columns
 
         if self.overlay is None:
             # Set up variable for rows and columns of subplot by pulling values from subplot list
@@ -746,27 +820,20 @@ class NCL_Plot():
 
         # Set colorbar ticks as the boundaries of the cbar
         if (cbticks is None) and (self.cbticks is None):
-            self.cbticks = np.linspace(self.cbar.get_ticks()[0],
+            if (isinstance(self.levels, int)):
+                self.cbticks = np.linspace(self.cbar.get_ticks()[0],
                                         self.cbar.get_ticks()[-1],
-                                        len(self.cbar.get_ticks())*2 - 1)[1:]
-            self.cbticklabels = list(self.cbticks.astype(int))
-            # try:
-            #     if self.levels >= 20:
-            #         num = self.levels/2
-            #     else:
-            #         num = self.levels - 1
-            # except:
-            #     if len(self.levels) >= 20:
-            #         num = len(self.levels)/2
-            #     else:
-            #         num = len(self.levels) - 1
-           
-            # print(self.cbar.get_ticks())
-            # self.cbticks = np.linspace(round(self.cbar.get_ticks()[0]), 
-            #                         round(self.cbar.get_ticks()[-1]), 
-            #                         int(num))
-
-            # self.cbticklabels = [''] + list(self.cbticks[1:].astype(int))
+                                        len(self.cbar.get_ticks())*2 - 1)
+                self.cbticklabels = list(self.cbticks.astype(int))
+            else:
+                try: # duck typing list
+                    self.cbticks = self.levels[1:-1]
+                    self.cbticklabels = [round(num,2) for num in self.cbticks]
+                except:
+                    self.cbticks = np.linspace(self.cbar.get_ticks()[0],
+                                                self.cbar.get_ticks()[-1],
+                                                len(self.cbar.get_ticks())*2 - 1)[1:]
+                    self.cbticklabels = list(self.cbticks.astype(int))
 
         # Label every boundary except the ones on the end of the colorbar
         self.cbar.set_ticks(ticks=self.cbticks)
@@ -924,7 +991,7 @@ class NCL_Plot():
                 else:
                     i += 1
 
-        # Decrease default font size if necessary
+        # Decrease default font size if necessary and set other font sizes based on maintitlefontsize
         if kwargs.get('maintitlefontsize') is None and self.maintitle is not None:
             while (
                 len(wrap(text=self.maintitle, width=round(self.w/self.maintitlefontsize*100))) > 1
