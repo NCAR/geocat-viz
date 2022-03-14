@@ -1,3 +1,177 @@
+import numpy as np
+
+
+def set_tick_direction_spine_visibility(ax,
+                                        tick_direction='out',
+                                        top_spine_visible=True,
+                                        bottom_spine_visible=True,
+                                        left_spine_visible=True,
+                                        right_spine_visible=True):
+    """Utility function to turn off axes spines and set tickmark orientations.
+
+    Note: This function should be called after calling add_major_minor_ticks()
+
+    Args:
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        tick_direction (:class:`str`):
+            Set 'in' to put ticks inside the axes,
+            'out' to put ticks outside the axes,
+            'inout' to put ticks both in and out of the axes.
+
+        top_spine_visible (:class:`bool`):
+            Set False to turn off top spine of the axes.
+
+        bottom_spine_visible (:class:`bool`):
+            Set False to turn off bottom spine of the axes.
+
+        left_spine_visible (:class:`bool`):
+            Set False to turn off left spine of the axes.
+
+        right_spine_visible (:class:`bool`):
+            Set False to turn off right spine.
+    """
+    ax.tick_params(direction=tick_direction, axis='both', which='both')
+    ax.spines['top'].set_visible(top_spine_visible)
+    ax.spines['bottom'].set_visible(bottom_spine_visible)
+    ax.spines['left'].set_visible(left_spine_visible)
+    ax.spines['right'].set_visible(right_spine_visible)
+
+    if top_spine_visible and bottom_spine_visible:
+        ax.xaxis.set_ticks_position('default')
+    elif bottom_spine_visible and not top_spine_visible:
+        ax.xaxis.set_ticks_position('bottom')
+    elif top_spine_visible and not bottom_spine_visible:
+        ax.xaxis.set_ticks_position('top')
+    else:
+        ax.xaxis.set_ticks_position('none')
+
+    if left_spine_visible and right_spine_visible:
+        ax.yaxis.set_ticks_position('default')
+    elif not right_spine_visible and left_spine_visible:
+        ax.yaxis.set_ticks_position('left')
+    elif not left_spine_visible and right_spine_visible:
+        ax.yaxis.set_ticks_position('right')
+    else:
+        ax.yaxis.set_ticks_position('none')
+
+
+def add_lat_lon_gridlines(ax,
+                          projection=None,
+                          draw_labels=True,
+                          xlocator=np.arange(-180, 180, 15),
+                          ylocator=np.arange(-90, 90, 15),
+                          labelsize=12,
+                          **kwargs):
+    """Utility function that adds latitude and longtitude gridlines to the
+    plot.
+
+    Args:
+
+        ax (:class:`cartopy.mpl.geoaxes.GeoAxes`):
+            Current axes to the current figure.
+
+        projection (:class:`cartopy.crs.CRS`):
+            Defines a Cartopy Coordinate Reference System. If not given,
+            defaults to ccrs.PlateCarree()
+
+        draw_labels (:class:`bool`):
+            Toggle whether to draw labels, default to True.
+
+        xlocator, ylocator (:class:`numpy.ndarray` or list):
+            Arrays of fixed locations of the gridlines in the x and y coordinate of the given CRS.
+            Default to np.arange(-180, 180, 15) and np.arange(-90, 90, 15).
+
+        labelsize (:class:`float`):
+            Fontsizes of label fontsizes of x and y coordinates.
+
+        *kwargs* control line properties and are passed through to `matplotlib.collections.Collection`.
+
+    Return:
+
+        gl (:class:`cartopy.mpl.gridliner.Gridliner`):
+    """
+    import matplotlib.ticker as mticker
+
+    # Draw gridlines
+    gl = ax.gridlines(crs=projection,
+                      draw_labels=draw_labels,
+                      x_inline=False,
+                      y_inline=False,
+                      **kwargs)
+
+    gl.xlocator = mticker.FixedLocator(xlocator)
+    gl.ylocator = mticker.FixedLocator(ylocator)
+    gl.xlabel_style = {"rotation": 0, "size": labelsize}
+    gl.ylabel_style = {"rotation": 0, "size": labelsize}
+
+    return gl
+
+
+def add_right_hand_axis(ax,
+                        label=None,
+                        ylim=None,
+                        yticks=None,
+                        ticklabelsize=12,
+                        labelpad=10,
+                        axislabelsize=16,
+                        y_minor_per_major=None):
+    """Utility function that adds a right hand axis to the plot.
+
+    Parameters
+    ----------
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        label (:class:`str`):
+            Text to use for the right hand side label.
+
+        ylim (:class:`tuple`):
+            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+            documentation for further information.
+
+        yticks (:class:`list`):
+            List of y-axis tick locations. See Matplotlib documentation for further information.
+
+        ticklabelsize (:class:`int`):
+            Text font size of tick labels. A default value of 12 is used if nothing is set.
+
+        labelpad (:class:`float`):
+            Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
+
+        axislabelsize (:class:`int`):
+            Text font size for y-axes. A default value of 16 is used if nothing is set.
+
+        y_minor_per_major (:class:`int`):
+            Number of minor ticks between adjacent major ticks on y-axis.
+
+        Returns
+        -------
+
+        axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            The created right-hand axis
+    """
+    from geocat.viz import util as gvutil
+    import matplotlib.ticker as tic
+
+    axRHS = ax.twinx()
+    if label is not None:
+        axRHS.set_ylabel(ylabel=label,
+                         labelpad=labelpad,
+                         fontsize=axislabelsize)
+    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
+    axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
+    if y_minor_per_major is not None:
+        axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
+        axRHS.tick_params(length=4, width=0.4, which="minor")
+
+    return axRHS
+
+
 def add_lat_lon_ticklabels(ax,
                            zero_direction_label=False,
                            dateline_direction_label=False):
@@ -47,6 +221,9 @@ def add_major_minor_ticks(ax,
         y_minor_per_major (:class:`int`):
             Number of minor ticks between adjacent major ticks on y-axis
 
+        labelsize (:class:`str`):
+            Optional text size passed to tick_params. A default value of "small" is used if nothing is set.
+
         basex (:class:`int`):
             If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
@@ -66,15 +243,14 @@ def add_major_minor_ticks(ax,
             Defaults to 2.
     """
     import matplotlib.ticker as tic
-    import numpy as np
 
     ax.tick_params(labelsize=labelsize)
     ax.minorticks_on()
-    if (ax.xaxis.get_scale() == 'log'):
+    if ax.xaxis.get_scale() == 'log':
         ax.xaxis.set_minor_locator(
             tic.LogLocator(base=basex,
                            subs=np.linspace(0, basex, x_minor_per_major + 1)))
-    elif (ax.xaxis.get_scale() == 'symlog'):
+    elif ax.xaxis.get_scale() == 'symlog':
         ax.xaxis.set_minor_locator(
             tic.SymmetricalLogLocator(base=basex,
                                       subs=np.linspace(0, basex,
@@ -83,11 +259,11 @@ def add_major_minor_ticks(ax,
     else:
         ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
 
-    if (ax.yaxis.get_scale() == 'log'):
+    if ax.yaxis.get_scale() == 'log':
         ax.yaxis.set_minor_locator(
             tic.LogLocator(base=basey,
                            subs=np.linspace(0, basey, y_minor_per_major + 1)))
-    elif (ax.yaxis.get_scale() == 'symlog'):
+    elif ax.yaxis.get_scale() == 'symlog':
         ax.yaxis.set_minor_locator(
             tic.SymmetricalLogLocator(base=basey,
                                       subs=np.linspace(0, basey,
@@ -291,7 +467,6 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
             Optional name of the new color map. If not set, a new name is generated by using the name of the input
             colormap as well as min and max values.
     """
-    import numpy as np
     import matplotlib as mpl
     from matplotlib import cm
 
@@ -403,13 +578,13 @@ def set_map_boundary(ax,
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
 
-    if (lon_range[0] >= lon_range[1]):
-        if not (lon_range[0] > 0 and lon_range[1] < 0):
+    if lon_range[0] >= lon_range[1]:
+        if not (lon_range[0] > 0 > lon_range[1]):
             raise ValueError(
                 "The first longitude value must be strictly less than the second longitude value unless the region crosses over the antimeridian"
             )
 
-    if (lat_range[0] >= lat_range[1]):
+    if lat_range[0] >= lat_range[1]:
         raise ValueError(
             "The first latitude value must be strictly less than the second latitude value"
         )
@@ -426,8 +601,7 @@ def set_map_boundary(ax,
 
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
-    if (lon_range[0] >= 0 and
-            lon_range[1] <= 0):  # Case when range crosses antimeridian
+    if lon_range[0] >= 0 >= lon_range[1]:  # Case when range crosses antimeridian
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
                    [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
@@ -456,7 +630,7 @@ def set_map_boundary(ax,
                   crs=ccrs.PlateCarree())
 
 
-def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
+def findLocalExtrema(da, highval=0, lowval=1000, etype='Low', eps=10):
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highVal, and to classify as a local low, the data point must be less
@@ -465,27 +639,31 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
     Args:
         da: (:class:`xarray.DataArray`):
             Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
-        highVal (:class:`int`):
+
+        highval (:class:`int`):
             Data value that the local high must be greater than to qualify as a "local high" location.
             Default highVal is 0.
-        lowVal (:class:`int`):
+
+        lowval (:class:`int`):
             Data value that the local low must be less than to qualify as a "local low" location.
             Default lowVal is 1000.
-        eType (:class:`str`):
+
+        etype (:class:`str`):
             'Low' or 'High'
             Determines which extrema are being found- minimum or maximum, respectively.
             Default eType is 'Low'.
+
         eps (:class:`float`):
             Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
             for one to be considered as in the neighborhood of the other.
             Default eps is 10.
+
     Returns:
         clusterExtremas (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify local low/high locations
     """
 
-    import numpy as np
     from sklearn.cluster import DBSCAN
     import warnings
 
@@ -501,21 +679,21 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
     # Find all zeroes that also qualify as low or high values
     extremacoords = []
 
-    if eType == 'Low':
-        coordlist = np.argwhere(da.data < lowVal)
+    if etype == 'Low':
+        coordlist = np.argwhere(da.data < lowval)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
-    if eType == 'High':
-        coordlist = np.argwhere(da.data > highVal)
+    if etype == 'High':
+        coordlist = np.argwhere(da.data > highval)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
 
     if extremacoords == []:
-        if eType == 'Low':
+        if etype == 'Low':
             warnings.warn(
-                'No local extrema with data value less than given lowVal')
+                'No local extrema with data value less than given lowval')
             return []
-        if eType == 'High':
+        if etype == 'High':
             warnings.warn(
-                'No local extrema with data value greater than given highVal')
+                'No local extrema with data value greater than given highval')
             return []
 
     # Clean up noisy data to find actual extrema
@@ -548,9 +726,9 @@ def findLocalExtrema(da, highVal=0, lowVal=1000, eType='Low', eps=10):
             datavals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
-        if eType == 'Low':
+        if etype == 'Low':
             index = np.argmin(np.array(datavals))
-        if eType == 'High':
+        if etype == 'High':
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
@@ -574,32 +752,39 @@ def plotCLabels(ax,
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+
     Args:
         ax (:class:`matplotlib.pyplot.axis`):
             Axis containing the contour set.
+
         contours (:class:`cartopy.mpl.contour.GeoContourSet`):
             Contour set that is being labeled.
+
         transform (:class:`cartopy._crs`):
             Instance of CRS that represents the source coordinate system of coordinates.
             (ex. ccrs.Geodetic()).
+
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
             This is the instance of CRS that the coordinates will be transformed to.
+
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contours with regular field variable values should be plotted.
+
         fontsize (:class:`int`):
             Font size of contour labels.
+
         whitebbox (:class:`bool`):
             Setting this to "True" will cause all labels to be plotted with white backgrounds
+
         horizontal (:class:`bool`):
             Setting this to "True" will cause the contour labels to be horizontal.
+
     Returns:
         cLabels (:class:`list`):
             List of text instances of all contour labels
     """
-    import numpy as np
-    import matplotlib.pyplot as plt
 
     # Initialize empty array that will be filled with contour label text objects and returned
     cLabels = []
@@ -643,33 +828,41 @@ def plotELabels(da,
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+
     Args:
         da: (:class:`xarray.DataArray`):
             Xarray data array containing the lat, lon, and field variable data values.
+
         transform (:class:`cartopy._crs`):
             Instance of CRS that represents the source coordinate system of coordinates.
             (ex. ccrs.Geodetic()).
+
         proj (:class:`cartopy.crs`):
             Projection 'ax' is defined by.
             This is the instance of CRS that the coordinates will be transformed to.
+
         clabel_locations (:class:`list`):
             List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
             that specify where the contour labels should be plotted.
+
         label (:class:`str`):
             ex. 'L' or 'H'
             The data value will be plotted as a subscript of this label.
+
         fontsize (:class:`int`):
             Font size of regular contour labels.
+
         horizontal (:class:`bool`):
             Setting this to "True" will cause the contour labels to be horizontal.
+
         whitebbox (:class:`bool`):
             Setting this to "True" will cause all labels to be plotted with white backgrounds
+
     Returns:
         extremaLabels (:class:`list`):
             List of text instances of all contour labels
     """
 
-    import numpy as np
     import matplotlib.pyplot as plt
 
     # Create array of coordinates in the same shape as field variable data
@@ -725,13 +918,13 @@ def plotELabels(da,
     return extremaLabels
 
 
-def set_vector_density(data, minDistance=0):
+def set_vector_density(data, min_distance=0):
     """Utility function to change density of vector plots.
 
     Args:
         data (:class:`xarray.core.dataarray.DataArray`):
             Data array that contains the vector plot latitude/longitude data.
-        minDistance (:class:`int`):
+        min_distance (:class:`int`):
             Value in degrees that determines the distance between the vectors.
     Returns:
         ds (:class:`xarray.core.dataarray.DataArray`):
@@ -740,39 +933,35 @@ def set_vector_density(data, minDistance=0):
     import math
     import warnings
 
-    if minDistance <= 0:
-        raise Exception("minDistance cannot be negative or zero.")
+    if min_distance <= 0:
+        raise Exception("min_distance cannot be negative or zero.")
     else:
         lat_every = 1
         lon_every = 1
 
         # Get distance between points in latitude (y axis)
         lat = data['lat']
-        latdifference = (float)(lat[1] - lat[0])
+        latdifference = float(lat[1] - lat[0])
 
         # Get distance between points in longitude (x axis)
         lon = data['lon']
-        londifference = (float)(lon[1] - lon[0])
+        londifference = float(lon[1] - lon[0])
 
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        # Initialize ds
-        ds = data
-
-        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
+        if diagDifference >= min_distance and latdifference >= min_distance and londifference >= min_distance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +
-                          (str)(minDistance))
+                          str(min_distance))
 
-        # While the difference between two vectors is smaller than minDistance, increment the value that
+        # While the difference between two vectors is smaller than min_distance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
-
+        while diagDifference < min_distance or latdifference < min_distance or londifference < min_distance:
             # Get distance between points in latitude (y axis)
-            latdifference = (float)(lat[lat_every] - lat[0])
+            latdifference = float(lat[lat_every] - lat[0])
 
             # Get distance between points in longitude (x axis)
-            londifference = (float)(lon[lon_every] - lon[0])
+            londifference = float(lon[lon_every] - lon[0])
 
             # Get distance between points that are diagonally adjacent
             diagDifference = math.sqrt(latdifference**2 + londifference**2)
