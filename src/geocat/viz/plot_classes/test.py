@@ -15,11 +15,8 @@ from contourf import *
 # Open a netCDF data file using xarray default engine and load the data into xarray
 ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
 
-levels = np.arange(-16, 48, 4)
-
 aplot = Contour(ds.U,
-                levels=levels, #
-                maintitle="Default Color"
+                main_title="Default Color"
                 )
 
 aplot.show()
@@ -34,12 +31,11 @@ t = ds.T.isel(time=0, z_t=0).sel(lat_t=slice(-60, 30), lon_t=slice(30, 120))
 
 bplot = Contour(t,
                 contour_lines = False,
-                levels=40, #
                 xlim=(30,120),
                 ylim=(-60,30),
-                cborientation="vertical",
-                cbdrawedges = False, #
-                maintitle="30-degree major and 10-degree minor ticks"
+                cb_orientation="vertical",
+                cb_draw_edges = False, #
+                main_title="30-degree major and 10-degree minor ticks"
                 )
 
 bplot.show_land()
@@ -59,15 +55,9 @@ U = U.where(U.lon <= 71)
 U = U.where(U.lat >= -33)
 U = U.where(U.lat <= 33)
 
-levels = np.arange(-16, 48, 4)
-
 cplot = Contour(U,
-                levels=levels, #
                 xlim=(0,70),
                 ylim=(-30,30),
-                yticks=np.linspace(-20, 20, 3), #
-                contour_labels = [(25, 28), (30, -17), (40, -21), (40, -5), (42, -13), (10, 50),
-                                  (62, -15), (65, -2)], #
                 contour_label_background=True
                 )
 
@@ -87,13 +77,10 @@ temp.data = temp.data - 273.15
 # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
 temp = gvutil.xr_add_cyclic_longitudes(temp, "lon")
 
-levels = np.arange(-5, 35, 5)
-
 dplot = Contour(temp,
-                levels = levels, #
                 ylim=(-70,70),
                 contour_fill=False,
-                contour_labels = np.linspace(0, 20, 3)
+                contour_labels = np.linspace(8, 38, 4)
                 )
 
 dplot.show_land(fc="silver")
@@ -109,15 +96,12 @@ U = ds.U[0, :, :]
 
 V = ds.V[0, :, :]
 
-levels = 16
-
 gplot = Contour(U,
                 type = "press_height",
-                levels = levels, #
                 line_color = "red",
                 line_width = 1,
                 contour_fill = False,
-                maintitle="Ensemble Average 1987-89",
+                main_title="Ensemble Average 1987-89",
                 draw_contour_labels = True,
                 contour_label_box = True, #
                 )
@@ -129,6 +113,7 @@ hplot = Contour(V,
                 )
 
 gplot.show()
+
 
 # Recreated Geo-CAT Examples Plot: NCL_conLev_3.py
 
@@ -143,16 +128,15 @@ eplot = Contour(T,
                 levels = levels,
                 xlim=(-140, -50),
                 ylim=(20, 60),
-                tick_label_fontsize = 10,
-                cborientation = "vertical",
-                cbpad = 0.005,
-                maintitle = "Explanation of Python contour levels",
+                cb_orientation = "vertical",
+                cb_pad = 0.005,
+                main_title = "Explanation of Python contour levels",
                 )
 
 # Create labels by colorbar
 size = 8
 num_lev = 16
-cbticks = np.arange(248, 308, 4)
+cb_ticks = np.arange(248, 308, 4)
 y = 1 / num_lev / 2  # Offset from x axis in axes coordinates
 eplot.ax.text(0.949,
         y,
@@ -169,7 +153,7 @@ for i in range(0, 14):
     y = y + 1 / num_lev  # Vertical spacing between the labels
     eplot.ax.text(0.904,
             y,
-            text.format(cbticks[i], cbticks[i + 1]),
+            text.format(cb_ticks[i], cb_ticks[i + 1]),
             fontsize=size,
             horizontalalignment='center',
             verticalalignment='center',
@@ -207,17 +191,8 @@ newx = x.isel(time=0) - newx
 # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
 newx = gvutil.xr_add_cyclic_longitudes(newx, "lon")
 
-X = newx.lon
-Y = newx.lat
-projection = ccrs.PlateCarree()
-levels = [-14, -12, -10, -8, -6, -4, -2, -1, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18]
-newcmp = gvcmaps.BlRe
-newcmp.colors[len(newcmp.colors) //
-              2] = [1, 1, 1]  # Set middle value to white to match NCL
-
 fplot = Contour(newx,
-                levels = levels,
-                lefttitle = "Anomalies: Surface Temperature",
+                left_title = "Anomalies: Surface Temperature",
                 )
 
 fplot.show()
@@ -297,25 +272,18 @@ clat_subset = clat.sel(lat=slice(latS, latN + 0.01))
 weightTotal = clat_subset.sum() * nLon
 pcs = pcs / weightTotal
 
-xlim = (-70, 45)
-ylim = (20, 80)
-
 pct = eofs.attrs['varianceFraction'].values[0] * 100
 
 iplot = Contour(
     eofs.sel(eof=0),
-    levels=np.linspace(-0.08, 0.08, 9, endpoint=True),
-    # h=10.6,
     subplot=[3, 1, 1],
-    xlim=xlim,
-    ylim=ylim,
-    xticks=[-60, -30, 0, 30],
-    yticks=[40, 60, 80],
+    xlim=(-70, 45),
+    ylim=(20, 80),
     contour_lines=False,
     draw_contour_labels=True,
-    lefttitle=f'EOF {0}',
-    righttitle=f'{pct:.1f}%',
-    maintitle="SLP: DJF: 1979-2003",
+    left_title=f'EOF {0}',
+    right_title=f'{pct:.1f}%',
+    main_title="SLP: DJF: 1979-2003",
 )
 
 for i in range(neof - 1):
@@ -326,11 +294,8 @@ for i in range(neof - 1):
         eof_single,
         overlay=iplot,
         subplot=[3, 1, i + 2],
-        lefttitle=f'EOF {i + 1}',
-        righttitle=f'{pct:.1f}%',
+        left_title=f'EOF {i + 1}',
+        right_title=f'{pct:.1f}%',
     )
 
 iplot.show()
-
-
-# %%
