@@ -296,7 +296,7 @@ class NCL_Plot():
             self.show_lakes()
 
         # Set axis limits and ticks
-        self._set_lim_ticks(self.ax, kwargs)
+        self._set_lim_ticks(self.ax, **kwargs)
 
         if self.subplot is not None:
             self._create_subplot_cax()
@@ -545,7 +545,7 @@ class NCL_Plot():
             self.ax.yaxis.set_major_formatter(LatitudeFormatter())
 
 
-    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], kwargs):
+    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], **kwargs):
         """Set limits and ticks for axis.
         
         Args
