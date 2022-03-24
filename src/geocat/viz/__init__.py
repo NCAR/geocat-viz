@@ -1,4 +1,4 @@
 from . import util
 from . import contourf
-from . import _plot_util
+from . import plot_classes
 import cmaps
