@@ -2,7 +2,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import xarray as xr
 import numpy
-import numpy as np
 import cartopy
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import cartopy.feature as cfeature
@@ -526,18 +525,18 @@ class NCL_Plot(ABC):
             if self.xticks is None:
                 # if the range is greater than 45 degrees, make ticks every 30 deg
                 if (self.xlim[1] - self.xlim[0]) > 45:
-                    self.xticks = np.arange(self.xlim[0], self.xlim[1] + 30, 30)
+                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 30, 30)
                 # else, make ticks every 15 deg
                 else:
-                    self.xticks = np.arange(self.xlim[0], self.xlim[1] + 15, 15)
+                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 15, 15)
 
             if self.yticks is None:
                 # if the range is greater than 45 degrees, make ticks every 30 deg
                 if (self.ylim[1] - self.ylim[0]) > 45:
-                    self.yticks = np.arange(self.ylim[0], self.ylim[1] + 30, 30)
+                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 30, 30)
                 # else, make ticks every 15 deg
                 else:
-                    self.yticks = np.arange(self.ylim[0], self.ylim[1] + 15, 15)
+                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 15, 15)
             
             # if there is no set width or height
             if self.userset_w is None and self.userset_h is None:
@@ -563,10 +562,10 @@ class NCL_Plot(ABC):
 
             # If x and y ticks are not specified, set to have 5 ticks over full range
             if self.xticks is None:
-                self.xticks = np.linspace(self.xlim[0], self.xlim[1], 5)
+                self.xticks = numpy.linspace(self.xlim[0], self.xlim[1], 5)
 
             if self.yticks is None:
-                self.yticks = np.linspace(self.ylim[0], self.ylim[1], 5)
+                self.yticks = numpy.linspace(self.ylim[0], self.ylim[1], 5)
 
         
         # Use utility function to set axis limits and ticks
@@ -598,9 +597,9 @@ class NCL_Plot(ABC):
                 axRHS.set_ylabel(self.raxis_label)
 
             if self.raxis_ticks is None:
-                axRHS.set_ylim(np.min(height.values), np.max(height.values))
+                axRHS.set_ylim(numpy.min(height.values), numpy.max(height.values))
             else:
-                axRHS.set_ylim(np.min(self.raxis_ticks), np.max(self.raxis_ticks))
+                axRHS.set_ylim(numpy.min(self.raxis_ticks), numpy.max(self.raxis_ticks))
 
             if self.label_font_size is not None:
                 axRHS.yaxis.label.set_size(self.label_font_size)
@@ -807,7 +806,7 @@ class NCL_Plot(ABC):
         # Set colorbar ticks as the boundaries of the cbar
         if (cb_ticks is None) and (self.cb_ticks is None):
             if (isinstance(self.levels, int)):
-                self.cb_ticks = np.linspace(self.cbar.get_ticks()[0],
+                self.cb_ticks = numpy.linspace(self.cbar.get_ticks()[0],
                                         self.cbar.get_ticks()[-1],
                                         len(self.cbar.get_ticks())*2 - 1)
                 self.cb_tick_labels = list(self.cb_ticks.astype(int))
@@ -816,7 +815,7 @@ class NCL_Plot(ABC):
                     self.cb_ticks = self.levels[1:-1]
                     self.cb_tick_labels = [round(num,2) for num in self.cb_ticks]
                 except:
-                    self.cb_ticks = np.linspace(self.cbar.get_ticks()[0],
+                    self.cb_ticks = numpy.linspace(self.cbar.get_ticks()[0],
                                                 self.cbar.get_ticks()[-1],
                                                 len(self.cbar.get_ticks())*2 - 1)[1:]
                     self.cb_tick_labels = list(self.cb_ticks.astype(int))
