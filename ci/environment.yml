@@ -12,3 +12,4 @@ dependencies:
   - cmaps
   - pip:
       - pre-commit
+      - scikit-learn
