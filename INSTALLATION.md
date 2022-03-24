@@ -7,7 +7,8 @@ the whole GeoCAT project.
 
 ## Installing GeoCAT-viz via Conda
 
-The easiest way to install GeoCAT-viz is using [Conda](http://conda.pydata.org/docs/):
+The easiest way to install GeoCAT-viz is using [Conda](http://conda.pydata.org/docs/).
+If you do not have a conda environment, use:
 
     conda create -n geocat -c conda-forge -c ncar geocat-viz
 
@@ -15,6 +16,10 @@ where "geocat" is the name of a new conda environment, which can then be
 activated using:
 
     conda activate geocat
+
+However, if you would like to add GeoCAT-viz to your existing environment, use:
+
+    conda install -c ncar geocat-viz
 
 Please note that the use of the **conda-forge** channel is essential to guarantee
 compatibility between dependency packages.
