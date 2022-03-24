@@ -9,7 +9,6 @@ import cartopy.feature as cfeature
 import math
 import typing
 from textwrap import wrap
-from metpy.units import units
 from metpy.calc import pressure_to_height_std
 from abc import ABC, abstractmethod
 
