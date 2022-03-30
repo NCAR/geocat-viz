@@ -12,7 +12,7 @@ GeoCAT-viz Plotting Routines
 .. autosummary::
    :toctree: ./generated/
    
-   geocat.viz.taylor.TaylorDiagram
+   .. autoclass:: geocat.viz.taylor.TaylorDiagram
    
    
 GeoCAT-viz Utility Functions
