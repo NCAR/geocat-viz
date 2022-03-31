@@ -35,7 +35,7 @@ setup(
     ],
     namespace_packages=['geocat'],
     packages=[
-        'geocat', 'geocat.viz', 'geocat.viz.contourf', 'geocat.viz.taylor',
+        'geocat', 'geocat.viz', 'geocat.viz.plotclasses',
         'geocat.viz.util'
     ],
     package_dir={
