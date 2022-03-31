@@ -6,10 +6,10 @@ import warnings
 import numpy as np
 import cartopy.crs as ccrs
 
-from ._plot_util import NCL_Plot
+from . import _plot_util as p
 
 
-class Contour(NCL_Plot):
+class Contour(p.NCL_Plot):
     # child class constructor
     def __init__(self, *args, **kwargs):
 
