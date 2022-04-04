@@ -15,9 +15,7 @@ from contourf import *
 # Open a netCDF data file using xarray default engine and load the data into xarray
 ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
 
-aplot = Contour(ds.U,
-                main_title="Default Color"
-                )
+aplot = Contour(ds.U, main_title="Default Color")
 
 aplot.show()
 
@@ -25,18 +23,18 @@ aplot.show()
 
 # Open a netCDF data file using xarray default engine and load the data into xarrays
 ds = xr.open_dataset(gdf.get('netcdf_files/h_avg_Y0191_D000.00.nc'),
-                      decode_times=False)
+                     decode_times=False)
 # Extract a slice of the data
 t = ds.T.isel(time=0, z_t=0).sel(lat_t=slice(-60, 30), lon_t=slice(30, 120))
 
-bplot = Contour(t,
-                contour_lines = False,
-                xlim=(30,120),
-                ylim=(-60,30),
-                cb_orientation="vertical",
-                cb_draw_edges = False, #
-                main_title="30-degree major and 10-degree minor ticks"
-                )
+bplot = Contour(
+    t,
+    contour_lines=False,
+    xlim=(30, 120),
+    ylim=(-60, 30),
+    cb_orientation="vertical",
+    cb_draw_edges=False,  #
+    main_title="30-degree major and 10-degree minor ticks")
 
 bplot.show_land()
 
@@ -55,11 +53,7 @@ U = U.where(U.lon <= 71)
 U = U.where(U.lat >= -33)
 U = U.where(U.lat <= 33)
 
-cplot = Contour(U,
-                xlim=(0,70),
-                ylim=(-30,30),
-                contour_label_background=True
-                )
+cplot = Contour(U, xlim=(0, 70), ylim=(-30, 30), contour_label_background=True)
 
 cplot.show_lakes(scale="110m")
 cplot.show()
@@ -68,7 +62,7 @@ cplot.show()
 
 # Open a netCDF data file using xarray default engine and load the data into xarrays
 ds = xr.open_dataset(gdf.get("netcdf_files/b003_TS_200-299.nc"),
-                      decode_times=False)
+                     decode_times=False)
 # Extract slice of the data
 temp = ds.TS.isel(time=43).drop_vars(names=['time'])
 # Convert from Celsius to Kelvin
@@ -78,10 +72,9 @@ temp.data = temp.data - 273.15
 temp = gvutil.xr_add_cyclic_longitudes(temp, "lon")
 
 dplot = Contour(temp,
-                ylim=(-70,70),
+                ylim=(-70, 70),
                 contour_fill=False,
-                contour_labels = np.linspace(8, 38, 4)
-                )
+                contour_labels=np.linspace(8, 38, 4))
 
 dplot.show_land(fc="silver")
 
@@ -96,24 +89,25 @@ U = ds.U[0, :, :]
 
 V = ds.V[0, :, :]
 
-gplot = Contour(U,
-                type = "press_height",
-                line_color = "red",
-                line_width = 1,
-                contour_fill = False,
-                main_title="Ensemble Average 1987-89",
-                draw_contour_labels = True,
-                contour_label_box = True, #
-                )
+gplot = Contour(
+    U,
+    type="press_height",
+    line_color="red",
+    line_width=1,
+    contour_fill=False,
+    main_title="Ensemble Average 1987-89",
+    draw_contour_labels=True,
+    contour_label_box=True,  #
+)
 
-hplot = Contour(V,
-                overlay = gplot,
-                line_color = "blue",
-                line_width = 1,
-                )
+hplot = Contour(
+    V,
+    overlay=gplot,
+    line_color="blue",
+    line_width=1,
+)
 
 gplot.show()
-
 
 # Recreated Geo-CAT Examples Plot: NCL_conLev_3.py
 
@@ -124,14 +118,15 @@ ds = xr.open_dataset(gdf.get("netcdf_files/Tstorm.cdf"))
 T = ds.t.isel(timestep=0, drop=True)
 levels = np.linspace(244, 308, 17)
 
-eplot = Contour(T,
-                levels = levels,
-                xlim=(-140, -50),
-                ylim=(20, 60),
-                cb_orientation = "vertical",
-                cb_pad = 0.005,
-                main_title = "Explanation of Python contour levels",
-                )
+eplot = Contour(
+    T,
+    levels=levels,
+    xlim=(-140, -50),
+    ylim=(20, 60),
+    cb_orientation="vertical",
+    cb_pad=0.005,
+    main_title="Explanation of Python contour levels",
+)
 
 # Create labels by colorbar
 size = 8
@@ -139,40 +134,40 @@ num_lev = 16
 cb_ticks = np.arange(248, 308, 4)
 y = 1 / num_lev / 2  # Offset from x axis in axes coordinates
 eplot.ax.text(0.949,
-        y,
-        'T < 248',
-        fontsize=size,
-        horizontalalignment='center',
-        verticalalignment='center',
-        transform=eplot.ax.transAxes,
-        bbox=dict(boxstyle='square, pad=0.25',
-                  facecolor='papayawhip',
-                  edgecolor='papayawhip'))
+              y,
+              'T < 248',
+              fontsize=size,
+              horizontalalignment='center',
+              verticalalignment='center',
+              transform=eplot.ax.transAxes,
+              bbox=dict(boxstyle='square, pad=0.25',
+                        facecolor='papayawhip',
+                        edgecolor='papayawhip'))
 text = '{} <= T < {}'
 for i in range(0, 14):
     y = y + 1 / num_lev  # Vertical spacing between the labels
     eplot.ax.text(0.904,
-            y,
-            text.format(cb_ticks[i], cb_ticks[i + 1]),
-            fontsize=size,
-            horizontalalignment='center',
-            verticalalignment='center',
-            transform=eplot.ax.transAxes,
-            bbox=dict(boxstyle='square, pad=0.25',
-                      facecolor='papayawhip',
-                      edgecolor='papayawhip'))
+                  y,
+                  text.format(cb_ticks[i], cb_ticks[i + 1]),
+                  fontsize=size,
+                  horizontalalignment='center',
+                  verticalalignment='center',
+                  transform=eplot.ax.transAxes,
+                  bbox=dict(boxstyle='square, pad=0.25',
+                            facecolor='papayawhip',
+                            edgecolor='papayawhip'))
 
 y = y + 1 / num_lev  # Increment height once more for top label
 eplot.ax.text(0.94,
-        y,
-        'T >= 304',
-        fontsize=size,
-        horizontalalignment='center',
-        verticalalignment='center',
-        transform=eplot.ax.transAxes,
-        bbox=dict(boxstyle='square, pad=0.25',
-                  facecolor='papayawhip',
-                  edgecolor='papayawhip'))
+              y,
+              'T >= 304',
+              fontsize=size,
+              horizontalalignment='center',
+              verticalalignment='center',
+              transform=eplot.ax.transAxes,
+              bbox=dict(boxstyle='square, pad=0.25',
+                        facecolor='papayawhip',
+                        edgecolor='papayawhip'))
 
 eplot.show()
 
@@ -180,7 +175,7 @@ eplot.show()
 
 # Open a netCDF data file using xarray default engine and load the data into xarrays
 ds = xr.open_dataset(gdf.get("netcdf_files/b003_TS_200-299.nc"),
-                      decode_times=False)
+                     decode_times=False)
 x = ds.TS
 
 # Apply mean reduction from coordinates as performed in NCL's dim_rmvmean_n_Wrap(x,0)
@@ -191,9 +186,10 @@ newx = x.isel(time=0) - newx
 # Fix the artifact of not-shown-data around 0 and 360-degree longitudes
 newx = gvutil.xr_add_cyclic_longitudes(newx, "lon")
 
-fplot = Contour(newx,
-                left_title = "Anomalies: Surface Temperature",
-                )
+fplot = Contour(
+    newx,
+    left_title="Anomalies: Surface Temperature",
+)
 
 fplot.show()
 

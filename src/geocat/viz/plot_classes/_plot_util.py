@@ -11,8 +11,6 @@ from textwrap import wrap
 from metpy.calc import pressure_to_height_std
 from abc import ABC, abstractmethod
 
-
-
 from geocat.viz.util import set_titles_and_labels
 from geocat.viz.util import add_major_minor_ticks
 from geocat.viz.util import set_axes_limits_and_ticks
@@ -20,50 +18,50 @@ from geocat.viz.util import set_axes_limits_and_ticks
 
 class NCL_Plot(ABC):
     """Parent class to create figure, axes, set NCL style with constructors to
-    add colorbar, add titles, and show plot.Set up figure and axes with the specified style. 
-    Calls _set_up_fig if there is not a figure already created, _set_axes to create and style
-    the axes, and _set_lim_ticks to constrain the axes. Adds geographic features
-    to figure.
+    add colorbar, add titles, and show plot.Set up figure and axes with the
+    specified style. Calls _set_up_fig if there is not a figure already
+    created, _set_axes to create and style the axes, and _set_lim_ticks to
+    constrain the axes. Adds geographic features to figure.
 
     Keyword Args
     ------------
-    add_colorbar: :obj:`bool` 
+    add_colorbar: :obj:`bool`
         Whether a colorbar is added to the figure. Default True.
 
     coastline_on: :obj:`bool`
         Whether to show coastlines in figure. Default False, unless a projection is specified.
 
-    cb_draw_edges: :obj:`bool` 
+    cb_draw_edges: :obj:`bool`
         Whether to draw edges on the colorbar. Default True.
 
-    cb_orientation: :obj:`str` 
+    cb_orientation: :obj:`str`
         Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-    cb_pad: :obj:`float` 
+    cb_pad: :obj:`float`
         Padding between colorbar and figure. Default 0.11.
 
-    cb_shrink: :obj:`float` 
+    cb_shrink: :obj:`float`
         Percent shrinkage of colorbar. Default 0.75.
 
-    cb_tick_labels: :obj:`list` or :class:`numpy.ndarray` 
+    cb_tick_labels: :obj:`list` or :class:`numpy.ndarray`
         Labels for colorbar ticks.
 
-    cb_tick_label_size: :obj:`int` 
+    cb_tick_label_size: :obj:`int`
         Font size for colorbar tick labels.
 
-    cb_ticks: :obj:`list` or :class:`numpy.ndarray` 
+    cb_ticks: :obj:`list` or :class:`numpy.ndarray`
         Ticks for colorbar.
 
     cmap: :obj:`str` or :class:`cmaps.colormap.Colormap`
         Colormap or colormap name for figure. Default 'plasma'
 
-    h: :obj:`float` 
+    h: :obj:`float`
         Height of figure in inches. Default 8. To be passed into figsize when creating figure.
 
     individual_cb: :obj:`bool`
         Whether to draw individual colorbars for each subplot. Default False.
 
-    label_font_size: :obj:`int` 
+    label_font_size: :obj:`int`
         Fontsize for x and y axis labels. Default 16.
 
     lakes_on: :obj:`bool`
@@ -72,10 +70,10 @@ class NCL_Plot(ABC):
     land_on: :obj:`bool`
         Whether to show land in figure. Default False.
 
-    left_title: :obj:`str` 
+    left_title: :obj:`str`
         Title for top left subtitle.
 
-    left_title_fontsize: :obj:`int` 
+    left_title_fontsize: :obj:`int`
         Font size for top left subtitle. Default 18.
 
     line_color: :obj:`str` or :class:`Sequence`
@@ -87,19 +85,19 @@ class NCL_Plot(ABC):
     line_width: :obj:`float`
         Width of lines. Default 0.4.
 
-    main_title: :obj:`str` 
+    main_title: :obj:`str`
         Title of figure.
 
-    main_title_fontsize: :obj:`int` 
+    main_title_fontsize: :obj:`int`
         Font size for title of figure. Default 18.
 
-    mappable: :class:`cartopy.mpl.contour.GeoContourSet` 
+    mappable: :class:`cartopy.mpl.contour.GeoContourSet`
         The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
 
-    overlay: :class:`contourf.Contour` 
+    overlay: :class:`contourf.Contour`
         Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the overlay would be the name of the first plot.
-    
-    projection: :obj:`str` 
+
+    projection: :obj:`str`
         Cartopy map projection. `See Cartopy documentation for full list. <https://scitools.org.uk/cartopy/docs/latest/crs/projections.html>`_
 
     raxis: :obj:`bool`
@@ -114,22 +112,22 @@ class NCL_Plot(ABC):
     raxis_tick_label_fontsize: :obj:`float`
         Font size of tick labels on right hand axis.
 
-    raxis_ticks: :obj:`list` or :class:`numpy.ndarray` 
+    raxis_ticks: :obj:`list` or :class:`numpy.ndarray`
         Ticks for right hand axis.
 
-    right_title: :obj:`str` 
+    right_title: :obj:`str`
         Title for top right subtitle.
 
-    right_title_fontsize: :obj:`int` 
+    right_title_fontsize: :obj:`int`
         Font size for top right subtitle. Default 18.
-    
-    set_extent: :class:`list` 
+
+    set_extent: :class:`list`
         Extent [xmin, xmax, ymin, ymax] of figure to be shown.
 
-    subplot: :class:`list` 
+    subplot: :class:`list`
         List [number of rows, number of columns, position] to be passed into plt.subplot().
 
-    tick_label_fontsize: :obj:`int` 
+    tick_label_fontsize: :obj:`int`
         Font size of x and y axis ticks. Default 16.
 
     type: :obj:`str`
@@ -137,49 +135,50 @@ class NCL_Plot(ABC):
 
     X: :class:`xarray.DataArray` or :class:`numpy.ndarray`
         Data for x axis.
-    
-    w: :obj:`float` 
+
+    w: :obj:`float`
         Weidth of the figure. Default 10. To be passed into figsize.
 
-    xlabel: :obj:`str` 
+    xlabel: :obj:`str`
         Label for the x axis.
-    
-    xlim: :class:`list` 
+
+    xlim: :class:`list`
         List [xmin, xmax] to set the limit of the x axis.
 
-    xscale: :obj:`str` 
+    xscale: :obj:`str`
         Scale of x axis. Currently supports "log".
 
-    tick_label_fontsize: :obj:`int` 
+    tick_label_fontsize: :obj:`int`
         Font size of x and y axis ticks. Default 16.
 
-    xtick_labels: :obj:`list` or :class:`numpy.ndarray` 
+    xtick_labels: :obj:`list` or :class:`numpy.ndarray`
         List or array of tick labels for the x axis.
 
-    xticks: :obj:`list` or :class:`numpy.ndarray` 
+    xticks: :obj:`list` or :class:`numpy.ndarray`
         List or array of tick values for the x axis.
 
     Y: :class:`xarray.DataArray` or :class:`numpy.ndarray`
         Data for y axis.
 
-    ylabel: :obj:`str` 
+    ylabel: :obj:`str`
         Label for the y axis.
-    
-    ylim: :class:`list` 
+
+    ylim: :class:`list`
         List [ymin, ymax] to set the limit of the y axis.
 
-    yscale: :obj:`str` 
+    yscale: :obj:`str`
         Scale of y axis. Currently supports "log".
 
-    ytick_labels: :obj:`list` or :class:`numpy.ndarray` 
+    ytick_labels: :obj:`list` or :class:`numpy.ndarray`
         List or array of tick labels for the y axis.
 
-    yticks: :obj:`list` or :class:`numpy.ndarray` 
+    yticks: :obj:`list` or :class:`numpy.ndarray`
         List or array of tick values for the y axis.
     """
 
     # Constructor
-    def __init__(self, class_specific_kwargs_set : set, class_specific_kwarg_defaults : dict, *args, **kwargs):
+    def __init__(self, class_specific_kwargs_set: set,
+                 class_specific_kwarg_defaults: dict, *args, **kwargs):
         """Sets up args and kwargs for figure. Calls _fig_ax to set up figure
         and axes, add_geo_features to add geographical features to the figure,
         and adds titles.
@@ -191,10 +190,10 @@ class NCL_Plot(ABC):
 
         class_specific_kwarg_defaults: :obj`dict`
             Dictionary of kwargs specific to subclass, to be passed into _setup_args_kwargs
-
         """
         # set up all args and kwargs
-        self._setup_args_kwargs(class_specific_kwargs_set, class_specific_kwarg_defaults, args, kwargs)
+        self._setup_args_kwargs(class_specific_kwargs_set,
+                                class_specific_kwarg_defaults, args, kwargs)
 
         # If there is a subplot, set up variables for it
         if self.subplot is not None:
@@ -235,24 +234,22 @@ class NCL_Plot(ABC):
 
     @abstractmethod
     def _plot(self, *args, **kwargs):
-        """
-        Method in child class to plot figure (See contourf for example)
-        """
+        """Method in child class to plot figure (See contourf for example)"""
         pass
 
     @abstractmethod
     def _class_kwarg_handling(self, *args, **kwargs):
-        """
-        Method in child class to set class-specific args and kwargs (See contourf for example)
-        """
+        """Method in child class to set class-specific args and kwargs (See
+        contourf for example)"""
         pass
 
-    def _setup_args_kwargs(self, class_specific_kwargs_set : set, class_specific_kwarg_defaults : dict, args, kwargs):
-        """Set up args and kwargs
+    def _setup_args_kwargs(self, class_specific_kwargs_set: set,
+                           class_specific_kwarg_defaults: dict, args, kwargs):
+        """Set up args and kwargs.
 
         Args
         ----
-        class_specific_kwargs_list: :obj:`list`
+        class_specific_kwargs_set: :obj:`list`
             Set of valid kwargs specific to subclass
 
         class_specific_kwarg_defaults: :obj`dict`
@@ -260,22 +257,35 @@ class NCL_Plot(ABC):
         """
 
         # List of valid kwargs
-        valid_kwargs = {'add_colorbar', 'coastline_on', 'cbar', 'cb_draw_edges', 'cb_orientation', 
-            'cb_pad', 'cb_shrink', 'cb_ticks', 'cb_tick_labels', 'cb_tick_label_size', 
-            'cmap', 'h', 'individual_cb', 'label_font_size', 'lakes_on', 'land_on', 
-            'left_title', 'left_title_fontsize', 'line_color', 'line_style', 'line_width',  
-            'main_title', 'main_title_fontsize', 'mappable', "overlay", 'projection', 
-            'raxis', 'raxis_label', 'raxis_scale', 'raxis_tick_label_fontsize', 'raxis_ticks',
-            'right_title', 'right_title_fontsize', "set_extent", "subplot", 
-            'tick_label_fontsize', 'type', 'w', 'X',  'xlabel', 'xlim', 
-            "xscale", 'xticks', 'xtick_labels', 'Y',  'ylabel', 
-            'ylim', "yscale", 'yticks', 'ytick_labels'} | class_specific_kwargs_set
+        valid_kwargs = {
+            'add_colorbar', 'coastline_on', 'cbar', 'cb_draw_edges',
+            'cb_orientation', 'cb_pad', 'cb_shrink', 'cb_ticks',
+            'cb_tick_labels', 'cb_tick_label_size', 'cmap', 'h',
+            'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
+            'left_title', 'left_title_fontsize', 'line_color', 'line_style',
+            'line_width', 'main_title', 'main_title_fontsize', 'mappable',
+            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_scale',
+            'raxis_tick_label_fontsize', 'raxis_ticks', 'right_title',
+            'right_title_fontsize', "set_extent", "subplot",
+            'tick_label_fontsize', 'type', 'w', 'X', 'xlabel', 'xlim', "xscale",
+            'xticks', 'xtick_labels', 'Y', 'ylabel', 'ylim', "yscale", 'yticks',
+            'ytick_labels'
+        } | class_specific_kwargs_set
 
         # Dictionary of default values
-        all_kwargs = {'cmap' : 'plasma', 'line_color' : "black", 
-            'line_width' : 0.4, 'w' : 8, 'h': 8, 'cb_orientation' : "horizontal",
-            'cb_shrink' : 0.75, 'cb_pad' : 0.075, 'cb_draw_edges' : True, 'xlim': [-180,180],
-            'ylim': [-90,90]}
+        all_kwargs = {
+            'cmap': 'plasma',
+            'line_color': "black",
+            'line_width': 0.4,
+            'w': 8,
+            'h': 8,
+            'cb_orientation': "horizontal",
+            'cb_shrink': 0.75,
+            'cb_pad': 0.075,
+            'cb_draw_edges': True,
+            'xlim': [-180, 180],
+            'ylim': [-90, 90]
+        }
 
         overlay_keys = {}
 
@@ -288,28 +298,40 @@ class NCL_Plot(ABC):
         # Read in kwargs from overlay plot
         if kwargs.get('overlay') is not None:
             overlay_keys = kwargs.get('overlay').__dict__.keys()
-            all_kwargs.update((k,v) for k, v in kwargs.get('overlay').__dict__.items() if (k not in kwargs.keys()))
+            all_kwargs.update(
+                (k, v)
+                for k, v in kwargs.get('overlay').__dict__.items()
+                if (k not in kwargs.keys()))
 
         # Create self.kwarg for all kwargs in valid_kwargs
         self.__dict__.update((k, None) for k in valid_kwargs)
-        self.__dict__.update((k, v) for k, v in all_kwargs.items() if k in valid_kwargs or k in overlay_keys)
-        
+        self.__dict__.update((k, v)
+                             for k, v in all_kwargs.items()
+                             if k in valid_kwargs or k in overlay_keys)
+
         # list of kwargs where original value set by user is needed
-        user_set_kwargs = ['coastline_on', 'cb_shrink', 'h', 'label_font_size', 
-        'left_title_fontsize', 'main_title_fontsize', "overlay", 'right_title_fontsize', 
-        'tick_label_fontsize', 'w']
+        user_set_kwargs = [
+            'coastline_on', 'cb_shrink', 'h', 'label_font_size',
+            'left_title_fontsize', 'main_title_fontsize', "overlay",
+            'right_title_fontsize', 'tick_label_fontsize', 'w'
+        ]
 
         # add user_set_kwargs with userset_ in front for user values
-        self.__dict__.update(('userset_'+ k, v) for k, v in kwargs.items() if k in user_set_kwargs)
+        self.__dict__.update(('userset_' + k, v)
+                             for k, v in kwargs.items()
+                             if k in user_set_kwargs)
         if self.overlay is None:
-            self.__dict__.update(('userset_'+ k, None) for k in user_set_kwargs if k not in kwargs.keys())
-        
-        
+            self.__dict__.update(('userset_' + k, None)
+                                 for k in user_set_kwargs
+                                 if k not in kwargs.keys())
+
         # Print unused kwargs
-        unused_kwargs = [unused for unused in kwargs if unused not in valid_kwargs]
+        unused_kwargs = [
+            unused for unused in kwargs if unused not in valid_kwargs
+        ]
         if len(unused_kwargs) > 0:
-            print("--------------UNUSED KWARGS--------------" + 
-                "\n".join(unused_kwargs))
+            print("--------------UNUSED KWARGS--------------" +
+                  "\n".join(unused_kwargs))
 
         # Pull out args from data
         self.data = args[0]
@@ -319,14 +341,14 @@ class NCL_Plot(ABC):
             self.orig = self.data
             self.data = self.data.values
             if self.X is None:
-                self.__dict__.update({'X' : self.orig.coords[self.orig.dims[1]]})
+                self.__dict__.update({'X': self.orig.coords[self.orig.dims[1]]})
             if self.Y is None:
                 self.__dict__.update({'Y': self.orig.coords[self.orig.dims[0]]})
 
         # Set up child class specific kwarg values
         self._class_kwarg_handling(args, kwargs)
 
-    def _set_up_fig(self, w: float =None, h: float =None):
+    def _set_up_fig(self, w: float = None, h: float = None):
         """Create figure with subplots, if specified.
 
         Keyword Args
@@ -334,7 +356,7 @@ class NCL_Plot(ABC):
         w: :obj:`float`
             Width of the figure. Default 10. To be passed into figsize.
 
-        h: :obj:`float` 
+        h: :obj:`float`
             Height of figure in inches. Default 8. To be passed into figsize when creating figure.
         """
 
@@ -360,21 +382,21 @@ class NCL_Plot(ABC):
                     figsize=(w, h),
                     gridspec_kw=self._generate_gridspec_ratio(
                         self.sp_rows, self.sp_columns, self.cb_orientation))
-                    
 
-    def _generate_gridspec_ratio(self, rows: int, columns: int, cb_orientation: str):
+    def _generate_gridspec_ratio(self, rows: int, columns: int,
+                                 cb_orientation: str):
         """Generate gridspec for subplots, with additional cax if there is a
         colorbar.
 
         Args
         ----
-        cb_orientation: :obj:`str` 
+        cb_orientation: :obj:`str`
             Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
         columns: :obj:`int`
             Number of columns in the subplot.
 
-        rows: :obj:`int` 
+        rows: :obj:`int`
             Number of rows in the subplot.
         """
 
@@ -414,7 +436,7 @@ class NCL_Plot(ABC):
                     # Add a subplot that encompasses the entire last row
                     self.cax = self.fig.add_subplot(gs[-1, :])
                 # If a vertical colorbar, join last column of subplots into one as the colorbar axis
-                elif (self.cb_orientation == "vertical"):
+                elif self.cb_orientation == "vertical":
                     # Turn off axes in last column so they do not show under colorbar
                     for ax in self.axes[:, -1]:
                         ax.axis("off")
@@ -431,8 +453,7 @@ class NCL_Plot(ABC):
     def _set_axes(self):
         """Assign value for self.ax by either creating a new axis or
         referencing the list of axes (self.axes) generated during subplot
-        creation.
-        """
+        creation."""
 
         # If there is not reference figure, either get axis from plt.subplot or create axis
         if self.overlay is None:
@@ -467,10 +488,13 @@ class NCL_Plot(ABC):
             if self.userset_coastline_on is not False:
                 self.ax.coastlines(linewidths=0.5, alpha=0.6)
 
-    def _set_NCL_style(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes], tick_label_fontsize: int =16):
+    def _set_NCL_style(self,
+                       ax: typing.Union[matplotlib.axes.Axes,
+                                        cartopy.mpl.geoaxes.GeoAxes],
+                       tick_label_fontsize: int = 16):
         """Set tick label size, add minor ticks, and format axes as latitude
         and longitude.
-        
+
         Args
         ----
         ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxes`
@@ -478,13 +502,13 @@ class NCL_Plot(ABC):
 
         Keyword Args
         ------------
-        tick_label_fontsize: :obj:`int` 
+        tick_label_fontsize: :obj:`int`
             Font size of x and y axis ticks. Default 16.
         """
         # Set NCL-style tick marks
         if self.tick_label_fontsize is None:
             self.tick_label_fontsize = tick_label_fontsize
-            
+
         add_major_minor_ticks(ax, labelsize=self.tick_label_fontsize)
 
         # if pressure height, remove right hand ticks on original axis
@@ -498,15 +522,14 @@ class NCL_Plot(ABC):
         if self.type is None and 'at' in self.Y.name:
             self.ax.yaxis.set_major_formatter(LatitudeFormatter())
 
-
         # if x axis is latitude, set as latitude
         if 'at' in self.X.name:
             self.ax.xaxis.set_major_formatter(LatitudeFormatter())
 
-
-    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxes]):
+    def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes,
+                                              cartopy.mpl.geoaxes.GeoAxes]):
         """Set limits and ticks for axis.
-        
+
         Args
         ----
         ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxes`
@@ -516,39 +539,47 @@ class NCL_Plot(ABC):
         if self.projection is not None:
             # Use X and Y to set x and y limits if needed
             if self.ylim is None:
-                self.ylim = (round(self.Y.data[0], -1), round(self.Y.data[-1], -1))
+                self.ylim = (round(self.Y.data[0],
+                                   -1), round(self.Y.data[-1], -1))
 
             if self.xlim is None:
-                self.xlim = (round(self.X.data[0], -1), round(self.X.data[-1], -1))
+                self.xlim = (round(self.X.data[0],
+                                   -1), round(self.X.data[-1], -1))
 
             # If x and y ticks are not specified
             if self.xticks is None:
                 # if the range is greater than 45 degrees, make ticks every 30 deg
                 if (self.xlim[1] - self.xlim[0]) > 45:
-                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 30, 30)
+                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 30,
+                                               30)
                 # else, make ticks every 15 deg
                 else:
-                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 15, 15)
+                    self.xticks = numpy.arange(self.xlim[0], self.xlim[1] + 15,
+                                               15)
 
             if self.yticks is None:
                 # if the range is greater than 45 degrees, make ticks every 30 deg
                 if (self.ylim[1] - self.ylim[0]) > 45:
-                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 30, 30)
+                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 30,
+                                               30)
                 # else, make ticks every 15 deg
                 else:
-                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 15, 15)
-            
+                    self.yticks = numpy.arange(self.ylim[0], self.ylim[1] + 15,
+                                               15)
+
             # if there is no set width or height
             if self.userset_w is None and self.userset_h is None:
                 # get the ratio of x and y limits
                 if self.subplot is None:
-                    ratio = (self.ylim[1]-self.ylim[0])/(self.xlim[1]-self.xlim[0])
-                    self.w = 6/ratio
+                    ratio = (self.ylim[1] - self.ylim[0]) / (self.xlim[1] -
+                                                             self.xlim[0])
+                    self.w = 6 / ratio
                     self.h = 6
                 else:
-                    ratio = (self.ylim[1]-self.ylim[0])/(self.xlim[1]-self.xlim[0])
-                    self.w = 6/ratio*self.sp_columns
-                    self.h = 6*self.sp_rows
+                    ratio = (self.ylim[1] - self.ylim[0]) / (self.xlim[1] -
+                                                             self.xlim[0])
+                    self.w = 6 / ratio * self.sp_columns
+                    self.h = 6 * self.sp_rows
                 # set figure based on ratio
                 self.fig.set_size_inches(self.w, self.h)
 
@@ -567,7 +598,6 @@ class NCL_Plot(ABC):
             if self.yticks is None:
                 self.yticks = numpy.linspace(self.ylim[0], self.ylim[1], 5)
 
-        
         # Use utility function to set axis limits and ticks
         set_axes_limits_and_ticks(ax,
                                   xlim=self.xlim,
@@ -577,9 +607,9 @@ class NCL_Plot(ABC):
                                   yticklabels=self.ytick_labels,
                                   xticklabels=self.xtick_labels)
 
-
         # Add right hand axis
-        if self.raxis is True or (self.type == "press_height" and self.overlay is None):
+        if self.raxis is True or (self.type == "press_height" and
+                                  self.overlay is None):
             # Calculate pressure and height
             pressure = self.orig.lev
             height = pressure_to_height_std(pressure)
@@ -597,26 +627,28 @@ class NCL_Plot(ABC):
                 axRHS.set_ylabel(self.raxis_label)
 
             if self.raxis_ticks is None:
-                axRHS.set_ylim(numpy.min(height.values), numpy.max(height.values))
+                axRHS.set_ylim(numpy.min(height.values),
+                               numpy.max(height.values))
             else:
-                axRHS.set_ylim(numpy.min(self.raxis_ticks), numpy.max(self.raxis_ticks))
+                axRHS.set_ylim(numpy.min(self.raxis_ticks),
+                               numpy.max(self.raxis_ticks))
 
             if self.label_font_size is not None:
                 axRHS.yaxis.label.set_size(self.label_font_size)
-            else: 
+            else:
                 axRHS.yaxis.label.set_size(18)
 
             if self.raxis_tick_label_fontsize is None:
                 axRHS.tick_params('both', labelsize=18)
             else:
-                axRHS.tick_params('both', labelsize=self.raxis_tick_label_fontsize)
-        
+                axRHS.tick_params('both',
+                                  labelsize=self.raxis_tick_label_fontsize)
 
     def _subplot_pos(self):
-        """Convert the position of a subplot to its subplot array index.
-        """
+        """Convert the position of a subplot to its subplot array index."""
 
-        # If the cb_orientation is vertical, the number of rows should be used to calculate the array index. Otherwise, the number of columns should be used.
+        # If the cb_orientation is vertical, the number of rows should be used to calculate the array index.
+        # Otherwise, the number of columns should be used.
         if self.cb_orientation == "vertical":
             iterate = self.sp_rows
         else:
@@ -631,9 +663,9 @@ class NCL_Plot(ABC):
 
             # Change the position of the index depending on the colorbar orientation
             if self.cb_orientation == "vertical":
-                return (pos_remain, row_position)
+                return pos_remain, row_position
             else:
-                return (row_position, pos_remain)
+                return row_position, pos_remain
         else:
             # If not a 2D array, return the subplot position minus 1 to account for indexing at 0
             return self.subplot[2] - 1
@@ -653,37 +685,40 @@ class NCL_Plot(ABC):
                 if (self.cb_orientation is not None) and (
                         self.cb_orientation == "vertical"
                         # or self.overlay.cb_orientation == "vertical"
-                        ):
+                ):
                     self.sp_columns += 1
                 else:
                     self.sp_rows += 1
-                    
-    def show_land(self, scale: str ="110m", fc: str ='lightgrey'):
+
+    def show_land(self, scale: str = "110m", fc: str = 'lightgrey'):
         """Add land to figure.
 
         Keyword Args
         ------------
-        fc: :obj:`str` 
+        fc: :obj:`str`
             Facecolor of land. Default light grey.
 
-        scale: :obj:`str` 
+        scale: :obj:`str`
             Scale of land set. Default 110m.
         """
         # Add land to figure
         self.ax.add_feature(cfeature.LAND.with_scale(scale), facecolor=fc)
 
-    def show_coastline(self, scale: str ="110m", lw: float =0.5, ec: str ="black"):
+    def show_coastline(self,
+                       scale: str = "110m",
+                       lw: float = 0.5,
+                       ec: str = "black"):
         """Add coastlines to figure.
 
         Keyword Args
         ------------
-        ec: :obj:`str` 
+        ec: :obj:`str`
             Edgecolor of coastlines. Default black.
 
-        lw: :obj:`float` 
+        lw: :obj:`float`
             Linewidth of coastlines. Default 0.5.
 
-        scale: :obj:`str` 
+        scale: :obj:`str`
             Scale of coastline set. Default 110m.
         """
         # Add coastline to figure
@@ -691,21 +726,25 @@ class NCL_Plot(ABC):
                             linewidths=lw,
                             edgecolor=ec)
 
-    def show_lakes(self, scale: str ="110m", lw: float =0.5, ec: str ='black', fc: str ='None'):
+    def show_lakes(self,
+                   scale: str = "110m",
+                   lw: float = 0.5,
+                   ec: str = 'black',
+                   fc: str = 'None'):
         """Add lakes to figure.
 
         Keyword Args
         ------------
-        ec: :obj:`str` 
+        ec: :obj:`str`
             Outline color of lakes. Default black.
 
-        fc: :obj:`str` 
+        fc: :obj:`str`
             Facecolor of lakes. Default none.
 
-        lw: :obj:`float` 
+        lw: :obj:`float`
             Linewidth of lake edges. Default 0.5.
 
-        scale: :obj:`str` 
+        scale: :obj:`str`
             Scale of lake set. Default 110m.
         """
         # Add lakes to figure
@@ -713,43 +752,43 @@ class NCL_Plot(ABC):
                             linewidth=lw,
                             edgecolor=ec,
                             facecolor=fc)
-        
+
     def add_colorbar(self,
-                      mappable: cartopy.mpl.contour.GeoContourSet =None,
-                      cb_orientation: str ="horizontal",
-                      cb_shrink: float =0.8,
-                      cb_pad: float = 0.075,
-                      cb_draw_edges: bool =True,
-                      cb_ticks: typing.Union[list, numpy.ndarray] =None,
-                      cb_tick_labels: typing.Union[list, numpy.ndarray] =None,
-                      cb_tick_label_size: int =None):
+                     mappable: cartopy.mpl.contour.GeoContourSet = None,
+                     cb_orientation: str = "horizontal",
+                     cb_shrink: float = 0.8,
+                     cb_pad: float = 0.075,
+                     cb_draw_edges: bool = True,
+                     cb_ticks: typing.Union[list, numpy.ndarray] = None,
+                     cb_tick_labels: typing.Union[list, numpy.ndarray] = None,
+                     cb_tick_label_size: int = None):
         """Add colorbar to figure. If figure is a subplot, uses gridspec to add
         a cax to the appropriate place on the figure.
 
         Keyword Args
         ------------
-        cb_draw_edges: :obj:`bool` 
+        cb_draw_edges: :obj:`bool`
             Whether to draw edges on the colorbar. Default True.
 
-        cb_orientation: :obj:`str` 
+        cb_orientation: :obj:`str`
             Placement of the colorbar. Default "horizontal". Other option is "vertical".
 
-        cb_pad: :obj:`float` 
+        cb_pad: :obj:`float`
             Padding between colorbar and figure. Default 0.11.
 
-        cb_shrink: :obj:`float` 
+        cb_shrink: :obj:`float`
             Percent shrinkage of colorbar. Default 0.75.
 
-        cb_tick_labels: :obj:`list` or :class:`numpy.ndarray` 
+        cb_tick_labels: :obj:`list` or :class:`numpy.ndarray`
             Labels for colorbar ticks.
 
-        cb_tick_label_size: :obj:`int` 
+        cb_tick_label_size: :obj:`int`
             Font size for colorbar tick labels.
 
-        cb_ticks: :obj:`list` or :class:`numpy.ndarray` 
+        cb_ticks: :obj:`list` or :class:`numpy.ndarray`
             Ticks for colorbar.
 
-        mappable: :class:`cartopy.mpl.contour.GeoContourSet` 
+        mappable: :class:`cartopy.mpl.contour.GeoContourSet`
             The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
         """
 
@@ -777,7 +816,7 @@ class NCL_Plot(ABC):
 
         if cb_tick_labels is not None:
             self.cb_tick_labels = cb_tick_labels
-        
+
         if cb_tick_label_size is not None:
             self.cb_tick_label_size = cb_tick_label_size
 
@@ -805,19 +844,23 @@ class NCL_Plot(ABC):
 
         # Set colorbar ticks as the boundaries of the cbar
         if (cb_ticks is None) and (self.cb_ticks is None):
-            if (isinstance(self.levels, int)):
-                self.cb_ticks = numpy.linspace(self.cbar.get_ticks()[0],
-                                        self.cbar.get_ticks()[-1],
-                                        len(self.cbar.get_ticks())*2 - 1)
+            if isinstance(self.levels, int):
+                self.cb_ticks = numpy.linspace(
+                    self.cbar.get_ticks()[0],
+                    self.cbar.get_ticks()[-1],
+                    len(self.cbar.get_ticks()) * 2 - 1)
                 self.cb_tick_labels = list(self.cb_ticks.astype(int))
             else:
-                try: # duck typing list
+                try:  # duck typing list
                     self.cb_ticks = self.levels[1:-1]
-                    self.cb_tick_labels = [round(num,2) for num in self.cb_ticks]
+                    self.cb_tick_labels = [
+                        round(num, 2) for num in self.cb_ticks
+                    ]
                 except:
-                    self.cb_ticks = numpy.linspace(self.cbar.get_ticks()[0],
-                                                self.cbar.get_ticks()[-1],
-                                                len(self.cbar.get_ticks())*2 - 1)[1:]
+                    self.cb_ticks = numpy.linspace(
+                        self.cbar.get_ticks()[0],
+                        self.cbar.get_ticks()[-1],
+                        len(self.cbar.get_ticks()) * 2 - 1)[1:]
                     self.cb_tick_labels = list(self.cb_ticks.astype(int))
 
         # Label every boundary except the ones on the end of the colorbar
@@ -834,50 +877,49 @@ class NCL_Plot(ABC):
             self.cbar.ax.tick_params(labelsize=self.tick_label_fontsize - 2)
 
     def add_titles(self,
-                   main_title: str =None,
-                   main_title_fontsize: int =18,
-                   left_title: str =None,
-                   left_title_fontsize: int =18,
-                   right_title: str =None,
-                   right_title_fontsize: int=18,
-                   xlabel: str =None,
-                   ylabel: str =None,
-                   label_font_size: int =16
-                   ):
+                   main_title: str = None,
+                   main_title_fontsize: int = 18,
+                   left_title: str = None,
+                   left_title_fontsize: int = 18,
+                   right_title: str = None,
+                   right_title_fontsize: int = 18,
+                   xlabel: str = None,
+                   ylabel: str = None,
+                   label_font_size: int = 16):
         """Add titles to figure. If inputted dataset is an xarray file (or
         netCDF converted to xarray), will attempt to pull titles and labels
         from the datafile.
 
         Keyword Args
         ------------
-        label_font_size: :obj:`int` 
+        label_font_size: :obj:`int`
             Fontsize for x and y axis labels. Default 16.
 
-        left_title: :obj:`str` 
+        left_title: :obj:`str`
             Title for top left subtitle.
 
-        left_title_fontsize: :obj:`int` 
+        left_title_fontsize: :obj:`int`
             Font size for top left subtitle. Default 18.
 
-        main_title: :obj:`str` 
+        main_title: :obj:`str`
             Title of figure.
 
-        main_title_fontsize: :obj:`int` 
+        main_title_fontsize: :obj:`int`
             Font size for title of figure. Default 18.
 
-        right_title: :obj:`str` 
+        right_title: :obj:`str`
             Title for top right subtitle.
 
-        right_title_fontsize: :obj:`int` 
+        right_title_fontsize: :obj:`int`
             Font size for top right subtitle. Default 18.
 
-        tick_label_fontsize: :obj:`int` 
+        label_fontsize: :obj:`int`
             Font size of x and y axis ticks. Default 16.
 
-        xlabel: :obj:`str` 
+        xlabel: :obj:`str`
             Label for the x axis.
 
-        ylabel: :obj:`str` 
+        ylabel: :obj:`str`
             Label for the y axis.
         """
 
@@ -939,7 +981,9 @@ class NCL_Plot(ABC):
             if self.X is not None:
                 # Attempt to set x axis label if X is specified as a kwarg
                 try:
-                    if self.xlabel is None and hasattr(self.X, 'long_name') and "ongitude" not in self.X.long_name:
+                    if self.xlabel is None and hasattr(
+                            self.X,
+                            'long_name') and "ongitude" not in self.X.long_name:
                         self.xlabel = self.X.long_name
                 except:
                     pass
@@ -947,7 +991,9 @@ class NCL_Plot(ABC):
             if self.Y is not None:
                 # Attempt to set y axis label if Y is specified as a kwarg
                 try:
-                    if self.ylabel is None and hasattr(self.X, 'long_name') and "atitude" not in self.Y.long_name:
+                    if self.ylabel is None and hasattr(
+                            self.X,
+                            'long_name') and "atitude" not in self.Y.long_name:
                         self.ylabel = self.Y.long_name
                 except:
                     pass
@@ -957,7 +1003,9 @@ class NCL_Plot(ABC):
                 # If coordinate is first label with multiple values, set y label
                 if (coordinates[keys[i - 1]].size > 1) and first:
                     try:
-                        if self.ylabel is None and hasattr(self.X, 'long_name') and "atitude" not in self.Y.long_name:
+                        if self.ylabel is None and hasattr(
+                                self.X, 'long_name'
+                        ) and "atitude" not in self.Y.long_name:
                             self.ylabel = coordinates[keys[i - 1]].long_name
                     except:
                         pass
@@ -966,7 +1014,9 @@ class NCL_Plot(ABC):
                         # If coordinate is second label with multiple values, set x label
                         if (coordinates[keys[i]].size > 1) and first:
                             try:
-                                if self.xlabel is None and hasattr(self.X, 'long_name') and "ongitude" not in self.X.long_name:
+                                if self.xlabel is None and hasattr(
+                                        self.X, 'long_name'
+                                ) and "ongitude" not in self.X.long_name:
                                     self.xlabel = coordinates[keys[i]].long_name
                             except:
                                 pass
@@ -978,10 +1028,11 @@ class NCL_Plot(ABC):
 
         # Decrease default font size if necessary and set other font sizes based on main_title_fontsize
         if self.userset_main_title_fontsize is None and self.main_title is not None:
-            while (
-                len(wrap(text=self.main_title, width=round(self.w/self.main_title_fontsize*100))) > 1
-                and self.main_title_fontsize > 12):
-                self.main_title_fontsize -=1
+            while (len(
+                    wrap(text=self.main_title,
+                         width=round(self.w / self.main_title_fontsize * 100)))
+                   > 1 and self.main_title_fontsize > 12):
+                self.main_title_fontsize -= 1
             if self.userset_left_title_fontsize is None:
                 self.left_title_fontsize = self.main_title_fontsize - 2
             if self.userset_right_title_fontsize is None:
@@ -989,8 +1040,7 @@ class NCL_Plot(ABC):
             if self.userset_label_font_size is None:
                 self.label_font_size = self.main_title_fontsize - 2
             if self.userset_tick_label_fontsize is None:
-                self.tick_label_fontsize = self.main_title_fontsize -2
-
+                self.tick_label_fontsize = self.main_title_fontsize - 2
 
         # Add titles with appropriate font sizes
         set_titles_and_labels(self.ax,
@@ -1005,9 +1055,7 @@ class NCL_Plot(ABC):
                               labelfontsize=self.label_font_size)
 
     def show(self):
-        ''' Display the plot.
-
-        '''
+        """Display the plot."""
         # Try to show plot with tight_layout
         try:
             plt.tight_layout()
@@ -1017,8 +1065,7 @@ class NCL_Plot(ABC):
         plt.show()
 
     def savefig(self, filepath: str):
-        '''Save figure
-        '''
+        """Save figure."""
         # try to prevent label cutoff
         try:
             plt.tight_layout()
@@ -1028,6 +1075,5 @@ class NCL_Plot(ABC):
         plt.savefig(filepath)
 
     def get_mpl_obj(self):
-        ''' Get matplotlib object.
-        '''
+        """Get matplotlib object."""
         return self.fig
