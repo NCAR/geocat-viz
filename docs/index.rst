@@ -19,7 +19,8 @@ plotting packages.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   ./installation
 
 
 
