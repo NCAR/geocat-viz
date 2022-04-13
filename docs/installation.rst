@@ -49,7 +49,7 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 1.  Make sure your conda is up to date by running this command from the
     terminal::
 
-    conda update conda
+        conda update conda
 
 2.  Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
 
