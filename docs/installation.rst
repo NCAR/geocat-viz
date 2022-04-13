@@ -66,7 +66,7 @@ It is important to keep your version of :code:`geocat-viz` up to date. This can 
 
 1.  Make sure your Conda is up to date by running this command from the terminal::
 
-    conda update conda
+        conda update conda
 
 2.  Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
 
