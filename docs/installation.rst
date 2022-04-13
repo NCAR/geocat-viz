@@ -70,7 +70,7 @@ It is important to keep your version of :code:`geocat-viz` up to date. This can 
 
 2.  Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
 
-    conda activate geocat
+        conda activate geocat
 
 3. Update :code:`geocat-viz`::
 
