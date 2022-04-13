@@ -74,7 +74,7 @@ It is important to keep your version of :code:`geocat-viz` up to date. This can 
 
 3. Update :code:`geocat-viz`::
 
-    conda update geocat-viz
+        conda update geocat-viz
 
 
 Installing GeoCAT-viz via PyPi
