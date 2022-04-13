@@ -53,7 +53,7 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 
 2.  Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
 
-    conda activate geocat
+        conda activate geocat
 
 3. Install geocat-viz::
 
