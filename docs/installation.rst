@@ -46,12 +46,11 @@ Installing GeoCAT-viz in a Pre-existing Conda Environment
 
 If you started a project and later decided to use GeoCAT-viz, you will need to install it in your pre-existing environment.
 
-1.  Make sure your conda is up to date by running this command from the
-    terminal::
+1. Make sure your conda is up to date by running this command from the terminal::
 
     conda update conda
 
-2.  Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
+2. Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
 
     conda activate geocat
 
@@ -64,11 +63,11 @@ Updating GeoCAT-viz via Conda
 
 It is important to keep your version of :code:`geocat-viz` up to date. This can be done as follows:
 
-1.  Make sure your Conda is up to date by running this command from the terminal::
+1. Make sure your Conda is up to date by running this command from the terminal::
 
     conda update conda
 
-2.  Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
+2. Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
 
     conda activate geocat
 
