@@ -48,15 +48,15 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 
 1. Make sure your conda is up to date by running this command from the terminal::
 
-    conda update conda
+        conda update conda
 
 2. Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
 
-    conda activate geocat
+        conda activate geocat
 
 3. Install geocat-viz::
 
-    conda install -c ncar -c conda-forge geocat-viz
+        conda install -c ncar -c conda-forge geocat-viz
 
 Updating GeoCAT-viz via Conda
 -------------------------------
@@ -65,15 +65,15 @@ It is important to keep your version of :code:`geocat-viz` up to date. This can 
 
 1. Make sure your Conda is up to date by running this command from the terminal::
 
-    conda update conda
+        conda update conda
 
 2. Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
 
-    conda activate geocat
+        conda activate geocat
 
 3. Update :code:`geocat-viz`::
 
-    conda update geocat-viz
+        conda update geocat-viz
 
 
 Installing GeoCAT-viz via PyPi
