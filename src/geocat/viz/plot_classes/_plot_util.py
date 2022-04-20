@@ -913,9 +913,6 @@ class NCL_Plot(ABC):
         right_title_fontsize: :obj:`int`
             Font size for top right subtitle. Default 18.
 
-        label_fontsize: :obj:`int`
-            Font size of x and y axis ticks. Default 16.
-
         xlabel: :obj:`str`
             Label for the x axis.
 

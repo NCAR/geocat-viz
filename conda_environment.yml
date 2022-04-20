@@ -10,8 +10,6 @@ dependencies:
   - sphinx
   - pip
   - cmaps
-  - geocat-datafiles
-  - geocat-comp
   - numpy
   - xarray
   - metpy
