@@ -1,11 +1,6 @@
 import xarray as xr
-import numpy as np
-import cartopy.crs as ccrs
-from matplotlib.ticker import ScalarFormatter
-import matplotlib.pyplot as plt
 
 import geocat.datafiles as gdf
-from geocat.viz import cmaps as gvcmaps
 from geocat.viz import util as gvutil
 from geocat.comp import eofunc_eofs, eofunc_pcs, month_to_season
 from contourf import *

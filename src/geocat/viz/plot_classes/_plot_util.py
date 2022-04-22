@@ -407,7 +407,7 @@ class NCL_Plot(ABC):
                                                  is not True):
             if (cb_orientation == "horizontal") or (cb_orientation is None):
                 height_list[-1] = 0.1
-            elif (cb_orientation == "vertical"):
+            elif cb_orientation == "vertical":
                 width_list[-1] = 0.1
 
         return {'height_ratios': height_list, 'width_ratios': width_list}
@@ -509,7 +509,7 @@ class NCL_Plot(ABC):
         if self.tick_label_fontsize is None:
             self.tick_label_fontsize = tick_label_fontsize
 
-        add_major_minor_ticks(ax, labelsize=self.tick_label_fontsize)
+        add_major_minor_ticks(ax, labelsize=str(self.tick_label_fontsize))
 
         # if pressure height, remove right hand ticks on original axis
         if self.type == "press_height":
