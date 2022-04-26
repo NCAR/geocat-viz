@@ -20,7 +20,7 @@ setup(
     version=version(),
     maintainer='GeoCAT',
     maintainer_email='geocat@ucar.edu',
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     install_requires=requirements,
     url='https://github.com/NCAR/geocat-viz',
     classifiers=[
