@@ -34,15 +34,13 @@ setup(
     ],
     namespace_packages=['geocat'],
     packages=[
-        'geocat', 'geocat.viz', 'geocat.viz.contourf', 'geocat.viz.taylor',
-        'geocat.viz.util'
+        'geocat', 'geocat.viz', 'geocat.viz.plot_classes', 'geocat.viz.util'
     ],
     package_dir={
         '': 'src',
         'geocat': 'src/geocat',
         'geocat.viz': 'src/geocat/viz',
-        'geocat.viz.contourf': 'src/geocat/viz/contourf',
-        'geocat.viz.taylor': 'src/geocat/viz/taylor',
+        'geocat.viz.plot_classes': 'src/geocat/viz/plot_classes',
         'geocat.viz.util': 'src/geocat/viz/util',
     },
     include_package_data=True,
