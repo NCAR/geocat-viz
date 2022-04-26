@@ -5,3 +5,6 @@ __pycache__/
 
 # Sphinx documentation
 docs/_build/
+
+# python builds
+*__pycache__/

@@ -34,7 +34,7 @@ author = u'GeoCAT'
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx'
-    ]
+]
 
 intersphinx_mapping = {
     'python': ('http://docs.python.org/3/', None),
@@ -43,16 +43,14 @@ intersphinx_mapping = {
     'xarray': ('http://xarray.pydata.org/en/stable/', None),
     'matplotlib': ('https://matplotlib.org/stable/', None),
     'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None)
-    }
+}
 
 napoleon_use_admonition_for_examples = True
 napoleon_include_special_with_doc = True
 
 autosummary_generate = True
 
-autodoc_default_options = {
-    'exclude-members': '__init__'
-}
+autodoc_default_options = {'exclude-members': '__init__'}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -63,12 +61,14 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'index'
 
+
 # The version info for the project being documented
 def read_version():
     for line in open('../meta.yaml').readlines():
         index = line.find('set version')
         if index > -1:
             return line[index + 15:].replace('\" %}', '').strip()
+
 
 # The short X.Y version.
 version = read_version()
@@ -111,6 +111,7 @@ html_logo = '_static/images/nsf.png'
 htmlhelp_basename = 'geocat-vizdoc'
 
 autodoc_typehints = 'none'
+
 
 # Allow for changes to be made to the css in the theme_overrides file
 def setup(app):

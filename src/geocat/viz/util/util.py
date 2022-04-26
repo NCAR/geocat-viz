@@ -394,7 +394,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
     `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=set_titles_and_labels>`_
@@ -469,7 +469,7 @@ def set_axes_limits_and_ticks(
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
     `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=set_axes_limits_and_ticks>`_
@@ -528,7 +528,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
     `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_dev_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Panels/NCL_dev_2.html?highlight=truncate_colormap>`_
@@ -567,7 +567,7 @@ def xr_add_cyclic_longitudes(da: xarray.DataArray, coord: str):
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
     `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_lb_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_3.html?highlight=xr_add_cyclic_longitudes>`_
@@ -661,7 +661,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the 
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
     `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_conOncon_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_5.html?highlight=set_map_boundary>`_
@@ -860,7 +860,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
 
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
-    
+
 
     Parameters
     ----------

@@ -3,7 +3,7 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
-   :members:           
+   :members:
    :exclude-members: __init__
 
    {% block methods %}
