@@ -20,14 +20,13 @@ setup(
     version=version(),
     maintainer='GeoCAT',
     maintainer_email='geocat@ucar.edu',
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     install_requires=requirements,
     url='https://github.com/NCAR/geocat-viz',
     classifiers=[
         'Intended Audience :: Science/Research',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -35,13 +34,13 @@ setup(
     ],
     namespace_packages=['geocat'],
     packages=[
-        'geocat', 'geocat.viz', 'geocat.viz.plotclasses', 'geocat.viz.util'
+        'geocat', 'geocat.viz', 'geocat.viz.plot_classes', 'geocat.viz.util'
     ],
     package_dir={
         '': 'src',
         'geocat': 'src/geocat',
         'geocat.viz': 'src/geocat/viz',
-        'geocat.viz.plotclasses': 'src/geocat/viz/plot_classes',
+        'geocat.viz.plot_classes': 'src/geocat/viz/plot_classes',
         'geocat.viz.util': 'src/geocat/viz/util',
     },
     include_package_data=True,
