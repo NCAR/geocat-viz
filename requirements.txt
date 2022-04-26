@@ -1,9 +1,9 @@
-matplotlib~=3.5.1
-xarray~=0.20.1
-numpy>=1.20.2
-cartopy~=0.20.2
-cmaps~=1.0.5
-sphinx_rtd_theme~=0.5.2
-setuptools~=60.6.0
+matplotlib
+xarray
+numpy
+cartopy
+cmaps
+sphinx_rtd_theme
+setuptools
 scikit-learn
-metpy~=1.2.0
+metpy
