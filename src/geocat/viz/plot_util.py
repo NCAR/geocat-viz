@@ -11,9 +11,9 @@ from textwrap import wrap
 from metpy.calc import pressure_to_height_std
 from abc import ABC, abstractmethod
 
-from geocat.viz.util import set_titles_and_labels
-from geocat.viz.util import add_major_minor_ticks
-from geocat.viz.util import set_axes_limits_and_ticks
+from .util import set_titles_and_labels
+from .util import add_major_minor_ticks
+from .util import set_axes_limits_and_ticks
 
 
 class NCL_Plot(ABC):

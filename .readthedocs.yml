@@ -5,8 +5,12 @@
 # Required
 version: 2
 
+build:
+  os: "ubuntu-20.04"
+  tools:
+    python: "mambaforge-4.10"
+
 python:
-   version: 3.8
    install:
       - method: pip
         path: .
@@ -16,4 +20,4 @@ sphinx:
   configuration: docs/conf.py
 
 conda:
-  environment: conda_environment.yml
+  environment: docs/conda_environment.yml
