@@ -45,7 +45,8 @@ test:
   imports:
     - geocat
     - geocat.viz
-    - geocat.viz.util
+    # - geocat.viz.plot_classes
+    # - geocat.viz.util
   commands:
     - pip check
   source_files:

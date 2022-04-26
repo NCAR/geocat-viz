@@ -31,18 +31,19 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Scientific/Engineering',
     ],
     namespace_packages=['geocat'],
     packages=[
-        'geocat', 'geocat.viz', 'geocat.viz.plot_classes', 'geocat.viz.util'
+        'geocat', 'geocat.viz', # 'geocat.viz.plot_classes', 'geocat.viz.util',
     ],
     package_dir={
         '': 'src',
         'geocat': 'src/geocat',
         'geocat.viz': 'src/geocat/viz',
-        'geocat.viz.plot_classes': 'src/geocat/viz/plot_classes',
-        'geocat.viz.util': 'src/geocat/viz/util',
+        # 'geocat.viz.plot_classes': 'src/geocat/viz/plot_classes',
+        # 'geocat.viz.util': 'src/geocat/viz/util',
     },
     include_package_data=True,
     project_urls={
