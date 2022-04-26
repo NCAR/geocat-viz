@@ -1,2 +1,2 @@
-from . import plot_classes
 from . import util
+from . import plot_classes
