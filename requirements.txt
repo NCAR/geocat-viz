@@ -3,7 +3,6 @@ xarray
 numpy
 cartopy
 cmaps
-sphinx_rtd_theme
 setuptools
 scikit-learn
 metpy
