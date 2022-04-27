@@ -13,6 +13,8 @@
 import os
 import sys
 
+os.path.abspath
+
 # -- Project information -----------------------------------------------------
 
 project = 'GeoCAT-viz'
