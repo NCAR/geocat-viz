@@ -1,5 +1,3 @@
-.. currentmodule:: geocat.viz
-
 Internal API
 ============
 
