@@ -9,6 +9,7 @@ GeoCAT-viz Plotting Routines
 
 .. autosummary::
    :toctree: ./generated/
+   :recursive:
 
     geocat.viz.taylor.TaylorDiagram
 
