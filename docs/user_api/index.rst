@@ -8,7 +8,6 @@ GeoCAT-viz Plotting Routines
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. autosummary::
-   :nosignatures::
    :toctree: ./generated/
 
    .. autoclass:: geocat.viz.taylor.TaylorDiagram
