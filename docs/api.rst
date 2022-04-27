@@ -7,4 +7,4 @@ API Reference
 
    user_api/index.rst
 
-..   internal_api/index.rst
+   internal_api/index.rst

@@ -14,6 +14,7 @@ GeoCAT-viz Plotting Routines
 
    .. autoclass:: geocat.viz.taylor.TaylorDiagram
 
+   .. autoclass:: geocat.viz.contourf.Contour
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
