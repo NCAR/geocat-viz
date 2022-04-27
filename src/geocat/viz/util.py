@@ -878,7 +878,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
 
-    clabel:_locations :class:`list`
+    clabel_locations: :class:`list`
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contours with regular field variable values should be plotted.
 
