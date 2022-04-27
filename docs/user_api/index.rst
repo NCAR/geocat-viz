@@ -10,9 +10,9 @@ GeoCAT-viz Plotting Routines
 .. autosummary::
    :toctree: ./generated/
 
-   .. autoclass:: geocat.viz.taylor.TaylorDiagram
+    geocat.viz.taylor.TaylorDiagram
 
-   .. autoclass:: geocat.viz.contourf.Contour
+    geocat.viz.contourf.Contour
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
