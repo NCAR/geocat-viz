@@ -13,8 +13,6 @@
 import os
 import sys
 
-import geocat.viz
-
 # -- Project information -----------------------------------------------------
 
 project = 'GeoCAT-viz'
