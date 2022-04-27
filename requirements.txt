@@ -1,8 +1,8 @@
 matplotlib
 xarray
-numpy>=1.20.2
+numpy
 cartopy
 cmaps
-sphinx_rtd_theme
+setuptools
 scikit-learn
 metpy

@@ -3,7 +3,7 @@
 import numpy as np
 import cartopy.crs as ccrs
 
-from _plot_util import NCL_Plot
+from src.geocat.viz.plot_util import NCL_Plot
 
 
 class Contour(NCL_Plot):
