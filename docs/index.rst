@@ -20,8 +20,7 @@ plotting packages.
 .. toctree::
    :maxdepth: 2
 
-   ./installation
-
+    
    ./installation
    ./api
    ./examples
