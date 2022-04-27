@@ -31,7 +31,7 @@ class Contour(NCL_Plot):
     contour_label_box: :obj:`bool`
         Whether to draw a box stating contour levels in right hand corner. Default False unless plot has no filled contours and has a projection.
 
-    contour_labels :obj:`list` or :class:`numpy.ndarray`
+    contour_labels: :obj:`list` or :class:`numpy.ndarray`
         List or array of labels to use for contour line labels.
 
     draw_contour_labels: :obj:`bool`
