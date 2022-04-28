@@ -27,11 +27,14 @@ jobs:
         git clone https://github.com/NCAR/GeoCAT-examples.git
 
     - name: Create geocat-examples environment
-      working-directory: ./GeoCAT-examples/
-      run: |
-        - mamba env create -f conda_environment.yml
+      uses: mamba-org/provision-with-micromamba@main
+      with:
+        micromamba-version: "latest"
+        environment-name: geocat-examples
+        environment-file: ./GeoCAT-examples/conda_environment.yml
 
     - name: make html
+      working-directory: ./GeoCAT-examples/
       run: |
         cd GeoCAT-examples/docs
         conda info
