@@ -33,6 +33,10 @@ jobs:
         environment-name: geocat-examples
         environment-file: ./GeoCAT-examples/conda_environment.yml
 
+    - name: Install geocat-viz
+      run: |
+        python -m pip install --no-deps --ignore-installed -vv .
+
     - name: make html
       working-directory: ./GeoCAT-examples/docs
       run: |
