@@ -159,7 +159,6 @@ def add_right_hand_axis(ax,
         axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             The created right-hand axis
     """
-    from geocat.viz import util as gvutil
     import matplotlib.ticker as tic
 
     axRHS = ax.twinx()
@@ -167,7 +166,7 @@ def add_right_hand_axis(ax,
         axRHS.set_ylabel(ylabel=label,
                          labelpad=labelpad,
                          fontsize=axislabelsize)
-    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
+    set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
     axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
     if y_minor_per_major is not None:
         axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
@@ -848,7 +847,7 @@ def findLocalExtrema(da: xarray.DataArray,
 
 
 def plotCLabels(ax: matplotlib.axes.Axes,
-                contours: matplotlib.contour.QuadContourSet,
+                contours,
                 transform: cartopy.crs.CRS,
                 proj: cartopy.crs.CRS,
                 clabel_locations: list = [],
