@@ -34,9 +34,8 @@ jobs:
         environment-file: ./GeoCAT-examples/conda_environment.yml
 
     - name: make html
-      working-directory: ./GeoCAT-examples/
+      working-directory: ./GeoCAT-examples/docs
       run: |
-        cd GeoCAT-examples/docs
         conda info
         conda list
         make html
