@@ -42,7 +42,7 @@ class Contour(NCL_Plot):
 
     Note
     ----
-    All other keyword args will be passed to NCL_Plot. To see `NCL_Plot <https://geocat-viz.readthedocs.io/en/latest/internal_api/generated/geocat.viz.NCL_Plot.html>`.
+    All other keyword args will be passed to NCL_Plot. To see `NCL_Plot <https://geocat-viz.readthedocs.io/en/latest/internal_api/generated/geocat.viz.NCL_Plot.html>`_.
 
     Return
     ------
