@@ -21,6 +21,10 @@ plotting packages.
    :maxdepth: 2
 
    ./installation
+   ./api
+   ./examples
+   ./citation
+   ./support
 
 
 

@@ -31,7 +31,7 @@ class Contour(NCL_Plot):
     contour_label_box: :obj:`bool`
         Whether to draw a box stating contour levels in right hand corner. Default False unless plot has no filled contours and has a projection.
 
-    contour_labels :obj:`list` or :class:`numpy.ndarray`
+    contour_labels: :obj:`list` or :class:`numpy.ndarray`
         List or array of labels to use for contour line labels.
 
     draw_contour_labels: :obj:`bool`
@@ -42,8 +42,7 @@ class Contour(NCL_Plot):
 
     Note
     ----
-    All other keyword args will be passed to NCL_Plot. To see its list of
-    keyword args, see its documentation page.
+    All other keyword args will be passed to NCL_Plot. To see `NCL_Plot <https://geocat-viz.readthedocs.io/en/latest/internal_api/generated/geocat.viz.NCL_Plot.html>`_.
 
     Return
     ------

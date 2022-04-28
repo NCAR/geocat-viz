@@ -44,5 +44,3 @@ following contribution guidelines:
 use of the pre-defined parent classes if appropriate
 
 3. Add the function to the namespace by adding it to `$GEOCAT_VIZ/src/geocat/viz/__init__.py`
-
-4. Add tests if appropriate in `$GEOCAT_VIZ/test/`
