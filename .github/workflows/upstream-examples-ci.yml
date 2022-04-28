@@ -1,0 +1,40 @@
+name: Upstream Examples CI
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-run:
+    name: Build GeoCAT-examples (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ "ubuntu-latest", "macos-latest" ]
+        python-version: [ "3.7", "3.9" ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install GeoCAT-examples
+      run: |
+        git clone https://github.com/NCAR/GeoCAT-examples.git
+
+    - name: Create geocat-examples environment
+      uses: mamba-org/provision-with-micromamba@main
+      working-directory: ./GeoCAT-examples/
+      run: |
+        - mamba env create -f conda_environment.yml
+
+    - name: make html
+      run: |
+        cd GeoCAT-examples/docs
+        conda info
+        conda list
+        make html
