@@ -11,4 +11,4 @@ GeoCAT-viz Plotting Internal Routines
    :toctree: ./generated/
    :recursive:
 
-    geocat.viz.plot_util.NCL_Plot
+    geocat.viz.NCL_Plot
