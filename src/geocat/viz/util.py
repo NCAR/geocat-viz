@@ -725,9 +725,9 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
 
 def findLocalExtrema(da: xarray.DataArray,
-                     highval: int = 0,
-                     lowval: int = 1000,
-                     etype: str = 'Low',
+                     highVal: int = 0,
+                     lowVal: int = 1000,
+                     eType: str = 'Low',
                      eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
@@ -739,18 +739,18 @@ def findLocalExtrema(da: xarray.DataArray,
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-    highval: :class:`int`
+    highVal: :class:`int`
         Data value that the local high must be greater than to qualify as a "local high" location.
-        Default highval is 0.
+        Default highVal is 0.
 
-    lowval: :class:`int`
+    lowVal: :class:`int`
         Data value that the local low must be less than to qualify as a "local low" location.
-        Default lowval is 1000.
+        Default lowVal is 1000.
 
-    etype: :class:`str`
+    eType: :class:`str`
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
-        Default etype is 'Low'.
+        Default eType is 'Low'.
 
     eps: :class:`float`
             Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
@@ -787,19 +787,19 @@ def findLocalExtrema(da: xarray.DataArray,
     # Find all zeroes that also qualify as low or high values
     extremacoords = []
 
-    if etype == 'Low':
-        coordlist = np.argwhere(da.data < lowval)
+    if eType == 'Low':
+        coordlist = np.argwhere(da.data < lowVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
-    if etype == 'High':
-        coordlist = np.argwhere(da.data > highval)
+    if eType == 'High':
+        coordlist = np.argwhere(da.data > highVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
 
     if extremacoords == []:
-        if etype == 'Low':
+        if eType == 'Low':
             warnings.warn(
                 'No local extrema with data value less than given lowval')
             return []
-        if etype == 'High':
+        if eType == 'High':
             warnings.warn(
                 'No local extrema with data value greater than given highval')
             return []
@@ -834,9 +834,9 @@ def findLocalExtrema(da: xarray.DataArray,
             datavals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
-        if etype == 'Low':
+        if eType == 'Low':
             index = np.argmin(np.array(datavals))
-        if etype == 'High':
+        if eType == 'High':
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
@@ -1046,7 +1046,7 @@ def plotELabels(da: xarray.DataArray,
 
 
 def set_vector_density(data: xarray.DataArray,
-                       min_distance: int = 0) -> xarray.DataArray:
+                       minDistance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
@@ -1054,7 +1054,7 @@ def set_vector_density(data: xarray.DataArray,
     data: :class:`xarray.DataArray`
         Data array that contains the vector plot latitude/longitude data.
 
-    min_distance: :class:`int`
+    minDistance: :class:`int`
         Value in degrees that determines the distance between the vectors.
 
     Returns
@@ -1071,8 +1071,8 @@ def set_vector_density(data: xarray.DataArray,
     import math
     import warnings
 
-    if min_distance <= 0:
-        raise Exception("min_distance cannot be negative or zero.")
+    if minDistance <= 0:
+        raise Exception("minDistance cannot be negative or zero.")
     else:
         lat_every = 1
         lon_every = 1
@@ -1088,13 +1088,13 @@ def set_vector_density(data: xarray.DataArray,
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        if diagDifference >= min_distance and latdifference >= min_distance and londifference >= min_distance:
+        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +
-                          str(min_distance))
+                          str(minDistance))
 
-        # While the difference between two vectors is smaller than min_distance, increment the value that
+        # While the difference between two vectors is smaller than minDistance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < min_distance or latdifference < min_distance or londifference < min_distance:
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
             # Get distance between points in latitude (y axis)
             latdifference = float(lat[lat_every] - lat[0])
 
