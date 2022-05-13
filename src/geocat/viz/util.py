@@ -731,7 +731,7 @@ def findLocalExtrema(da: xarray.DataArray,
                      eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
-    than highVal, and to classify as a local low, the data point must be less
+    than highval, and to classify as a local low, the data point must be less
     than lowVal.
 
     Parameters
@@ -741,16 +741,16 @@ def findLocalExtrema(da: xarray.DataArray,
 
     highval: :class:`int`
         Data value that the local high must be greater than to qualify as a "local high" location.
-        Default highVal is 0.
+        Default highval is 0.
 
     lowval: :class:`int`
         Data value that the local low must be less than to qualify as a "local low" location.
-        Default lowVal is 1000.
+        Default lowval is 1000.
 
     etype: :class:`str`
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
-        Default eType is 'Low'.
+        Default etype is 'Low'.
 
     eps: :class:`float`
             Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
