@@ -725,9 +725,9 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
 
 def findLocalExtrema(da: xarray.DataArray,
-                     highVal: int = 0,
-                     lowVal: int = 1000,
-                     eType: str = 'Low',
+                     highval: int = 0,
+                     lowval: int = 1000,
+                     etype: str = 'Low',
                      eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
@@ -739,15 +739,15 @@ def findLocalExtrema(da: xarray.DataArray,
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-    highVal: :class:`int`
+    highval: :class:`int`
         Data value that the local high must be greater than to qualify as a "local high" location.
         Default highVal is 0.
 
-    lowVal: :class:`int`
+    lowval: :class:`int`
         Data value that the local low must be less than to qualify as a "local low" location.
         Default lowVal is 1000.
 
-    eType: :class:`str`
+    etype: :class:`str`
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
         Default eType is 'Low'.
@@ -1046,7 +1046,7 @@ def plotELabels(da: xarray.DataArray,
 
 
 def set_vector_density(data: xarray.DataArray,
-                       minDistance: int = 0) -> xarray.DataArray:
+                       min_distance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
@@ -1054,7 +1054,7 @@ def set_vector_density(data: xarray.DataArray,
     data: :class:`xarray.DataArray`
         Data array that contains the vector plot latitude/longitude data.
 
-    minDistance: :class:`int`
+    min_distance: :class:`int`
         Value in degrees that determines the distance between the vectors.
 
     Returns
@@ -1088,13 +1088,13 @@ def set_vector_density(data: xarray.DataArray,
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
+        if diagDifference >= min_distance and latdifference >= min_distance and londifference >= min_distance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +
-                          str(minDistance))
+                          str(min_distance))
 
         # While the difference between two vectors is smaller than min_distance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
+        while diagDifference < min_distance or latdifference < min_distance or londifference < min_distance:
             # Get distance between points in latitude (y axis)
             latdifference = float(lat[lat_every] - lat[0])
 
