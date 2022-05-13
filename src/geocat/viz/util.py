@@ -834,9 +834,9 @@ def findLocalExtrema(da: xarray.DataArray,
             datavals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
-        if etype == 'Low':
+        if eType == 'Low':
             index = np.argmin(np.array(datavals))
-        if etype == 'High':
+        if eType == 'High':
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
