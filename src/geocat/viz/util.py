@@ -725,9 +725,9 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
 
 
 def findLocalExtrema(da: xarray.DataArray,
-                     highval: int = 0,
-                     lowval: int = 1000,
-                     etype: str = 'Low',
+                     highVal: int = 0,
+                     lowVal: int = 1000,
+                     eType: str = 'Low',
                      eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
@@ -739,18 +739,18 @@ def findLocalExtrema(da: xarray.DataArray,
     da: :class:`xarray.DataArray`
         Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-    highval: :class:`int`
+    highVal: :class:`int`
         Data value that the local high must be greater than to qualify as a "local high" location.
-        Default highval is 0.
+        Default highVal is 0.
 
-    lowval: :class:`int`
+    lowVal: :class:`int`
         Data value that the local low must be less than to qualify as a "local low" location.
-        Default lowval is 1000.
+        Default lowVal is 1000.
 
-    etype: :class:`str`
+    eType: :class:`str`
         'Low' or 'High'
         Determines which extrema are being found- minimum or maximum, respectively.
-        Default etype is 'Low'.
+        Default eType is 'Low'.
 
     eps: :class:`float`
             Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
@@ -787,19 +787,19 @@ def findLocalExtrema(da: xarray.DataArray,
     # Find all zeroes that also qualify as low or high values
     extremacoords = []
 
-    if etype == 'Low':
-        coordlist = np.argwhere(da.data < lowval)
+    if eType == 'Low':
+        coordlist = np.argwhere(da.data < lowVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
-    if etype == 'High':
-        coordlist = np.argwhere(da.data > highval)
+    if eType == 'High':
+        coordlist = np.argwhere(da.data > highVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
 
     if extremacoords == []:
-        if etype == 'Low':
+        if eType == 'Low':
             warnings.warn(
                 'No local extrema with data value less than given lowval')
             return []
-        if etype == 'High':
+        if eType == 'High':
             warnings.warn(
                 'No local extrema with data value greater than given highval')
             return []
