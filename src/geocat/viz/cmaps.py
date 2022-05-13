@@ -2,4 +2,9 @@
 import warnings
 import cmaps
 
-warnings.warn("geocat.viz.cmaps is deprecated, use cmaps instead", DeprecationWarning)
+# make python show deprecation warnings
+warnings.simplefilter('always', DeprecationWarning)
+
+# deprecation warning for old-style cmaps
+warnings.warn("geocat.viz.cmaps is deprecated, use cmaps instead",
+              DeprecationWarning)
