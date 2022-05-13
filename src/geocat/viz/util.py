@@ -1046,7 +1046,7 @@ def plotELabels(da: xarray.DataArray,
 
 
 def set_vector_density(data: xarray.DataArray,
-                       min_distance: int = 0) -> xarray.DataArray:
+                       minDistance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
@@ -1054,7 +1054,7 @@ def set_vector_density(data: xarray.DataArray,
     data: :class:`xarray.DataArray`
         Data array that contains the vector plot latitude/longitude data.
 
-    min_distance: :class:`int`
+    minDistance: :class:`int`
         Value in degrees that determines the distance between the vectors.
 
     Returns
@@ -1071,8 +1071,8 @@ def set_vector_density(data: xarray.DataArray,
     import math
     import warnings
 
-    if min_distance <= 0:
-        raise Exception("min_distance cannot be negative or zero.")
+    if minDistance <= 0:
+        raise Exception("minDistance cannot be negative or zero.")
     else:
         lat_every = 1
         lon_every = 1
@@ -1088,13 +1088,13 @@ def set_vector_density(data: xarray.DataArray,
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        if diagDifference >= min_distance and latdifference >= min_distance and londifference >= min_distance:
+        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +
-                          str(min_distance))
+                          str(minDistance))
 
-        # While the difference between two vectors is smaller than min_distance, increment the value that
+        # While the difference between two vectors is smaller than minDistance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < min_distance or latdifference < min_distance or londifference < min_distance:
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
             # Get distance between points in latitude (y axis)
             latdifference = float(lat[lat_every] - lat[0])
 
