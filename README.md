@@ -1,3 +1,4 @@
+
 # GeoCAT-viz
 
 The GeoCAT-viz repo contains tools to help plot data, including convenience and plotting functions that are used
@@ -16,3 +17,8 @@ plotting packages. GeoCAT-viz functionality is used by
 # Installation instructions
 
 Please see our documentation for [installation instructions](https://github.com/NCAR/geocat-viz/blob/main/INSTALLATION.md).
+
+# Citing GeoCAT-viz
+
+If you use this software, please cite it as described at the [GeoCAT-viz - Citation](
+https://geocat-viz.readthedocs.io/en/latest/citation.html) page.
