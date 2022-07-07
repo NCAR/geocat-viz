@@ -277,7 +277,7 @@ class NCL_Plot(ABC):
             'cmap': 'plasma',
             'line_color': "black",
             'line_width': 0.4,
-            'fig': plt.figure(figsize=(8, 8)),
+            'fig': plt.figure(figsize=(10, 8)),
             'w': 8,
             'h': 8,
             'cb_orientation': "horizontal",
@@ -349,7 +349,7 @@ class NCL_Plot(ABC):
         # Set up child class specific kwarg values
         self._class_kwarg_handling(args, kwargs)
 
-    def _set_up_fig(self, w: float = None, h: float = None):
+    def _set_up_fig(self, w: float = None, h: float = None, fig: plt.figure = None):
         """Create figure with subplots, if specified.
 
         Keyword Args
@@ -364,6 +364,7 @@ class NCL_Plot(ABC):
         # If not a subplot, set up figure with specified width and height
         if self.subplot is None:
             self.fig = self.fig #plt.figure(figsize=(w, h))
+            print('here')
 
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
