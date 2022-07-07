@@ -364,7 +364,7 @@ class NCL_Plot(ABC):
         # If not a subplot, set up figure with specified width and height
         if self.subplot is None:
             self.fig = self.fig #plt.figure(figsize=(w, h))
-            print('here')
+            print('here!')
 
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
