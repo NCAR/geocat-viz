@@ -260,7 +260,7 @@ class NCL_Plot(ABC):
         valid_kwargs = {
             'add_colorbar', 'coastline_on', 'cbar', 'cb_draw_edges',
             'cb_orientation', 'cb_pad', 'cb_shrink', 'cb_ticks',
-            'cb_tick_labels', 'cb_tick_label_size', 'cmap', 'fig', 'h',
+            'cb_tick_labels', 'cb_tick_label_size', 'cmap', 'h',
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
@@ -277,7 +277,6 @@ class NCL_Plot(ABC):
             'cmap': 'plasma',
             'line_color': "black",
             'line_width': 0.4,
-            'fig': plt.figure(figsize=(10, 8)),
             'w': 8,
             'h': 8,
             'cb_orientation': "horizontal",
@@ -314,7 +313,7 @@ class NCL_Plot(ABC):
         user_set_kwargs = [
             'coastline_on', 'cb_shrink', 'h', 'label_font_size',
             'left_title_fontsize', 'main_title_fontsize', "overlay",
-            'right_title_fontsize', 'tick_label_fontsize', 'w', 'fig'
+            'right_title_fontsize', 'tick_label_fontsize', 'w'
         ]
 
         # add user_set_kwargs with userset_ in front for user values
@@ -349,7 +348,7 @@ class NCL_Plot(ABC):
         # Set up child class specific kwarg values
         self._class_kwarg_handling(args, kwargs)
 
-    def _set_up_fig(self, w: float = None, h: float = None, fig: plt.figure = None):
+    def _set_up_fig(self, w: float = None, h: float = None):
         """Create figure with subplots, if specified.
 
         Keyword Args
@@ -363,8 +362,7 @@ class NCL_Plot(ABC):
 
         # If not a subplot, set up figure with specified width and height
         if self.subplot is None:
-            self.fig = self.fig #plt.figure(figsize=(w, h))
-            print('here!')
+            self.fig = plt.figure(figsize=(w, h))
 
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
