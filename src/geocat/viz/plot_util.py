@@ -630,8 +630,8 @@ class NCL_Plot(ABC):
                 axRHS.set_ylim(numpy.min(height.values),
                                numpy.max(height.values))
             else:
-                axRHS.set_ylim(numpy.min(self.raxis_ticks),
-                               numpy.max(self.raxis_ticks))
+                axRHS.set_ylim(numpy.min(height.values),
+                               numpy.max(height.values))
                 axRHS.set_yticks(self.raxis_ticks)
 
             if self.label_font_size is not None:
