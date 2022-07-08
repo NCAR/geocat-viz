@@ -264,7 +264,7 @@ class NCL_Plot(ABC):
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
-            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_ylim', 'raxis_scale',
+            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_scale',
             'raxis_tick_label_fontsize', 'raxis_ticks', 'right_title',
             'right_title_fontsize', "set_extent", "subplot",
             'tick_label_fontsize', 'type', 'w', 'X', 'xlabel', 'xlim', "xscale",
