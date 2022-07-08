@@ -260,7 +260,7 @@ class NCL_Plot(ABC):
         valid_kwargs = {
             'add_colorbar', 'coastline_on', 'cbar', 'cb_draw_edges',
             'cb_orientation', 'cb_pad', 'cb_shrink', 'cb_ticks',
-            'cb_tick_labels', 'cb_tick_label_size', 'cmap', 'h',
+            'cb_tick_labels', 'cb_tick_label_size', 'cmap', 'figure', 'h',
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
@@ -362,8 +362,12 @@ class NCL_Plot(ABC):
 
         # If not a subplot, set up figure with specified width and height
         if self.subplot is None:
-            self.fig = plt.figure(figsize=(w, h))
-
+            # If user did not specify a figure, create one
+            if self.figure is None:
+                self.fig = plt.figure(figsize=(w, h))
+            else:
+                self.fig = self.figure
+        
         # If a subplot, set figure and set of axes using plt.subplots and add projection if specified
         else:
             if self.projection is None:
