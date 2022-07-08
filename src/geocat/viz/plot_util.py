@@ -264,7 +264,7 @@ class NCL_Plot(ABC):
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
-            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_scale',
+            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_ylim', 'raxis_scale',
             'raxis_tick_label_fontsize', 'raxis_ticks', 'right_title',
             'right_title_fontsize', "set_extent", "subplot",
             'tick_label_fontsize', 'type', 'w', 'X', 'xlabel', 'xlim', "xscale",
@@ -626,12 +626,13 @@ class NCL_Plot(ABC):
             else:
                 axRHS.set_ylabel(self.raxis_label)
 
-            if self.raxis_ticks is None:
+            if self.raxis_ticks is None and self.raxis:
                 axRHS.set_ylim(numpy.min(height.values),
                                numpy.max(height.values))
             else:
                 axRHS.set_ylim(numpy.min(self.raxis_ticks),
                                numpy.max(self.raxis_ticks))
+                axRHS.set_yticks(self.raxis_ticks)
 
             if self.label_font_size is not None:
                 axRHS.yaxis.label.set_size(self.label_font_size)
