@@ -94,6 +94,9 @@ class NCL_Plot(ABC):
     mappable: :class:`cartopy.mpl.contour.GeoContourSet`
         The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
 
+    minor_per_major: obj: `tuple`
+        Number of minor ticks per major tick (x-axis, y-axis). Default (3, 3).
+
     overlay: :class:`contourf.Contour`
         Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the overlay would be the name of the first plot.
 
@@ -264,9 +267,9 @@ class NCL_Plot(ABC):
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
-            "overlay", 'projection', 'raxis', 'raxis_label', 'raxis_scale',
-            'raxis_tick_label_fontsize', 'raxis_ticks', 'right_title',
-            'right_title_fontsize', "set_extent", "subplot",
+            'minor_per_major', "overlay", 'projection', 'raxis', 'raxis_label', 
+            'raxis_scale', 'raxis_tick_label_fontsize', 'raxis_ticks', 
+            'right_title', 'right_title_fontsize', "set_extent", "subplot",
             'tick_label_fontsize', 'type', 'w', 'X', 'xlabel', 'xlim', "xscale",
             'xticks', 'xtick_labels', 'Y', 'ylabel', 'ylim', "yscale", 'yticks',
             'ytick_labels'
@@ -277,6 +280,7 @@ class NCL_Plot(ABC):
             'cmap': 'plasma',
             'line_color': "black",
             'line_width': 0.4,
+            'minor_per_major': (3, 3),
             'w': 8,
             'h': 8,
             'cb_orientation': "horizontal",
@@ -509,7 +513,10 @@ class NCL_Plot(ABC):
         if self.tick_label_fontsize is None:
             self.tick_label_fontsize = tick_label_fontsize
 
-        add_major_minor_ticks(ax, labelsize=str(self.tick_label_fontsize))
+        add_major_minor_ticks(ax, 
+                              labelsize=str(self.tick_label_fontsize),
+                              x_minor_per_major=self.minor_per_major[0],
+                              y_minor_per_major=self.minor_per_major[1])
 
         # if pressure height, remove right hand ticks on original axis
         if self.type == "press_height":
