@@ -756,7 +756,7 @@ class NCL_Plot(ABC):
     def add_colorbar(self,
                      mappable: cartopy.mpl.contour.GeoContourSet = None,
                      cb_orientation: str = "horizontal",
-                     cb_shrink: float = 0.8,
+                     cb_shrink: float = 0.75,
                      cb_pad: float = 0.075,
                      cb_draw_edges: bool = True,
                      cb_ticks: typing.Union[list, numpy.ndarray] = None,
