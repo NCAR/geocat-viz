@@ -95,7 +95,7 @@ class NCL_Plot(ABC):
         The matplotlib.cm.ScalarMappable object that the colorbar represents. Mandatory when first creating colorbar, but not for subsequent calls.
 
     minor_per_major: obj:`list`
-        Number of minor ticks per major tick [x-axis, y-axis]. Default [3, 3] unless type="press_height".
+        Number of minor ticks per major tick [x-axis, y-axis]. Default [3, 3] unless type="press_height", then default is [3, 1].
 
     overlay: :class:`contourf.Contour`
         Reference figure that the object will be created based on. For example, when overlaying plots or creating subplots, the overlay would be the name of the first plot.
@@ -513,8 +513,9 @@ class NCL_Plot(ABC):
         if self.tick_label_fontsize is None:
             self.tick_label_fontsize = tick_label_fontsize
 
+        # if pressure height, don't add minor ticks to y-axis
         if self.type == 'press_height':
-            self.minor_per_major[1]=1
+            self.minor_per_major[1]=1    
 
         add_major_minor_ticks(ax, 
                               labelsize=str(self.tick_label_fontsize),
