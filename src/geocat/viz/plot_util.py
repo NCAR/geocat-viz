@@ -267,8 +267,8 @@ class NCL_Plot(ABC):
             'individual_cb', 'label_font_size', 'lakes_on', 'land_on',
             'left_title', 'left_title_fontsize', 'line_color', 'line_style',
             'line_width', 'main_title', 'main_title_fontsize', 'mappable',
-            'minor_per_major', "overlay", 'projection', 'raxis', 'raxis_label', 
-            'raxis_scale', 'raxis_tick_label_fontsize', 'raxis_ticks', 
+            'minor_per_major', "overlay", 'projection', 'raxis', 'raxis_label',
+            'raxis_scale', 'raxis_tick_label_fontsize', 'raxis_ticks',
             'right_title', 'right_title_fontsize', "set_extent", "subplot",
             'tick_label_fontsize', 'type', 'w', 'X', 'xlabel', 'xlim', "xscale",
             'xticks', 'xtick_labels', 'Y', 'ylabel', 'ylim', "yscale", 'yticks',
@@ -515,9 +515,9 @@ class NCL_Plot(ABC):
 
         # if pressure height, don't add minor ticks to y-axis
         if self.type == 'press_height':
-            self.minor_per_major[1]=1    
+            self.minor_per_major[1] = 1
 
-        add_major_minor_ticks(ax, 
+        add_major_minor_ticks(ax,
                               labelsize=str(self.tick_label_fontsize),
                               x_minor_per_major=self.minor_per_major[0],
                               y_minor_per_major=self.minor_per_major[1])
