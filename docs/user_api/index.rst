@@ -13,8 +13,6 @@ GeoCAT-viz Plotting Routines
 
     geocat.viz.TaylorDiagram
 
-    geocat.viz.Contour
-
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
