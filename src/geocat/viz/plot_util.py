@@ -517,14 +517,17 @@ class NCL_Plot(ABC):
 
         # Perform same action as add_lat_lon_ticklabels geocat-viz utility function
         if 'on' in self.X.name:
-            self.ax.xaxis.set_major_formatter(LongitudeFormatter(degree_symbol=''))
+            self.ax.xaxis.set_major_formatter(
+                LongitudeFormatter(degree_symbol=''))
 
         if self.type is None and 'at' in self.Y.name:
-            self.ax.yaxis.set_major_formatter(LatitudeFormatter(degree_symbol=''))
+            self.ax.yaxis.set_major_formatter(
+                LatitudeFormatter(degree_symbol=''))
 
         # if x axis is latitude, set as latitude
         if 'at' in self.X.name:
-            self.ax.xaxis.set_major_formatter(LatitudeFormatter(degree_symbol=''))
+            self.ax.xaxis.set_major_formatter(
+                LatitudeFormatter(degree_symbol=''))
 
     def _set_lim_ticks(self, ax: typing.Union[matplotlib.axes.Axes,
                                               cartopy.mpl.geoaxes.GeoAxes]):
