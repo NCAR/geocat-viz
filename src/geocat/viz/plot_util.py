@@ -616,8 +616,7 @@ class NCL_Plot(ABC):
 
             # Set up axis, with allowing for user inputs
             axRHS = ax.twinx()
-            axRHS.set_ylim(numpy.min(height.values),
-                           numpy.max(height.values))    
+            axRHS.set_ylim(numpy.min(height.values), numpy.max(height.values))
             if self.raxis_scale is None:
                 axRHS.set_yscale("linear")
             else:
