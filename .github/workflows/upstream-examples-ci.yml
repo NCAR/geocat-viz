@@ -1,4 +1,4 @@
-name: Upstream Examples CI - experimental
+name: Upstream Examples CI
 on:
   workflow_dispatch:
   push:
