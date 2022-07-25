@@ -25,7 +25,8 @@ jobs:
     - name: Install GeoCAT-examples
       run: |
         git clone https://github.com/NCAR/GeoCAT-examples.git
-        git checkout experimental-features
+        git fetch
+        git switch experimental-features
 
     - name: Create geocat-examples environment
       uses: mamba-org/provision-with-micromamba@main
