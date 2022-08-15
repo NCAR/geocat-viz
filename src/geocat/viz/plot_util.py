@@ -41,7 +41,7 @@ class NCL_Plot(ABC):
         Padding between colorbar and figure. Default 0.11.
 
     cb_shrink: :obj:`float`
-        Percent shrinkage of colorbar. Default 0.75.
+        Percent shrinkage of colorbar. Default 1.0.
 
     cb_tick_labels: :obj:`list` or :class:`numpy.ndarray`
         Labels for colorbar ticks.
@@ -280,7 +280,7 @@ class NCL_Plot(ABC):
             'w': 8,
             'h': 8,
             'cb_orientation': "horizontal",
-            'cb_shrink': 0.75,
+            'cb_shrink': 1.0,
             'cb_pad': 0.075,
             'cb_draw_edges': True,
             'xlim': [-180, 180],
@@ -756,7 +756,7 @@ class NCL_Plot(ABC):
     def add_colorbar(self,
                      mappable: cartopy.mpl.contour.GeoContourSet = None,
                      cb_orientation: str = "horizontal",
-                     cb_shrink: float = 0.8,
+                     cb_shrink: float = 1.0,
                      cb_pad: float = 0.075,
                      cb_draw_edges: bool = True,
                      cb_ticks: typing.Union[list, numpy.ndarray] = None,
@@ -777,7 +777,7 @@ class NCL_Plot(ABC):
             Padding between colorbar and figure. Default 0.11.
 
         cb_shrink: :obj:`float`
-            Percent shrinkage of colorbar. Default 0.75.
+            Percent shrinkage of colorbar. Default 1.0.
 
         cb_tick_labels: :obj:`list` or :class:`numpy.ndarray`
             Labels for colorbar ticks.
@@ -802,7 +802,7 @@ class NCL_Plot(ABC):
         if (self.cb_orientation is None) or (cb_orientation != "horizontal"):
             self.cb_orientation = cb_orientation
 
-        if (self.cb_shrink is None) or (cb_shrink != 0.75):
+        if (self.cb_shrink is None) or (cb_shrink != 1.0):
             self.cb_shrink = cb_shrink
 
         if (self.cb_pad is None) or (cb_pad != 0.075):
@@ -819,9 +819,6 @@ class NCL_Plot(ABC):
 
         if cb_tick_label_size is not None:
             self.cb_tick_label_size = cb_tick_label_size
-
-        if self.userset_cb_shrink is None and self.cb_orientation == 'vertical':
-            self.cb_shrink = 1
 
         # If there is not a mappable, raise error
         if self.mappable is None:
