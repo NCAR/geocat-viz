@@ -1123,6 +1123,7 @@ def get_skewt_vars(p: pint.Quantity, tc: pint.Quantity, tdc: pint.Quantity,
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
+
     Parameters
     ----------
     p : :class:`pint.Quantity`
