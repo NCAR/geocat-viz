@@ -9,7 +9,7 @@ plotting packages. GeoCAT-viz functionality is used by
 
 | **Docs**     |   [![Documentation Status][rtd-badge]][rtd-link]                                                                    |
 | :----------- | :-----------------------------------------------------------------------------------------------------------------: |
-| **Package**  |   [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]                                              |                       
+| **Package**  |   [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]                                              |
 
 # Documentation
 
