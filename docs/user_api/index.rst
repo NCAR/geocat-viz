@@ -11,7 +11,7 @@ GeoCAT-viz Plotting Routines
    :toctree: ./generated/
    :recursive:
 
-    geocat.viz.Taylor
+    geocat.viz.taylor
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
