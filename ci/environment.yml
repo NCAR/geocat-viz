@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - ncar
 dependencies:
-  - python=3
+  - python>=3.8, <3.11
   - cartopy
   - make
   - matplotlib
