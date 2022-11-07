@@ -5,7 +5,7 @@ dependencies:
   - python>=3.8, <3.11
   - cartopy
   - make
-  - matplotlib
+  - matplotlib<3.6
   - sphinx
   - pip
   - cmaps
