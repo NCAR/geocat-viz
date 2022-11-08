@@ -9,9 +9,8 @@ GeoCAT-viz Plotting Routines
 
 .. autosummary::
    :toctree: ./generated/
-   :recursive:
 
-    geocat.viz.TaylorDiagram
+   geocat.viz.TaylorDiagram
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -40,3 +39,5 @@ GeoCAT-viz Utility Functions
    geocat.viz.plotELabels
 
    geocat.viz.set_vector_density
+
+   geocat.viz.util.get_skewt_vars
