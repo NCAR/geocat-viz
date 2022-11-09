@@ -53,6 +53,8 @@ autosummary_generate = True
 
 autodoc_default_options = {'exclude-members': '__init__'}
 
+autodoc_mock_imports = ['pint', 'xarray', 'metpy']
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
