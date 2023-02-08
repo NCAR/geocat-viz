@@ -5,14 +5,14 @@ dependencies:
   - python>=3.8, <3.11
   - cartopy
   - make
-  - matplotlib<3.6
+  - matplotlib
   - sphinx
   - pip
   - cmaps
   - numpy
   - xarray
   - metpy
-  - pint<0.20
+  - pint
   - pip:
       - pre-commit
       - scikit-learn
