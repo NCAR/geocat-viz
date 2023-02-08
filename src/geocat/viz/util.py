@@ -551,7 +551,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
         name=name,
         colors=cmap(np.linspace(minval, maxval, n)),
     )
-    cm.register_cmap(name, new_cmap)
+    cm.register_cmap(name, new_cmap, override_builtin=True)
     return new_cmap
 
 
