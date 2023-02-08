@@ -1,5 +1,5 @@
 {% set name = "geocat-viz" %}
-{% set version = "2022.04.0" %}
+{% set version = "2022.07.0" %}
 
 package:
   name: {{ name }}
@@ -11,7 +11,6 @@ source:
   # git_tag: v{{ version }}   # For building from a specific tag
   # git_rev: april # For building from main branch for debugging purposes
   # git_url: https://github.com/NCAR/{{ name }}.git
-
 build:
   noarch: python
   number: 0
@@ -24,11 +23,11 @@ requirements:
     - setuptools                          # [build_platform != target_platform]
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
   host:
-    - python >=3.8
+    - python >=3.8, <3.11
     - pip
     - setuptools
   run:
-    - python >=3.8
+    - python >=3.8, <3.11
     - cartopy
     - cmaps
     - numpy

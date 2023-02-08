@@ -1,4 +1,12 @@
+import cartopy.mpl.geoaxes
+from itertools import chain
+import matplotlib.axes
+import metpy.calc as mpcalc
+from metpy.units import units
 import numpy as np
+import pint.quantity
+import typing
+import xarray
 
 
 def set_tick_direction_spine_visibility(ax,
@@ -155,7 +163,6 @@ def add_right_hand_axis(ax,
         axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             The created right-hand axis
     """
-    from geocat.viz import util as gvutil
     import matplotlib.ticker as tic
 
     axRHS = ax.twinx()
@@ -163,7 +170,7 @@ def add_right_hand_axis(ax,
         axRHS.set_ylabel(ylabel=label,
                          labelpad=labelpad,
                          fontsize=axislabelsize)
-    gvutil.set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
+    set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
     axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
     if y_minor_per_major is not None:
         axRHS.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
@@ -172,22 +179,33 @@ def add_right_hand_axis(ax,
     return axRHS
 
 
-def add_lat_lon_ticklabels(ax,
-                           zero_direction_label=False,
-                           dateline_direction_label=False):
-    """Utility function to make plots look like NCL plots by using latitude,
+def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
+                                            cartopy.mpl.geoaxes.GeoAxesSubplot],
+                           zero_direction_label: bool = False,
+                           dateline_direction_label: bool = False):
+    """Utility function to make plots look like NCL plots by adding latitude,
     longitude tick labels.
 
-    Args:
-
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
             Current axes to the current figure
 
-        zero_direction_label (:class:`bool`):
-            Set True to get 0 E / O W or False to get 0 only.
+    zero_direction_label: :class:`bool`
+        Set True to get 0 E / O W or False to get 0 only.
 
-        dateline_direction_label (:class:`bool`):
-            Set True to get 180 E / 180 W or False to get 180 only.
+    dateline_direction_label: :class:`bool`
+        Set True to get 180 E / 180 W or False to get 180 only.
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_ce_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>`_
+
+    - `NCL_ce_3_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>`_
+
+    - `NCL_conOncon_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>`_
     """
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
@@ -199,48 +217,59 @@ def add_lat_lon_ticklabels(ax,
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax,
-                          x_minor_per_major=3,
-                          y_minor_per_major=3,
-                          labelsize="small",
-                          basex=10,
-                          basey=10,
-                          linthreshx=2,
-                          linthreshy=2):
+def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
+                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
+                          x_minor_per_major: int = 3,
+                          y_minor_per_major: int = 3,
+                          basex: int = 10,
+                          basey: int = 10,
+                          labelsize: typing.Union[str, int] = "small",
+                          linthreshx: int = 2,
+                          linthreshy: int = 2):
     """Utility function to make plots look like NCL plots by adding minor and
     major tick lines.
 
-    Args:
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+        Current axes to the current figure
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+    x_minor_per_major: :class:`int`
+        Number of minor ticks between adjacent major ticks on x-axis
 
-        x_minor_per_major (:class:`int`):
-            Number of minor ticks between adjacent major ticks on x-axis
+    y_minor_per_major: :class:`int`
+        Number of minor ticks between adjacent major ticks on y-axis
 
-        y_minor_per_major (:class:`int`):
-            Number of minor ticks between adjacent major ticks on y-axis
+    basex: :class:`int`
+        If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
-        labelsize (:class:`str`):
-            Optional text size passed to tick_params. A default value of "small" is used if nothing is set.
+    basey: :class:`int`
+        If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
 
-        basex (:class:`int`):
-            If the xaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+    labelsize: :class:`str` or :class:`int`
+        Optional text size passed to tick_params. A default value of "small" is used if nothing is set.
 
-        basey (:class:`int`):
-            If the yaxis scale is logarithmic, this is the base for the logarithm. Default is base 10.
+    linthreshx: :class:`int`
+        An argument passed to SymmetricalLogLocator if the xaxis scale is
+        `symlog`. Defines the range (-x, x), within which the plot is
+        linear. This avoids having the plot go to infinity around zero.
+        Defaults to 2.
 
-        linthreshx (:class:`int`):
-            An argument passed to SymmetricalLogLocator if the xaxis scale is
-            `symlog`. Defines the range (-x, x), within which the plot is
-            linear. This avoids having the plot go to infinity around zero.
-            Defaults to 2.
+    linthreshy: :class:`int`
+        An argument passed to SymmetricalLogLocator if the yaxis scale is
+        `symlog`. Defines the range (-x, x), within which the plot is
+        linear. This avoids having the plot go to infinity around zero.
+        Defaults to 2.
 
-        linthreshy (:class:`int`):
-            An argument passed to SymmetricalLogLocator if the yaxis scale is
-            `symlog`. Defines the range (-x, x), within which the plot is
-            linear. This avoids having the plot go to infinity around zero.
-            Defaults to 2.
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=add_major_minor_ticks>`_
+
+    - `NCL_box_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Boxplots/NCL_box_2.html?highlight=add_major_minor_ticks>`_
+
+    - `NCL_scatter_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_1.html?highlight=add_major_minor_ticks>`_
     """
     import matplotlib.ticker as tic
 
@@ -295,71 +324,87 @@ def add_major_minor_ticks(ax,
     )
 
 
-def set_titles_and_labels(ax,
-                          maintitle=None,
-                          maintitlefontsize=18,
-                          lefttitle=None,
-                          lefttitlefontsize=18,
-                          righttitle=None,
-                          righttitlefontsize=18,
-                          xlabel=None,
-                          ylabel=None,
-                          labelfontsize=16):
+def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
+                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
+                          maintitle: str = None,
+                          maintitlefontsize: int = 18,
+                          lefttitle: str = None,
+                          lefttitlefontsize: int = 18,
+                          righttitle: str = None,
+                          righttitlefontsize: int = 18,
+                          xlabel: str = None,
+                          ylabel: str = None,
+                          labelfontsize: int = 16):
     """Utility function to handle axis titles, left/right aligned titles, and
     labels as they appear in NCL plots.
 
     The intent of this function is to help make the plot look like an NCL plot as well as to help developers use only
     this convenience function instead of multiple matplotlib.axes.Axes functions, when applicable.
 
-    (1) If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+        Current axes to the current figure
 
-                     maintitle
-     ___________________________________________
-    |                   Axes                    |
-    |                                           |
+    maintitle: :class:`str`
+        Text to use for the maintitle.
 
-    (2) If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just top to the axes, and maintitle is placed to top of
+    maintitlefontsize: :class:`int`
+        Text font size for maintitle. A default value of 18 is used if nothing is set.
+
+    lefttitle: :class:`str`
+        Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
+        but for some plot types, a lefttitle likely with a right-aligned title, righttitle, can be used together.
+
+    lefttitlefontsize: :class:`int`
+        Text font size for lefttitle. A default value of 18 is used if nothing is set.
+
+    righttitle: :class:`str`
+        Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
+        but for some plot types, a righttitle likely with a left-aligned title, lefttitle, can be used together.
+
+    righttitlefontsize: :class:`int`
+        Text font size for righttitle. A default value of 18 is used if nothing is set.
+
+    xlabel: :class:`str`
+        Text for the x-axis label.
+
+    ylabel: :class:`str`
+        Text for the y-axis label.
+
+    labelfontsize: :class:`int`
+        Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
+
+    Notes
+    -----
+    If no lefttitle and righttitle is set, maintitle is placed just top to the axes as follows:
+
+    >>>                  maintitle
+    >>>  ___________________________________________
+    >>> |                   Axes                    |
+    >>> |                                           |
+
+
+    If any of lefttitle or righttitle is set, lefttitle and righttitle are placed into a row that is just on top of
+    the axes, and maintitle is placed on top of
     the row of lefttitle/righttitle as follows:
 
-                     maintitle
-     lefttitle                        righttitle
-     ___________________________________________
-    |                   Axes                    |
-    |                                           |
+    >>>                  maintitle
+    >>>  lefttitle                        righttitle
+    >>>  ___________________________________________
+    >>> |                   Axes                    |
+    >>> |                                           |
 
-    Args:
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+    - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=set_titles_and_labels>`_
 
-        maintitle (:class:`str`):
-            Text to use for the maintitle.
+    - `NCL_vector_4.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_4.html?highlight=set_titles_and_labels>`_
 
-        maintitlefontsize (:class:`int`):
-            Text font size for maintitle. A default value of 18 is used if nothing is set.
-
-        lefttitle (:class:`str`):
-            Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
-            but for some plot types, a lefttitle likely with a right-aligned title, righttitle, can be used together.
-
-        lefttitlefontsize (:class:`int`):
-            Text font size for lefttitle. A default value of 18 is used if nothing is set.
-
-        righttitle (:class:`str`):
-            Text to use for an optional right-aligned title, if any. For most plots, only a maintitle is enough,
-            but for some plot types, a righttitle likely with a left-aligned title, lefttitle, can be used together.
-
-        righttitlefontsize (:class:`int`):
-            Text font size for righttitle. A default value of 18 is used if nothing is set.
-
-        xlabel (:class:`str`):
-            Text for the x-axis label.
-
-        ylabel (:class:`str`):
-            Text for the y-axis label.
-
-        labelfontsize (:class:`int`):
-            Text font size for x- and y-axes. A default value of 16 is used if nothing is set.
+    - `NCL_polar_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_polar_1.html?highlight=set_titles_and_labels>`_
     """
 
     if maintitle is not None:
@@ -384,44 +429,57 @@ def set_titles_and_labels(ax,
         ax.set_ylabel(ylabel, fontsize=labelfontsize)
 
 
-def set_axes_limits_and_ticks(ax,
-                              xlim=None,
-                              ylim=None,
-                              xticks=None,
-                              yticks=None,
-                              xticklabels=None,
-                              yticklabels=None):
+def set_axes_limits_and_ticks(
+        ax: typing.Union[matplotlib.axes.Axes,
+                         cartopy.mpl.geoaxes.GeoAxesSubplot],
+        xlim: tuple = None,
+        ylim: tuple = None,
+        xticks: list = None,
+        yticks: list = None,
+        xticklabels: list = None,
+        yticklabels: list = None):
     """Utility function to determine axis limits, tick values and labels.
 
     The intent of this function is to help developers use only this convenience function instead of multiple
     matplotlib.axes.Axes functions, when applicable.
 
-    Args:
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
+        Current axes to the current figure
 
-        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
-            Current axes to the current figure
+    xlim: :class:`tuple`
+        Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+        x-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+        documentation for further information.
 
-        xlim (:class:`tuple`):
-            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
-            x-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
-            documentation for further information.
+    ylim: :class:`tuple`
+        Should be given as a tuple of numeric values (left, right), where left and right are the left and right
+        y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
+        documentation for further information.
 
-        ylim (:class:`tuple`):
-            Should be given as a tuple of numeric values (left, right), where left and right are the left and right
-            y-axis limits in data coordinates. Passing None for any of them leaves the limit unchanged. See Matplotlib
-            documentation for further information.
+    xticks: :class:`list`
+        List of x-axis tick locations. See Matplotlib documentation for further information.
 
-        xticks (:class:`list`):
-            List of x-axis tick locations. See Matplotlib documentation for further information.
+    yticks: :class:`list`
+        List of y-axis tick locations. See Matplotlib documentation for further information.
 
-        yticks (:class:`list`):
-            List of y-axis tick locations. See Matplotlib documentation for further information.
+    xticklabels: :class:`list`
+        List of string labels for x-axis ticks. See Matplotlib documentation for further information.
 
-        xticklabels (:class:`list[str]`):
-            List of string labels for x-axis ticks. See Matplotlib documentation for further information.
+    yticklabels: :class:`list`
+        List of string labels for y-axis ticks. See Matplotlib documentation for further information.
 
-        yticklabels (:class:`list[str]`):
-            List of string labels for y-axis ticks. See Matplotlib documentation for further information.
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=set_axes_limits_and_ticks>`_
+
+    - `NCL_lb_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_5.html?highlight=set_axes_limits_and_ticks>`_
+
+    - `NCL_xy_4.py <https://geocat-examples.readthedocs.io/en/latest/gallery/XY/NCL_xy_4.html?highlight=set_axes_limits_and_ticks>`_
     """
 
     if xticks is not None:
@@ -443,29 +501,44 @@ def set_axes_limits_and_ticks(ax,
         ax.set_ylim(ylim)
 
 
-def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
+def truncate_colormap(cmap: matplotlib.colors.Colormap,
+                      minval: typing.Union[int, float] = 0.0,
+                      maxval: typing.Union[int, float] = 1.0,
+                      n: int = 100,
+                      name: str = None):
     """Utility function that truncates a colormap. Registers the new colormap
     by name in plt.cm, and also returns the updated map.
 
-    Copied from  https://stackoverflow.com/questions/18926031/how-to-extract-a-subset-of-a-colormap-as-a-new-colormap-in-matplotlib
+    `Copied from Stack Overflow <https://stackoverflow.com/questions/18926031/how-to-extract-a-subset-of-a-colormap-as-a-new-colormap-in-matplotlib>`_
 
-    Args:
+    Parameters
+    ----------
+    cmap: :class:`matplotlib.colors.Colormap`
+        Colormap to be truncated.
 
-        cmap (:class:`matplotlib.colors.Colormap`):
-            Colormap to be truncated.
+    minval: :class:`int` or :class:`float`
+        Minimum value to be used for truncation of the color map.
 
-        minval (:class:`int` or :class:`float`):
-            Minimum value to be used for truncation of the color map.
+    maxval: :class:`int` or :class:`float`
+        Maximum value to be used for truncation of the color map.
 
-        maxval (:class:`int` or :class:`float`):
-            Maximum value to be used for truncation of the color map.
+    n: :class:`int`
+        Number of color values in the new color map.
 
-        n (:class:`int`):
-            Number of color values in the new color map.
+    name: :class:`str`
+        Optional name of the new color map. If not set, a new name is generated by using the name of the input
+        colormap as well as min and max values.
 
-        name (:class:`str`):
-            Optional name of the new color map. If not set, a new name is generated by using the name of the input
-            colormap as well as min and max values.
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_dev_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Panels/NCL_dev_2.html?highlight=truncate_colormap>`_
+
+    - `NCL_vector_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_1.html?highlight=truncate_colormap>`_
+
+    - `NCL_mask_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Masking/NCL_mask_1.html?highlight=truncate_colormap>`_
     """
     import matplotlib as mpl
     from matplotlib import cm
@@ -482,18 +555,29 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100, name=None):
     return new_cmap
 
 
-def xr_add_cyclic_longitudes(da, coord):
+def xr_add_cyclic_longitudes(da: xarray.DataArray, coord: str):
     """Utility function to handle the no-shown-data artifact of 0 and
     360-degree longitudes.
 
-    Args:
+    Parameters
+    ----------
+    da: :class:`xarray.DataArray`
+        Data array that contains one or more coordinates, strictly including the coordinate with the name
+        given with the "coord" parameter.
 
-        da (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains one or more coordinates, strictly including the coordinate with the name
-            given with the "coord" parameter.
+    coord: :class:`str`
+        Name of the longitude coordinate within "da" data array.
 
-        coord (:class:`str`):
-            Name of the longitude coordinate within "da" data array.
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_lb_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_lb_3.html?highlight=xr_add_cyclic_longitudes>`_
+
+    - `NCL_proj_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_proj_2.html?highlight=xr_add_cyclic_longitudes>`_
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=xr_add_cyclic_longitudes>`_
     """
 
     import xarray as xr
@@ -514,14 +598,14 @@ def xr_add_cyclic_longitudes(da, coord):
     return new_da
 
 
-def set_map_boundary(ax,
-                     lon_range,
-                     lat_range,
-                     north_pad=0,
-                     south_pad=0,
-                     east_pad=0,
-                     west_pad=0,
-                     res=1):
+def set_map_boundary(ax: matplotlib.axes.Axes,
+                     lon_range: typing.Union[tuple, list],
+                     lat_range: typing.Union[tuple, list],
+                     north_pad: int = 0,
+                     south_pad: int = 0,
+                     east_pad: int = 0,
+                     west_pad: int = 0,
+                     res: int = 1):
     """Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordinates. This boundary
     is drawn in the projection coordinates and therefore follows any curves
@@ -529,51 +613,65 @@ def set_map_boundary(ax,
     Lambert Conformal Projection and North/South Polar Stereographic
     Projections.
 
-    Note: Due to the behavior of cartopy's set_extent() function, the curved
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes`
+        The axes to which the boundary will be applied.
+
+    lon_range: :class:`tuple` or :class:`list`
+        The two-tuple containing the start and end of the desired range of
+        longitudes. The first entry must be smaller than the second entry,
+        except when the region crosses the antimeridian. Both entries must
+        be between [-180 , 180]. If lon_range is from -180 to 180, then a
+        full circle centered on the pole with a radius from the pole to the
+        lowest latitude given by lat_range will be set as the boundary.
+
+    lat_range: :class:`tuple` or :class:`list`
+        The two-tuple containing the start and end of the desired range of
+        latitudes. The first entry must be smaller than the second entry.
+        Both entries must be between [-90 , 90].
+
+    north_pad: :class:`int`
+        A constant to be added to the second entry in lat_range. Use this
+        if the northern edge of the plot is cut off. Defaults to 0.
+
+    south_pad: :class:`int`
+        A constant to be subtracted from the first entry in lat_range. Use
+        this if the southern edge of the plot is cut off. Defaults to 0.
+
+    east_pad: :class:`int`
+        A constant to be added to the second entry in lon_range. Use this
+        if the eastern edge of the plot is cut off. Defaults to 0.
+
+    west_pad: :class:`int`
+        A constant to be subtracted from the first entry in lon_range. Use
+        this if the western edge of the plot is cut off. Defaults to 0.
+
+    res: :class:`int`
+        The size of the incrementation for vertices in degrees. Default is
+        a vertex every one degree of longitude. A higher number results in
+        a lower resolution boundary.
+
+    Notes
+    -----
+    Due to the behavior of Cartopy's set_extent() function, the curved
     edges of the boundary may be flattened and cut off. To solve this, use the
     kwargs north_pad, south_pad, east_pad, and west_pad. These will modify the
     coordinates passed to set_extent(). For the Lambert Conformal and Polar
     Stereographic projections, typically only north_pad and south_pad are
     needed. If attempting to use this function for other projections
-    (i.e. Othographic) east_pad and west_pad may be needed.
+    (i.e. Orthographic) east_pad and west_pad may be needed.
 
-    Args:
-        ax (:class:`matplotlib.axes`):
-            The axes to which the boundary will be applied.
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the
+    `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-        lon_range (:class:`tuple` or :class:`list`):
-            The two-tuple containing the start and end of the desired range of
-            longitudes. The first entry must be smaller than the second entry,
-            except when the region crosses the antimeridian. Both entries must
-            be between [-180 , 180]. If lon_range is from -180 to 180, then a
-            full circle centered on the pole with a radius from the pole to the
-            lowest latitude given by lat_range will be set as the boundary.
+    - `NCL_conOncon_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_5.html?highlight=set_map_boundary>`_
 
-        lat_range (:class:`tuple` or :class:`list`):
-            The two-tuple containing the start and end of the desired range of
-            latitudes. The first entry must be smaller than the second entry.
-            Both entries must be between [-90 , 90].
+    - `NCL_panel_9.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Panels/NCL_panel_9.html?highlight=set_map_boundary>`_
 
-        north_pad (:class:`int`):
-            A constant to be added to the second entry in lat_range. Use this
-            if the northern edge of the plot is cut off. Defaults to 0.
-
-        south_pad (:class:`int`);
-            A constant to be subtracted from the first entry in lat_range. Use
-            this if the southern edge of the plot is cut off. Defaults to 0.
-
-        east_pad (:class:`int`):
-            A constant to be added to the second entry in lon_range. Use this
-            if the eastern edge of the plot is cut off. Defaults to 0.
-
-        west_pad (:class:`int`):
-            A constant to be subtracted from the first entry in lon_range. Use
-            this if the western edge of the plot is cut off. Defaults to 0.
-
-        res (:class:`int`):
-            The size of the incrementation for vertices in degrees. Default is
-            a vertex every one degree of longitude. A higher number results in
-            a lower resolution boundary.
+    - `NCL_polar_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_polar_1.html?highlight=set_map_boundary>`_
     """
     import cartopy.crs as ccrs
     import matplotlib.path as mpath
@@ -630,38 +728,52 @@ def set_map_boundary(ax,
                   crs=ccrs.PlateCarree())
 
 
-def findLocalExtrema(da, highval=0, lowval=1000, etype='Low', eps=10):
+def findLocalExtrema(da: xarray.DataArray,
+                     highVal: int = 0,
+                     lowVal: int = 1000,
+                     eType: str = 'Low',
+                     eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
-    than highVal, and to classify as a local low, the data point must be less
+    than highval, and to classify as a local low, the data point must be less
     than lowVal.
 
-    Args:
-        da: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
+    Parameters
+    ----------
+    da: :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
-        highval (:class:`int`):
-            Data value that the local high must be greater than to qualify as a "local high" location.
-            Default highVal is 0.
+    highVal: :class:`int`
+        Data value that the local high must be greater than to qualify as a "local high" location.
+        Default highVal is 0.
 
-        lowval (:class:`int`):
-            Data value that the local low must be less than to qualify as a "local low" location.
-            Default lowVal is 1000.
+    lowVal: :class:`int`
+        Data value that the local low must be less than to qualify as a "local low" location.
+        Default lowVal is 1000.
 
-        etype (:class:`str`):
-            'Low' or 'High'
-            Determines which extrema are being found- minimum or maximum, respectively.
-            Default eType is 'Low'.
+    eType: :class:`str`
+        'Low' or 'High'
+        Determines which extrema are being found- minimum or maximum, respectively.
+        Default eType is 'Low'.
 
-        eps (:class:`float`):
+    eps: :class:`float`
             Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
             for one to be considered as in the neighborhood of the other.
             Default eps is 10.
 
-    Returns:
-        clusterExtremas (:class:`list`):
-            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify local low/high locations
+    Returns
+    -------
+    clusterExtremas: :class:`list`
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify local low/high locations
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=findlocalextrema>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=findlocalextrema>`_
     """
 
     from sklearn.cluster import DBSCAN
@@ -679,19 +791,19 @@ def findLocalExtrema(da, highval=0, lowval=1000, etype='Low', eps=10):
     # Find all zeroes that also qualify as low or high values
     extremacoords = []
 
-    if etype == 'Low':
-        coordlist = np.argwhere(da.data < lowval)
+    if eType == 'Low':
+        coordlist = np.argwhere(da.data < lowVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
-    if etype == 'High':
-        coordlist = np.argwhere(da.data > highval)
+    if eType == 'High':
+        coordlist = np.argwhere(da.data > highVal)
         extremacoords = [tuple(coordarr[x[0]][x[1]]) for x in coordlist]
 
     if extremacoords == []:
-        if etype == 'Low':
+        if eType == 'Low':
             warnings.warn(
                 'No local extrema with data value less than given lowval')
             return []
-        if etype == 'High':
+        if eType == 'High':
             warnings.warn(
                 'No local extrema with data value greater than given highval')
             return []
@@ -726,9 +838,9 @@ def findLocalExtrema(da, highval=0, lowval=1000, etype='Low', eps=10):
             datavals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
-        if etype == 'Low':
+        if eType == 'Low':
             index = np.argmin(np.array(datavals))
-        if etype == 'High':
+        if eType == 'High':
             index = np.argmax(np.array(datavals))
 
         # Append the coordinate corresponding to that index to the array to be returned
@@ -738,53 +850,62 @@ def findLocalExtrema(da, highval=0, lowval=1000, etype='Low', eps=10):
     return clusterExtremas
 
 
-def plotCLabels(ax,
+def plotCLabels(ax: matplotlib.axes.Axes,
                 contours,
-                transform,
-                proj,
-                clabel_locations=[],
-                fontsize=12,
-                whitebbox=False,
-                horizontal=False):
+                transform: cartopy.crs.CRS,
+                proj: cartopy.crs.CRS,
+                clabel_locations: list = [],
+                fontsize: int = 12,
+                whitebbox: bool = False,
+                horizontal: bool = False) -> list:
     """Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
 
     This allows the user to specify the exact locations of the labels, rather than having matplotlib
     plot them automatically.
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
 
-    Args:
-        ax (:class:`matplotlib.pyplot.axis`):
-            Axis containing the contour set.
 
-        contours (:class:`cartopy.mpl.contour.GeoContourSet`):
-            Contour set that is being labeled.
+    Parameters
+    ----------
+    ax: :class:`matplotlib.axes.Axes`
+        Axis containing the contour set.
 
-        transform (:class:`cartopy._crs`):
-            Instance of CRS that represents the source coordinate system of coordinates.
-            (ex. ccrs.Geodetic()).
+    contours: :class:`matplotlib.contour.QuadContourSet`
+        Contour set that is being labeled.
 
-        proj (:class:`cartopy.crs`):
-            Projection 'ax' is defined by.
-            This is the instance of CRS that the coordinates will be transformed to.
+    transform: :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
 
-        clabel_locations (:class:`list`):
-            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify where the contours with regular field variable values should be plotted.
+    proj: :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
 
-        fontsize (:class:`int`):
-            Font size of contour labels.
+    clabel_locations: :class:`list`
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contours with regular field variable values should be plotted.
 
-        whitebbox (:class:`bool`):
-            Setting this to "True" will cause all labels to be plotted with white backgrounds
+    fontsize: :class:`int`
+        Font size of contour labels.
 
-        horizontal (:class:`bool`):
-            Setting this to "True" will cause the contour labels to be horizontal.
+    whitebbox: :class:`bool`
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
 
-    Returns:
-        cLabels (:class:`list`):
-            List of text instances of all contour labels
+    horizontal: :class:`bool`
+        Setting this to "True" will cause the contour labels to be horizontal.
+
+    Returns
+    -------
+    cLabels: :class:`list`
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotclabels>`_
     """
+    import numpy as np
 
     # Initialize empty array that will be filled with contour label text objects and returned
     cLabels = []
@@ -815,52 +936,62 @@ def plotCLabels(ax,
     return cLabels
 
 
-def plotELabels(da,
-                transform,
-                proj,
-                clabel_locations=[],
-                label='L',
-                fontsize=22,
-                whitebbox=False,
-                horizontal=True):
+def plotELabels(da: xarray.DataArray,
+                transform: cartopy.crs.CRS,
+                proj: cartopy.crs.CRS,
+                clabel_locations: list = [],
+                label: str = 'L',
+                fontsize: int = 22,
+                whitebbox: bool = False,
+                horizontal: bool = True) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
     This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
 
-    Args:
-        da: (:class:`xarray.DataArray`):
-            Xarray data array containing the lat, lon, and field variable data values.
+    Parameters
+    ----------
+    da: :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable data values.
 
-        transform (:class:`cartopy._crs`):
-            Instance of CRS that represents the source coordinate system of coordinates.
-            (ex. ccrs.Geodetic()).
+    transform: :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
 
-        proj (:class:`cartopy.crs`):
-            Projection 'ax' is defined by.
-            This is the instance of CRS that the coordinates will be transformed to.
+    proj: :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
 
-        clabel_locations (:class:`list`):
-            List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
-            that specify where the contour labels should be plotted.
+    clabel_locations: :class:`list`
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contour labels should be plotted.
 
-        label (:class:`str`):
-            ex. 'L' or 'H'
-            The data value will be plotted as a subscript of this label.
+    label: :class:`str`
+        ex. 'L' or 'H'
+        The data value will be plotted as a subscript of this label.
 
-        fontsize (:class:`int`):
-            Font size of regular contour labels.
+    fontsize: :class:`int`
+        Font size of regular contour labels.
 
-        horizontal (:class:`bool`):
-            Setting this to "True" will cause the contour labels to be horizontal.
+    horizontal: :class:`bool`
+        Setting this to "True" will cause the contour labels to be horizontal.
 
-        whitebbox (:class:`bool`):
-            Setting this to "True" will cause all labels to be plotted with white backgrounds
+    whitebbox: :class:`bool`
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
 
-    Returns:
-        extremaLabels (:class:`list`):
-            List of text instances of all contour labels
+    Returns
+    -------
+    extremaLabels: :class:`list`
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotELabels>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=plotELabels>`_
     """
 
     import matplotlib.pyplot as plt
@@ -918,23 +1049,34 @@ def plotELabels(da,
     return extremaLabels
 
 
-def set_vector_density(data, min_distance=0):
+def set_vector_density(data: xarray.DataArray,
+                       minDistance: int = 0) -> xarray.DataArray:
     """Utility function to change density of vector plots.
 
-    Args:
-        data (:class:`xarray.core.dataarray.DataArray`):
-            Data array that contains the vector plot latitude/longitude data.
-        min_distance (:class:`int`):
-            Value in degrees that determines the distance between the vectors.
-    Returns:
-        ds (:class:`xarray.core.dataarray.DataArray`):
-            Sliced version of the input data array.
+    Parameters
+    ----------
+    data: :class:`xarray.DataArray`
+        Data array that contains the vector plot latitude/longitude data.
+
+    minDistance: :class:`int`
+        Value in degrees that determines the distance between the vectors.
+
+    Returns
+    -------
+    ds: :class:`xarray.DataArray`
+        Sliced version of the input data array.
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_vector_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_3.html?highlight=set_vector_density>`_
     """
     import math
     import warnings
 
-    if min_distance <= 0:
-        raise Exception("min_distance cannot be negative or zero.")
+    if minDistance <= 0:
+        raise Exception("minDistance cannot be negative or zero.")
     else:
         lat_every = 1
         lon_every = 1
@@ -950,13 +1092,13 @@ def set_vector_density(data, min_distance=0):
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        if diagDifference >= min_distance and latdifference >= min_distance and londifference >= min_distance:
+        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
             warnings.warn('Plot spacing is alrady greater or equal to ' +
-                          str(min_distance))
+                          str(minDistance))
 
-        # While the difference between two vectors is smaller than min_distance, increment the value that
+        # While the difference between two vectors is smaller than minDistance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < min_distance or latdifference < min_distance or londifference < min_distance:
+        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
             # Get distance between points in latitude (y axis)
             latdifference = float(lat[lat_every] - lat[0])
 
@@ -974,3 +1116,70 @@ def set_vector_density(data, min_distance=0):
                        lon=slice(None, None, lon_every))
 
         return ds
+
+
+def get_skewt_vars(p: pint.Quantity, tc: pint.Quantity, tdc: pint.Quantity,
+                   pro: pint.Quantity) -> str:
+    """This function processes the dataset values and returns a string element
+    which can be used as a subtitle to replicate the styles of NCL Skew-T
+    Diagrams.
+
+    Parameters
+    ----------
+    p : :class:`pint.Quantity`
+        Pressure level input from dataset
+    tc : :class:`pint.Quantity`
+        Temperature for parcel from dataset
+    tdc : :class:`pint.Quantity`
+        Dew point temperature for parcel from dataset
+    pro : :class:`pint.Quantity`
+        Parcel profile temperature converted to degC
+    Returns
+    -------
+    joined : :class:`str`
+        A string element with the format "Plcl=<value> Tlcl[C]=<value> Shox=<value> Pwat[cm]=<value> Cape[J]=<value>" where:
+        - Cape  -  Convective Available Potential Energy [J]
+        - Pwat  -  Precipitable Water [cm]
+        - Shox  -  Showalter Index (stability)
+        - Plcl  -  Pressure of the lifting condensation level [hPa]
+        - Tlcl  -  Temperature at the lifting condensation level [C]
+    See Also
+    --------
+    Related NCL Functions:
+    `skewT_PlotData <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_PlotData.shtml>`_,
+    `skewt_BackGround <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_BackGround.shtml>`_
+    """
+
+    # CAPE
+    cape = mpcalc.cape_cin(p, tc, tdc, pro)
+    cape = cape[0].magnitude
+
+    # Precipitable Water
+    pwat = mpcalc.precipitable_water(p, tdc)
+    pwat = (pwat.magnitude / 10) * units.cm  # Convert mm to cm
+    pwat = pwat.magnitude
+
+    # Pressure and temperature of lcl
+    lcl = mpcalc.lcl(p[0], tc[0], tdc[0])
+    plcl = lcl[0].magnitude
+    tlcl = lcl[1].magnitude
+
+    # Showalter index
+    shox = showalter_index(p, tc, tdc)
+    shox = shox[0].magnitude
+
+    # Place calculated values in iterable list
+    vals = [plcl, tlcl, shox, pwat, cape]
+    vals = np.round(vals).astype(int)
+
+    # Define variable names for calculated values
+    names = ['Plcl=', 'Tlcl[C]=', 'Shox=', 'Pwat[cm]=', 'Cape[J]=']
+
+    # Combine the list of values with their corresponding labels
+    lst = list(chain.from_iterable(zip(names, vals)))
+    lst = map(str, lst)
+
+    # Create one large string for later plotting use
+    joined = ' '.join(lst)
+
+    return joined

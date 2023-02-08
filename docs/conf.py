@@ -12,7 +12,9 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
+
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
 
 # -- Project information -----------------------------------------------------
 
@@ -30,15 +32,63 @@ author = u'GeoCAT'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx'
+]
+
+intersphinx_mapping = {
+    'python': ('http://docs.python.org/3/', None),
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+    'xarray': ('http://xarray.pydata.org/en/stable/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None)
+}
+
+napoleon_use_admonition_for_examples = True
+napoleon_include_special_with_doc = True
+
+autosummary_generate = True
+
+autodoc_default_options = {'exclude-members': '__init__'}
+
+autodoc_mock_imports = ['pint', 'xarray', 'metpy']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# The suffix(es) of source filenames.
+source_suffix = '.rst'
+
+# The master toctree document.
+master_doc = 'index'
+
+
+# The version info for the project being documented
+def read_version():
+    for line in open('../meta.yaml').readlines():
+        index = line.find('set version')
+        if index > -1:
+            return line[index + 15:].replace('\" %}', '').strip()
+
+
+# The short X.Y version.
+version = read_version()
+
+# The full version, including alpha/beta/rc tags.
+release = read_version()
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = False
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -56,9 +106,16 @@ else:
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 html_logo = '_static/images/nsf.png'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'geocat-vizdoc'
+
+autodoc_typehints = 'none'
+
+
+# Allow for changes to be made to the css in the theme_overrides file
+def setup(app):
+    app.add_css_file('theme_overrides.css')
