@@ -1,5 +1,5 @@
 matplotlib
-xarray<=2023.02.0
+xarray
 numpy
 cartopy
 cmaps
