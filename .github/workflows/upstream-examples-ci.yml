@@ -1,10 +1,8 @@
 name: Upstream Examples CI
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
+  schedule:
+     - cron: '0 0 * * *' # Daily “At 00:00”
 
 jobs:
   build-and-run:
@@ -18,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
-        python-version: [ "3.7", "3.9" ]
+        python-version: [ "3.9", "3.10" ]
 
     steps:
     - uses: actions/checkout@v2

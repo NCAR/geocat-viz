@@ -14,5 +14,5 @@ dependencies:
   - metpy
   - pint<=0.19
   - pip:
-      - pre-commit
-      - scikit-learn
+    - pre-commit
+    - scikit-learn

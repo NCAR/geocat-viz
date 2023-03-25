@@ -108,7 +108,7 @@ else:
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = []
 
-html_logo = '_static/images/nsf.png'
+html_logo = '_static/images/GeoCAT_nsf.svg'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'geocat-vizdoc'
