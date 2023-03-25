@@ -1,18 +1,33 @@
 name: geocat_viz_upstream
 channels:
   - conda-forge
+  - ncar
 dependencies:
-  - python>=3.8, <=3.10
+  - python>=3.7
+  - geocat-comp
+  - cf_xarray>=0.3.1
+  - geocat-datafiles
+  - eofs
+  - fiona
+  - geocat-viz
   - cartopy
+  - geographiclib
+  - jupyter
+  - jupyterlab
   - make
-  - matplotlib<=3.5
-  - sphinx
-  - pip
-  - cmaps
-  - numpy
-  - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
+  - matplotlib<3.6
   - metpy
-  - pint<=0.19
-  - pip:
-    - pre-commit
-    - scikit-learn
+  - mock
+  - nbsphinx
+  - netcdf4
+  - pillow
+  - pint<0.20
+  - pip
+  - scikit-learn
+  - sphinx
+  - sphinx-gallery
+  - sphinx_rtd_theme
+  - sphinx-design
+  - sphinx-book-theme
+  - wrf-python
+  - pre-commit
