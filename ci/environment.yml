@@ -12,7 +12,7 @@ dependencies:
   - numpy
   - xarray
   - metpy
-  - pint<0.20
+  - pint
   - pip:
       - pre-commit
       - scikit-learn
