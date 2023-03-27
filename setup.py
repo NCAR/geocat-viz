@@ -18,6 +18,8 @@ def version():
 setup(
     name='geocat.viz',
     version=version(),
+    long_description=long_description,
+    long_description_content_type='text/markdown'
     maintainer='GeoCAT',
     maintainer_email='geocat@ucar.edu',
     python_requires='>=3.7',
