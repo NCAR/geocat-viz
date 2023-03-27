@@ -2,9 +2,9 @@ import cartopy.mpl.geoaxes
 from itertools import chain
 import matplotlib.axes
 import metpy.calc as mpcalc
+from pint import Quantity
 from metpy.units import units
 import numpy as np
-import pint.quantity
 import typing
 import xarray
 
@@ -1118,8 +1118,8 @@ def set_vector_density(data: xarray.DataArray,
         return ds
 
 
-def get_skewt_vars(p: pint.Quantity, tc: pint.Quantity, tdc: pint.Quantity,
-                   pro: pint.Quantity) -> str:
+def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
+                   pro: Quantity) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
@@ -1165,7 +1165,7 @@ def get_skewt_vars(p: pint.Quantity, tc: pint.Quantity, tdc: pint.Quantity,
     tlcl = lcl[1].magnitude
 
     # Showalter index
-    shox = showalter_index(p, tc, tdc)
+    shox = mpcalc.showalter_index(p, tc, tdc)
     shox = shox[0].magnitude
 
     # Place calculated values in iterable list

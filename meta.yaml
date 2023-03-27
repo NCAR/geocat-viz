@@ -1,5 +1,5 @@
 {% set name = "geocat-viz" %}
-{% set version = "2022.07.0" %}
+{% set version = "2023.03.0" %}
 
 package:
   name: {{ name }}
@@ -32,7 +32,7 @@ requirements:
     - cmaps
     - numpy
     - scikit-learn
-    - xarray
+    - xarray <=2023.02.0
     - metpy
 
 test:
@@ -66,5 +66,4 @@ extra:
     - anissa111 # A. Zacharias https://github.com/anissa111
     - erogluorhan # O. Eroglu https://github.com/erogluorhan
     - hCraker # H. Craker https://github.com/hCraker
-    - michaelavs # M. Sizemore https://github.com/michaelavs
     - pilotchute # A. Kootz https://github.com/pilotchute
