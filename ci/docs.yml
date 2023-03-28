@@ -5,7 +5,7 @@ dependencies:
   - python>=3.8, <=3.10
   - pre_commit
   - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
-  - pint<=0.19
+  - pint
   - cmaps
   - matplotlib<=3.5
   - sphinx-book-theme
