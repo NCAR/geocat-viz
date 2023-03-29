@@ -12,6 +12,8 @@
 #
 import os
 import sys
+import datetime
+import sphinx_book_theme
 
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
@@ -19,8 +21,6 @@ sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
 # -- Project information -----------------------------------------------------
 
 project = 'GeoCAT-viz'
-
-import datetime
 
 current_year = datetime.datetime.now().year
 copyright = u'{}, University Corporation for Atmospheric Research'.format(
@@ -97,7 +97,6 @@ todo_include_todos = False
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
-import sphinx_book_theme
 html_theme = 'sphinx_book_theme'
 html_theme_path = [sphinx_book_theme.get_html_theme_path()]
 
