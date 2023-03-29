@@ -13,7 +13,7 @@
 import os
 import sys
 import datetime
-import sphinx_book_theme
+# import sphinx_book_theme
 
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
@@ -98,7 +98,7 @@ todo_include_todos = False
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 
 html_theme = 'sphinx_book_theme'
-html_theme_path = [sphinx_book_theme.get_html_theme_path()]
+# html_theme_path = [sphinx_book_theme.get_html_theme_path()]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
