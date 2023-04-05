@@ -12,6 +12,8 @@
 #
 import os
 import sys
+import datetime
+# import sphinx_book_theme
 
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
@@ -19,8 +21,6 @@ sys.path.append(os.path.abspath(os.path.join(__file__, "../../src")))
 # -- Project information -----------------------------------------------------
 
 project = 'GeoCAT-viz'
-
-import datetime
 
 current_year = datetime.datetime.now().year
 copyright = u'{}, University Corporation for Atmospheric Research'.format(
@@ -33,8 +33,12 @@ author = u'GeoCAT'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx'
+    'nbsphinx',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
+    'sphinx_design',
 ]
 
 intersphinx_mapping = {
@@ -96,20 +100,30 @@ todo_include_todos = False
 # a list of builtin themes.
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
-if on_rtd:
-    html_theme = 'default'
-else:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+html_theme = 'sphinx_book_theme'
+
+html_theme_options = dict(
+    repository_url="https://github.com/NCAR/geocat-viz",
+    repository_branch="main",
+    path_to_docs="docs",
+    use_edit_page_button=True,
+    use_repository_button=True,
+    use_issues_button=True,
+    home_page_in_toc=False,
+    navbar_footer_text="",
+    extra_footer=
+    "<em>The National Center for Atmospheric Research is sponsored by the National Science Foundation. Any opinions, findings and conclusions or recommendations expressed in this material do not necessarily reflect the views of the National Science Foundation.</em>",
+)
+# html_theme_path = [sphinx_book_theme.get_html_theme_path()]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = []
 
-html_logo = '_static/images/nsf.png'
-
+html_logo = '_static/images/GeoCAT_nsf.svg'
+html_favicon = '_static/images/logos/GeoCAT_square.svg'
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'geocat-vizdoc'
 
