@@ -1,10 +1,13 @@
 name: Upstream Examples CI
 on:
-  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
-  pull_request:
+  schedule:
+    - cron: '0 0 * * *' # Daily “At 00:00”
+  workflow_dispatch:
+
 
 jobs:
   build-and-run:
@@ -18,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
-        python-version: [ "3.7", "3.9" ]
+        python-version: ["3.8", "3.9", "3.10" ]
 
     steps:
     - uses: actions/checkout@v2
@@ -30,8 +33,8 @@ jobs:
       uses: mamba-org/provision-with-micromamba@main
       with:
         micromamba-version: "latest"
-        environment-name: geocat-examples
-        environment-file: ./GeoCAT-examples/conda_environment.yml
+        environment-name: geocat_viz_upstream
+        environment-file: ci/upstream_environment.yml
 
     - name: Install geocat-viz
       run: |

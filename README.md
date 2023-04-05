@@ -7,12 +7,12 @@ plotting packages. GeoCAT-viz functionality is used by
 [GeoCAT-examples](https://github.com/NCAR/geocat-examples) and is of possible use for other GeoCAT components.
 
 
-| **Upstream Examples CI**  |         [![Upstream Examples CI][upstream-examples-ci-badge]][upstream-examples-ci-link]               |
-| :------------------------ | :----------------------------------------------------------------------------------------------------: |
-| **Docs**                  |         [![Documentation Status][rtd-badge]][rtd-link]                                                 |
-| **Package**               |         [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]                           |
-| **License**               |         [![License][license-badge]][license-badge-link]                                                |
-| **DOI**                   |         [![DOI][doi-badge]][doi-link]                                                                  |
+| **Upstream Examples CI** | [![Upstream Examples CI][upstream-examples-ci-badge]][upstream-examples-ci-link] |
+|:------------------------:|:--------------------------------------------------------------------------------:|
+|         **Docs**         |                  [![Documentation Status][rtd-badge]][rtd-link]                  |
+|       **Package**        |       [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]       |
+|       **License**        |                 [![License][license-badge]][license-badge-link]                  |
+|         **DOI**          |                          [![DOI][doi-badge]][doi-link]                           |
 
 # Documentation
 
@@ -41,7 +41,7 @@ https://geocat-viz.readthedocs.io/en/latest/citation.html) page.
 [conda-link]: https://anaconda.org/ncar/geocat-viz
 [license-badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge
 [license-badge-link]: ./LICENSE
-[upstream-examples-ci-badge]: https://img.shields.io/github/workflow/status/NCAR/geocat-viz/Upstream%20Examples%20CI?label=Upstream%20Examples%20CI&style=for-the-badge
+[upstream-examples-ci-badge]: https://img.shields.io/github/actions/workflow/status/NCAR/geocat-viz/upstream-examples-ci.yml?branch=main&label=Upstream%20Examples%20CI&style=for-the-badge
 [upstream-examples-ci-link]: https://github.com/NCAR/geocat-viz/actions/workflows/upstream-examples-ci.yml
 [doi-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.6941740.svg?style=for-the-badge
 [doi-link]: https://doi.org/10.5281/zenodo.6941740
