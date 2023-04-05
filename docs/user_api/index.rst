@@ -40,4 +40,4 @@ GeoCAT-viz Utility Functions
 
    geocat.viz.set_vector_density
 
-   geocat.viz.util.get_skewt_vars
+   geocat.viz.get_skewt_vars

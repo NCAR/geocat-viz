@@ -1,18 +1,17 @@
-name: geocat_viz_build
+name: gv-docs
 channels:
   - conda-forge
 dependencies:
   - python>=3.8, <=3.10
   - cartopy
-  - make
-  - matplotlib<=3.5
-  - sphinx
-  - pip
   - cmaps
-  - numpy
-  - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
-  - metpy
+  - matplotlib<=3.5
   - pint
+  - pip
+  - pre-commit
+  - sphinx-book-theme
+  - nbsphinx
+  - sphinx-design
+  - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
   - pip:
-    - pre-commit
-    - scikit-learn
+      - -e ..
