@@ -178,6 +178,84 @@ def add_right_hand_axis(ax,
 
     return axRHS
 
+def add_right_hand_height_from_pressure_axis(ax,
+                        heights = None,
+                        pressure_units='hPa',
+                        ticklabelsize=12,
+                        label=None,
+                        labelpad=10,
+                        axislabelsize=16):
+    """Utility function that adds a right hand Height axis to the plot, derived from the left hand Pressure axis.
+
+    Parameters
+    ----------
+
+        ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            Current axes to the current figure
+
+        heights (:class:`numpy.ndarray` or list):
+            An array of desired height values in km.
+        
+        pressure_units (:class:`str`):
+            The Pint-compliant unit string associated with the Pressure values. Assume to be hPa.
+        
+        ticklabelsize (:class:`int`):
+            Text font size of tick labels. A default value of 12 is used if nothing is set.
+
+        label (:class:`str`):
+            Text to use for the right hand side label.
+
+        labelpad (:class:`float`):
+            Spacing in points from the axes bounding box. A default value of 10 is used if nothing is set.
+
+        axislabelsize (:class:`int`):
+            Text font size for y-axes. A default value of 16 is used if nothing is set.
+
+        Returns
+        -------
+
+        axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
+            The created right-hand axis
+    """
+    axRHS = ax.twinx()
+
+    # If height array isn't given, infer it from pressure axis
+    if not heights:
+        height_min, height_max = mpcalc.pressure_to_height_std(ax.get_ylim()*
+                                                units(pressure_units))
+
+        height_range = height_max - height_min
+        if (height_range < 35):
+            step = 4
+        elif (height_range < 70):
+                step = 7
+        else:
+                step = 10
+
+        # Select heights to display as tick labels
+        heights = np.arange(int(height_min), int(height_max), step)
+
+    # Send "nice" height values back to pressure  as tick locations
+    pressures = mpcalc.height_to_pressure_std(heights *
+                                                units('km')).magnitude
+
+    axRHS.set_yscale('log')
+    axRHS.minorticks_off() # Turn off minor ticks that are spaced by pressure
+    set_axes_limits_and_ticks(axRHS,
+                                ylim=ax.get_ylim(),
+                                yticks=pressures,
+                                yticklabels=heights)
+
+    axRHS.tick_params(labelsize=ticklabelsize)  # manually set tick label size
+    
+    if label is not None:
+        axRHS.set_ylabel(ylabel=label,
+                         labelpad=labelpad,
+                         fontsize=axislabelsize)
+
+    return axRHS
+    
+
 
 def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
                                             cartopy.mpl.geoaxes.GeoAxesSubplot],
