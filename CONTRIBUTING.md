@@ -43,4 +43,4 @@ following contribution guidelines:
 2. Create a new folder under `$GEOCAT_VIZ/src/geocat/viz/` and implement your plotting function inside, making
 use of the pre-defined parent classes if appropriate
 
-3. Add the function to the namespace by adding it to `$GEOCAT_VIZ/docs/user_api/index.rst`
+3. Add the function to the documentation by adding it to `$GEOCAT_VIZ/docs/user_api/index.rst`
