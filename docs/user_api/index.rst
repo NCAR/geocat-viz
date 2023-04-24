@@ -19,13 +19,13 @@ GeoCAT-viz Utility Functions
    :toctree: ./generated/
 
    geocat.viz. set_tick_direction_spine_visibility
-  
+
    geocat.viz.add_lat_lon_gridlines
-   
+
    geocat.viz.add_lat_lon_ticklabels
-   
+
    geocat.viz.add_right_hand_axis
-   
+
    geocat.viz.add_height_from_pressure_axis
 
    geocat.viz.add_major_minor_ticks
