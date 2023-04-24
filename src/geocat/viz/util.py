@@ -179,15 +179,15 @@ def add_right_hand_axis(ax,
     return axRHS
 
 
-def add_right_hand_height_from_pressure_axis(ax,
+def add_height_from_pressure_axis(ax,
                                              heights=None,
                                              pressure_units='hPa',
                                              ticklabelsize=12,
                                              label='Height (km)',
                                              labelpad=10,
                                              axislabelsize=16):
-    """Utility function that adds a right hand Height axis to the plot, derived
-    from the left hand Pressure axis.
+    """Utility function that adds a right-hand Height axis to the plot, derived
+    from the left-hand Pressure axis.
 
     Parameters
     ----------
@@ -222,15 +222,16 @@ def add_right_hand_height_from_pressure_axis(ax,
     axRHS = ax.twinx()
 
     # If height array isn't given, infer it from pressure axis
-    if not heights:
+    if heights is None:
         height_min, height_max = mpcalc.pressure_to_height_std(
-            ax.get_ylim() * units(pressure_units))
+            ax.get_ylim() * units(pressure_units)).magnitude
 
-        height_range = height_max - height_min
+        height_range = abs(height_max - height_min)
         if (height_range < 35):
-            step = 4
-        elif (height_range < 70):
-            step = 7
+            if (height_range < 70):
+                step = 7
+            else:
+                step = 4
         else:
             step = 10
 
