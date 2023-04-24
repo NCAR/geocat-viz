@@ -189,8 +189,7 @@ def add_height_from_pressure_axis(ax,
     """Utility function that adds a right-hand Height axis to the plot, derived
     from the left-hand Pressure axis.
 
-    Parameters
-    ----------
+    Args:
 
         ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             Current axes to the current figure
@@ -213,8 +212,7 @@ def add_height_from_pressure_axis(ax,
         axislabelsize (:class:`int`):
             Text font size for y-axes. A default value of 16 is used if nothing is set.
 
-        Returns
-        -------
+     Return:
 
         axRHS (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             The created right-hand axis
