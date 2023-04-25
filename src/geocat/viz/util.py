@@ -811,7 +811,7 @@ def findLocalExtrema(da: xarray.DataArray,
     than lowVal.
 
     Args:
-    
+
       da: :class:`xarray.DataArray`
           Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
 
