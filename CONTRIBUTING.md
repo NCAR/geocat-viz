@@ -40,7 +40,9 @@ following contribution guidelines:
         [GeoCAT-viz Issues](https://github.com/NCAR/GeoCAT-viz/issues)
         that describes need for the functionality you are planning to contribute.
 
-2. Create a new folder under `$GEOCAT_VIZ/src/geocat/viz/` and implement your plotting function inside, making
-use of the pre-defined parent classes if appropriate
+2. Under `$GEOCAT_VIZ/src/geocat/viz/` add to `util.py` or create a new module and implement your plotting function inside, making
+use of the pre-defined parent classes if appropriate.
 
-3. Add the function to the documentation by adding it to `$GEOCAT_VIZ/docs/user_api/index.rst`
+# Adding new function API to the Documentation
+
+1. Add the function to `$GEOCAT_VIZ/docs/user_api/index.rst`.
