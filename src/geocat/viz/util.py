@@ -179,7 +179,7 @@ def add_right_hand_axis(ax,
     return axRHS
 
 
-  def add_height_from_pressure_axis(ax,
+def add_height_from_pressure_axis(ax,
                                   heights=None,
                                   pressure_units='hPa',
                                   ticklabelsize=12,
