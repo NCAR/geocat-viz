@@ -193,7 +193,7 @@ def add_height_from_pressure_axis(ax,
 
         ax (:class:`matplotlib.axes._subplots.AxesSubplot` or :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`):
             Current axes to the current figure
-        heights (:class:`numpy.ndarray` or list):
+        heights (:class:`numpy.ndarray` or :class:`list`):
             An array of desired height values in km.
         pressure_units (:class:`str`):
             The Pint-compliant unit string associated with the Pressure values. Assume to be hPa.
