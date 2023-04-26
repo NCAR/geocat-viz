@@ -24,6 +24,8 @@ from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import metpy.calc as mpcalc
 from metpy.units import units
 
+from itertools import chain
+
 
 def set_tick_direction_spine_visibility(ax,
                                         tick_direction='out',
