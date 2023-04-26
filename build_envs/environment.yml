@@ -2,24 +2,17 @@ name: geocat_viz_build
 channels:
   - conda-forge
 dependencies:
-  - python>=3.8, <3.11  # minimum support 3.8, 3.11 not yet fully supported
-  - cf_xarray>=0.3.1    # min version 0.3.1 for dependencies
-  - cftime
-  - dask
-  - distributed
-  - eofs
-  - geocat-f2py
+  - python>=3.8, <=3.10
+  - cartopy
+  - make
+  - matplotlib<=3.5
+  - sphinx
+  - pip
+  - cmaps
+  - numpy
+  - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
   - metpy
-  - numba
-  - numpy<1.24  # 1.24 not yet fully compatible with numba
   - pint
-  - xarray<=2023.02.0 #pin per issue #381
-  - xskillscore
-# Packages listed below are for testing
-  - geocat-datafiles
-  - netcdf4
-  - parameterized
-  - pytest
-  - pytest-cov
-# The package below is for formatting standards
-  - pre-commit
+  - pip:
+    - pre-commit
+    - scikit-learn

@@ -2,12 +2,33 @@ name: geocat_viz_upstream
 channels:
   - conda-forge
 dependencies:
-  - python>=3.8, <3.11
-  - cftime
+  - python>=3.7
+  - geocat-comp
+  - cf_xarray>=0.3.1
+  - geocat-datafiles
   - eofs
-  - geocat-datafiles  # for tests
-  - geocat-f2py
-  - netcdf4  # for tests
-  - parameterized  # for tests
-  - pytest  # for tests
-  - pytest-cov  # for tests
+  - fiona
+  - geocat-viz
+  - cartopy
+  - geographiclib
+  - jupyter
+  - jupyterlab
+  - make
+  - matplotlib<3.6
+  - metpy
+  - mock
+  - myst-nb
+  - nbsphinx
+  - netcdf4
+  - pillow
+  - pint
+  - pip
+  - scikit-learn
+  - sphinx
+  - sphinx-gallery
+  - sphinx_rtd_theme
+  - sphinx-design
+  - sphinx-book-theme
+  - wrf-python
+  - xarray<=2023.02.0 # pinned as per issue #98
+  - pre-commit
