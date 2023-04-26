@@ -330,4 +330,3 @@ nb_execution_mode = "off"
 # Allow for changes to be made to the css in the theme_overrides file
 def setup(app):
     app.add_css_file('theme_overrides.css')
-    app.connect("builder-inited")
