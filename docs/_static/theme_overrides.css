@@ -1,4 +1,15 @@
 /* delete margin from side of content */
 .wy-nav-content {
-max-width: none !important;
+    max-width: none !important;
+}
+
+.custom-title {
+    font-weight: bold;
+    color: #012169;
+    text-align: left;
+}
+
+.custom-body {
+    text-align: left;
+    margin-left: max(45px, 15%);
 }

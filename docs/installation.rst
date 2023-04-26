@@ -1,30 +1,34 @@
+.. currentmodule:: geocat.viz
+
+.. _installation:
+
 Installation
 ============
 
 This installation guide includes only the GeoCAT-viz installation and build instructions.
-Please refer to `GeoCAT Contributor's Guide <https://geocat.ucar.edu/pages/contributing.html>`_ for installation of
+Please refer to `GeoCAT Contributor's Guide <https://geocat.ucar.edu/pages/contributing.html>`__ for installation of
 the whole GeoCAT project.
 
 Installing GeoCAT-viz via Conda in a New Environment
 -----------------------------------------------------
 
 The easiest way to install GeoCAT-viz is using
-`Conda <http://conda.pydata.org/docs/>`_::
+`Conda <http://conda.pydata.org/docs/>`__::
 
-    conda create -n geocat -c conda-forge -c ncar geocat-viz
+    conda create -n geocat -c conda-forge geocat-viz
 
-where :code:`geocat` is the name of a new conda environment, which can then be
+where ```geocat``` is the name of a new conda environment, which can then be
 activated using::
 
     conda activate geocat
 
 If you need to make use of other software packages, such as Jupyter
-with GeoCAT-viz, you may wish to install into your :code:`geocat`
-environment.  The following :code:`conda create` command can be used to create a new
-:code:`conda` environment that includes one of these additional commonly used Python
+with GeoCAT-viz, you may wish to install into your ``geocat``
+environment.  The following ``conda create`` command can be used to create a new
+``conda`` environment that includes one of these additional commonly used Python
 packages pre-installed::
 
-    conda create -n geocat -c conda-forge -c ncar geocat-viz jupyter
+    conda create -n geocat -c conda-forge geocat-viz jupyter
 
 Alternatively, if you already created a conda environment using the first
 command (without the extra packages), you can activate and install the packages
@@ -38,7 +42,7 @@ meaning it is not necessary to explicitly install NumPy, Matplotlib, Cartopy, Xa
 etc. when creating an environment.
 
 If you are interested in learning more about how Conda environments work, please
-visit the `managing environments <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_
+visit the `managing environments <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`__
 page of the Conda documentation.
 
 Installing GeoCAT-viz in a Pre-existing Conda Environment
@@ -50,7 +54,7 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 
         conda update conda
 
-2. Activate the conda environment you want to add GeoCAT to. In this example, the environment is called :code:`geocat`::
+2. Activate the conda environment you want to add GeoCAT to. In this example, the environment is called ``geocat``::
 
         conda activate geocat
 
@@ -61,17 +65,17 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 Updating GeoCAT-viz via Conda
 -------------------------------
 
-It is important to keep your version of :code:`geocat-viz` up to date. This can be done as follows:
+It is important to keep your version of ``geocat-viz`` up to date. This can be done as follows:
 
 1. Make sure your Conda is up to date by running this command from the terminal::
 
         conda update conda
 
-2. Activate the conda environment you want to update. In this example, the environment is called :code:`geocat`::
+2. Activate the conda environment you want to update. In this example, the environment is called ``geocat``::
 
         conda activate geocat
 
-3. Update :code:`geocat-viz`::
+3. Update ``geocat-viz``::
 
         conda update geocat-viz
 
@@ -79,7 +83,7 @@ It is important to keep your version of :code:`geocat-viz` up to date. This can 
 Installing GeoCAT-viz via PyPi
 -------------------------------
 GeoCAT-viz is distributed also in PyPI; therefore, the above Conda installation instructions should, in theory,
-apply to PyPI installation through using :code:`pip install` commands instead of :code:`conda install` wherever they occur.
+apply to PyPI installation through using ``pip install`` commands instead of ``conda install`` wherever they occur.
 
 Building GeoCAT-viz from source
 --------------------------------
@@ -93,10 +97,10 @@ Required dependencies for building and testing GeoCAT-viz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     - Python 3.8+
-    - `numpy <https://numpy.org/doc/stable/>`_
-    - `xarray <http://xarray.pydata.org/en/stable/>`_
-    - `matplotlib <https://matplotlib.org/stable/index.html>`_
-    - `cartopy <https://scitools.org.uk/cartopy/docs/latest/>`_
+    - `numpy <https://numpy.org/doc/stable/>`__
+    - `xarray <http://xarray.pydata.org/en/stable/>`__
+    - `matplotlib <https://matplotlib.org/stable/index.html>`__
+    - `cartopy <https://scitools.org.uk/cartopy/docs/latest/>`__
 
 
 How to create a Conda environment for building GeoCAT-viz
@@ -104,7 +108,7 @@ How to create a Conda environment for building GeoCAT-viz
 
 The GeoCAT-viz source code includes a conda environment definition file in
 the root directory that can be used to create a development environment containing
-all of the packages required to build GeoCAT-viz. The file :code:`conda_environment.yml`
+all of the packages required to build GeoCAT-viz. The file ``conda_environment.yml``
 is intended to be used on Linux systems and macOS.
 The following commands should work on both Linux and macOS::
 

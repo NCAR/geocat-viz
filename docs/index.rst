@@ -1,16 +1,84 @@
-GeoCAT-viz
-==========
+.. geocat-viz documentation master file, created by
+   sphinx-quickstart on Wed Apr 26 12:02:04 2023.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+.. module:: geocat.viz
+
+.. meta::
+   :description: GeoCAT-viz Python module
+   :keywords: geocat, geocat-viz, geocat viz, geocatviz, geocat.viz,
+              wrf, python, wrf-python, weather research and forecasting,
+              weather research and forecasting model, model, weather,
+              numerical weather prediction, model, matplotlib, cartopy,
+              wrf-arw, arw, ncar, ucar, cisl, ncl, ncar command language,
+              national center for atmospheric research,
+              university corporation for atmospheric research,
+              pynio, pyngl, interpolation, visualization, data visualization,
+              plotting, python plotting
+
+
+.. .. image:: _static/images/nsf.png
+..    :scale: 100%
+..   :align: right
+
+.. |
+.. |
+
+GeoCAT-viz Documentation
+========================
 
 The GeoCAT-viz repo contains tools to help plot data, including convenience and plotting functions that are used
 to facilitate plotting geosciences data with Matplotlib, Cartopy, and possibly other Python ecosystem
 plotting packages.
 
+.. grid:: 1 1 2 2
+    :gutter: 2
+
+    .. grid-item-card::  Installation
+        :class-title: custom-title
+        :class-body: custom-body
+        :img-top: _static/images/icons/download.svg
+        :link: installation
+        :link-type: doc
+
+        Installation instructions for GeoCAT-viz
+
+    .. grid-item-card::  API
+        :class-title: custom-title
+        :class-body: custom-body
+        :img-top: _static/images/icons/code.svg
+        :link: api
+        :link-type: doc
+
+        See the complete GeoCAT-viz API
+
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :caption: For Users
 
-   ./installation
-   ./api
-   ./examples
-   ./citation
-   ./support
+   Getting Started <getting-started>
+   Installation <installation>
+   API Reference <api>
+   Usage Examples <examples>
+   Cite GeoCAT-comp <citation.rst>
+   NCL Documentation <https://www.ncl.ucar.edu/>
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: For Developers
+
+   Release Notes <release-notes.rst>
+   Contributor's Guide <https://geocat.ucar.edu/pages/contributing.html>
+   Roadmap <https://geocat.ucar.edu/pages/roadmap.html>
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Getting Support
+
+   Support <support>
+   GitHub Issues <https://github.com/NCAR/geocat-viz/issues>
+   Feature Request Form <https://forms.gle/6DTo3ELLri4DAGfG8>

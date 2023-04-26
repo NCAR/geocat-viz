@@ -1,0 +1,22 @@
+name: gcv-docs
+channels:
+    - conda-forge
+dependencies:
+    - python>=3.8, <3.11
+    - pre_commit
+    - geocat-f2py
+    - geocat-datafiles
+    - geocat-viz
+    - xarray<=2023.02.0 #pin per issue #381
+    - netcdf4
+    - pint
+    - ipykernel
+    - ipython
+    - jupyter_client
+    - matplotlib-base
+    - sphinx-book-theme
+    - myst-nb
+    - sphinx-design
+    - nbsphinx
+    - xskillscore
+    - nc-time-axis

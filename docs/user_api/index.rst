@@ -1,4 +1,6 @@
-User API
+.. currentmodule:: geocat.viz
+
+   User API
 ========
 
 Routines
@@ -6,7 +8,7 @@ Routines
 
 GeoCAT-viz Plotting Routines
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+.. currentmodule:: geocat.viz.taylor
 .. autosummary::
    :toctree: ./generated/
 
@@ -14,15 +16,21 @@ GeoCAT-viz Plotting Routines
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+.. currentmodule:: geocat.viz.util
 .. autosummary::
    :toctree: ./generated/
 
+   geocat.viz.set_tick_direction_spine_visibility
+
+   geocat.viz.add_lat_lon_gridlines
+
    geocat.viz.add_lat_lon_ticklabels
 
-   geocat.viz.add_major_minor_ticks
+   geocat.viz.add_right_hand_axis
 
    geocat.viz.add_height_from_pressure_axis
+
+   geocat.viz.add_major_minor_ticks
 
    geocat.viz.set_titles_and_labels
 

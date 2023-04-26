@@ -7,6 +7,10 @@ import typing
 import numpy
 import xarray
 
+from matplotlib.projections import PolarAxes
+import mpl_toolkits.axisartist.floating_axes as fa
+import mpl_toolkits.axisartist.grid_finder as gf
+
 
 class TaylorDiagram(object):
     """Taylor Diagram.
@@ -21,22 +25,22 @@ class TaylorDiagram(object):
 
     Parameters
     ----------
-    refstd: :class:`float`
+    refstd : float
         Optional reference standard deviation
 
-    fig: :class:`matplotlib.figure.Figure`
+    fig : :class:`matplotlib.figure.Figure`
         Optional input figure. Default is None
 
-    rect: :class:`int`
+    rect : int
         Optional subplot definition
 
-    label: :class:`string`
+    label : str
         Optional reference label string indentifier
 
-    stdRange: :class:`tuple`
+    stdRange : tuple
         Optional stddev axis extent
 
-    stdLevel: :class:`list`
+    stdLevel : list
         Optional list of tick locations for stddev axis
 
     References
@@ -57,28 +61,24 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        refstd: :class:`float`
+        refstd : float
             Optional reference standard deviation
 
-        fig: :class:`matplotlib.figure.Figure`
+        fig : :class:`matplotlib.figure.Figure`
             Optional input figure. Default is None
 
-        rect: :class:`int`
+        rect : int
             Optional subplot definition
 
-        label: :class:`string`
+        label : str
             Optional reference label string indentifier
 
-        std_range: :class:tuple
+        std_range : tuple
             Optional stddev axis extent
 
-        std_level: :class:list
+        std_level : list
             Optional list of tick locations for stddev axis
         """
-
-        from matplotlib.projections import PolarAxes
-        import mpl_toolkits.axisartist.floating_axes as fa
-        import mpl_toolkits.axisartist.grid_finder as gf
 
         # Pull and set optional constructor variables
         # Set figure
@@ -200,32 +200,32 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        stddev: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, or :class:`float`
+        stddev : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
             An array of vertical coordinates of the data points that denote the standard deviation
 
-        corrcoef: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, or :class:`float`
+        corrcoef : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
             An array of horizontal coordinates of the data points that denote correlation
             Input should have the same size as *stddev*
 
-        fontsize: :class:`float`
+        fontsize : float
             Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command. Optional. Default value 14.
 
-        xytext: :class:`tuple` (:class:`float`, :class:`float`)
+        xytext : tuple(float, float)
             The position (x, y) to place the marker label at. The coordinate system is set to pixels.
             This argument is supplied to `matplotlib.axes.Axes.annotate` command. Optional. Default set to (-5,7)
 
-        annotate_on: :class:`bool`
+        annotate_on : bool
             Determine whether model labels are added. Optional. Default to True.
 
-        model_outlier_on: :class:bool
+        model_outlier_on : bool
             If True, models with negative correlations and standard deviations > TaylorDiagram.smax(default to 1.65)
             are plotted as text at the bottom of the figure; if False, all models are plotted
             according to *stddev* and *corrcoef* Default to False. Optional.
 
-        percent_bias_on: :class:bool
+        percent_bias_on : bool
             If True, model marker and marker size is plotted based on *bias_array* Default to False. Optional.
 
-        bias_array: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, or :class:`float`
+        bias_array : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
             If this is given, it is used to determine individual marker size and marker style internally.
             Input should have the same size as *stddev* and *corrcoef* Default to None.
 
@@ -236,10 +236,10 @@ class TaylorDiagram(object):
 
         Returns
         -------
-        modelTexts: array of :class:`matplotlib.text.Annotation`
+        modelTexts : array of :class:`matplotlib.text.Annotation`
             A list of text objects representing model labels
 
-        modelset: array of :class:`matplotlib.collections.PathCollection`
+        modelset : array of :class:`matplotlib.collections.PathCollection`
             A list of sets of markers representing sets of models
         """
 
@@ -381,16 +381,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        arr: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`float`
+        arr : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
             An array of horizontal coordinates of the data points that denote correlation
 
-        color: :class:`str`
+        color : str
             Color of the gridline. Optional. Default to "lightgray"
 
         linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
             See matplotlib Linestyle examples. Optional. Default to (0, (9,5))
 
-        linewidth: :class:`float`
+        linewidth : float
             Set the line width in points. Optional. Default to 0.5
 
         Notes
@@ -423,16 +423,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        arr: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`float`
+        arr : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
             An array of vertical coordinates of the data points that denote standard deviation
 
-        color: :class:`str`
+        color : str
             Color of the gridline. Optional. Default to "lightgray"
 
-        linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+        linestyle : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
             See matplotlib Linestyle examples. Optional. Default to (0, (9,5))
 
-        linewidth: :class:`float`
+        linewidth : float
             Set the line width in points. Optional. Default to 1
 
         Notes
@@ -443,6 +443,7 @@ class TaylorDiagram(object):
         -------
         None
         """
+
         t = np.linspace(0, np.pi / 2)
         for value in arr:
             r = np.zeros_like(t) + value
@@ -470,7 +471,7 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        levels: :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`, :class:`int`
+        levels : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, int
             Determines the number and positions of the contour lines. Optional. Default to 5
 
         Notes
@@ -479,7 +480,8 @@ class TaylorDiagram(object):
 
         Returns
         -------
-        :class:`matplotlib.contour.QuadContourSet`
+        contours : :class:`matplotlib.contour.QuadContourSet`
+            Matplotlib Contour Object
         """
         # Return coordinate matrices from coordinate vectors
         rs, ts = np.meshgrid(np.linspace(self.smin, self.smax),
@@ -509,19 +511,19 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        namearr : :class:`xarray.DataArray`, :class:`numpy.ndarray`, :class:`list`
+        namearr : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list
             List of model names
 
-        x_loc: :class:`float`
+        x_loc : float
             x component of text position. Optional. Default to 0.1
 
-        y_loc: :class:`float`
+        y_loc : float
             y component of text position. Optional. Default to 0.31
 
-        verticalalignment: :class:`str`
+        verticalalignment : str
             Vertical alignment. Options: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}. Optional. Default to 'top'
 
-        fontsize: :class:`float`
+        fontsize : float
             Text fontsize. Optional. Default to 13
 
         Notes
@@ -532,6 +534,7 @@ class TaylorDiagram(object):
         ------
         None
         """
+
         text = [str(i + 1) + ' - ' + namearr[i] for i in range(len(namearr))]
         text = '\n'.join(text)
 
@@ -600,16 +603,16 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        xloc: :class:`float`
+        xloc : float
             x location of legend position, supplied to bbox_to_anchor(). Optional. Default to 1.1
 
-        yloc: :class:`float`
+        yloc : float
             y location of legend position, upplied to bbox_to_anchor(). Optional. Default to 0.95
 
-        loc: :class:`str`
+        loc : str
             See Matplotlib legend documentations. Optional. Default to 'upper right'
 
-        fontsize: :class:`float`
+        fontsize : float
             Text fontsize. Optional. Default to 14
 
         Notes
@@ -645,13 +648,13 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        maintitle: :class:`str`
+        maintitle : str
             Title text
 
-        fontsize: :class:`float`
+        fontsize : float
             Text fontsize. Optional. Defaults to 18
 
-        y_loc: :class:`float`
+        y_loc : float
             Vertical Axes location. 1.0 is the top. Optional. Default to None
 
         Notes
@@ -673,13 +676,13 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        ticklabel_fontsize: :class:`float`
+        ticklabel_fontsize : float
             Fontsize of all tick labels. Optional. Default to 14
 
-        axislabel_fontsize: :class:`float`
+        axislabel_fontsize : float
             Fontsize of axis labels. Optional. Default to 16
 
-        axislabel_pad: :class:`float`
+        axislabel_pad : float
             Padding between axis labels and axis. Optional. Default to 8
 
         Return
