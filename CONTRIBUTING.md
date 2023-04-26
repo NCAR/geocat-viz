@@ -44,3 +44,9 @@ following contribution guidelines:
 use of the pre-defined parent classes if appropriate
 
 3. Add the function to the namespace by adding it to `$GEOCAT_VIZ/src/geocat/viz/__init__.py`
+
+# Adding functionality to the User API Documentation
+
+1. Add your new function to `GEOCAT_VIZ/docs/user_api/index.rst`.
+
+2. Ensure that the function docstring has examples linking to relevant GeoCAT-Examples scripts.
