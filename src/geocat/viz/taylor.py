@@ -1,12 +1,13 @@
 """Taylor Diagrams."""
 
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
 import typing
-import numpy
-import xarray
 
+import numpy as np
+
+import xarray as xr
+
+import matplotlib
+import matplotlib.pyplot as plt
 from matplotlib.projections import PolarAxes
 import mpl_toolkits.axisartist.floating_axes as fa
 import mpl_toolkits.axisartist.grid_finder as gf
@@ -180,9 +181,9 @@ class TaylorDiagram(object):
         self.modelOutside = -1
 
     def add_model_set(self,
-                      stddev: typing.Union[xarray.DataArray, numpy.ndarray,
+                      stddev: typing.Union[xr.DataArray, np.ndarray,
                                            list, float],
-                      corrcoef: typing.Union[xarray.DataArray, numpy.ndarray,
+                      corrcoef: typing.Union[xr.DataArray, np.ndarray,
                                              list, float],
                       fontsize: float = 14,
                       xytext: tuple = (-5, 7),
@@ -371,7 +372,7 @@ class TaylorDiagram(object):
         return modelTexts, modelset
 
     def add_xgrid(self,
-                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list,
                                     float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
@@ -412,7 +413,7 @@ class TaylorDiagram(object):
                            **kwargs)
 
     def add_ygrid(self,
-                  arr: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list,
                                     float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
@@ -464,7 +465,7 @@ class TaylorDiagram(object):
         self._ax.grid(*args, **kwargs)
 
     def add_contours(self,
-                     levels: typing.Union[xarray.DataArray, numpy.ndarray, list,
+                     levels: typing.Union[xr.DataArray, np.ndarray, list,
                                           int] = 5,
                      **kwargs):
         """Add constant centered RMS difference contours.
@@ -497,7 +498,7 @@ class TaylorDiagram(object):
         return contours
 
     def add_model_name(self,
-                       namearr: typing.Union[xarray.DataArray, numpy.ndarray,
+                       namearr: typing.Union[xr.DataArray, np.ndarray,
                                              list],
                        x_loc: float = 0.1,
                        y_loc: float = 0.31,

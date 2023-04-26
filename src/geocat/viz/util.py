@@ -1,23 +1,28 @@
-import cartopy.mpl.geoaxes
-from itertools import chain
-import matplotlib.axes
-import metpy.calc as mpcalc
-from pint import Quantity
-from metpy.units import units
+import warnings
+
 import numpy as np
 import typing
-import xarray
-import matplotlib.ticker as tic
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
-import matplotlib as mpl
-from matplotlib import cm
+
 import xarray as xr
-import cartopy.util as cutil
-import cartopy.crs as ccrs
+
+from pint import Quantity
+
+from sklearn.cluster import DBSCAN
+
+import matplotlib as mpl
+import matplotlib.axes
 import matplotlib.path as mpath
 import matplotlib.pyplot as plt
-from sklearn.cluster import DBSCAN
-import warnings
+import matplotlib.ticker as tic
+import matplotlib.cm as cm
+
+import cartopy.crs as ccrs
+import cartopy.util as cutil
+import cartopy.mpl.geoaxes
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
+import metpy.calc as mpcalc
+from metpy.units import units
 
 
 def set_tick_direction_spine_visibility(ax,
@@ -36,9 +41,11 @@ def set_tick_direction_spine_visibility(ax,
         Current axes to the current figure
 
     tick_direction : str
-        Set 'in' to put ticks inside the axes,
-        'out' to put ticks outside the axes,
-        'inout' to put ticks both in and out of the axes.
+        Tick direction. Accepted alias:
+
+        - `in`: to put ticks inside the axes
+        - `out`: to put ticks outside the axes
+        - `inout`: to put ticks both in and out of the axes
 
     top_spine_visible : bool
         Set False to turn off top spine of the axes.
@@ -647,7 +654,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     return new_cmap
 
 
-def xr_add_cyclic_longitudes(da: xarray.DataArray, coord: str):
+def xr_add_cyclic_longitudes(da: xr.DataArray, coord: str):
     """Utility function to handle the no-shown-data artifact of 0 and
     360-degree longitudes.
 
@@ -815,7 +822,7 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
                   crs=ccrs.PlateCarree())
 
 
-def findLocalExtrema(da: xarray.DataArray,
+def findLocalExtrema(da: xr.DataArray,
                      highVal: int = 0,
                      lowVal: int = 1000,
                      eType: str = 'Low',
@@ -1019,7 +1026,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
     return cLabels
 
 
-def plotELabels(da: xarray.DataArray,
+def plotELabels(da: xr.DataArray,
                 transform: cartopy.crs.CRS,
                 proj: cartopy.crs.CRS,
                 clabel_locations: list = [],
@@ -1130,8 +1137,8 @@ def plotELabels(da: xarray.DataArray,
     return extremaLabels
 
 
-def set_vector_density(data: xarray.DataArray,
-                       minDistance: int = 0) -> xarray.DataArray:
+def set_vector_density(data: xr.DataArray,
+                       minDistance: int = 0) -> xr.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
