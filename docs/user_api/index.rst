@@ -22,6 +22,8 @@ GeoCAT-viz Utility Functions
 
    geocat.viz.add_major_minor_ticks
 
+   geocat.viz.add_height_from_pressure_axis
+
    geocat.viz.set_titles_and_labels
 
    geocat.viz.set_axes_limits_and_ticks
