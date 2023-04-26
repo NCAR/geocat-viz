@@ -1,4 +1,4 @@
-.. currentmodule:: geocat.comp
+.. currentmodule:: geocat.viz
 
 .. _examples:
 

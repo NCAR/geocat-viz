@@ -62,7 +62,7 @@ plotting packages.
    Installation <installation>
    API Reference <api>
    Usage Examples <examples>
-   Cite GeoCAT-comp <citation.rst>
+   Cite GeoCAT-viz <citation.rst>
    NCL Documentation <https://www.ncl.ucar.edu/>
 
 .. toctree::
