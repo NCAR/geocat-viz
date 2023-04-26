@@ -181,10 +181,10 @@ class TaylorDiagram(object):
         self.modelOutside = -1
 
     def add_model_set(self,
-                      stddev: typing.Union[xr.DataArray, np.ndarray,
-                                           list, float],
-                      corrcoef: typing.Union[xr.DataArray, np.ndarray,
-                                             list, float],
+                      stddev: typing.Union[xr.DataArray, np.ndarray, list,
+                                           float],
+                      corrcoef: typing.Union[xr.DataArray, np.ndarray, list,
+                                             float],
                       fontsize: float = 14,
                       xytext: tuple = (-5, 7),
                       annotate_on: bool = True,
@@ -372,8 +372,7 @@ class TaylorDiagram(object):
         return modelTexts, modelset
 
     def add_xgrid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list,
-                                    float],
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: float = 0.5,
@@ -413,8 +412,7 @@ class TaylorDiagram(object):
                            **kwargs)
 
     def add_ygrid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list,
-                                    float],
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: int = 1,
@@ -498,8 +496,7 @@ class TaylorDiagram(object):
         return contours
 
     def add_model_name(self,
-                       namearr: typing.Union[xr.DataArray, np.ndarray,
-                                             list],
+                       namearr: typing.Union[xr.DataArray, np.ndarray, list],
                        x_loc: float = 0.1,
                        y_loc: float = 0.31,
                        verticalalignment: str = 'top',
