@@ -233,7 +233,7 @@ def add_height_from_pressure_axis(ax,
         Optional text font size for y-axes. A default value of 16 is used if
         nothing is set.
 
-     Returns
+    Returns
     -------
     axRHS : :class:`matplotlib.axes._subplots.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
         The created right-hand axis
