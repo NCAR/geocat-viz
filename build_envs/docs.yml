@@ -7,9 +7,12 @@ dependencies:
   - cmaps
   - matplotlib<=3.5
   - pint
+  - pip
   - pre-commit
   - sphinx-book-theme
   - myst-nb
   - nbsphinx
   - sphinx-design
   - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
+  - pip:
+      - -e ..
