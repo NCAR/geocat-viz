@@ -13,8 +13,8 @@ source:
   # git_url: https://github.com/NCAR/{{ name }}.git
 build:
   noarch: python
-  number: 0
-  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed -vv .
+  number: 1
+  script: SETUPTOOLS_SCM_PRETEND_VERSION={{ version }} {{ PYTHON }} -m pip install --no-deps --ignore-installed -vv .
 
 requirements:
   build:
@@ -48,6 +48,8 @@ test:
     # - geocat.viz.plot_classes
     # - geocat.viz.util
   commands:
+    # print package version
+    - python -c "import geocat.comp; print(geocat.comp.__version__)"
     - pip check
   source_files:
     - src

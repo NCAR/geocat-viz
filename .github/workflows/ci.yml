@@ -9,7 +9,45 @@ on:
   workflow_dispatch:
 
 jobs:
-  docs:
+  test:
+    name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ "ubuntu-latest", "macos-latest"]
+        python-version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ github.token }}
+      - name: conda_setup
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: geocat_viz_build
+          channel-priority: strict
+          python-version: ${{ matrix.python-version }}
+          channels: conda-forge
+          environment-file: build_envs/environment.yml
+
+      - name: Install geocat-comp
+        run: |
+          python -m pip install . --no-deps
+
+      - name: conda list
+        run: |
+          conda list
+
+  link-check:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,12 +60,18 @@ jobs:
       - name: conda_setup
         uses: conda-incubator/setup-miniconda@v2
         with:
-          activate-environment: gv-docs
+          activate-environment: gc-docs
           channel-priority: strict
-          python-version: "3.10"
+          python-version: 3.9
           channels: conda-forge
           environment-file: build_envs/docs.yml
-      - name: Make docs
+      - name: Install geocat-viz
+        run: |
+          python -m pip install .
+      - name: check conda list
+        run: |
+          conda list
+      - name: Make docs with linkcheck
         run: |
           cd docs
-          make html
+          make linkcheck

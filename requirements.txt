@@ -1,8 +1,0 @@
-matplotlib
-xarray
-numpy
-cartopy
-cmaps
-setuptools
-scikit-learn
-metpy
