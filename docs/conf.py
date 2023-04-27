@@ -77,6 +77,8 @@ intersphinx_mapping = {
     'xarray': ('http://xarray.pydata.org/en/stable/', None),
     'pint': ('https://pint.readthedocs.io/en/stable/', None),
     'cftime': ('https://unidata.github.io/cftime/', None),
+    'matplotlib': ('https://matplotlib.org/stable/', None),
+    'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None)
 }
 # allows us to easily link PRs and issues in the change log
 extlinks = {
