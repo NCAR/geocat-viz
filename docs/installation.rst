@@ -17,7 +17,7 @@ The easiest way to install GeoCAT-viz is using
 
     conda create -n geocat -c conda-forge geocat-viz
 
-where ```geocat``` is the name of a new conda environment, which can then be
+where ``geocat`` is the name of a new conda environment, which can then be
 activated using::
 
     conda activate geocat
@@ -108,7 +108,7 @@ How to create a Conda environment for building GeoCAT-viz
 
 The GeoCAT-viz source code includes a conda environment definition file in
 the root directory that can be used to create a development environment containing
-all of the packages required to build GeoCAT-viz. The file ``conda_environment.yml``
+all of the packages required to build GeoCAT-viz. The file ``build_envs/environment.yml``
 is intended to be used on Linux systems and macOS.
 The following commands should work on both Linux and macOS::
 
