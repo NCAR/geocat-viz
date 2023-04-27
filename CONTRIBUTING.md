@@ -43,7 +43,7 @@ following contribution guidelines:
 2. Determine which module is the best home for your new function.
 
     - If necessary, create a new `.py` module under `$GEOCAT_VIZ/src/geocat/viz/`.
-    
+
     - Implement your plotting function inside the chosen module, making
     use of the pre-defined parent classes if appropriate
 
