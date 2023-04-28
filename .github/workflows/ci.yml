@@ -60,7 +60,7 @@ jobs:
       - name: conda_setup
         uses: conda-incubator/setup-miniconda@v2
         with:
-          activate-environment: gc-docs
+          activate-environment: gv-docs
           channel-priority: strict
           python-version: 3.9
           channels: conda-forge
