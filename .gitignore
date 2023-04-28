@@ -8,3 +8,6 @@ docs/_build/
 
 # python builds
 *__pycache__/
+dist/
+.eggs/
+*egg-info

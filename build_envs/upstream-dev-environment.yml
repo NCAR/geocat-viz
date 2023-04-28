@@ -17,6 +17,7 @@ dependencies:
   - matplotlib<3.6
   - metpy
   - mock
+  - myst-nb
   - nbsphinx
   - netcdf4
   - pillow

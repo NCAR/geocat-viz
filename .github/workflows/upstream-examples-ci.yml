@@ -34,7 +34,7 @@ jobs:
       with:
         micromamba-version: "latest"
         environment-name: geocat_viz_upstream
-        environment-file: ci/upstream_environment.yml
+        environment-file: build_envs/upstream-dev-environment.yml
 
     - name: Install geocat-viz
       run: |

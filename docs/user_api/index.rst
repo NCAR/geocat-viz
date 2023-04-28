@@ -1,4 +1,6 @@
-User API
+.. currentmodule:: geocat.viz
+
+   User API
 ========
 
 Routines
@@ -6,40 +8,46 @@ Routines
 
 GeoCAT-viz Plotting Routines
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+.. currentmodule:: geocat.viz.taylor
 .. autosummary::
    :toctree: ./generated/
 
-   geocat.viz.TaylorDiagram
+   geocat.viz.taylor.TaylorDiagram
 
 GeoCAT-viz Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+.. currentmodule:: geocat.viz.util
 .. autosummary::
    :toctree: ./generated/
 
-   geocat.viz.add_lat_lon_ticklabels
+   set_tick_direction_spine_visibility
 
-   geocat.viz.add_major_minor_ticks
+   add_lat_lon_gridlines
 
-   geocat.viz.add_height_from_pressure_axis
+   add_lat_lon_ticklabels
 
-   geocat.viz.set_titles_and_labels
+   add_right_hand_axis
 
-   geocat.viz.set_axes_limits_and_ticks
+   add_height_from_pressure_axis
 
-   geocat.viz.truncate_colormap
+   add_major_minor_ticks
 
-   geocat.viz.xr_add_cyclic_longitudes
+   set_titles_and_labels
 
-   geocat.viz.set_map_boundary
+   set_axes_limits_and_ticks
 
-   geocat.viz.findLocalExtrema
+   truncate_colormap
 
-   geocat.viz.plotCLabels
+   xr_add_cyclic_longitudes
 
-   geocat.viz.plotELabels
+   set_map_boundary
 
-   geocat.viz.set_vector_density
+   findLocalExtrema
 
-   geocat.viz.get_skewt_vars
+   plotCLabels
+
+   plotELabels
+
+   set_vector_density
+
+   get_skewt_vars
