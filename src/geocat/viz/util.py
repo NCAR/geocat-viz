@@ -275,8 +275,6 @@ def add_height_from_pressure_axis(ax,
 
     - `NCL_h_lat_7.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_h_lat_7.html?highlight=add_height_from_pressure_axis>`_
 
-    - `NCL_h_long_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_h_long_6.html?highlight=add_height_from_pressure_axis>`_
-
      - `NCL_h_vector_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_5.html?highlight=add_height_from_pressure_axis>`_
     """
 
