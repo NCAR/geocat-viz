@@ -60,6 +60,12 @@ def set_tick_direction_spine_visibility(ax,
 
     right_spine_visible : bool
         Set False to turn off right spine.
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_box_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Boxplots/NCL_box_2.html?highlight=set_tick_direction_spine_visibility>`_
     """
 
     ax.tick_params(direction=tick_direction, axis='both', which='both')
@@ -122,6 +128,14 @@ def add_lat_lon_gridlines(ax,
     -------
     gl : :class:`cartopy.mpl.gridliner.Gridliner`
         A Cartopy GridLiner object.
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_native_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_native_1.html?highlight=add_lat_lon_gridlines>`_
+
+    - `NCL_native_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_native_2.html?highlight=add_lat_lon_gridlines>`_
     """
 
     # Draw gridlines
@@ -181,6 +195,12 @@ def add_right_hand_axis(ax,
     -------
     axRHS : :class:`matplotlib.axes._subplots.AxesSubplot`, :class:`cartopy.mpl.geoaxes.GeoAxesSubplot`
         The created right-hand axis
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_coneff_8.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_coneff_8.html?highlight=add_right_hand_axis>`_
     """
 
     axRHS = ax.twinx()
@@ -244,6 +264,18 @@ def add_height_from_pressure_axis(ax,
     --------
     Related NCL Functions:
         `gsn_csm_pres_hgt <https://www.ncl.ucar.edu/Document/Graphics/Interfaces/gsn_csm_pres_hgt.shtml>`_,
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=add_height_from_pressure_axis>`_
+
+    - `NCL_h_lat_6.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_h_lat_6.html?highlight=add_height_from_pressure_axis>`_
+
+    - `NCL_h_lat_7.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_h_lat_7.html?highlight=add_height_from_pressure_axis>`_
+
+     - `NCL_h_vector_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_5.html?highlight=add_height_from_pressure_axis>`_
     """
 
     # Create the right hand axis, inheriting from the left
@@ -306,11 +338,11 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-    - `NCL_ce_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon>`_
+    - `NCL_ce_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_1.html?highlight=add_lat_lon_ticklabels>`_
 
-    - `NCL_ce_3_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon>`_
+    - `NCL_ce_3_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_ce_3_2.html?highlight=add_lat_lon_ticklabels>`_
 
-    - `NCL_conOncon_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon>`_
+    - `NCL_conOncon_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_2.html?highlight=add_lat_lon_ticklabels>`_
     """
 
     lon_formatter = LongitudeFormatter(
@@ -996,7 +1028,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotclabels>`_
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotCLabels>`_
     """
 
     # Initialize empty array that will be filled with contour label text objects and returned
@@ -1240,6 +1272,12 @@ def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
     Related NCL Functions:
         `skewT_PlotData <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_PlotData.shtml>`_,
         `skewt_BackGround <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_BackGround.shtml>`_
+
+     Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_skewt_2_2 <https://geocat-examples.readthedocs.io/en/latest/gallery/Skew-T/NCL_skewt_2_2.html?highlight=get_skewt_vars>`_
     """
 
     # CAPE

@@ -242,6 +242,12 @@ class TaylorDiagram(object):
 
         modelset : array of :class:`matplotlib.collections.PathCollection`
             A list of sets of markers representing sets of models
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_model_set>`_
         """
 
         # Convert to np arrays and make copies
@@ -400,6 +406,12 @@ class TaylorDiagram(object):
         Returns
         -------
         None
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_xgrid>`_
         """
 
         for value in arr:
@@ -441,6 +453,12 @@ class TaylorDiagram(object):
         Returns
         -------
         None
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_ygrid>`_
         """
 
         t = np.linspace(0, np.pi / 2)
@@ -481,6 +499,12 @@ class TaylorDiagram(object):
         -------
         contours : :class:`matplotlib.contour.QuadContourSet`
             Matplotlib Contour Object
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_contours>`_
         """
         # Return coordinate matrices from coordinate vectors
         rs, ts = np.meshgrid(np.linspace(self.smin, self.smax),
@@ -531,6 +555,14 @@ class TaylorDiagram(object):
         Return
         ------
         None
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_3.html?highlight=add_model_name>`_
+
+        - `NCL_taylor_6.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_6.html?highlight=add_model_name>`_
         """
 
         text = [str(i + 1) + ' - ' + namearr[i] for i in range(len(namearr))]
@@ -545,7 +577,14 @@ class TaylorDiagram(object):
                      **kwargs)
 
     def add_bias_legend(self):
-        """Add bias legend to the upper left hand corner."""
+        """Add bias legend to the upper left hand corner.
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_8.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_8.html?highlight=add_bias_legend>`_
+        """
         text = "-  /  +     Bias\n"
         percent = [">20%", "10-20%", "5-10%", "1-5%", "<1%"]
 
@@ -622,6 +661,12 @@ class TaylorDiagram(object):
         ------
         legend : :class:`matplotlib.legend.Legend`
             Matplotlib legend object
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_3.html?highlight=add_legend>`_
         """
 
         if kwargs.get('handles') is None:
@@ -662,6 +707,12 @@ class TaylorDiagram(object):
         Return
         ------
         None
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_6.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_6.html?highlight=add_title>`_
         """
 
         self._ax.set_title(maintitle, fontsize=fontsize, y=y_loc, **kwargs)
@@ -686,6 +737,12 @@ class TaylorDiagram(object):
         Return
         ------
         None
+
+        Examples
+        --------
+        All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+        - `NCL_taylor_6.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_6.html?highlight=set_fontsize_and_pad>`_
         """
 
         self._ax.axis['top', 'right',
