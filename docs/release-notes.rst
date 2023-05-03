@@ -19,8 +19,6 @@ Documentation
 * Documentation and Packaging Overhaul to match GeoCat-Comp style in (:pr:`116`), (:pr:`121`)
 * Adding examples links to all functions in (:pr:`122`)
 
-**Full Changelog**: https://github.com/NCAR/geocat-viz/compare/v2023.03.0...v2023.05.0
-
 ..
     Add new names and GitHub links as needed
 
