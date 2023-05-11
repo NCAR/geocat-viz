@@ -685,8 +685,8 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
 
     if n and not num_values:
         warnings.warn(
-+            "Keword argument `n` is deprecated. Please use `num_values` instead"
-+        )
+            "Keword argument `n` is deprecated. Please use `num_values` instead"
+        )
         num_values = n
 
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
