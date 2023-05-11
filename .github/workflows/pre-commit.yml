@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - run: pip install flake8 flake8-variables-names
-      - run: flake8 --select=VNE --show-source --statistics --ignore VNE003 .
+      - run: flake8 --select=VNE,N802 --show-source --statistics --ignore VNE003 .
