@@ -1191,10 +1191,10 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
-    """This function is deprecated. Please use `plot_extrema_contour_labels`
+    """This function is deprecated. Please use `plot_extrema_labels`
     instead.
 
-    Utility function to plot contour labels.
+    Utility function to plot high/low contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
@@ -1245,14 +1245,14 @@ def plotELabels(da: xr.DataArray,
     """
 
     warnings.warn(
-        "This function is deprecated. Please use `plot_extrema_contour_labels` instead."
+        "This function is deprecated. Please use `plot_extrema_labels` instead."
     )
 
-    return plot_extrema_contour_labels(da, transform, proj, clabel_locations,
+    return plot_extrema_labels(da, transform, proj, clabel_locations,
                                        label, fontsize, whitebbox, horizontal)
 
 
-def plot_extrema_contour_labels(da: xr.DataArray,
+def plot_extrema_labels(da: xr.DataArray,
                                 transform: cartopy.crs.CRS,
                                 proj: cartopy.crs.CRS,
                                 clabel_locations: list = [],
