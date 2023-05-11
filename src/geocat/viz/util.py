@@ -1191,8 +1191,7 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
-    """This function is deprecated. Please use `plot_extrema_labels`
-    instead.
+    """This function is deprecated. Please use `plot_extrema_labels` instead.
 
     Utility function to plot high/low contour labels.
 
@@ -1248,18 +1247,18 @@ def plotELabels(da: xr.DataArray,
         "This function is deprecated. Please use `plot_extrema_labels` instead."
     )
 
-    return plot_extrema_labels(da, transform, proj, clabel_locations,
-                                       label, fontsize, whitebbox, horizontal)
+    return plot_extrema_labels(da, transform, proj, clabel_locations, label,
+                               fontsize, whitebbox, horizontal)
 
 
 def plot_extrema_labels(da: xr.DataArray,
-                                transform: cartopy.crs.CRS,
-                                proj: cartopy.crs.CRS,
-                                clabel_locations: list = [],
-                                label: str = 'L',
-                                fontsize: int = 22,
-                                whitebbox: bool = False,
-                                horizontal: bool = True) -> list:
+                        transform: cartopy.crs.CRS,
+                        proj: cartopy.crs.CRS,
+                        label_locations: list = [],
+                        label: str = 'L',
+                        fontsize: int = 22,
+                        whitebbox: bool = False,
+                        horizontal: bool = True) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
@@ -1279,7 +1278,7 @@ def plot_extrema_labels(da: xr.DataArray,
         Projection 'ax' is defined by.
         This is the instance of CRS that the coordinates will be transformed to.
 
-    clabel_locations : list
+    label_locations : list
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contour labels should be plotted.
 
@@ -1324,15 +1323,15 @@ def plot_extrema_labels(da: xr.DataArray,
 
     # Plot any low contour levels
     clabel_points = proj.transform_points(
-        transform, np.array([x[0] for x in clabel_locations]),
-        np.array([x[1] for x in clabel_locations]))
+        transform, np.array([x[0] for x in label_locations]),
+        np.array([x[1] for x in label_locations]))
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
 
     for loc in range(len(transformed_locations)):
 
         try:
             # Find field variable data at that coordinate
-            coord = clabel_locations[loc]
+            coord = label_locations[loc]
             cond = np.logical_and(coordarr[:, :, 0] == coord[0],
                                   coordarr[:, :, 1] == coord[1])
             z_loc, y_loc = np.where(cond)
@@ -1432,8 +1431,8 @@ def set_vector_density(data: xr.DataArray,
         return ds
 
 
-def get_skewt_vars(pressure: Quantity, temp_parcel: Quantity,
-                   temp_dewpoint: Quantity, pro: Quantity) -> str:
+def get_skewt_vars(pressure: Quantity, temperature: Quantity,
+                   dewpoint: Quantity, pro: Quantity) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
@@ -1442,9 +1441,9 @@ def get_skewt_vars(pressure: Quantity, temp_parcel: Quantity,
     ----------
     pressure : :class:`pint.Quantity`
         Pressure level input from dataset
-    temp_parcel : :class:`pint.Quantity`
+    temperature : :class:`pint.Quantity`
         Temperature for parcel from dataset
-    temp_dewpoint : :class:`pint.Quantity`
+    dewpoint : :class:`pint.Quantity`
         Dew point temperature for parcel from dataset
     pro : :class:`pint.Quantity`
         Parcel profile temperature converted to degC
@@ -1473,21 +1472,21 @@ def get_skewt_vars(pressure: Quantity, temp_parcel: Quantity,
     """
 
     # CAPE
-    cape = mpcalc.cape_cin(pressure, temp_parcel, temp_dewpoint, pro)
+    cape = mpcalc.cape_cin(pressure, temperature, dewpoint, pro)
     cape = cape[0].magnitude
 
     # Precipitable Water
-    pwat = mpcalc.precipitable_water(pressure, temp_dewpoint)
+    pwat = mpcalc.precipitable_water(pressure, dewpoint)
     pwat = (pwat.magnitude / 10) * units.cm  # Convert mm to cm
     pwat = pwat.magnitude
 
     # Pressure and temperature of lcl
-    lcl = mpcalc.lcl(pressure[0], temp_parcel[0], temp_dewpoint[0])
+    lcl = mpcalc.lcl(pressure[0], temperature[0], dewpoint[0])
     plcl = lcl[0].magnitude
     tlcl = lcl[1].magnitude
 
     # Showalter index
-    shox = mpcalc.showalter_index(pressure, temp_parcel, temp_dewpoint)
+    shox = mpcalc.showalter_index(pressure, temperature, dewpoint)
     shox = shox[0].magnitude
 
     # Place calculated values in iterable list
