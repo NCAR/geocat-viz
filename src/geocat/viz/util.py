@@ -833,7 +833,8 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+                   [(lon_range[0], lat)
+                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)
     elif ((lon_range[0] == 180 or lon_range[0] == -180) and
           (lon_range[1] == 180 or lon_range[1] == -180)):
@@ -843,7 +844,8 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+                   [(lon_range[0], lat)
+                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
