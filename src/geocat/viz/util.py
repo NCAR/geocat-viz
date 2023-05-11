@@ -861,6 +861,62 @@ def findLocalExtrema(da: xr.DataArray,
                      lowVal: int = 1000,
                      eType: str = 'Low',
                      eps: float = 10) -> list:
+    """This function is deprecated. Call `find_local_extrema` instead.
+
+    Utility function to find local low/high field variable coordinates on a
+    contour map. To classify as a local high, the data point must be greater
+    than highval, and to classify as a local low, the data point must be less
+    than lowVal.
+
+    Parameters
+    ----------
+    da : :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
+
+    highVal : int
+        Data value that the local high must be greater than to qualify as a "local high" location.
+        Default highVal is 0.
+
+    lowVal : int
+        Data value that the local low must be less than to qualify as a "local low" location.
+        Default lowVal is 1000.
+
+    eType : str
+        'Low' or 'High'
+        Determines which extrema are being found- minimum or maximum, respectively.
+        Default eType is 'Low'.
+
+    eps : float
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
+            for one to be considered as in the neighborhood of the other.
+            Default eps is 10.
+
+    Returns
+    -------
+    clusterExtremas : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify local low/high locations
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=findlocalextrema>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=findlocalextrema>`_
+    """
+
+    warnings.warn(
+        "This function is deprecated. Call `find_local_extrema` instead.")
+
+    return find_local_extrema(da, highVal, lowVal, eType, eps)
+
+
+def find_local_extrema(da: xr.DataArray,
+                       highVal: int = 0,
+                       lowVal: int = 1000,
+                       eType: str = 'Low',
+                       eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highval, and to classify as a local low, the data point must be less
@@ -983,6 +1039,71 @@ def plotCLabels(ax: matplotlib.axes.Axes,
                 fontsize: int = 12,
                 whitebbox: bool = False,
                 horizontal: bool = False) -> list:
+    """This function is deprecated. Call `plot_contour_labels` instead.
+
+    Utility function to plot contour labels by passing in a coordinate to
+    the clabel function.
+
+    This allows the user to specify the exact locations of the labels, rather than having matplotlib
+    plot them automatically.
+
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        Axis containing the contour set.
+
+    contours : :class:`matplotlib.contour.QuadContourSet`
+        Contour set that is being labeled.
+
+    transform : :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
+
+    proj : :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
+
+    clabel_locations : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contours with regular field variable values should be plotted.
+
+    fontsize : int
+        Font size of contour labels.
+
+    whitebbox : bool
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
+
+    horizontal : bool
+        Setting this to "True" will cause the contour labels to be horizontal.
+
+    Returns
+    -------
+    cLabels : list
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotCLabels>`_
+    """
+
+    warnings.warn(
+        "This function is  deprecated. Call `plot_contour_labels` instead.")
+
+    return plot_contour_labels(ax, contours, transform, proj, clabel_locations,
+                               fontsize, whitebbox, horizontal)
+
+
+def plot_contour_labels(ax: matplotlib.axes.Axes,
+                        contours,
+                        transform: cartopy.crs.CRS,
+                        proj: cartopy.crs.CRS,
+                        clabel_locations: list = [],
+                        fontsize: int = 12,
+                        whitebbox: bool = False,
+                        horizontal: bool = False) -> list:
     """Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
 
@@ -1068,6 +1189,75 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
+    """This function is deprecated. Please use `plot_extrema_contour_labels`
+    instead.
+
+    Utility function to plot contour labels.
+
+    High/Low contour labels will be plotted using text boxes for more accurate label values
+    and placement.
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+
+    Parameters
+    ----------
+    da : :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable data values.
+
+    transform : :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
+
+    proj : :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
+
+    clabel_locations : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contour labels should be plotted.
+
+    label : str
+        ex. 'L' or 'H'
+        The data value will be plotted as a subscript of this label.
+
+    fontsize : int
+        Font size of regular contour labels.
+
+    horizontal : bool
+        Setting this to "True" will cause the contour labels to be horizontal.
+
+    whitebbox : bool
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
+
+    Returns
+    -------
+    extremaLabels : list
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotELabels>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=plotELabels>`_
+    """
+
+    warnings.warn(
+        "This function is deprecated. Please use `plot_extrema_contour_labels` instead."
+    )
+
+    return plot_extrema_contour_labels(da, transform, proj, clabel_locations,
+                                       label, fontsize, whitebbox, horizontal)
+
+
+def plot_extrema_contour_labels(da: xr.DataArray,
+                                transform: cartopy.crs.CRS,
+                                proj: cartopy.crs.CRS,
+                                clabel_locations: list = [],
+                                label: str = 'L',
+                                fontsize: int = 22,
+                                whitebbox: bool = False,
+                                horizontal: bool = True) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
