@@ -639,7 +639,7 @@ def set_axes_limits_and_ticks(
 def truncate_colormap(cmap: matplotlib.colors.Colormap,
                       minval: typing.Union[int, float] = 0.0,
                       maxval: typing.Union[int, float] = 1.0,
-                      n: int = 100,
+                      num_values: int = 100,
                       name: str = None):
     """Utility function that truncates a colormap. Registers the new colormap
     by name in plt.cm, and also returns the updated map.
@@ -657,7 +657,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     maxval : int, float
         Maximum value to be used for truncation of the color map.
 
-    n : int
+    num_values : int
         Number of color values in the new color map.
 
     name : str
@@ -682,7 +682,7 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
                                                    b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name,
-        colors=cmap(np.linspace(minval, maxval, n)),
+        colors=cmap(np.linspace(minval, maxval, num_values)),
     )
     cm.register_cmap(name, new_cmap)
     return new_cmap
@@ -1012,19 +1012,19 @@ def find_local_extrema(da: xr.DataArray,
     for key in coordsAndLabels:
 
         # Create array to hold all the field variable values for that cluster
-        datavals = []
+        data_vals = []
         for coord in coordsAndLabels[key]:
             # Find pressure data at that coordinate
             cond = np.logical_and(coordarr[:, :, 0] == coord[0],
                                   coordarr[:, :, 1] == coord[1])
             x, y = np.where(cond)
-            datavals.append(da.data[x[0]][y[0]])
+            data_vals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
         if eType == 'Low':
-            index = np.argmin(np.array(datavals))
+            index = np.argmin(np.array(data_vals))
         if eType == 'High':
-            index = np.argmax(np.array(datavals))
+            index = np.argmax(np.array(data_vals))
 
         # Append the coordinate corresponding to that index to the array to be returned
         clusterExtremas.append(
@@ -1328,19 +1328,19 @@ def plot_extrema_contour_labels(da: xr.DataArray,
         np.array([x[1] for x in clabel_locations]))
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
 
-    for x in range(len(transformed_locations)):
+    for loc in range(len(transformed_locations)):
 
         try:
             # Find field variable data at that coordinate
-            coord = clabel_locations[x]
+            coord = clabel_locations[loc]
             cond = np.logical_and(coordarr[:, :, 0] == coord[0],
                                   coordarr[:, :, 1] == coord[1])
-            z, y = np.where(cond)
-            p = int(round(da.data[z[0]][y[0]]))
+            z_loc, y_loc = np.where(cond)
+            p_loc = int(round(da.data[z_loc[0]][y_loc[0]]))
 
-            lab = plt.text(transformed_locations[x][0],
-                           transformed_locations[x][1],
-                           label + "$_{" + str(p) + "}$",
+            lab = plt.text(transformed_locations[loc][0],
+                           transformed_locations[loc][1],
+                           label + "$_{" + str(p_loc) + "}$",
                            fontsize=fontsize,
                            horizontalalignment='center',
                            verticalalignment='center')
@@ -1432,19 +1432,19 @@ def set_vector_density(data: xr.DataArray,
         return ds
 
 
-def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
-                   pro: Quantity) -> str:
+def get_skewt_vars(pressure: Quantity, temp_parcel: Quantity,
+                   temp_dewpoint: Quantity, pro: Quantity) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
 
     Parameters
     ----------
-    p : :class:`pint.Quantity`
+    pressure : :class:`pint.Quantity`
         Pressure level input from dataset
-    tc : :class:`pint.Quantity`
+    temp_parcel : :class:`pint.Quantity`
         Temperature for parcel from dataset
-    tdc : :class:`pint.Quantity`
+    temp_dewpoint : :class:`pint.Quantity`
         Dew point temperature for parcel from dataset
     pro : :class:`pint.Quantity`
         Parcel profile temperature converted to degC
@@ -1473,32 +1473,32 @@ def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
     """
 
     # CAPE
-    cape = mpcalc.cape_cin(p, tc, tdc, pro)
+    cape = mpcalc.cape_cin(pressure, temp_parcel, temp_dewpoint, pro)
     cape = cape[0].magnitude
 
     # Precipitable Water
-    pwat = mpcalc.precipitable_water(p, tdc)
+    pwat = mpcalc.precipitable_water(pressure, temp_dewpoint)
     pwat = (pwat.magnitude / 10) * units.cm  # Convert mm to cm
     pwat = pwat.magnitude
 
     # Pressure and temperature of lcl
-    lcl = mpcalc.lcl(p[0], tc[0], tdc[0])
+    lcl = mpcalc.lcl(pressure[0], temp_parcel[0], temp_dewpoint[0])
     plcl = lcl[0].magnitude
     tlcl = lcl[1].magnitude
 
     # Showalter index
-    shox = mpcalc.showalter_index(p, tc, tdc)
+    shox = mpcalc.showalter_index(pressure, temp_parcel, temp_dewpoint)
     shox = shox[0].magnitude
 
     # Place calculated values in iterable list
-    vals = [plcl, tlcl, shox, pwat, cape]
-    vals = np.round(vals).astype(int)
+    val_list = [plcl, tlcl, shox, pwat, cape]
+    val_ints = np.round(val_list).astype(int)
 
     # Define variable names for calculated values
     names = ['Plcl=', 'Tlcl[C]=', 'Shox=', 'Pwat[cm]=', 'Cape[J]=']
 
     # Combine the list of values with their corresponding labels
-    lst = list(chain.from_iterable(zip(names, vals)))
+    lst = list(chain.from_iterable(zip(names, val_ints)))
     lst = map(str, lst)
 
     # Create one large string for later plotting use

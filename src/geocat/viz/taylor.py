@@ -159,20 +159,20 @@ class TaylorDiagram(object):
         self.ax = ax.get_aux_axes(tr)  # Polar coordinates
 
         # Add reference point stddev contour
-        t = np.linspace(0, np.pi / 2)
-        r = np.zeros_like(t) + self.refstd
-        h, = self.ax.plot(t,
-                          r,
-                          linewidth=1,
-                          linestyle=(0, (9, 5)),
-                          color='black',
-                          zorder=1)
+        t_array = np.linspace(0, np.pi / 2)
+        r_array = np.zeros_like(t_array) + self.refstd
+        h_plot, = self.ax.plot(t_array,
+                               r_array,
+                               linewidth=1,
+                               linestyle=(0, (9, 5)),
+                               color='black',
+                               zorder=1)
 
         # Set aspect ratio
         self.ax.set_aspect('equal')
 
         # Store the reference line
-        self.referenceLine = h
+        self.referenceLine = h_plot
 
         # Collect sample points for latter use (e.g. legend)
         self.modelMarkerSet = []
@@ -317,8 +317,8 @@ class TaylorDiagram(object):
         else:
             label = kwargs.get('label')
             if percent_bias_on:
-                handle = plt.scatter(1, 2, color=color, label=label)
-                self.modelMarkerSet.append(handle)
+                plot_handle = plt.scatter(1, 2, color=color, label=label)
+                self.modelMarkerSet.append(plot_handle)
 
         # Annotate model markers if annotate_on is True
         if annotate_on:
@@ -461,15 +461,15 @@ class TaylorDiagram(object):
          - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_ygrid>`_
         """
 
-        t = np.linspace(0, np.pi / 2)
+        t_array = np.linspace(0, np.pi / 2)
         for value in arr:
-            r = np.zeros_like(t) + value
-            h, = self.ax.plot(t,
-                              r,
-                              color=color,
-                              linestyle=linestyle,
-                              linewidth=linewidth,
-                              **kwargs)
+            r_array = np.zeros_like(t_array) + value
+            h_plot, = self.ax.plot(t_array,
+                                   r_array,
+                                   color=color,
+                                   linestyle=linestyle,
+                                   linewidth=linewidth,
+                                   **kwargs)
 
     def add_grid(self, *args, **kwargs):
         """Add a grid.
