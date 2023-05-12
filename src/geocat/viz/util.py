@@ -1431,8 +1431,14 @@ def set_vector_density(data: xr.DataArray,
         return ds
 
 
-def get_skewt_vars(pressure: Quantity, temperature: Quantity,
-                   dewpoint: Quantity, pro: Quantity) -> str:
+def get_skewt_vars(pressure: Quantity = None,
+                   temperature: Quantity = None,
+                   dewpoint: Quantity = None,
+                   profile: Quantity = None,
+                   p: Quantity = None,
+                   tc: Quantity = None,
+                   tdc: Quantity = None,
+                   pro: Quantity = None) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
@@ -1440,13 +1446,13 @@ def get_skewt_vars(pressure: Quantity, temperature: Quantity,
     Parameters
     ----------
     pressure : :class:`pint.Quantity`
-        Pressure level input from dataset
+        Pressure level input from dataset. Renamed from deprecated kwarg `p`.
     temperature : :class:`pint.Quantity`
-        Temperature for parcel from dataset
+        Temperature for parcel from dataset. Renamed from deprecated kwarg `tc`.
     dewpoint : :class:`pint.Quantity`
-        Dew point temperature for parcel from dataset
-    pro : :class:`pint.Quantity`
-        Parcel profile temperature converted to degC
+        Dew point temperature for parcel from dataset. Renamed from deprecated kwarg `tdc`.
+    profile : :class:`pint.Quantity`
+        Parcel profile temperature converted to degC. Renamed from deprecated kwarg `pro`.
 
     Returns
     -------
@@ -1470,6 +1476,24 @@ def get_skewt_vars(pressure: Quantity, temperature: Quantity,
 
     - `NCL_skewt_2_2 <https://geocat-examples.readthedocs.io/en/latest/gallery/Skew-T/NCL_skewt_2_2.html?highlight=get_skewt_vars>`_
     """
+    # Support for deprecating kwargs
+    if p:
+        pressure = p
+        warnings.warn(
+            'The keyword argument `p` is deprecated. Use `pressure` instead.')
+    if tc:
+        temperature = tc
+        warnings.warn(
+            'The keyword argument `tc` is deprecated. Use `temperature` instead.'
+        )
+    if tdc:
+        dewpoint = tdc
+        warnings.warn(
+            'The keyword argument `tdc` is deprecated. Use `dewpoint` instead.')
+    if pro:
+        profile = pro
+        warnings.warn(
+            'The keyword argument `pro` is deprecated. Use `profile` instead.')
 
     # CAPE
     cape = mpcalc.cape_cin(pressure, temperature, dewpoint, pro)
