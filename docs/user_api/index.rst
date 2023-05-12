@@ -51,3 +51,16 @@ GeoCAT-viz Utility Functions
    set_vector_density
 
    get_skewt_vars
+
+Deprecated Functions
+--------------------
+Util
+^^^^^^^^^^^^^
+.. currentmodule:: geocat.viz.util
+.. autosummary::
+   :nosignatures:
+   :toctree: ./generated/
+
+   findLocalExtrema
+   plotCLabels
+   plotELabels
