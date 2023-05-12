@@ -42,11 +42,11 @@ GeoCAT-viz Utility Functions
 
    set_map_boundary
 
-   findLocalExtrema
+   find_local_extrema
 
-   plotCLabels
+   plot_contour_labels
 
-   plotELabels
+   plot_extrema_labels
 
    set_vector_density
 
