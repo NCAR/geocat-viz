@@ -687,12 +687,12 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
                                                    b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
         name=name, colors=cmap(np.linspace(minval, maxval)), N=n)
-    
+
     try:
         mpl.colormaps.register(new_cmap, force=force)
     except AttributeError:
         mpl.cm.register_cmap(name=name, cmap=new_cmap)
-        
+
     return new_cmap
 
 
