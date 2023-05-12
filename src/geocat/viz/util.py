@@ -1203,7 +1203,7 @@ def plotELabels(da: xr.DataArray,
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+    This function is exemplified in the python version of `sat_1_lg <https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png>`__
 
     Parameters
     ----------
