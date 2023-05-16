@@ -871,7 +871,7 @@ def findLocalExtrema(da: xr.DataArray,
                      lowVal: int = 1000,
                      eType: str = 'Low',
                      eps: float = 10) -> list:
-    r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use `find_local_extrema </geocat.viz.util.find_local_extrema.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use `find_local_extrema <../geocat.viz.util.find_local_extrema.html>`__ instead.
 
     Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
@@ -1050,7 +1050,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
                 fontsize: int = 12,
                 whitebbox: bool = False,
                 horizontal: bool = False) -> list:
-    r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use `plot_contour_levels </geocat.viz.util.plot_contour_levels.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use `plot_contour_levels <../geocat.viz.util.plot_contour_levels.html>`__ instead.
 
     Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
@@ -1201,7 +1201,7 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
-    r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use `plot_extrema_labels </geocat.viz.util.plot_extrema_labels.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use `plot_extrema_labels <../geocat.viz.util.plot_extrema_labels.html>`__ instead.
 
     Utility function to plot high/low contour labels.
 
