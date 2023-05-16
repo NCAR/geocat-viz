@@ -863,7 +863,7 @@ def findLocalExtrema(da: xr.DataArray,
                      lowVal: int = 1000,
                      eType: str = 'Low',
                      eps: float = 10) -> list:
-    r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use `find_local_extrema <https://geocat-viz.readthedocs.io/en/stable/user_api/generated/geocat.viz.util.find_local_extrema.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use `find_local_extrema </en/latest/user_api/generated/geocat.viz.util.find_local_extrema/>`__ instead.
 
     Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
@@ -909,7 +909,8 @@ def findLocalExtrema(da: xr.DataArray,
     """
 
     warnings.warn(
-        "This function is deprecated. Call `find_local_extrema` instead.")
+        'This function is deprecated. Call `find_local_extrema` instead.',
+        PendingDeprecationWarning)
 
     return find_local_extrema(da, highVal, lowVal, eType, eps)
 
@@ -1041,7 +1042,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
                 fontsize: int = 12,
                 whitebbox: bool = False,
                 horizontal: bool = False) -> list:
-    r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use `plot_contour_levels <https://geocat-viz.readthedocs.io/en/stable/user_api/generated/geocat.viz.util.plot_contour_levels.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use `plot_contour_levels </en/stable/user_api/generated/geocat.viz.util.plot_contour_levels/>`__ instead.
 
     Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
@@ -1092,7 +1093,8 @@ def plotCLabels(ax: matplotlib.axes.Axes,
     """
 
     warnings.warn(
-        "This function is  deprecated. Call `plot_contour_labels` instead.")
+        'This function is  deprecated. Call `plot_contour_labels` instead.',
+        PendingDeprecationWarning)
 
     return plot_contour_labels(ax, contours, transform, proj, clabel_locations,
                                fontsize, whitebbox, horizontal)
@@ -1168,7 +1170,7 @@ def plot_contour_labels(ax: matplotlib.axes.Axes,
                   inline=True,
                   fontsize=fontsize,
                   colors='black',
-                  fmt="%.0f")
+                  fmt='%.0f')
         [cLabels.append(txt) for txt in contours.labelTexts]
 
         if horizontal is True:
@@ -1191,7 +1193,7 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
-    r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use `plot_extrema_labels <https://geocat-viz.readthedocs.io/en/stable/user_api/generated/geocat.viz.util.plot_extrema_labels.html>`__ instead.
+    r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use `plot_extrema_labels </en/stable/user_api/generated/geocat.viz.util.plot_extrema_labels/>`__ instead.
 
     Utility function to plot high/low contour labels.
 
@@ -1244,8 +1246,8 @@ def plotELabels(da: xr.DataArray,
     """
 
     warnings.warn(
-        "This function is deprecated. Please use `plot_extrema_labels` instead."
-    )
+        'This function is deprecated. Please use `plot_extrema_labels` instead.',
+        PendingDeprecationWarning)
 
     return plot_extrema_labels(da, transform, proj, clabel_locations, label,
                                fontsize, whitebbox, horizontal)
@@ -1339,7 +1341,7 @@ def plot_extrema_labels(da: xr.DataArray,
 
             lab = plt.text(transformed_locations[loc][0],
                            transformed_locations[loc][1],
-                           label + "$_{" + str(p_loc) + "}$",
+                           label + '$_{' + str(p_loc) + '}$',
                            fontsize=fontsize,
                            horizontalalignment='center',
                            verticalalignment='center')
@@ -1389,7 +1391,7 @@ def set_vector_density(data: xr.DataArray,
     import warnings
 
     if minDistance <= 0:
-        raise Exception("minDistance cannot be negative or zero.")
+        raise Exception('minDistance cannot be negative or zero.')
     else:
         lat_every = 1
         lon_every = 1
@@ -1480,20 +1482,23 @@ def get_skewt_vars(pressure: Quantity = None,
     if p:
         pressure = p
         warnings.warn(
-            'The keyword argument `p` is deprecated. Use `pressure` instead.')
+            'The keyword argument `p` is deprecated. Use `pressure` instead.',
+            PendingDeprecationWarning)
     if tc:
         temperature = tc
         warnings.warn(
-            'The keyword argument `tc` is deprecated. Use `temperature` instead.'
-        )
+            'The keyword argument `tc` is deprecated. Use `temperature` instead.',
+            PendingDeprecationWarning)
     if tdc:
         dewpoint = tdc
         warnings.warn(
-            'The keyword argument `tdc` is deprecated. Use `dewpoint` instead.')
+            'The keyword argument `tdc` is deprecated. Use `dewpoint` instead.',
+            PendingDeprecationWarning)
     if pro:
         profile = pro
         warnings.warn(
-            'The keyword argument `pro` is deprecated. Use `profile` instead.')
+            'The keyword argument `pro` is deprecated. Use `profile` instead.',
+            PendingDeprecationWarning)
 
     # CAPE
     cape = mpcalc.cape_cin(pressure, temperature, dewpoint, pro)
