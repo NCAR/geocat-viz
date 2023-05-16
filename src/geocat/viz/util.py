@@ -1509,7 +1509,7 @@ def get_skewt_vars(pressure: Quantity = None,
             PendingDeprecationWarning)
 
     # CAPE
-    cape = mpcalc.cape_cin(pressure, temperature, dewpoint, pro)
+    cape = mpcalc.cape_cin(pressure, temperature, dewpoint, profile)
     cape = cape[0].magnitude
 
     # Precipitable Water
