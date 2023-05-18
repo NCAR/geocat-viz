@@ -1463,6 +1463,37 @@ def get_skewt_vars(pressure: Quantity = None,
         Dew point temperature for parcel from dataset. Renamed from deprecated kwarg `tdc`.
     profile : :class:`pint.Quantity`
         Parcel profile temperature converted to degC. Renamed from deprecated kwarg `pro`.
+    p : :class:`pint.Quantity`
+        Pressure level input from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``p`` parameter has been deprecated in favor of ``pressure`.
+
+    tc : :class:`pint.Quantity`
+        Temperature for parcel from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``tc`` parameter has been deprecated in favor of ``temperature`.
+
+    tdc : :class:`pint.Quantity`
+        Dew point temperature for parcel from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``tdc`` parameter has been deprecated in favor of ``dewpoint`.
+
+    pro : :class:`pint.Quantity`
+        Parcel profile temperature converted to degC.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``pro`` parameter has been deprecated in favor of ``profile`.
 
     Returns
     -------
