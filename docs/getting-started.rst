@@ -8,7 +8,7 @@ This is a quick guide to getting set up and familiar with GeoCAT-viz. You'll get
 why we made it, and what functionalities it provides. You'll also get quick installation instructions and some simple
 examples to get you started.
 
-.. grid:: 1 1 2 3
+.. grid:: 1 1 2 2
     :gutter: 2
 
     .. grid-item-card:: Overview
@@ -27,14 +27,6 @@ examples to get you started.
 
         The most basic installation instructions for GeoCAT-viz
 
-    .. grid-item-card::  Basic Examples
-        :class-title: custom-title
-        :class-body: custom-body
-        :img-top: _static/images/icons/menu_book.svg
-        :link: getting_started/mini-examples.rst
-
-        A few intro examples to get you started
-
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -42,4 +34,3 @@ examples to get you started.
 
    Overview <getting_started/overview.rst>
    Quick Installation <getting_started/quick-install.rst>
-   Basic Examples <getting_started/mini-examples.rst>
