@@ -35,6 +35,24 @@ plotting packages.
 .. grid:: 1 1 2 2
     :gutter: 2
 
+    .. grid-item-card:: Getting Started
+        :class-title: custom-title
+        :class-body: custom-body
+        :img-top: _static/images/icons/tips.svg
+        :link: getting-started
+        :link-type: doc
+
+        A good place to start for new users
+
+    .. grid-item-card::  Examples
+        :class-title: custom-title
+        :class-body: custom-body
+        :img-top: _static/images/icons/science.svg
+        :link: examples
+        :link-type: doc
+
+        A gallery of examples using GeoCAT-viz
+
     .. grid-item-card::  Installation
         :class-title: custom-title
         :class-body: custom-body
