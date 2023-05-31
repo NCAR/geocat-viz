@@ -12,6 +12,8 @@
 #
 # -- Project information -----------------------------------------------------
 
+import datetime
+import geocat.viz as gv
 import os
 import sys
 import pathlib
@@ -21,8 +23,6 @@ from sphinx.util import logging
 from textwrap import dedent, indent
 
 print("sys.path:", sys.path)
-
-import geocat.viz as gv
 
 LOGGER = logging.getLogger("conf")
 
@@ -128,7 +128,7 @@ templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-# source_suffix = ['.rst', '.md']
+#source_suffix = ['.rst', '.md']
 source_suffix = {
     '.rst': 'restructuredtext',
     '.ipynb': 'myst-nb',
@@ -143,8 +143,6 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'GeoCAT-viz'
-
-import datetime
 
 current_year = datetime.datetime.now().year
 copyright = u'{}, University Corporation for Atmospheric Research'.format(
@@ -361,7 +359,7 @@ def update_gallery(app: Sphinx):
 nb_execution_mode = "off"
 
 # generate warning for all invalid links
-# nitpicky = True
+#nitpicky = True
 
 
 # Allow for changes to be made to the css in the theme_overrides file
