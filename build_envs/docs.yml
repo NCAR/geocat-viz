@@ -14,5 +14,6 @@ dependencies:
   - nbsphinx
   - sphinx-design
   - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
+  - geocat-datafiles
   - pip:
       - -e ..
