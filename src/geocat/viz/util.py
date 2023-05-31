@@ -840,7 +840,8 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
                    [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+                   [(lon_range[0], lat)
+                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)
     elif ((lon_range[0] == 180 or lon_range[0] == -180) and
           (lon_range[1] == 180 or lon_range[1] == -180)):
@@ -850,7 +851,8 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
         vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
                    [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
                    [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat) for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+                   [(lon_range[0], lat)
+                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
         path = mpath.Path(vertices)
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
@@ -868,6 +870,63 @@ def findLocalExtrema(da: xr.DataArray,
                      lowVal: int = 1000,
                      eType: str = 'Low',
                      eps: float = 10) -> list:
+    r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use :func:`find_local_extrema` instead.
+
+    Utility function to find local low/high field variable coordinates on a
+    contour map. To classify as a local high, the data point must be greater
+    than highval, and to classify as a local low, the data point must be less
+    than lowVal.
+
+    Parameters
+    ----------
+    da : :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable (ex. pressure) data values
+
+    highVal : int
+        Data value that the local high must be greater than to qualify as a "local high" location.
+        Default highVal is 0.
+
+    lowVal : int
+        Data value that the local low must be less than to qualify as a "local low" location.
+        Default lowVal is 1000.
+
+    eType : str
+        'Low' or 'High'
+        Determines which extrema are being found- minimum or maximum, respectively.
+        Default eType is 'Low'.
+
+    eps : float
+            Parameter supplied to sklearn.cluster.DBSCAN determining the maximum distance between two samples
+            for one to be considered as in the neighborhood of the other.
+            Default eps is 10.
+
+    Returns
+    -------
+    clusterExtremas : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify local low/high locations
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=findlocalextrema>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=findlocalextrema>`_
+    """
+
+    warnings.warn(
+        'This function is deprecated. Call `find_local_extrema` instead.',
+        PendingDeprecationWarning)
+
+    return find_local_extrema(da, highVal, lowVal, eType, eps)
+
+
+def find_local_extrema(da: xr.DataArray,
+                       highVal: int = 0,
+                       lowVal: int = 1000,
+                       eType: str = 'Low',
+                       eps: float = 10) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highval, and to classify as a local low, the data point must be less
@@ -961,19 +1020,19 @@ def findLocalExtrema(da: xr.DataArray,
     for key in coordsAndLabels:
 
         # Create array to hold all the field variable values for that cluster
-        datavals = []
+        data_vals = []
         for coord in coordsAndLabels[key]:
             # Find pressure data at that coordinate
             cond = np.logical_and(coordarr[:, :, 0] == coord[0],
                                   coordarr[:, :, 1] == coord[1])
             x, y = np.where(cond)
-            datavals.append(da.data[x[0]][y[0]])
+            data_vals.append(da.data[x[0]][y[0]])
 
         # Find the index of the smallest/greatest field variable value of each cluster
         if eType == 'Low':
-            index = np.argmin(np.array(datavals))
+            index = np.argmin(np.array(data_vals))
         if eType == 'High':
-            index = np.argmax(np.array(datavals))
+            index = np.argmax(np.array(data_vals))
 
         # Append the coordinate corresponding to that index to the array to be returned
         clusterExtremas.append(
@@ -990,6 +1049,72 @@ def plotCLabels(ax: matplotlib.axes.Axes,
                 fontsize: int = 12,
                 whitebbox: bool = False,
                 horizontal: bool = False) -> list:
+    r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use :func:`plot_contour_levels` instead.
+
+    Utility function to plot contour labels by passing in a coordinate to
+    the clabel function.
+
+    This allows the user to specify the exact locations of the labels, rather than having matplotlib
+    plot them automatically.
+
+
+    Parameters
+    ----------
+    ax : :class:`matplotlib.axes.Axes`
+        Axis containing the contour set.
+
+    contours : :class:`matplotlib.contour.QuadContourSet`
+        Contour set that is being labeled.
+
+    transform : :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
+
+    proj : :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
+
+    clabel_locations : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contours with regular field variable values should be plotted.
+
+    fontsize : int
+        Font size of contour labels.
+
+    whitebbox : bool
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
+
+    horizontal : bool
+        Setting this to "True" will cause the contour labels to be horizontal.
+
+    Returns
+    -------
+    cLabels : list
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotCLabels>`_
+    """
+
+    warnings.warn(
+        'This function is  deprecated. Call `plot_contour_labels` instead.',
+        PendingDeprecationWarning)
+
+    return plot_contour_labels(ax, contours, transform, proj, clabel_locations,
+                               fontsize, whitebbox, horizontal)
+
+
+def plot_contour_labels(ax: matplotlib.axes.Axes,
+                        contours,
+                        transform: cartopy.crs.CRS,
+                        proj: cartopy.crs.CRS,
+                        clabel_locations: list = [],
+                        fontsize: int = 12,
+                        whitebbox: bool = False,
+                        horizontal: bool = False) -> list:
     """Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
 
@@ -1052,7 +1177,7 @@ def plotCLabels(ax: matplotlib.axes.Axes,
                   inline=True,
                   fontsize=fontsize,
                   colors='black',
-                  fmt="%.0f")
+                  fmt='%.0f')
         [cLabels.append(txt) for txt in contours.labelTexts]
 
         if horizontal is True:
@@ -1075,11 +1200,13 @@ def plotELabels(da: xr.DataArray,
                 fontsize: int = 22,
                 whitebbox: bool = False,
                 horizontal: bool = True) -> list:
-    """Utility function to plot contour labels.
+    r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use :func:`plot_extrema_labels` instead.
+
+    Utility function to plot high/low contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
     and placement.
-    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+    This function is exemplified in the python version of `sat_1_lg <https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png>`__
 
     Parameters
     ----------
@@ -1125,6 +1252,72 @@ def plotELabels(da: xr.DataArray,
     - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=plotELabels>`_
     """
 
+    warnings.warn(
+        'This function is deprecated. Please use `plot_extrema_labels` instead.',
+        PendingDeprecationWarning)
+
+    return plot_extrema_labels(da, transform, proj, clabel_locations, label,
+                               fontsize, whitebbox, horizontal)
+
+
+def plot_extrema_labels(da: xr.DataArray,
+                        transform: cartopy.crs.CRS,
+                        proj: cartopy.crs.CRS,
+                        label_locations: list = [],
+                        label: str = 'L',
+                        fontsize: int = 22,
+                        whitebbox: bool = False,
+                        horizontal: bool = True) -> list:
+    """Utility function to plot contour labels.
+
+    High/Low contour labels will be plotted using text boxes for more accurate label values
+    and placement.
+    This function is exemplified in the python version of https://www.ncl.ucar.edu/Applications/Images/sat_1_lg.png
+
+    Parameters
+    ----------
+    da : :class:`xarray.DataArray`
+        Xarray data array containing the lat, lon, and field variable data values.
+
+    transform : :class:`cartopy.crs.CRS`
+        Instance of CRS that represents the source coordinate system of coordinates.
+        (ex. ccrs.Geodetic()).
+
+    proj : :class:`cartopy.crs.CRS`
+        Projection 'ax' is defined by.
+        This is the instance of CRS that the coordinates will be transformed to.
+
+    label_locations : list
+        List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
+        that specify where the contour labels should be plotted.
+
+    label : str
+        ex. 'L' or 'H'
+        The data value will be plotted as a subscript of this label.
+
+    fontsize : int
+        Font size of regular contour labels.
+
+    horizontal : bool
+        Setting this to "True" will cause the contour labels to be horizontal.
+
+    whitebbox : bool
+        Setting this to "True" will cause all labels to be plotted with white backgrounds
+
+    Returns
+    -------
+    extremaLabels : list
+        List of text instances of all contour labels
+
+    Examples
+    --------
+    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+
+    - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotELabels>`_
+
+    - `NCL_sat_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_2.html?highlight=plotELabels>`_
+    """
+
     # Create array of coordinates in the same shape as field variable data
     # so each coordinate can be easily mapped to its data value.
     # ex:
@@ -1139,23 +1332,23 @@ def plotELabels(da: xr.DataArray,
 
     # Plot any low contour levels
     clabel_points = proj.transform_points(
-        transform, np.array([x[0] for x in clabel_locations]),
-        np.array([x[1] for x in clabel_locations]))
+        transform, np.array([x[0] for x in label_locations]),
+        np.array([x[1] for x in label_locations]))
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
 
-    for x in range(len(transformed_locations)):
+    for loc in range(len(transformed_locations)):
 
         try:
             # Find field variable data at that coordinate
-            coord = clabel_locations[x]
+            coord = label_locations[loc]
             cond = np.logical_and(coordarr[:, :, 0] == coord[0],
                                   coordarr[:, :, 1] == coord[1])
-            z, y = np.where(cond)
-            p = int(round(da.data[z[0]][y[0]]))
+            z_loc, y_loc = np.where(cond)
+            p_loc = int(round(da.data[z_loc[0]][y_loc[0]]))
 
-            lab = plt.text(transformed_locations[x][0],
-                           transformed_locations[x][1],
-                           label + "$_{" + str(p) + "}$",
+            lab = plt.text(transformed_locations[loc][0],
+                           transformed_locations[loc][1],
+                           label + '$_{' + str(p_loc) + '}$',
                            fontsize=fontsize,
                            horizontalalignment='center',
                            verticalalignment='center')
@@ -1205,7 +1398,7 @@ def set_vector_density(data: xr.DataArray,
     import warnings
 
     if minDistance <= 0:
-        raise Exception("minDistance cannot be negative or zero.")
+        raise Exception('minDistance cannot be negative or zero.')
     else:
         lat_every = 1
         lon_every = 1
@@ -1247,22 +1440,59 @@ def set_vector_density(data: xr.DataArray,
         return ds
 
 
-def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
-                   pro: Quantity) -> str:
+def get_skewt_vars(pressure: Quantity = None,
+                   temperature: Quantity = None,
+                   dewpoint: Quantity = None,
+                   profile: Quantity = None,
+                   p: Quantity = None,
+                   tc: Quantity = None,
+                   tdc: Quantity = None,
+                   pro: Quantity = None) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
 
     Parameters
     ----------
+    pressure : :class:`pint.Quantity`
+        Pressure level input from dataset. Renamed from deprecated kwarg `p`.
+    temperature : :class:`pint.Quantity`
+        Temperature for parcel from dataset. Renamed from deprecated kwarg `tc`.
+    dewpoint : :class:`pint.Quantity`
+        Dew point temperature for parcel from dataset. Renamed from deprecated kwarg `tdc`.
+    profile : :class:`pint.Quantity`
+        Parcel profile temperature converted to degC. Renamed from deprecated kwarg `pro`.
     p : :class:`pint.Quantity`
-        Pressure level input from dataset
+        Pressure level input from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``p`` parameter has been deprecated in favor of ``pressure`.
+
     tc : :class:`pint.Quantity`
-        Temperature for parcel from dataset
+        Temperature for parcel from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``tc`` parameter has been deprecated in favor of ``temperature``.
+
     tdc : :class:`pint.Quantity`
-        Dew point temperature for parcel from dataset
+        Dew point temperature for parcel from dataset.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``tdc`` parameter has been deprecated in favor of ``dewpoint``.
+
     pro : :class:`pint.Quantity`
-        Parcel profile temperature converted to degC
+        Parcel profile temperature converted to degC.
+
+        .. deprecated:: 2023.06.0
+            In an effort to refactor the codebase to follow naming conventions,
+            keyword arguments have been renamed to more meaningful values.
+            ``pro`` parameter has been deprecated in favor of ``profile``.
 
     Returns
     -------
@@ -1280,40 +1510,61 @@ def get_skewt_vars(p: Quantity, tc: Quantity, tdc: Quantity,
         `skewT_PlotData <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_PlotData.shtml>`_,
         `skewt_BackGround <https://www.ncl.ucar.edu/Document/Functions/Skewt_func/skewT_BackGround.shtml>`_
 
-     Examples
+    Examples
     --------
     All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_skewt_2_2 <https://geocat-examples.readthedocs.io/en/latest/gallery/Skew-T/NCL_skewt_2_2.html?highlight=get_skewt_vars>`_
     """
+    # Support for deprecating kwargs
+    if p:
+        pressure = p
+        warnings.warn(
+            'The keyword argument `p` is deprecated. Use `pressure` instead.',
+            PendingDeprecationWarning)
+    if tc:
+        temperature = tc
+        warnings.warn(
+            'The keyword argument `tc` is deprecated. Use `temperature` instead.',
+            PendingDeprecationWarning)
+    if tdc:
+        dewpoint = tdc
+        warnings.warn(
+            'The keyword argument `tdc` is deprecated. Use `dewpoint` instead.',
+            PendingDeprecationWarning)
+    if pro:
+        profile = pro
+        warnings.warn(
+            'The keyword argument `pro` is deprecated. Use `profile` instead.',
+            PendingDeprecationWarning)
 
     # CAPE
-    cape = mpcalc.cape_cin(p, tc, tdc, pro)
+    cape = mpcalc.cape_cin(pressure, temperature, dewpoint, profile)
     cape = cape[0].magnitude
 
     # Precipitable Water
-    pwat = mpcalc.precipitable_water(p, tdc)
+    pwat = mpcalc.precipitable_water(pressure, dewpoint)
     pwat = (pwat.magnitude / 10) * units.cm  # Convert mm to cm
     pwat = pwat.magnitude
 
     # Pressure and temperature of lcl
-    lcl = mpcalc.lcl(p[0], tc[0], tdc[0])
+    lcl = mpcalc.lcl(pressure[0], temperature[0], dewpoint[0])
     plcl = lcl[0].magnitude
     tlcl = lcl[1].magnitude
 
     # Showalter index
-    shox = mpcalc.showalter_index(p, tc, tdc)
+    shox = mpcalc.showalter_index(pressure, temperature, dewpoint)
     shox = shox[0].magnitude
 
     # Place calculated values in iterable list
-    vals = [plcl, tlcl, shox, pwat, cape]
-    vals = np.round(vals).astype(int)
+    val_list = [plcl, tlcl, shox, pwat, cape]
+    val_ints = np.round(val_list).astype(int)
 
     # Define variable names for calculated values
     names = ['Plcl=', 'Tlcl[C]=', 'Shox=', 'Pwat[cm]=', 'Cape[J]=']
 
     # Combine the list of values with their corresponding labels
-    lst = list(chain.from_iterable(zip(names, vals)))
+    lst = list(chain.from_iterable(zip(names, val_ints)))
     lst = map(str, lst)
 
     # Create one large string for later plotting use
