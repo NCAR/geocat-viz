@@ -315,7 +315,8 @@ def add_height_from_pressure_axis(ax,
     return axRHS
 
 
-def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,cartopy.mpl.geoaxes.GeoAxesSubplot],
+def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
+                                            cartopy.mpl.geoaxes.GeoAxesSubplot],
                            zero_direction_label: bool = False,
                            dateline_direction_label: bool = False):
     """Utility function to make plots look like NCL plots by adding latitude,
