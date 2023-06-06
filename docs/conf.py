@@ -319,6 +319,7 @@ htmlhelp_basename = 'geocat-vizdoc'
 
 autodoc_typehints = 'none'
 
+
 # custom scripts for making a gallery of examples notebooks
 # note: this method only supports a single gallery
 def update_gallery(app: Sphinx):
@@ -353,6 +354,7 @@ def update_gallery(app: Sphinx):
     pathlib.Path(app.srcdir, "notebook-examples.txt").write_text(markdown)
 
     LOGGER.info("gallery created")
+
 
 # turn off notebook execution
 # set to "auto" for default behavior
