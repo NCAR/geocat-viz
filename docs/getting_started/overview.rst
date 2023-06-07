@@ -8,7 +8,7 @@ GeoCAT-viz is the visualization component of the `GeoCAT project <https://geocat
 including convenience and plotting functions that are used to facilitate plotting geosciences data with Matplotlib, Cartopy,
 and possibly other Python ecosystem plotting packages. GeoCAT-viz allows Python users to more easily make figures
 that resemeble NCL's plotting outputs, as demonstrated in the
-`GeoCAT Examples gallery <https://geocat-examples.readthedocs.io/en/latest/gallery/index.html/>`__,
+`GeoCAT Examples gallery <https://geocat-examples.readthedocs.io/en/latest/gallery/index.html>`__,
 but also offers visualization functionality that may go beyond what NCL offers.
 It is a principle component of NCAR's `Pivot to Python Initiative <https://www.ncl.ucar.edu/Document/Pivot_to_Python/>`__.
 
@@ -21,14 +21,14 @@ a plethora of scientific analysis packages designed for general use or for niche
 for learning Python basics and for data analysis workflows. Python also enables scalability through parallel computation
 which was never possible with NCL, enabling geoscientists to tackle analysis workflows on large volumes of data.
 
-GeoCAT-viz draws from well-established analysis packages like `Matplotlib <https://matplotlib.org//>`__, `Cartopy <https://scitools.org.uk/cartopy/docs/latest/>`__,
+GeoCAT-viz draws from well-established analysis packages like `Matplotlib <https://matplotlib.org/>`__, `Cartopy <https://scitools.org.uk/cartopy/docs/latest/>`__,
 and `MetPy <https://unidata.github.io/MetPy/>`__ to recreate and expand upon NCL
 visualization functionalities in pure Python.
 
 One of the main concerns we heard from scientists "pivoting" from NCL to Python is that they found it harder to make
-publication-ready figures in Python. The GeoCAT team was tasked with recreating the `NCL Visualization Gallery <https://www.ncl.ucar.edu/gallery.shtml/>`__
+publication-ready figures in Python. The GeoCAT team was tasked with recreating the `NCL Visualization Gallery <https://www.ncl.ucar.edu/gallery.shtml>`__
 in Python so that former NCL users could find 1-to-1 plotting examples from a resource they could easily navigate and pinpoint.
-Our growing version of this gallery lives in the `GeoCAT Examples gallery <https://geocat-examples.readthedocs.io/en/latest/gallery/index.html/>`__,
+Our growing version of this gallery lives in the `GeoCAT Examples gallery <https://geocat-examples.readthedocs.io/en/latest/gallery/index.html>`__,
 which is a separate product that the GeoCAT-viz package. However, during its creation we identified several convenience functions
 that make it easier to, for example. set plotting settings such as fontsize to match the NCL style, or to create geoscience specific plots, such as skewT diagrams.
 Those functions live here in GeoCAT-viz and can be used to improve or augment your Python plotting routines.
