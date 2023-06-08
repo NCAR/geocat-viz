@@ -130,7 +130,7 @@ def add_lat_lon_gridlines(ax,
 
     Examples
     --------
-    See this `example notebook <../examples/add_lat_lon_gridlines.html>`_.
+    See this `example notebook <../../examples/add_lat_lon_gridlines.html>`_.
 
     More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
@@ -268,7 +268,7 @@ def add_height_from_pressure_axis(ax,
 
     Examples
     --------
-    See this `example notebook <../examples/add_height_from_pressure_axis.html>`_.
+    See this `example notebook <../../examples/add_height_from_pressure_axis.html>`_.
 
     More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
@@ -339,7 +339,7 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
 
     Examples
     --------
-    See this `example notebook <../examples/add_lat_lon_ticklabels.html>`_.
+    See this `example notebook <../../examples/add_lat_lon_ticklabels.html>`_.
 
     More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
