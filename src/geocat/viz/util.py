@@ -266,7 +266,9 @@ def add_height_from_pressure_axis(ax,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    `A simple usage example from the GeoCAT-viz gallery <examples/util/add_height_from_pressure_axis.html>`_.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_conOncon_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_conOncon_1.html?highlight=add_height_from_pressure_axis>`_
 
