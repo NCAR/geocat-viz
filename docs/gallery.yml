@@ -9,7 +9,3 @@
 - title: 'add_lat_lon_ticklabels'
   path: examples/util/add_lat_lon_ticklabels.ipynb
   thumbnail: _static/thumbnails/add_lat_lon_ticklabels.png
-
-- title: 'add_major_minor_ticks'
-  path: examples/util/add_major_minor_ticks.ipynb
-  thumbnail: _static/thumbnails/add_major_minor_ticks.png
