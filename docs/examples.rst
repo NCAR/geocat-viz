@@ -18,6 +18,6 @@ Here are some examples of how to use geocat-viz.
    :maxdepth: 1
    :hidden:
 
-   examples/util/add_height_from_pressure_axis.ipynb
-   examples/util/add_lat_lon_gridlines.ipynb
-   examples/util/add_lat_lon_ticklabels.ipynb
+   examples/add_height_from_pressure_axis.ipynb
+   examples/add_lat_lon_gridlines.ipynb
+   examples/add_lat_lon_ticklabels.ipynb
