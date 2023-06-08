@@ -11,15 +11,8 @@ via pip or source), head to the complete `installation <../installation.rst>`__ 
 Installing GeoCAT-viz in a Pre-existing Conda Environment
 ----------------------------------------------------------
 
-1.  Make sure your conda is up to date by running this command from the
-    terminal::
-
-        conda update conda
-
-2.  Activate the conda environment where you intent to install ``geocat-viz``. In this example, the environment is called ``geocat``::
-
-        conda activate geocat
-
-3. Install geocat-viz::
+1.  Within your chosen conda environment, install geocat-viz::
 
         conda install -c conda-forge geocat-viz
+
+For support with conda see the `Conda documentation <https://docs.conda.io/en/latest/>`__.
