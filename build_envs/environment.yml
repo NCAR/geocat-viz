@@ -13,6 +13,7 @@ dependencies:
   - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
   - metpy
   - pint
+  - geocat-datafiles
   - pip:
     - pre-commit
     - scikit-learn
