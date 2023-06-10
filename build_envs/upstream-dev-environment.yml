@@ -14,7 +14,7 @@ dependencies:
   - jupyter
   - jupyterlab
   - make
-  - matplotlib<3.6
+  - matplotlib
   - metpy
   - mock
   - myst-nb

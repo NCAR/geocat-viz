@@ -5,7 +5,7 @@ dependencies:
   - python>=3.8, <=3.10
   - cartopy
   - cmaps
-  - matplotlib<=3.5
+  - matplotlib
   - pint
   - pip
   - pre-commit
