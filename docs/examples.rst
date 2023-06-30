@@ -21,3 +21,6 @@ Here are some examples of how to use geocat-viz.
    examples/add_height_from_pressure_axis.ipynb
    examples/add_lat_lon_gridlines.ipynb
    examples/add_lat_lon_ticklabels.ipynb
+   examples/set_tick_direction_spine_visibility.ipynb
+   examples/add_right_hand_axis.ipynb
+   examples/add_major_minor_ticks.ipynb
