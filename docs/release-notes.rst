@@ -7,7 +7,7 @@ Release Notes
 v2023.07.0 (July 6, 2023)
 -------------------------
 
-Matplotlib unpinned and some documentation changes implemented.
+Matplotlib unpinned and an examples gallery added.
 
 Bug Fixes
 ^^^^^^^^^^^^
