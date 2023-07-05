@@ -4,6 +4,20 @@
 Release Notes
 =============
 
+v2023.07.0 (July 6, 2023)
+-------------------------
+
+Matplotlib unpinned and an examples gallery added.
+
+Bug Fixes
+^^^^^^^^^^^^
+* Matplotlib unpinned by `Katelyn Fitzgerald`_ in (:pr:`134`)
+
+Documentation
+^^^^^^^^^^^^^
+* Examples gallery with usage examples of `add_height_from_pressure_axis()`, `add_lat_lon_gridlines()`, and `add_lat_lon_ticklabels()` added by `Julia Kent`_ in (:pr:`133`)
+* More examples including `set_tick_direction_spine_visibility()`, `add_right_hand_axis()`, `add_major_minor_ticks()` added by y `Julia Kent`_ in (:pr:`135`)
+
 v2023.06.0 (Jun 1, 2023)
 -------------------------
 
