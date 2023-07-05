@@ -62,7 +62,9 @@ def set_tick_direction_spine_visibility(ax,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+     See this example notebook: :doc:`../../examples/set_tick_direction_spine_visibility`.
+
+     More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_box_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Boxplots/NCL_box_2.html?highlight=set_tick_direction_spine_visibility>`_
     """
@@ -199,7 +201,9 @@ def add_right_hand_axis(ax,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    See this example notebook: :doc:`../../examples/add_right_hand_axis`.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_coneff_8.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_coneff_8.html?highlight=add_right_hand_axis>`_
     """
@@ -404,7 +408,9 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    See this example notebook: :doc:`../../examples/add_major_minor_ticks`.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_bar_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Bar/NCL_bar_2.html?highlight=add_major_minor_ticks>`_
 

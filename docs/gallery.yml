@@ -9,3 +9,15 @@
 - title: 'add_lat_lon_ticklabels'
   path: examples/add_lat_lon_ticklabels.ipynb
   thumbnail: _static/thumbnails/add_lat_lon_ticklabels.png
+
+- title: 'set_tick_direction_spine_visibility'
+  path: examples/set_tick_direction_spine_visibility.ipynb
+  thumbnail: _static/thumbnails/set_tick_direction_spine_visibility.png
+
+- title: 'add_right_hand_axis'
+  path: examples/add_right_hand_axis.ipynb
+  thumbnail: _static/thumbnails/add_right_hand_axis.png
+
+- title: 'add_major_minor_ticks'
+  path: examples/add_major_minor_ticks.ipynb
+  thumbnail: _static/thumbnails/add_major_minor_ticks.png
