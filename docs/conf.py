@@ -356,9 +356,10 @@ def update_gallery(app: Sphinx):
     LOGGER.info("gallery created")
 
 
-# turn off notebook execution
+# turn on notebook execution
+# set to "off" to turn off
 # set to "auto" for default behavior
-nb_execution_mode = "off"
+nb_execution_mode = "force"
 
 # generate warning for all invalid links
 #nitpicky = True
