@@ -6,10 +6,8 @@ to facilitate plotting geosciences data with Matplotlib, Cartopy, and possibly o
 plotting packages. GeoCAT-viz functionality is used by
 [GeoCAT-examples](https://github.com/NCAR/geocat-examples) and is of possible use for other GeoCAT components.
 
-
-| **Upstream Examples CI** | [![Upstream Examples CI][upstream-examples-ci-badge]][upstream-examples-ci-link] |
-|:------------------------:|:--------------------------------------------------------------------------------:|
 |         **Docs**         |                  [![Documentation Status][rtd-badge]][rtd-link]                  |
+|:------------------------:|:--------------------------------------------------------------------------------:|
 |       **Package**        |       [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]       |
 |       **License**        |                 [![License][license-badge]][license-badge-link]                  |
 |         **DOI**          |                          [![DOI][doi-badge]][doi-link]                           |
