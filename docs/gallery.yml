@@ -21,3 +21,7 @@
 - title: 'add_major_minor_ticks'
   path: examples/add_major_minor_ticks.ipynb
   thumbnail: _static/thumbnails/add_major_minor_ticks.png
+
+- title: 'find_local_extrema'
+  path: examples/find_local_extrema.ipynb
+  thumbnail: _static/thumbnails/find_local_extrema.png

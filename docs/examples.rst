@@ -24,3 +24,4 @@ Here are some examples of how to use geocat-viz.
    examples/set_tick_direction_spine_visibility.ipynb
    examples/add_right_hand_axis.ipynb
    examples/add_major_minor_ticks.ipynb
+   examples/find_local_extrema.ipynb
