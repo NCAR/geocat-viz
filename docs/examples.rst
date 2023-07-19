@@ -25,3 +25,5 @@ Here are some examples of how to use geocat-viz.
    examples/add_right_hand_axis.ipynb
    examples/add_major_minor_ticks.ipynb
    examples/find_local_extrema.ipynb
+   examples/plot_contour_labels.ipynb
+   examples/plot_extrema_labels.ipynb

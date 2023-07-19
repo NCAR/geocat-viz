@@ -25,3 +25,11 @@
 - title: 'find_local_extrema'
   path: examples/find_local_extrema.ipynb
   thumbnail: _static/thumbnails/find_local_extrema.png
+
+- title: 'plot_contour_labels'
+  path: examples/plot_contour_labels.ipynb
+  thumbnail: _static/thumbnails/plot_contour_labels.png
+
+- title: 'plot_extrema_labels'
+  path: examples/plot_extrema_labels.ipynb
+  thumbnail: _static/thumbnails/plot_extrema_labels.png
