@@ -1307,6 +1307,7 @@ def plot_extrema_labels(da: xr.DataArray,
     label_locations : list
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contour labels should be plotted.
+        Locations that cannot be translated into the provided projection will be dropped.
 
     label : str
         ex. 'L' or 'H'
