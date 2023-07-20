@@ -1353,7 +1353,7 @@ def plot_extrema_labels(da: xr.DataArray,
     clabel_points = proj.transform_points(
         transform, np.array([x[0] for x in label_locations]),
         np.array([x[1] for x in label_locations]))
-    transformed_locations = [(x[0], x[1]) for x in clabel_points]
+    transformed_locations = [(x[0], x[1]) for x in clabel_points if not np.isnan(x[0]) and not np.isnan(x[1])]
 
     for loc in range(len(transformed_locations)):
 
