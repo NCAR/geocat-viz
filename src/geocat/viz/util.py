@@ -2,6 +2,7 @@ import warnings
 
 import numpy as np
 import typing
+import math
 
 import xarray as xr
 
@@ -1284,7 +1285,8 @@ def plot_extrema_labels(da: xr.DataArray,
                         label: str = 'L',
                         fontsize: int = 22,
                         whitebbox: bool = False,
-                        horizontal: bool = True) -> list:
+                        horizontal: bool = True,
+                        show_warnings: bool = True) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
@@ -1354,9 +1356,24 @@ def plot_extrema_labels(da: xr.DataArray,
     clabel_points = proj.transform_points(
         transform, np.array([x[0] for x in label_locations]),
         np.array([x[1] for x in label_locations]))
-    transformed_locations = [(x[0], x[1])
-                             for x in clabel_points
-                             if not np.isnan(x[0]) and not np.isnan(x[1])]
+    transformed_locations = [(x[0], x[1]) for x in clabel_points]
+
+    nan_indices = [
+        i for i, (x, y) in enumerate(transformed_locations)
+        if math.isnan(x) or math.isnan(y)
+    ]
+    transformed_locations = [
+        loc for i, loc in enumerate(transformed_locations)
+        if i not in nan_indices
+    ]
+
+    if show_warnings:
+        bad_locations = [label_locations[i] for i in nan_indices]
+        bad_locations_str = ", ".join([str(loc) for loc in bad_locations])
+        if len(bad_locations) > 0:
+            warnings.warn(
+                f'The following locations could not be translated into the desired projection: {bad_locations_str}. These locations will be dropped.',
+                stacklevel=2)
 
     for loc in range(len(transformed_locations)):
 
@@ -1416,9 +1433,6 @@ def set_vector_density(data: xr.DataArray,
 
     - `NCL_vector_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_3.html?highlight=set_vector_density>`_
     """
-    import math
-    import warnings
-
     if minDistance <= 0:
         raise Exception('minDistance cannot be negative or zero.')
     else:
