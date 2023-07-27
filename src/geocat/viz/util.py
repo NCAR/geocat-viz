@@ -2,6 +2,7 @@ import warnings
 
 import numpy as np
 import typing
+import math
 
 import xarray as xr
 
@@ -921,7 +922,9 @@ def findLocalExtrema(da: xr.DataArray,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    See this example notebook: :doc:`../../examples/find_local_extrema`.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=findlocalextrema>`_
 
@@ -1171,7 +1174,9 @@ def plot_contour_labels(ax: matplotlib.axes.Axes,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    See this example notebook: :doc:`../../examples/plot_contour_labels`.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotCLabels>`_
     """
@@ -1280,7 +1285,8 @@ def plot_extrema_labels(da: xr.DataArray,
                         label: str = 'L',
                         fontsize: int = 22,
                         whitebbox: bool = False,
-                        horizontal: bool = True) -> list:
+                        horizontal: bool = True,
+                        show_warnings: bool = True) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
@@ -1303,6 +1309,7 @@ def plot_extrema_labels(da: xr.DataArray,
     label_locations : list
         List of coordinate tuples in GPS form (lon in degrees, lat in degrees)
         that specify where the contour labels should be plotted.
+        Locations that cannot be translated into the provided projection will be dropped.
 
     label : str
         ex. 'L' or 'H'
@@ -1324,7 +1331,9 @@ def plot_extrema_labels(da: xr.DataArray,
 
     Examples
     --------
-    All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
+    See this example notebook: :doc:`../../examples/plot_extrema_labels`.
+
+    More in-depth plotting examples that utilize this function are in the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=plotELabels>`_
 
@@ -1348,6 +1357,23 @@ def plot_extrema_labels(da: xr.DataArray,
         transform, np.array([x[0] for x in label_locations]),
         np.array([x[1] for x in label_locations]))
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
+
+    nan_indices = [
+        i for i, (x, y) in enumerate(transformed_locations)
+        if math.isnan(x) or math.isnan(y)
+    ]
+    transformed_locations = [
+        loc for i, loc in enumerate(transformed_locations)
+        if i not in nan_indices
+    ]
+
+    if show_warnings:
+        bad_locations = [label_locations[i] for i in nan_indices]
+        bad_locations_str = ", ".join([str(loc) for loc in bad_locations])
+        if len(bad_locations) > 0:
+            warnings.warn(
+                f'The following locations could not be translated into the desired projection: {bad_locations_str}. These locations will be dropped.',
+                stacklevel=2)
 
     for loc in range(len(transformed_locations)):
 
@@ -1407,9 +1433,6 @@ def set_vector_density(data: xr.DataArray,
 
     - `NCL_vector_3.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_3.html?highlight=set_vector_density>`_
     """
-    import math
-    import warnings
-
     if minDistance <= 0:
         raise Exception('minDistance cannot be negative or zero.')
     else:
