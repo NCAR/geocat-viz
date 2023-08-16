@@ -89,7 +89,7 @@ plotting packages.
    :caption: For Developers
 
    Release Notes <release-notes.rst>
-   Contributor's Guide <https://geocat.ucar.edu/pages/contributing.html>
+   Contributor's Guide <https://github.com/NCAR/geocat-viz/blob/main/CONTRIBUTING.md>
    Roadmap <https://geocat.ucar.edu/pages/roadmap.html>
 
 .. toctree::
