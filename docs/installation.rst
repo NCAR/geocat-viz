@@ -6,8 +6,7 @@ Installation
 ============
 
 This installation guide includes only the GeoCAT-viz installation and build instructions.
-Please refer to `GeoCAT Contributor's Guide <https://geocat.ucar.edu/pages/contributing.html>`__ for installation of
-the whole GeoCAT project.
+Please refer to the relevant project documentation for how to install other GeoCAT packages.
 
 Installing GeoCAT-viz via Conda in a New Environment
 -----------------------------------------------------
