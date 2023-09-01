@@ -307,16 +307,18 @@ def add_height_from_pressure_axis(ax,
             step = 10
 
         # Select heights to display as tick labels
-        heights = np.arange(int(height_min.magnitude), int(height_max.magnitude) + 1, step)
+        heights = np.arange(int(height_min.magnitude),
+                            int(height_max.magnitude) + 1, step)
 
     # Send selected height values back to pressure to get tick locations
-    pressures = mpcalc.height_to_pressure_std(heights * units('km')).to(pressure_units).magnitude
+    pressures = mpcalc.height_to_pressure_std(
+        heights * units('km')).to(pressure_units).magnitude
 
     # Set right-hand height axis scale to match left-hand pressure axis
     axRHS.set_yscale(ax.get_yscale())
 
-    # Turn off minor ticks that are spaced by pressure                                
-    axRHS.minorticks_off()  
+    # Turn off minor ticks that are spaced by pressure
+    axRHS.minorticks_off()
 
     set_axes_limits_and_ticks(axRHS,
                               ylim=ax.get_ylim(),
