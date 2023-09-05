@@ -283,7 +283,7 @@ def add_height_from_pressure_axis(ax,
 
     - `NCL_h_lat_7.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Contours/NCL_h_lat_7.html?highlight=add_height_from_pressure_axis>`_
 
-     - `NCL_h_vector_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_5.html?highlight=add_height_from_pressure_axis>`_
+    - `NCL_h_vector_5.py <https://geocat-examples.readthedocs.io/en/latest/gallery/Vectors/NCL_vector_5.html?highlight=add_height_from_pressure_axis>`_
     """
 
     # Create the right hand axis, inheriting from the left
@@ -291,28 +291,34 @@ def add_height_from_pressure_axis(ax,
 
     # If height array isn't given, infer it from pressure axis
     if heights is None:
-        height_min, height_max = mpcalc.pressure_to_height_std(
-            ax.get_ylim() * units(pressure_units)).magnitude
+        # Calculate min and max height from pressure axis limits
+        pressure_min = np.min(ax.get_ylim()) * units(pressure_units)
+        height_max = mpcalc.pressure_to_height_std(pressure_min)
+        pressure_max = np.max(ax.get_ylim()) * units(pressure_units)
+        height_min = mpcalc.pressure_to_height_std(pressure_max)
 
         # Range and step values mirror NCL's `set_pres_hgt_axes` logic
         height_range = abs(height_max - height_min)
-        if (height_range < 35):
-            if (height_range < 70):
-                step = 7
-            else:
-                step = 4
+        if (height_range <= 35 * units('km')):
+            step = 4
+        elif (height_range <= 70 * units('km')):
+            step = 7
         else:
             step = 10
 
         # Select heights to display as tick labels
-        heights = np.arange(int(height_min), int(height_max) + 1, step)
+        heights = np.arange(int(height_min.magnitude),
+                            int(height_max.magnitude) + 1, step)
 
     # Send selected height values back to pressure to get tick locations
-    pressures = mpcalc.height_to_pressure_std(heights * units('km')).magnitude
+    pressures = mpcalc.height_to_pressure_std(
+        heights * units('km')).to(pressure_units).magnitude
 
-    # Display logrithmically to match right-hand pressure axis
-    axRHS.set_yscale('log')
-    axRHS.minorticks_off()  # Turn off minor ticks that are spaced by pressure
+    # Set right-hand height axis scale to match left-hand pressure axis
+    axRHS.set_yscale(ax.get_yscale())
+
+    # Turn off minor ticks that are spaced by pressure
+    axRHS.minorticks_off()
 
     set_axes_limits_and_ticks(axRHS,
                               ylim=ax.get_ylim(),
