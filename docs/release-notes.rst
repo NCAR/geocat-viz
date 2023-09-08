@@ -1,14 +1,16 @@
 .. currentmodule:: geocat.viz
 
 .. _release:
+
 Release Notes
 =============
 
 v2023.09.0 (September 7, 2023)
 ------------------------------
+Bug fix in ``add_height_from_pressure_axis()`` and added example documentation.
 
 Bug Fixes
-^^^^^^^^^^^^
+^^^^^^^^^
 * Unit and inferred height fixes in ``add_height_from_pressure_axis()``  by `Katelyn FitzGerald`_ in (:pr:`152`)
 
 Documentation
