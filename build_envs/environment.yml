@@ -10,7 +10,7 @@ dependencies:
   - pip
   - cmaps
   - numpy
-  - xarray<=2023.02.0 #pin per issue https://github.com/NCAR/geocat-comp/issues/381
+  - xarray
   - metpy
   - pint
   - geocat-datafiles

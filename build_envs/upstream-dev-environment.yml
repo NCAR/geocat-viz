@@ -30,6 +30,6 @@ dependencies:
   - sphinx-design
   - sphinx-book-theme
   - wrf-python
-  - xarray<=2023.02.0 # pinned as per issue #98
+  - xarray
   - pre-commit
   - geocat-datafiles # for examples/tests
