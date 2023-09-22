@@ -33,7 +33,7 @@ Thank you so much for your PR!  To help us review your contribution, please
 consider the following points:
 
 - Fork this repository and open the PR from your fork. Do not directly work on
-  the NCAR/geocat-comp repository.
+  the NCAR/geocat-viz repository.
 
 - The PR title should summarize the changes, for example "Create weighted pearson-r
   correlation coefficient function". Avoid non-descriptive titles such as "Addresses
