@@ -5,6 +5,10 @@
 Release Notes
 =============
 
+Bug Fixes
+^^^^^^^^^
+* Xarray unpinned by `Katelyn Fitzgerald`_ in (:pr:`159`)
+
 v2023.09.0 (September 7, 2023)
 ------------------------------
 Bug fix in ``add_height_from_pressure_axis()`` and added example documentation.
