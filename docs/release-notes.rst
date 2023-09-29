@@ -11,6 +11,7 @@ New Features
 
 Bug Fixes
 ^^^^^^^^^
+* Matplotlib pinned to <3.8 `Katelyn Fitzgerald`_ in (:pr:`161`)
 * Xarray unpinned by `Katelyn FitzGerald`_ in (:pr:`159`)
 
 v2023.09.0 (September 7, 2023)
