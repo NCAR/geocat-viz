@@ -5,6 +5,10 @@
 Release Notes
 =============
 
+New Features
+^^^^^^^^^
+* Add code of conduct by `Katelyn Fitzgerald`_ in (:pr:`163`)
+
 Bug Fixes
 ^^^^^^^^^
 * Xarray unpinned by `Katelyn Fitzgerald`_ in (:pr:`159`)
