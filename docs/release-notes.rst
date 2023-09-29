@@ -7,6 +7,7 @@ Release Notes
 
 New Features
 ^^^^^^^^^
+* Add code of conduct by `Katelyn FitzGerald`_ in (:pr:`163`)
 * Added Python 3.11 and removed Python 3.8 `Katelyn FitzGerald`_ in (:pr:`162`)
 
 Bug Fixes
