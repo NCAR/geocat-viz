@@ -5,10 +5,14 @@
 Release Notes
 =============
 
+New Features
+^^^^^^^^^
+* Added Python 3.11 and removed Python 3.8 `Katelyn FitzGerald`_ in (:pr:`162`)
+
 Bug Fixes
 ^^^^^^^^^
 * Matplotlib pinned to <3.8 `Katelyn Fitzgerald`_ in (:pr:`161`)
-* Unnecessary xarray pin removed by `Katelyn Fitzgerald`_ in (:pr:`159`)
+* Xarray unpinned by `Katelyn FitzGerald`_ in (:pr:`159`)
 
 v2023.09.0 (September 7, 2023)
 ------------------------------
