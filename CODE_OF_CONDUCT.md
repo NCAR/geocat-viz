@@ -2,8 +2,8 @@
 
 ## Our Pledge
 
-We, as contributors, creators, stewards, and maintainers (participants), of GeoCAT-viz pledge to make participation in our 
-project and community a safe, productive, welcoming and inclusive experience for everyone. All participants are required 
+We, as contributors, creators, stewards, and maintainers (participants), of GeoCAT-viz pledge to make participation in our
+project and community a safe, productive, welcoming and inclusive experience for everyone. All participants are required
 to abide by this Code of Conduct. This includes respectful treatment of everyone regardless of age, body size, disability,
 ethnicity, gender identity or expression, level of experience, nationality, political affiliation, veteran status, pregnancy,
 genetic information, physical appearance, race, religion, or sexual orientation, as well as any other characteristic protected
@@ -36,7 +36,7 @@ Examples of unacceptable behavior include, but are not limited to:
 
 ## Scope
 
-This Code of Conduct applies to all spaces managed by GeoCAT whether they be physical, online or face-to-face. 
+This Code of Conduct applies to all spaces managed by GeoCAT whether they be physical, online or face-to-face.
 This includes project code, code repository, associated web pages, documentation, mailing lists, project websites
 and wiki pages, issue tracker, meetings, telecons, events, project social media accounts, and any other forums
 created by the project team which the community uses for communication. In addition, violations of this Code of
@@ -79,4 +79,4 @@ Participant Code of Conduct, which also borrows from the American Geophysical Un
 Code of Conduct applies to both UCAR employees as well as participants in activities run by UCAR. The original version of this
 for all software projects that have strong management from UCAR or UCAR staff is available on the UCAR website at
 [https://doi.org/10.5065/6w2c-a132](https://doi.org/10.5065/6w2c-a132). The date that it was adopted by this project was 2
-October 2023. When responding to complaints, UCAR HR and ODEI will do so based on the latest published version. 
+October 2023. When responding to complaints, UCAR HR and ODEI will do so based on the latest published version.
