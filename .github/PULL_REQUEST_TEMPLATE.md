@@ -32,6 +32,8 @@ apply to this PR, comment it out or delete it. -->
 Thank you so much for your PR!  To help us review your contribution, please
 consider the following points:
 
+- A contributor's guide is available at https://geocat-viz.readthedocs.io/en/latest/contrib.html
+
 - Fork this repository and open the PR from your fork. Do not directly work on
   the NCAR/geocat-viz repository.
 
