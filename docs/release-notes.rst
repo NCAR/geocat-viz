@@ -5,6 +5,11 @@
 Release Notes
 =============
 
+v2023.10.0 (October 3, 2023)
+----------------------------
+This release adds a Contributor's Guide and Code of Conduct, updates several
+dependency pins, and adds Python 3.11 support while removing Python 3.8.
+
 Bug Fixes
 ^^^^^^^^^
 * Matplotlib pinned to <3.8 `Katelyn FitzGerald`_ in (:pr:`161`)
