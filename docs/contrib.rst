@@ -158,7 +158,7 @@ Use the following commands to create a new conda environment to develop
     pip install -e .
 
 To test your new install, open a python session and try importing
-``geocat.viz``. 
+``geocat.viz``.
 
 .. code-block:: python
 
