@@ -5,15 +5,19 @@
 Release Notes
 =============
 
-New Features
-^^^^^^^^^
-* Add code of conduct by `Katelyn FitzGerald`_ in (:pr:`163`)
-* Added Python 3.11 and removed Python 3.8 `Katelyn FitzGerald`_ in (:pr:`162`)
-
 Bug Fixes
 ^^^^^^^^^
-* Matplotlib pinned to <3.8 `Katelyn Fitzgerald`_ in (:pr:`161`)
+* Matplotlib pinned to <3.8 `Katelyn FitzGerald`_ in (:pr:`161`)
 * Xarray unpinned by `Katelyn FitzGerald`_ in (:pr:`159`)
+
+New Features
+^^^^^^^^^^^^
+* Added Python 3.11 and removed Python 3.8 `Katelyn FitzGerald`_ in (:pr:`162`)
+
+Documentation
+^^^^^^^^^^^^^
+* Add a contributor's guide by `Katelyn FitzGerald`_ in (:pr:`166`)
+* Add code of conduct by `Katelyn FitzGerald`_ in (:pr:`163`)
 
 v2023.09.0 (September 7, 2023)
 ------------------------------
