@@ -16,13 +16,13 @@ plotting packages. GeoCAT-viz functionality is used by
 
 [GeoCAT Homepage](https://geocat.ucar.edu/)
 
-[GeoCAT-viz Contributor's Guide](https://github.com/NCAR/geocat-viz/blob/main/CONTRIBUTING.md)
+[GeoCAT-viz Contributor's Guide](https://geocat-viz.readthedocs.io/en/latest/contrib.html)
 
-[GeoCAT-viz documentation on Read the Docs](https://geocat-viz.readthedocs.io)
+[GeoCAT-viz Documentation on Read the Docs](https://geocat-viz.readthedocs.io)
 
 # Installation instructions
 
-Please see our documentation for [installation instructions](https://github.com/NCAR/geocat-viz/blob/main/INSTALLATION.md).
+Please see our documentation for [installation instructions](https://geocat-viz.readthedocs.io/en/latest/installation.html).
 
 # Citing GeoCAT-viz
 
