@@ -92,7 +92,6 @@ A more detailed description of each step is provided in following sections.
 **Make your changes**
 
 #. `Understanding the codebase`_.
-#. `Write and run tests`_.
 #. :ref:`Generate <generate-docs>` and :ref:`check <check-docs>` the documentation.
 
 **Contribute your code**
@@ -276,33 +275,6 @@ need to modify to incorporate your code into the package. These include:
 
 * ``docs/release-notes.rst``: This file documents changes to the codebase that
   we add to in the same PR as the code changes.
-
-
-Write and run tests
--------------------
-
-``geocat-viz`` uses `pytest <https://pytest.org/>`__ for unit tests. Currently,
-we have unit tests written in both ``pytest`` and ``unittest``. We are in the
-process of converting all of our tests to ``pytest`` and we encourage you to
-write new tests using ``pytest``.
-
-To run the tests locally, use the following command from the root of the
-repository:
-
-.. code-block:: bash
-
-    pytest
-
-To run a specific test, use the following command:
-
-.. code-block:: bash
-
-    pytest tests/test_mod.py::test_func
-
-These tests will also run automatically when you open a pull request using
-GitHub Actions and the ``.github/workflows/ci.yml`` file.
-
-See the `pytest documentation <https://pytest.org/>`__ for more information.
 
 
 *************
