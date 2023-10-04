@@ -95,7 +95,7 @@ installed.
 Required dependencies for building and testing GeoCAT-viz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    - Python 3.8+
+    - Python 3.9+
     - `numpy <https://numpy.org/doc/stable/>`__
     - `xarray <http://xarray.pydata.org/en/stable/>`__
     - `matplotlib <https://matplotlib.org/stable/index.html>`__
