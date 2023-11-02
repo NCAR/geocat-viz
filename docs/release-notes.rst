@@ -5,6 +5,14 @@
 Release Notes
 =============
 
+v2023.11.0 (Unreleased)
+-----------------------
+[Plain text summary here]
+
+Documentation
+^^^^^^^^^^^^^
+* Invert y-axis in add_height_from_pressure_axis example by `Katelyn FitzGerald`_ in (:pr:`173`)
+
 v2023.10.0 (October 3, 2023)
 ----------------------------
 This release adds a Contributor's Guide and Code of Conduct, updates several
@@ -12,12 +20,12 @@ dependency pins, and adds Python 3.11 support while removing Python 3.8.
 
 Bug Fixes
 ^^^^^^^^^
-* Matplotlib pinned to <3.8 `Katelyn FitzGerald`_ in (:pr:`161`)
+* Matplotlib pinned to <3.8 by `Katelyn FitzGerald`_ in (:pr:`161`)
 * Xarray unpinned by `Katelyn FitzGerald`_ in (:pr:`159`)
 
 New Features
 ^^^^^^^^^^^^
-* Added Python 3.11 and removed Python 3.8 `Katelyn FitzGerald`_ in (:pr:`162`)
+* Added Python 3.11 and removed Python 3.8 by `Katelyn FitzGerald`_ in (:pr:`162`)
 
 Documentation
 ^^^^^^^^^^^^^
