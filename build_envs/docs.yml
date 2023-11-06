@@ -2,10 +2,10 @@ name: gv-docs
 channels:
   - conda-forge
 dependencies:
-  - python>=3.8, <=3.10
+  - python>=3.9, <3.12
   - cartopy
   - cmaps
-  - matplotlib
+  - matplotlib<3.8
   - pint
   - pip
   - pre-commit
