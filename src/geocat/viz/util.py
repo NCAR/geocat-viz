@@ -1620,10 +1620,10 @@ def generate_2d_array(dims,
                     num_high,
                     minv,
                     maxv,
-                    seed=0,
+                    iseed=0,
                     highs_at=None,
                     lows_at=None):
-    """Generates smooth 2D arrays.
+    """Generates random smooth 2D arrays to resemble some NCL example data.
 
     Parameters
     ----------
@@ -1665,7 +1665,7 @@ def generate_2d_array(dims,
 
     # Globals for random numbers.
     global dfran_iseq
-    dfran_iseq = seed
+    dfran_iseq = iseed
 
     # Check arguments.
     try:
@@ -1691,9 +1691,9 @@ def generate_2d_array(dims,
     if (num_high > 25):
         print("generate_2d_array: number of highs must be at most 25 - defaulting to 25.")
         num_high =25
-    if (seed > 100 or seed < 0):
-        print("generate_2d_array: seed must be in the interval [0,100] - seed set to 0.")
-        seed = 0
+    if (iseed > 100 or iseed < 0):
+        print("generate_2d_array: iseed must be in the interval [0,100] - iseed set to 0.")
+        iseed = 0
     if not lows_at is None:
         if (len(lows_at) != num_low):
             print("generate_2d_array: the list of positions for the lows must be the same size as num_low.")
@@ -1719,8 +1719,8 @@ def generate_2d_array(dims,
             tmp_array[1,k] =  float(lows_at[k][0])
             tmp_array[2,k] = -1.
         else:
-            tmp_array[0,k] =  1.+(float(nx)-1.)*_dfran() # lows at random locations.
-            tmp_array[1,k] =  1.+(float(ny)-1.)*_dfran() # lows at random locations.
+            tmp_array[0,k] =  1.+(float(nx)-1.)*dfran_iseq # lows at random locations.
+            tmp_array[1,k] =  1.+(float(ny)-1.)*dfran_iseq # lows at random locations.
             tmp_array[2,k] = -1.
     for k in range(num_low,num_low+num_high):
         if not highs_at is None:
@@ -1728,8 +1728,8 @@ def generate_2d_array(dims,
             tmp_array[1,k] =  float(highs_at[k-num_low][0])  # highs locations
             tmp_array[2,k] =  1.
         else:
-            tmp_array[0,k] =  1.+(float(nx)-1.)*_dfran() # highs at random locations.
-            tmp_array[1,k] =  1.+(float(ny)-1.)*_dfran() # highs at random locations.
+            tmp_array[0,k] =  1.+(float(nx)-1.)*dfran_iseq # highs at random locations.
+            tmp_array[1,k] =  1.+(float(ny)-1.)*dfran_iseq # highs at random locations.
             tmp_array[2,k] =  1.
 
     dmin =  1.e+36
