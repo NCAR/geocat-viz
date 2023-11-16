@@ -136,9 +136,7 @@ Create a development environment
 
 To run and test any changes you make in ``geocat-viz``, you will need to create
 a development environment. We recommend installing and using `conda
-<https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html>`__
-and/or `mamba
-<https://mamba.readthedocs.io/en/latest/mamba-installation.html#mamba-install>`__.
+<https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html>`__.
 
 Use the following commands to create a new conda environment to develop
 ``geocat-viz`` in.
