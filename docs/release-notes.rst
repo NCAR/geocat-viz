@@ -13,6 +13,10 @@ Documentation
 ^^^^^^^^^^^^^
 * Invert y-axis in add_height_from_pressure_axis example by `Katelyn FitzGerald`_ in (:pr:`173`)
 
+Bug Fixes
+^^^^^^^^^
+* Remove matplotlib version pin by `Katelyn FitzGerald`_ in (:pr:`177`)
+
 v2023.10.0 (October 3, 2023)
 ----------------------------
 This release adds a Contributor's Guide and Code of Conduct, updates several
