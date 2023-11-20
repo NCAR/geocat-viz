@@ -82,8 +82,8 @@ intersphinx_mapping = {
 }
 # allows us to easily link PRs and issues in the change log
 extlinks = {
-    "issue": ("https://github.com/NCAR/geocat-viz/issues/%s", "GH"),
-    "pr": ("https://github.com/NCAR/geocat-viz/pull/%s", "PR"),
+    "issue": ("https://github.com/NCAR/geocat-viz/issues/%s", "GH%s"),
+    "pr": ("https://github.com/NCAR/geocat-viz/pull/%s", "PR%s"),
 }
 
 # napoleon settings
