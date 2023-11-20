@@ -16,6 +16,7 @@ Documentation
 Bug Fixes
 ^^^^^^^^^
 * Remove matplotlib version pin by `Katelyn FitzGerald`_ in (:pr:`177`)
+* Fix `extlinks` for compatibility with Sphinx 6 by `Katelyn FitzGerald`_ in (:pr:`180`)
 
 v2023.10.0 (October 3, 2023)
 ----------------------------
