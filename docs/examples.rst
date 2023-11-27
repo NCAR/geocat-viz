@@ -22,6 +22,8 @@ Here are some examples of how to use geocat-viz.
    examples/add_lat_lon_gridlines.ipynb
    examples/add_lat_lon_ticklabels.ipynb
    examples/set_tick_direction_spine_visibility.ipynb
+   examples/set_titles_and_labels.ipynb
+   examples/set_axes_limits_and_ticks.ipynb
    examples/add_right_hand_axis.ipynb
    examples/add_major_minor_ticks.ipynb
    examples/find_local_extrema.ipynb

@@ -33,3 +33,11 @@
 - title: 'plot_extrema_labels'
   path: examples/plot_extrema_labels.ipynb
   thumbnail: _static/thumbnails/plot_extrema_labels.png
+
+- title: 'set_titles_and_labels'
+  path: examples/set_titles_and_labels.ipynb
+  thumbnail: _static/thumbnails/set_titles_and_labels.png
+
+- title: 'set_axes_limits_and_ticks'
+  path: examples/set_axes_limits_and_ticks.ipynb
+  thumbnail: _static/thumbnails/set_axes_limits_and_ticks.png
