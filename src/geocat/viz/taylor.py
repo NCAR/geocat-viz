@@ -201,10 +201,10 @@ class TaylorDiagram(object):
 
         Parameters
         ----------
-        stddev : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
+        stddev : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list
             An array of vertical coordinates of the data points that denote the standard deviation
 
-        corrcoef : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
+        corrcoef : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list
             An array of horizontal coordinates of the data points that denote correlation
             Input should have the same size as *stddev*
 
@@ -226,7 +226,7 @@ class TaylorDiagram(object):
         percent_bias_on : bool
             If True, model marker and marker size is plotted based on *bias_array* Default to False. Optional.
 
-        bias_array : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list, float
+        bias_array : :class:`xarray.DataArray`, :class:`numpy.ndarray`, list
             If this is given, it is used to determine individual marker size and marker style internally.
             Input should have the same size as *stddev* and *corrcoef* Default to None.
 
