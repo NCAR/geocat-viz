@@ -481,6 +481,8 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
                                            cartopy.mpl.geoaxes.GeoAxesSubplot],
                           maintitle: str = None,
                           maintitlefontsize: int = 18,
+                          subtitle: str = None,
+                          subtitlefontsize: int = 18,
                           lefttitle: str = None,
                           lefttitlefontsize: int = 18,
                           righttitle: str = None,
@@ -504,6 +506,12 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
 
     maintitlefontsize : int
         Text font size for maintitle. A default value of 18 is used if nothing is set.
+
+    subtitle: str
+        Text to use for an optional subtitle.
+
+    subtitlefontsize: int
+        Text font size for subtitle. A default value of 18 is used if nothing is set.
 
     lefttitle : str
         Text to use for an optional left-aligned title, if any. For most plots, only a maintitle is enough,
@@ -561,10 +569,16 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
     """
 
     if maintitle is not None:
-        if lefttitle is not None or righttitle is not None:
+        if subtitle is not None:
+            fig = ax.get_figure()
+            fig.suptitle(maintitle, fontsize=maintitlefontsize, y=1.04)
+        elif lefttitle is not None or righttitle is not None:
             ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=1.12)
         else:
             ax.set_title(maintitle, fontsize=maintitlefontsize, y=1.04)
+
+    if subtitle is not None:
+        ax.set_title(subtitle, fontsize=subtitlefontsize)
 
     if lefttitle is not None:
         ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=1.04, loc='left')
