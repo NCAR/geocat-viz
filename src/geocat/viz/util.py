@@ -509,7 +509,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
 
     subtitle: str
         Text to use for an optional subtitle.
-    
+
     subtitlefontsize: int
         Text font size for subtitle. A default value of 18 is used if nothing is set.
 
