@@ -5,9 +5,12 @@
 Release Notes
 =============
 
-v2023.11.0 (Unreleased)
+v2024.1.0 (Unreleased)
 -----------------------
 
+New Features
+^^^^^^^^^^^^
+* Added subtitle functionality to `set_titles_and_labels()` by `Julia Kent`_ in (:pr:`185`)
 
 Documentation
 ^^^^^^^^^^^^^
