@@ -41,3 +41,7 @@
 - title: 'set_axes_limits_and_ticks'
   path: examples/set_axes_limits_and_ticks.ipynb
   thumbnail: _static/thumbnails/set_axes_limits_and_ticks.png
+
+- title: 'TaylorDiagram'
+  path: examples/taylor.ipynb
+  thumbnail: _static/thumbnails/taylor.png
