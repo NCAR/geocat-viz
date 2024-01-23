@@ -41,3 +41,7 @@
 - title: 'set_axes_limits_and_ticks'
   path: examples/set_axes_limits_and_ticks.ipynb
   thumbnail: _static/thumbnails/set_axes_limits_and_ticks.png
+
+- title: 'get_skewt_vars'
+  path: examples/get_skewt_vars.ipynb
+  thumbnail: _static/thumbnails/skewt.png
