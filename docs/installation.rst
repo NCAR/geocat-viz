@@ -59,7 +59,7 @@ If you started a project and later decided to use GeoCAT-viz, you will need to i
 
 3. Install geocat-viz::
 
-        conda install -c ncar -c conda-forge geocat-viz
+        conda install -c conda-forge geocat-viz
 
 Updating GeoCAT-viz via Conda
 -------------------------------
