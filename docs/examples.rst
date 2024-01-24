@@ -30,3 +30,4 @@ Here are some examples of how to use geocat-viz.
    examples/plot_contour_labels.ipynb
    examples/plot_extrema_labels.ipynb
    examples/taylor.ipynb
+   examples/get_skewt_vars.ipynb

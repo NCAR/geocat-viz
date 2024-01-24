@@ -45,3 +45,7 @@
 - title: 'TaylorDiagram'
   path: examples/taylor.ipynb
   thumbnail: _static/thumbnails/taylor.png
+
+- title: 'get_skewt_vars'
+  path: examples/get_skewt_vars.ipynb
+  thumbnail: _static/thumbnails/skewt.png
