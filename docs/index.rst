@@ -18,10 +18,6 @@
               plotting, python plotting
 
 
-.. .. image:: _static/images/nsf.png
-..    :scale: 100%
-..   :align: right
-
 .. |
 .. |
 
