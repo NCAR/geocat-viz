@@ -10,11 +10,11 @@ and possibly other Python ecosystem plotting packages. GeoCAT-viz allows Python 
 that resemeble NCL's plotting outputs, as demonstrated in the
 `GeoCAT Examples gallery <https://geocat-examples.readthedocs.io/en/latest/gallery/index.html>`__,
 but also offers visualization functionality that may go beyond what NCL offers.
-It is a principle component of NCAR's `Pivot to Python Initiative <https://www.ncl.ucar.edu/Document/Pivot_to_Python/>`__.
+It is a principle component of NSF NCAR's `Pivot to Python Initiative <https://www.ncl.ucar.edu/Document/Pivot_to_Python/>`__.
 
 Why GeoCAT-viz?
 ----------------
-GeoCAT-viz is a geoscience visualization Python package created as part of NCAR's `Pivot to Python Initiative <https://www.ncl.ucar.edu/Document/Pivot_to_Python/>`__.
+GeoCAT-viz is a geoscience visualization Python package created as part of NSF NCAR's `Pivot to Python Initiative <https://www.ncl.ucar.edu/Document/Pivot_to_Python/>`__.
 `NCL <https://www.ncl.ucar.edu/>`__, the prior language of choice for geoscience work, has been put into maintenance mode
 in favor of Python. This is due to Python's easy-to-learn, open-source nature and the benefits that provides. There are
 a plethora of scientific analysis packages designed for general use or for niche applications. Numerous tutorials exist
