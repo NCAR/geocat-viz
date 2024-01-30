@@ -240,8 +240,9 @@ html_theme_options = dict(
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_theme_options = {
-    "image_light": '_static/images/logos/NSF_NCAR_light.svg',
-    "image_dark": '_static/images/logos/NSF_NCAR_dark.svg',
+    "logo": {
+        "image_light": '_static/images/logos/NSF_NCAR_light.svg',
+        "image_dark": '_static/images/logos/NSF_NCAR_dark.svg',
     }
 }
 
