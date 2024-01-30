@@ -254,7 +254,7 @@ html_favicon = '_static/images/logos/GeoCAT_square.svg'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-html_css_files = ["style.css"]
+html_css_files = ["theme_overrides.css"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -371,5 +371,4 @@ nb_execution_mode = "force"
 
 # Allow for changes to be made to the css in the theme_overrides file
 def setup(app):
-    app.add_css_file('theme_overrides.css')
     app.connect("builder-inited", update_gallery)
