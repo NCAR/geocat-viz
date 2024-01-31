@@ -19,12 +19,17 @@
     height: auto;
 }
 
+.custom-body {
+    text-align: left;
+    margin-left: max(45px, 15%);
+}
+
 html[data-theme="light"] {
-    --pst-color-primary: #1A658F;
-    --pst-color-secondary: #012169;
+    --pst-color-primary: #012169;
+    --pst-color-secondary: #1A658F;
 }
 
 html[data-theme="dark"] {
-    --pst-color-primary: #1A658F;
-    --pst-color-secondary: #53565A;
+    --pst-color-primary: #53565A;
+    --pst-color-secondary: #1A658F;
 }
