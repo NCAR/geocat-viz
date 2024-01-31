@@ -19,7 +19,7 @@ Documentation
 * Remove reference to old ncar conda channel from installation docs by `Katelyn FitzGerald`_ in (:pr:`190`)
 * Additional examples published for the `TaylorDiagram` class and `get_skewt_vars()` function by `Julia Kent`_ in (:pr:`186`) and (:pr:`188`)
 * `TaylorDiagram` class docstring is clarified by `Julia Kent`_ in (:pr:`182`)
-* NSF NCAR branding updates by `Katelyn FitzGerald`_ in (:pr:`191`)
+* NSF NCAR branding updates by `Katelyn FitzGerald`_ in (:pr:`191`) and (:pr:`192`)
 
 Bug Fixes
 ^^^^^^^^^
