@@ -11,6 +11,7 @@ v2024.1.0 (Unreleased)
 New Features
 ^^^^^^^^^^^^
 * Added subtitle functionality to `set_titles_and_labels()` by `Julia Kent`_ in (:pr:`185`)
+* Added Python 3.12 support and testing for Windows and M1 by `Katelyn FitzGerald`_ in (:pr:`194`)
 
 Documentation
 ^^^^^^^^^^^^^
