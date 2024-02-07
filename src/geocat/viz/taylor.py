@@ -320,11 +320,11 @@ class TaylorDiagram(object):
                 plot_handle = plt.scatter(1, 2, color=color, label=label)
                 self.modelMarkerSet.append(plot_handle)
 
+        # Initialize empty array that will be filled with model label text objects and returned
+        modelTexts = []
+
         # Annotate model markers if annotate_on is True
         if annotate_on:
-            # Initialize empty array that will be filled with model label text objects and returned
-            modelTexts = []
-
             for std, corr in zip(std_plot, corr_plot):
                 label = str(stdAndNumber[std])
                 textObject = self.ax.annotate(label, (np.arccos(corr), std),
