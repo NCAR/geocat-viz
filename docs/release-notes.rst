@@ -10,7 +10,7 @@ v2024.03.0 (Unreleased)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
-* Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:``)
+* Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:`208`)
 
 v2024.02.0 (February 6, 2024)
 -----------------------------
