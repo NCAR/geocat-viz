@@ -5,6 +5,13 @@
 Release Notes
 =============
 
+(Unreleased)
+------------
+
+Bug Fixes
+^^^^^^^^^
+* Fix Taylor diagram issue when disabling ``annotate_on`` by `Simon Rosanka`_ in (:pr:`207`)
+
 v2024.02.0 (February 6, 2024)
 -----------------------------
 This release adds a new subtitle functionality to ``set_titles_and_labels`` and
@@ -109,3 +116,4 @@ Documentation
 
 .. _`Julia Kent`: https://github.com/jukent
 .. _`Katelyn Fitzgerald`: https://github.com/kafitzgerald
+.. _`Simon Rosanka`: https://github.com/srosanka
