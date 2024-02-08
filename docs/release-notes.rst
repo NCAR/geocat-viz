@@ -5,12 +5,16 @@
 Release Notes
 =============
 
-(Unreleased)
-------------
+v2024.03.0 (Unreleased)
+-----------------------
 
 Bug Fixes
 ^^^^^^^^^
 * Fix Taylor diagram issue when disabling ``annotate_on`` by `Simon Rosanka`_ in (:pr:`207`)
+
+Internal Changes
+^^^^^^^^^^^^^^^^
+* Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:`208`)
 
 v2024.02.0 (February 6, 2024)
 -----------------------------
@@ -117,3 +121,4 @@ Documentation
 .. _`Julia Kent`: https://github.com/jukent
 .. _`Katelyn Fitzgerald`: https://github.com/kafitzgerald
 .. _`Simon Rosanka`: https://github.com/srosanka
+.. _`Orhan Eroglu`: https://github.com/erogluorhan
