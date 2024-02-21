@@ -372,6 +372,7 @@ nb_execution_mode = "force"
 # add links to ignore during link checking
 linkcheck_ignore = [r'https://stackoverflow.com/*']
 
+
 # Allow for changes to be made to the css in the theme_overrides file
 def setup(app):
     app.connect("builder-inited", update_gallery)
