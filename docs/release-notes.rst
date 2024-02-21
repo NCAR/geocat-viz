@@ -15,6 +15,7 @@ Bug Fixes
 Internal Changes
 ^^^^^^^^^^^^^^^^
 * Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:`208`)
+* Add ``linkcheck_ignore`` to ``docs/conf.py`` to address erroneous failures and add CI badge to README by `Katelyn FitzGerald`_ in (:pr:`218`)
 
 v2024.02.0 (February 6, 2024)
 -----------------------------
