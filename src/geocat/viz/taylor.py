@@ -44,6 +44,11 @@ class TaylorDiagram(object):
     stdLevel : list
         Optional list of tick locations for stddev axis
 
+    Notes
+    -----
+    Rendering of Taylor Diagrams looks best with a figure that is at least 10x10. If you  make your figure size too small,
+    legends, lagels, and other text items might overlap in undesired ways.
+
     References
     ----------
     - https://validate-climate-model-validation.readthedocs.io/en/latest/_modules/validate/taylor.html
