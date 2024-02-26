@@ -16,6 +16,7 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:`208`)
 * Add ``linkcheck_ignore`` to ``docs/conf.py`` to address erroneous failures and add CI badge to README by `Katelyn FitzGerald`_ in (:pr:`218`)
+* Convert to implicit namespace packaging set up by `Anissa Zacharias`_ in (:pr:`220`)
 
 v2024.02.0 (February 6, 2024)
 -----------------------------
@@ -123,3 +124,4 @@ Documentation
 .. _`Katelyn Fitzgerald`: https://github.com/kafitzgerald
 .. _`Simon Rosanka`: https://github.com/srosanka
 .. _`Orhan Eroglu`: https://github.com/erogluorhan
+.. _`Anissa Zacharias`: https://github.com/anissa111
