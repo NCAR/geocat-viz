@@ -1,13 +1,14 @@
 
 # GeoCAT-viz
 
-The GeoCAT-viz repo contains tools to help plot data, including convenience and plotting functions that are used
-to facilitate plotting geosciences data with Matplotlib, Cartopy, and possibly other Python ecosystem
-plotting packages. GeoCAT-viz functionality is used by
-[GeoCAT-examples](https://github.com/NCAR/geocat-examples) and is of possible use for other GeoCAT components.
+GeoCAT-viz contains tools to help plot geoscience data, including convenience and plotting functions that are
+used to facilitate plotting geosciences data with Matplotlib, Cartopy, and other visualization packages.
+GeoCAT-viz functionality is used by
+[GeoCAT-examples](https://github.com/NCAR/geocat-examples).
 
-|         **Docs**         |                  [![Documentation Status][rtd-badge]][rtd-link]                  |
+|          **CI**          |           [![GitHub Workflow Status][github-ci-badge]][github-ci-link]           |
 |:------------------------:|:--------------------------------------------------------------------------------:|
+|         **Docs**         |                  [![Documentation Status][rtd-badge]][rtd-link]                  |
 |       **Package**        |       [![Conda][conda-badge]][conda-link] [![PyPI][pypi-badge]][pypi-link]       |
 |       **License**        |                 [![License][license-badge]][license-badge-link]                  |
 |         **DOI**          |                          [![DOI][doi-badge]][doi-link]                           |
@@ -31,6 +32,8 @@ https://geocat-viz.readthedocs.io/en/latest/citation.html) page.
 
 [comment]: <> (reference links used for badges.)
 
+[github-ci-badge]: https://img.shields.io/github/actions/workflow/status/NCAR/geocat-viz/ci.yml?branch=main&label=CI&style=for-the-badge
+[github-ci-link]: https://github.com/NCAR/geocat-viz/actions/workflows/ci.yml
 [rtd-badge]: https://img.shields.io/readthedocs/geocat-viz/latest.svg?style=for-the-badge
 [rtd-link]: https://geocat-viz.readthedocs.io/en/latest/?badge=latest
 [pypi-badge]: https://img.shields.io/pypi/v/geocat-viz?logo=pypix&style=for-the-badge

@@ -5,26 +5,42 @@
 Release Notes
 =============
 
-v2024.1.0 (Unreleased)
+v2024.03.0 (Unreleased)
 -----------------------
+
+Bug Fixes
+^^^^^^^^^
+* Fix Taylor diagram issue when disabling ``annotate_on`` by `Simon Rosanka`_ in (:pr:`207`)
+
+Internal Changes
+^^^^^^^^^^^^^^^^
+* Switch to PyPI Trusted Publishing by `Orhan Eroglu`_ in (:pr:`208`)
+* Add ``linkcheck_ignore`` to ``docs/conf.py`` to address erroneous failures and add CI badge to README by `Katelyn FitzGerald`_ in (:pr:`218`)
+
+v2024.02.0 (February 6, 2024)
+-----------------------------
+This release adds a new subtitle functionality to ``set_titles_and_labels`` and
+includes a number of new usage examples and documentation updates. It also adds
+support for Python 3.12 and removes a matplotlib version pin.
 
 New Features
 ^^^^^^^^^^^^
-* Added subtitle functionality to `set_titles_and_labels()` by `Julia Kent`_ in (:pr:`185`)
+* Added subtitle functionality to ``set_titles_and_labels()`` by `Julia Kent`_ in (:pr:`185`)
+* Added Python 3.12 support and testing for Windows and M1 by `Katelyn FitzGerald`_ in (:pr:`194`)
 
 Documentation
 ^^^^^^^^^^^^^
 * Invert y-axis in ``add_height_from_pressure_axis`` example by `Katelyn FitzGerald`_ in (:pr:`173`)
 * Additions to the examples gallery for ``set_titles_and_labels`` and ``set_axes_limits_and_ticks`` and updated thumbnail for ``plot_contour_labels`` by `Katelyn FitzGerald`_ in (:pr:`181`)
 * Remove reference to old ncar conda channel from installation docs by `Katelyn FitzGerald`_ in (:pr:`190`)
-* Additional examples published for the `TaylorDiagram` class and `get_skewt_vars()` function by `Julia Kent`_ in (:pr:`186`) and (:pr:`188`)
-* `TaylorDiagram` class docstring is clarified by `Julia Kent`_ in (:pr:`182`)
-* NSF NCAR branding updates by `Katelyn FitzGerald`_ in (:pr:`191`)
+* Additional examples published for the ``TaylorDiagram`` class and ``get_skewt_vars()`` function by `Julia Kent`_ in (:pr:`186`) and (:pr:`188`)
+* ``TaylorDiagram`` class docstring is clarified by `Julia Kent`_ in (:pr:`182`)
+* NSF NCAR branding updates by `Katelyn FitzGerald`_ in (:pr:`191`) and (:pr:`192`)
 
 Bug Fixes
 ^^^^^^^^^
 * Remove matplotlib version pin by `Katelyn FitzGerald`_ in (:pr:`177`)
-* Fix `extlinks` for compatibility with Sphinx 6 by `Katelyn FitzGerald`_ in (:pr:`180`)
+* Fix ``extlinks`` for compatibility with Sphinx 6 by `Katelyn FitzGerald`_ in (:pr:`180`)
 
 v2023.10.0 (October 3, 2023)
 ----------------------------
@@ -105,3 +121,5 @@ Documentation
 
 .. _`Julia Kent`: https://github.com/jukent
 .. _`Katelyn Fitzgerald`: https://github.com/kafitzgerald
+.. _`Simon Rosanka`: https://github.com/srosanka
+.. _`Orhan Eroglu`: https://github.com/erogluorhan
