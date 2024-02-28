@@ -5,8 +5,9 @@
 Release Notes
 =============
 
-v2024.03.0 (Unreleased)
------------------------
+v2024.02.1 (February 28, 2024)
+------------------------------
+This release changes to implicit namespace packaging and addresses a bug in the Taylor diagram functionality when disabling ``annotate_on``.
 
 Bug Fixes
 ^^^^^^^^^
