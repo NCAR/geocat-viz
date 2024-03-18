@@ -434,22 +434,28 @@ class TaylorDiagram(object):
                   linestyle=(0, (9, 5)),
                   linewidth: float = 0.5,
                   **kwargs):
-        
+        """Add gridlines to the correlation axis specified by array *arr*.
+
+        This function will be deprecated in favor of `add_corr_grid()`
+        """
+
         return add_corr_grid(self,
                   arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: float = 0.5,
                   **kwargs)
-    
+
     def add_stdev_grid(self,
                   arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: int = 1,
                   **kwargs):
-        """Add gridlines (radii) to the stard deviation axis specified
-        by array *arr*
+        """Add gridlines (radii) to the stard deviation axis specified by
+        array.
+
+        *arr*
 
         Parameters
         ----------
@@ -496,7 +502,13 @@ class TaylorDiagram(object):
                   linestyle=(0, (9, 5)),
                   linewidth: int = 1,
                   **kwargs):
-        
+        """Add gridlines to the standard deviation axis specified by array.
+
+        *arr*.
+
+        This function will be deprecated in favor of `add_stdev_grid()`
+        """
+
         return add_stdev_grid(self,
                   arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
