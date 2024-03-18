@@ -383,11 +383,11 @@ class TaylorDiagram(object):
         return modelTexts, modelset
 
     def add_corr_grid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
-                  color: str = 'lightgray',
-                  linestyle=(0, (9, 5)),
-                  linewidth: float = 0.5,
-                  **kwargs):
+                      arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                      color: str = 'lightgray',
+                      linestyle=(0, (9, 5)),
+                      linewidth: float = 0.5,
+                      **kwargs):
         """Add gridlines to the correlation axis specified by array *arr*
 
         Parameters
@@ -439,19 +439,14 @@ class TaylorDiagram(object):
         This function will be deprecated in favor of `add_corr_grid()`
         """
 
-        return add_corr_grid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
-                  color: str = 'lightgray',
-                  linestyle=(0, (9, 5)),
-                  linewidth: float = 0.5,
-                  **kwargs)
+        return self.add_corr_grid(arr, color, linestyle, linewidth, **kwargs)
 
     def add_stdev_grid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
-                  color: str = 'lightgray',
-                  linestyle=(0, (9, 5)),
-                  linewidth: int = 1,
-                  **kwargs):
+                       arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                       color: str = 'lightgray',
+                       linestyle=(0, (9, 5)),
+                       linewidth: int = 1,
+                       **kwargs):
         """Add gridlines (radii) to the stard deviation axis specified by
         array.
 
@@ -509,13 +504,7 @@ class TaylorDiagram(object):
         This function will be deprecated in favor of `add_stdev_grid()`
         """
 
-        return add_stdev_grid(self,
-                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
-                  color: str = 'lightgray',
-                  linestyle=(0, (9, 5)),
-                  linewidth: int = 1,
-                  **kwargs)
-
+        return self.add_stdev_grid(arr, color, linestyle, linewidth, **kwargs)
 
     def add_grid(self, *args, **kwargs):
         """Add a grid.
