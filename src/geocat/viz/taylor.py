@@ -382,13 +382,13 @@ class TaylorDiagram(object):
 
         return modelTexts, modelset
 
-    def add_xgrid(self,
+    def add_corr_grid(self,
                   arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: float = 0.5,
                   **kwargs):
-        """Add gridlines to the X axis (correlation) specified by array *arr*
+        """Add gridlines to the correlation axis specified by array *arr*
 
         Parameters
         ----------
@@ -416,7 +416,7 @@ class TaylorDiagram(object):
         --------
         All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-        - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_xgrid>`_
+        - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_corr_grid>`_
         """
 
         for value in arr:
@@ -428,13 +428,27 @@ class TaylorDiagram(object):
                            linewidth=linewidth,
                            **kwargs)
 
-    def add_ygrid(self,
+    def add_xgrid(self,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                  color: str = 'lightgray',
+                  linestyle=(0, (9, 5)),
+                  linewidth: float = 0.5,
+                  **kwargs):
+        
+        return add_corr_grid(self,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                  color: str = 'lightgray',
+                  linestyle=(0, (9, 5)),
+                  linewidth: float = 0.5,
+                  **kwargs)
+    
+    def add_stdev_grid(self,
                   arr: typing.Union[xr.DataArray, np.ndarray, list, float],
                   color: str = 'lightgray',
                   linestyle=(0, (9, 5)),
                   linewidth: int = 1,
                   **kwargs):
-        """Add gridlines (radii) to the Y axis (standard deviation) specified
+        """Add gridlines (radii) to the stard deviation axis specified
         by array *arr*
 
         Parameters
@@ -463,7 +477,7 @@ class TaylorDiagram(object):
         --------
         All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_ygrid>`_
+         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_stdev_grid>`_
         """
 
         t_array = np.linspace(0, np.pi / 2)
@@ -475,6 +489,21 @@ class TaylorDiagram(object):
                                    linestyle=linestyle,
                                    linewidth=linewidth,
                                    **kwargs)
+
+    def add_ygrid(self,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                  color: str = 'lightgray',
+                  linestyle=(0, (9, 5)),
+                  linewidth: int = 1,
+                  **kwargs):
+        
+        return add_stdev_grid(self,
+                  arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                  color: str = 'lightgray',
+                  linestyle=(0, (9, 5)),
+                  linewidth: int = 1,
+                  **kwargs)
+
 
     def add_grid(self, *args, **kwargs):
         """Add a grid.

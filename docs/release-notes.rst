@@ -5,6 +5,15 @@
 Release Notes
 =============
 
+v2024.04.1 (April 1, 2024)
+------------------------------
+This release ...
+
+Documentation
+^^^^^^^^^^^^^
+* Document known quark for using `suptitle` argument of  ``set_titles_and_labels`` with a Cartopy plot by `Julia Kent`_ in (:pr:`219`)
+* Add alias to ``Taylor_Diagram`` to have more meaningful keyword arguments by by `Julia Kent`_ in (:pr:`219`)
+
 v2024.02.1 (February 28, 2024)
 ------------------------------
 This release changes to implicit namespace packaging and addresses a bug in the Taylor diagram functionality when disabling ``annotate_on``.
