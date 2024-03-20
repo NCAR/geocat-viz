@@ -46,7 +46,7 @@ class TaylorDiagram(object):
 
     Notes
     -----
-    Rendering of Taylor Diagrams looks best with a figure that is at least 10x10. If you  make your figure size too small,
+    Rendering of Taylor Diagrams looks best with a figure that is at least 10x10 inches. If you  make your figure size too small,
     legends, lagels, and other text items might overlap in undesired ways.
 
     References
