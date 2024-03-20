@@ -447,7 +447,7 @@ class TaylorDiagram(object):
                        linestyle=(0, (9, 5)),
                        linewidth: int = 1,
                        **kwargs):
-        """Add gridlines (radii) to the stard deviation axis specified by
+        """Add radial gridlines to the standard deviation axis specified by
         array.
 
         *arr*
