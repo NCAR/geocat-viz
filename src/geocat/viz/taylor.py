@@ -441,12 +441,12 @@ class TaylorDiagram(object):
 
         return self.add_corr_grid(arr, color, linestyle, linewidth, **kwargs)
 
-    def add_stdev_grid(self,
-                       arr: typing.Union[xr.DataArray, np.ndarray, list, float],
-                       color: str = 'lightgray',
-                       linestyle=(0, (9, 5)),
-                       linewidth: int = 1,
-                       **kwargs):
+    def add_std_grid(self,
+                     arr: typing.Union[xr.DataArray, np.ndarray, list, float],
+                     color: str = 'lightgray',
+                     linestyle=(0, (9, 5)),
+                     linewidth: int = 1,
+                     **kwargs):
         """Add radial gridlines to the standard deviation axis specified by
         array.
 
@@ -478,7 +478,7 @@ class TaylorDiagram(object):
         --------
         All usage examples are within the GeoCAT-Examples Gallery. To see more usage cases, search the function on the `website <https://geocat-examples.readthedocs.io/en/latest/index.html>`_.
 
-         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_stdev_grid>`_
+         - `NCL_taylor_2.py <https://geocat-examples.readthedocs.io/en/latest/gallery/TaylorDiagrams/NCL_taylor_2.html?highlight=add_std_grid>`_
         """
 
         t_array = np.linspace(0, np.pi / 2)
@@ -501,10 +501,10 @@ class TaylorDiagram(object):
 
         *arr*.
 
-        This function will be deprecated in favor of `add_stdev_grid()`
+        This function will be deprecated in favor of `add_std_grid()`
         """
 
-        return self.add_stdev_grid(arr, color, linestyle, linewidth, **kwargs)
+        return self.add_std_grid(arr, color, linestyle, linewidth, **kwargs)
 
     def add_grid(self, *args, **kwargs):
         """Add a grid.

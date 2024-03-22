@@ -556,7 +556,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
     >>> |                   Axes                    |
     >>> |                                           |
 
-    Be aware that the `suptitle` functionality does not automaticallly render well for Cartopy plots. Recommended fixes are to iterate on your figure size until it does not extend as far past your plot OR to use string manipulation to add enough spaces to center your left or right title keyword argument.
+    Be aware that the `suptitle` functionality does not always render well for Cartopy plots. If your main title appears too far above your plot, the recommended fix is to decrease the y-dimension of your figure size.
 
     Examples
     --------
@@ -573,7 +573,10 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
     if maintitle is not None:
         if subtitle is not None:
             fig = ax.get_figure()
-            fig.suptitle(maintitle, fontsize=maintitlefontsize, y=1.04)
+            fig.suptitle(maintitle,
+                         fontsize=maintitlefontsize,
+                         y=1.04,
+                         ha='center')
         elif lefttitle is not None or righttitle is not None:
             ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=1.12)
         else:
