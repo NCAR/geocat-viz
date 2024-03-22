@@ -1,5 +1,5 @@
 """Taylor Diagrams."""
-
+import warnings
 import typing
 
 import numpy as np
@@ -439,6 +439,10 @@ class TaylorDiagram(object):
         This function will be deprecated in favor of `add_corr_grid()`
         """
 
+        warnings.warn(
+            'This function is deprecated. Call `add_corr_grid` instead.',
+            PendingDeprecationWarning)
+
         return self.add_corr_grid(arr, color, linestyle, linewidth, **kwargs)
 
     def add_std_grid(self,
@@ -503,6 +507,10 @@ class TaylorDiagram(object):
 
         This function will be deprecated in favor of `add_std_grid()`
         """
+
+        warnings.warn(
+            'This function is deprecated. Call `add_std_grid` instead.',
+            PendingDeprecationWarning)
 
         return self.add_std_grid(arr, color, linestyle, linewidth, **kwargs)
 
