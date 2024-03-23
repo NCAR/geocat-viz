@@ -436,7 +436,7 @@ class TaylorDiagram(object):
                   **kwargs):
         """Add gridlines to the correlation axis specified by array *arr*.
 
-        This function will be deprecated in favor of
+        This method will be deprecated in favor of
         `TaylorDiagram.add_corr_grid()`
         """
 
@@ -506,7 +506,7 @@ class TaylorDiagram(object):
 
         *arr*.
 
-        This function will be deprecated in favor of `TaylorDiagram.add_std_grid()`
+        This method will be deprecated in favor of `TaylorDiagram.add_std_grid()`
         """
 
         warnings.warn(
