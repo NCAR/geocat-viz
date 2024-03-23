@@ -5,6 +5,19 @@
 Release Notes
 =============
 
+v2024.04.1 (April 1, 2024)
+------------------------------
+This release ...
+
+Documentation
+^^^^^^^^^^^^^
+* Document known issue with `suptitle` argument of  ``set_titles_and_labels`` and Cartopy plots by `Julia Kent`_ in (:pr:`219`)
+
+Deprecations
+^^^^^^^^^^
+* Pending deprecation warnings added for ``TaylorDiagram`` methods ``add_xgrid`` and ``add_ygrid`` which are changing to the new ``add_corr_grid`` and ``add_std_grid`` by `Julia Kent`_ in (:pr:`219`)
+
+
 v2024.02.1 (February 28, 2024)
 ------------------------------
 This release changes to implicit namespace packaging and addresses a bug in the Taylor diagram functionality when disabling ``annotate_on``.
