@@ -436,11 +436,12 @@ class TaylorDiagram(object):
                   **kwargs):
         """Add gridlines to the correlation axis specified by array *arr*.
 
-        This function will be deprecated in favor of `add_corr_grid()`
+        This function will be deprecated in favor of
+        `TaylorDiagram.add_corr_grid()`
         """
 
         warnings.warn(
-            'This function is deprecated. Call `add_corr_grid` instead.',
+            '`TaylorDiagram.add_xgrid` will be deprecated in the future. Please use `TaylorDiagram.add_corr_grid` instead.',
             PendingDeprecationWarning)
 
         return self.add_corr_grid(arr, color, linestyle, linewidth, **kwargs)
@@ -505,11 +506,11 @@ class TaylorDiagram(object):
 
         *arr*.
 
-        This function will be deprecated in favor of `add_std_grid()`
+        This function will be deprecated in favor of `TaylorDiagram.add_std_grid()`
         """
 
         warnings.warn(
-            'This function is deprecated. Call `add_std_grid` instead.',
+            '`TaylorDiagram.add_ygrid` will be deprecated in the future. Please use `TaylorDiagram.add_std_grid` instead.',
             PendingDeprecationWarning)
 
         return self.add_std_grid(arr, color, linestyle, linewidth, **kwargs)
