@@ -5,9 +5,10 @@
 Release Notes
 =============
 
-v2024.04.1 (April 1, 2024)
-------------------------------
-This release ...
+v2024.03.0 (March 26, 2024)
+---------------------------
+This release deprecates ``TaylorDiagram`` method names ``add_xgrid()`` and
+``add_ygrid()`` in favor of the more descriptive ``add_corr_grid()`` and ``add_std_grid()``.
 
 Documentation
 ^^^^^^^^^^^^^
