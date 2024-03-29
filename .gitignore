@@ -11,3 +11,6 @@ docs/_build/
 dist/
 .eggs/
 *egg-info
+
+# IDEs
+settings.json
