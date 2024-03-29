@@ -5,6 +5,14 @@
 Release Notes
 =============
 
+v2024.04.0 (unreleased)
+---------------------------
+
+Internal Changes
+^^^^^^^^^^^^^^^^
+* Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
+
+
 v2024.03.0 (March 26, 2024)
 ---------------------------
 This release deprecates ``TaylorDiagram`` method names ``add_xgrid()`` and
