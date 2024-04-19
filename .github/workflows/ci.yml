@@ -47,7 +47,7 @@ jobs:
 
       - name: tests
         run: |
-          python -m pytest test
+          python -m pytest
 
   link-check:
     runs-on: ubuntu-latest
