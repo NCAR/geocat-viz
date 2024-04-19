@@ -12,6 +12,10 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
 
+Testing
+^^^^^^^
+* Add basic testing infrastructure by `Katelyn FitzGerald`_ and `Julia Kent`_ in (:pr:`233`)
+
 
 v2024.03.0 (March 26, 2024)
 ---------------------------
