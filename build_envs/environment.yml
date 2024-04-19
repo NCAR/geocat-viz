@@ -7,13 +7,13 @@ dependencies:
   - make
   - matplotlib
   - sphinx
-  - pip
   - cmaps
   - numpy
   - xarray
   - metpy
   - pint
+  - pytest
+  - pytest-mpl
   - geocat-datafiles
-  - pip:
-    - pre-commit
-    - scikit-learn
+  - pre-commit
+  - scikit-learn
