@@ -138,9 +138,83 @@ def test_truncate_colormap():
     assert truncated_cmap(1.0) == cmap(0.9)
 
 
+# # Need to investigate if there is simpler data out there and what assert should be equal to
 #def test_xr_add_cyclic_longitudes():
 #    ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
 #    U = ds.U
 #
 #    U = gv.xr_add_cyclic_longitudes(U, 'lon')
 #    assert U.lon == 
+
+
+# # Need to determine what assert should be equal to
+#@pytest.mark.mpl_image_compare(tolerance=0.02,
+#                               remove_text=True,
+#                               style='default')
+#def test_set_map_boundary():
+
+# def test_find_local_extrema():
+#    data = [[1, 4, 5, 6, 8.2],
+#        [9, 8.4, 10, 10.6, 9.7],
+#        [4.4, 5, 0, 6.6, 1.4],
+#        [4.6, 5.2, 1.5, 7.6, 2.4]]
+   
+#    lmin = gv.find_local_extrema(data, eType='Low')[0]
+#   lmax = gv.find_local_extrema(data, eType='High')[0]
+
+#    assert
+
+
+# # Need to make up simpler dummy data, or use data built into Xarray
+# @pytest.mark.mpl_image_compare(tolerance=0.02,
+#                                remove_text=True,
+#                                style='default')
+# def test_plot_contour_labels():
+#     fig = plt.figure(figsize=(8, 8))
+
+#     proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
+#     ax = plt.axes(projection=proj)
+#     ax.set_global()
+
+#     p = wrap_pressure.plot.contour(ax=ax,
+#                                 transform=ccrs.PlateCarree(),
+#                                 linewidths=0.5,
+#                                 cmap='black',
+#                                 add_labels=False)
+
+#     contour_label_locations = [(176.4, 34.63), (-150.46, 42.44), (-142.16, 28.5),
+#                             (-92.49, 25.64), (-156.05, 84.47), (-17.83, 82.52),
+#                             (-76.3, 41.99), (-48.89, 41.45), (-33.43, 37.55)]
+
+#     gv.plot_contour_labels(ax,
+#                         p,
+#                         ccrs.Geodetic(),
+#                         proj,
+#                         clabel_locations=contour_label_locations)
+#     return fig
+
+
+# Need to make up extrema levels, need to take out Cartopy
+@pytest.mark.mpl_image_compare(tolerance=0.02,
+                               remove_text=True,
+                               style='default')
+def test_plot_extrema_labels():
+    fig = plt.figure(figsize=(8, 8))
+
+    proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
+    ax = plt.axes(projection=proj)
+    ax.set_global()
+
+    lowClevels = 'a'
+
+    # Label low and high contours
+    gv.plot_extrema_labels(wrap_pressure,
+                        ccrs.Geodetic(),
+                        proj,
+                        label_locations=lowClevels,
+                        label='L',
+                        show_warnings=False)
+    return fig
+
+# def test_set_vector_density():
+# def test_get_skewt_vars():
