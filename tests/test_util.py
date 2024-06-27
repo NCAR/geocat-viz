@@ -138,82 +138,137 @@ def test_truncate_colormap():
     assert truncated_cmap(1.0) == cmap(0.9)
 
 
-# # Need to investigate if there is simpler data out there and what assert should be equal to
-#def test_xr_add_cyclic_longitudes():
-#    ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
-#    U = ds.U
-#
-#    U = gv.xr_add_cyclic_longitudes(U, 'lon')
-#    assert U.lon == 
+def test_xr_add_cyclic_longitudes_length():
+   ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
+   U = ds.U
+
+   U = gv.xr_add_cyclic_longitudes(U, 'lon')
+
+   cyclic_lon = [-180.    , -177.1875, -174.375 , -171.5625, -168.75  , -165.9375,
+       -163.125 , -160.3125, -157.5   , -154.6875, -151.875 , -149.0625,
+       -146.25  , -143.4375, -140.625 , -137.8125, -135.    , -132.1875,
+       -129.375 , -126.5625, -123.75  , -120.9375, -118.125 , -115.3125,
+       -112.5   , -109.6875, -106.875 , -104.0625, -101.25  ,  -98.4375,
+        -95.625 ,  -92.8125,  -90.    ,  -87.1875,  -84.375 ,  -81.5625,
+        -78.75  ,  -75.9375,  -73.125 ,  -70.3125,  -67.5   ,  -64.6875,
+        -61.875 ,  -59.0625,  -56.25  ,  -53.4375,  -50.625 ,  -47.8125,
+        -45.    ,  -42.1875,  -39.375 ,  -36.5625,  -33.75  ,  -30.9375,
+        -28.125 ,  -25.3125,  -22.5   ,  -19.6875,  -16.875 ,  -14.0625,
+        -11.25  ,   -8.4375,   -5.625 ,   -2.8125,    0.    ,    2.8125,
+        5.625 ,    8.4375,   11.25  ,   14.0625,   16.875 ,   19.6875,
+        22.5   ,   25.3125,   28.125 ,   30.9375,   33.75  ,   36.5625,
+        39.375 ,   42.1875,   45.    ,   47.8125,   50.625 ,   53.4375,
+        56.25  ,   59.0625,   61.875 ,   64.6875,   67.5   ,   70.3125,
+        73.125 ,   75.9375,   78.75  ,   81.5625,   84.375 ,   87.1875,
+        90.    ,   92.8125,   95.625 ,   98.4375,  101.25  ,  104.0625,
+        106.875 ,  109.6875,  112.5   ,  115.3125,  118.125 ,  120.9375,
+        123.75  ,  126.5625,  129.375 ,  132.1875,  135.    ,  137.8125,
+        140.625 ,  143.4375,  146.25  ,  149.0625,  151.875 ,  154.6875,
+        157.5   ,  160.3125,  163.125 ,  165.9375,  168.75  ,  171.5625,
+        174.375 ,  177.1875,  180.]
+
+   assert len(U.lon) == len(cyclic_lon)
 
 
-# # Need to determine what assert should be equal to
-#@pytest.mark.mpl_image_compare(tolerance=0.02,
-#                               remove_text=True,
-#                               style='default')
-#def test_set_map_boundary():
-
-# def test_find_local_extrema():
-#    data = [[1, 4, 5, 6, 8.2],
-#        [9, 8.4, 10, 10.6, 9.7],
-#        [4.4, 5, 0, 6.6, 1.4],
-#        [4.6, 5.2, 1.5, 7.6, 2.4]]
-   
-#    lmin = gv.find_local_extrema(data, eType='Low')[0]
-#   lmax = gv.find_local_extrema(data, eType='High')[0]
-
-#    assert
-
-
-# # Need to make up simpler dummy data, or use data built into Xarray
-# @pytest.mark.mpl_image_compare(tolerance=0.02,
-#                                remove_text=True,
-#                                style='default')
-# def test_plot_contour_labels():
-#     fig = plt.figure(figsize=(8, 8))
-
-#     proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
-#     ax = plt.axes(projection=proj)
-#     ax.set_global()
-
-#     p = wrap_pressure.plot.contour(ax=ax,
-#                                 transform=ccrs.PlateCarree(),
-#                                 linewidths=0.5,
-#                                 cmap='black',
-#                                 add_labels=False)
-
-#     contour_label_locations = [(176.4, 34.63), (-150.46, 42.44), (-142.16, 28.5),
-#                             (-92.49, 25.64), (-156.05, 84.47), (-17.83, 82.52),
-#                             (-76.3, 41.99), (-48.89, 41.45), (-33.43, 37.55)]
-
-#     gv.plot_contour_labels(ax,
-#                         p,
-#                         ccrs.Geodetic(),
-#                         proj,
-#                         clabel_locations=contour_label_locations)
-#     return fig
-
-
-# Need to make up extrema levels, need to take out Cartopy
 @pytest.mark.mpl_image_compare(tolerance=0.02,
-                               remove_text=True,
-                               style='default')
-def test_plot_extrema_labels():
+                              remove_text=True,
+                              style='default')
+def test_xr_add_cyclic_longitudes():
+    ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"), decode_times=False)
+    pressure = ds.slp[24, :, :].astype('float64') * 0.01
+    wrap_pressure = gv.xr_add_cyclic_longitudes(pressure, "lon")
+
     fig = plt.figure(figsize=(8, 8))
 
     proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
     ax = plt.axes(projection=proj)
     ax.set_global()
 
-    lowClevels = 'a'
+    p = wrap_pressure.plot.contour(ax=ax,
+                                transform=ccrs.PlateCarree(),
+                                linewidths=0.5,
+                                cmap='black',
+                                add_labels=False);
+    return fig
 
-    # Label low and high contours
-    gv.plot_extrema_labels(wrap_pressure,
+
+@pytest.mark.mpl_image_compare(tolerance=0.02,
+                              remove_text=True,
+                              style='default')
+def test_set_map_boundary():
+    fig = plt.figure(figsize=(8, 8))
+    ax = plt.axes(projection=ccrs.NorthPolarStereo())
+    ax.add_feature(cfeature.LAND, facecolor='lightgray')
+    gv.set_map_boundary(ax, [-180, 180], [0, 40], south_pad=1)
+
+    return fig
+
+
+def test_find_local_extrema():
+    data = [[1, 4, 5, 6, 8.2],
+            [9, 8.4, 10, 10.6, 9.7],
+            [4.4, 5, 0, 6.6, 1.4],
+            [4.6, 5.2, 1.5, 7.6, 2.4]]
+    data = xr.DataArray(data,
+                        dims=["lat", "lon"],
+                        coords=dict(lat=np.arange(4), lon=np.arange(5)))
+
+    lmin = gv.find_local_extrema(data, eType='Low')[0]
+    
+    assert lmin == (2,2)
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.02,
+                               remove_text=True,
+                               style='default')
+def test_plot_contour_labels():
+    ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"), decode_times=False)
+    pressure = ds.slp[24, :, :].astype('float64') * 0.01
+
+    fig = plt.figure(figsize=(8, 8))
+
+    proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
+    ax = plt.axes(projection=proj)
+    ax.set_global()
+
+    p = pressure.plot.contour(ax=ax,
+                                transform=ccrs.PlateCarree(),
+                                linewidths=0.5,
+                                cmap='black',
+                                add_labels=False)
+
+    contour_label_locations = [(176.4, 34.63), (-150.46, 42.44), (-142.16, 28.5),
+                            (-92.49, 25.64), (-156.05, 84.47), (-17.83, 82.52),
+                            (-76.3, 41.99), (-48.89, 41.45), (-33.43, 37.55)]
+
+    gv.plot_contour_labels(ax,
+                        p,
+                        ccrs.Geodetic(),
+                        proj,
+                        clabel_locations=contour_label_locations)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.02,
+                               remove_text=True,
+                               style='default')
+def test_plot_extrema_labels():
+    ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"), decode_times=False)
+    pressure = ds.slp[24, :, :].astype('float64') * 0.01
+
+    fig = plt.figure(figsize=(8, 8))
+    proj = ccrs.Orthographic(central_longitude=270, central_latitude=45)
+    ax = plt.axes(projection=proj)
+    ax.set_global()
+
+    lowClevels = [(357.5, 75.0), (302.5, 60.0), (170.0, 52.5), (327.5, -60.0)]
+
+    gv.plot_extrema_labels(pressure,
                         ccrs.Geodetic(),
                         proj,
                         label_locations=lowClevels,
                         label='L',
-                        show_warnings=False)
+                        show_warnings=False);
     return fig
 
 # def test_set_vector_density():
