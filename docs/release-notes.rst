@@ -15,8 +15,8 @@ Internal Changes
 Testing
 ^^^^^^^
 * Add basic testing infrastructure by `Katelyn FitzGerald`_ and `Julia Kent`_ in (:pr:`233`)
-* Test `viz.taylor` by `Julia Kent`_ in (:pr:`234`)
-* Test `viz.util` by `Julia Kent`_ in (:pr:`239`)
+* Add tests for `viz.taylor` by `Julia Kent`_ in (:pr:`234`)
+* Add tests for `viz.util` by `Julia Kent`_ in (:pr:`239`)
 
 
 
