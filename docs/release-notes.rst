@@ -5,7 +5,7 @@
 Release Notes
 =============
 
-v2024.04.0 (unreleased)
+v2024.07.0 (unreleased)
 ---------------------------
 
 Internal Changes
@@ -15,6 +15,7 @@ Internal Changes
 Testing
 ^^^^^^^
 * Add basic testing infrastructure by `Katelyn FitzGerald`_ and `Julia Kent`_ in (:pr:`233`)
+* Remove now duplicative macOS runner from CI and add back in Python 3.10 by `Katelyn FitzGerald`_ in (:pr:`240`)
 
 
 v2024.03.0 (March 26, 2024)
