@@ -8,9 +8,9 @@ import xarray as xr
 import pandas as pd
 from metpy.units import units
 import metpy.calc as mpcalc
-
-import geocat.viz.util as gv
 import geocat.datafiles as gdf
+
+from geocat.viz.util import set_tick_direction_spine_visibility, add_lat_lon_gridlines, add_right_hand_axis, add_height_from_pressure_axis, add_lat_lon_ticklabels, add_major_minor_ticks, set_titles_and_labels, set_axes_limits_and_ticks, truncate_colormap, xr_add_cyclic_longitudes, set_map_boundary, find_local_extrema, plot_contour_labels, plot_extrema_labels, set_vector_density, get_skewt_vars
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.02,
@@ -19,10 +19,10 @@ import geocat.datafiles as gdf
 def test_set_tick_direction_spine_visibility():
     fig, ax = plt.subplots(figsize=(6, 6))
 
-    gv.set_tick_direction_spine_visibility(ax,
-                                           tick_direction='in',
-                                           top_spine_visible=False,
-                                           right_spine_visible=False)
+    set_tick_direction_spine_visibility(ax,
+                                        tick_direction='in',
+                                        top_spine_visible=False,
+                                        right_spine_visible=False)
     return fig
 
 
@@ -35,7 +35,7 @@ def test_add_lat_lon_gridlines():
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=10))
     ax.set_extent([4.25, 15.25, 42.25, 49.25], ccrs.PlateCarree())
 
-    gl = gv.add_lat_lon_gridlines(
+    gl = add_lat_lon_gridlines(
         ax,
         color='black',
         labelsize=14,
@@ -51,12 +51,12 @@ def test_add_right_hand_axis():
     fig = plt.figure(figsize=(9, 10))
     ax1 = plt.gca()
 
-    gv.add_right_hand_axis(ax1,
-                           label="Right Hand Axis",
-                           ylim=(0, 13),
-                           yticks=np.array([4, 8]),
-                           ticklabelsize=15,
-                           axislabelsize=21)
+    add_right_hand_axis(ax1,
+                        label="Right Hand Axis",
+                        ylim=(0, 13),
+                        yticks=np.array([4, 8]),
+                        ticklabelsize=15,
+                        axislabelsize=21)
     return fig
 
 
@@ -69,7 +69,7 @@ def test_add_height_from_pressure_axis():
     plt.yscale('log')
     ax.invert_yaxis()
 
-    gv.add_height_from_pressure_axis(ax, heights=[4, 8])
+    add_height_from_pressure_axis(ax, heights=[4, 8])
     return fig
 
 
@@ -83,7 +83,7 @@ def test_add_lat_lon_ticklabels():
     ax = plt.axes(projection=projection)
     ax.add_feature(cfeature.LAND, color='silver')
 
-    gv.add_lat_lon_ticklabels(ax)
+    add_lat_lon_ticklabels(ax)
     return fig
 
 
@@ -94,10 +94,10 @@ def test_add_major_minor_ticks():
     fig = plt.figure(figsize=(12, 6))
     ax = plt.axes()
 
-    gv.add_major_minor_ticks(ax,
-                             x_minor_per_major=4,
-                             y_minor_per_major=5,
-                             labelsize="small")
+    add_major_minor_ticks(ax,
+                          x_minor_per_major=4,
+                          y_minor_per_major=5,
+                          labelsize="small")
     return fig
 
 
@@ -107,13 +107,13 @@ def test_add_major_minor_ticks():
 def test_set_titles_and_labels():
     fig = fig, ax = plt.subplots()
 
-    gv.set_titles_and_labels(ax,
-                             maintitle="Title",
-                             maintitlefontsize=24,
-                             subtitle="Subtitle",
-                             xlabel="x",
-                             ylabel="y",
-                             labelfontsize=16)
+    set_titles_and_labels(ax,
+                          maintitle="Title",
+                          maintitlefontsize=24,
+                          subtitle="Subtitle",
+                          xlabel="x",
+                          ylabel="y",
+                          labelfontsize=16)
     return fig
 
 
@@ -123,17 +123,17 @@ def test_set_titles_and_labels():
 def test_set_axes_limits_and_ticks():
     fig = fig, ax = plt.subplots()
 
-    gv.set_axes_limits_and_ticks(ax,
-                                 xlim=(0, 900),
-                                 ylim=(100, 1000),
-                                 xticks=range(0, 901, 100),
-                                 yticks=range(100, 1001, 100))
+    set_axes_limits_and_ticks(ax,
+                              xlim=(0, 900),
+                              ylim=(100, 1000),
+                              xticks=range(0, 901, 100),
+                              yticks=range(100, 1001, 100))
     return fig
 
 
 def test_truncate_colormap():
     cmap = mpl.colormaps['terrain']
-    truncated_cmap = gv.truncate_colormap(cmap, 0.1, 0.9)
+    truncated_cmap = truncate_colormap(cmap, 0.1, 0.9)
 
     assert isinstance(truncated_cmap, mpl.colors.LinearSegmentedColormap)
     assert truncated_cmap(0.0) == cmap(0.1)
@@ -144,7 +144,7 @@ def test_xr_add_cyclic_longitudes_length():
     ds = xr.open_dataset(gdf.get("netcdf_files/uv300.nc")).isel(time=1)
     U = ds.U
 
-    U = gv.xr_add_cyclic_longitudes(U, 'lon')
+    U = xr_add_cyclic_longitudes(U, 'lon')
 
     cyclic_lon = [
         -180., -177.1875, -174.375, -171.5625, -168.75, -165.9375, -163.125,
@@ -176,7 +176,7 @@ def test_xr_add_cyclic_longitudes():
     ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"),
                          decode_times=False)
     pressure = ds.slp[24, :, :].astype('float64') * 0.01
-    wrap_pressure = gv.xr_add_cyclic_longitudes(pressure, "lon")
+    wrap_pressure = xr_add_cyclic_longitudes(pressure, "lon")
 
     fig = plt.figure(figsize=(8, 8))
 
@@ -199,7 +199,7 @@ def test_set_map_boundary():
     fig = plt.figure(figsize=(8, 8))
     ax = plt.axes(projection=ccrs.NorthPolarStereo())
     ax.add_feature(cfeature.LAND, facecolor='lightgray')
-    gv.set_map_boundary(ax, [-180, 180], [0, 40], south_pad=1)
+    set_map_boundary(ax, [-180, 180], [0, 40], south_pad=1)
 
     return fig
 
@@ -211,7 +211,7 @@ def test_find_local_extrema():
                         dims=["lat", "lon"],
                         coords=dict(lat=np.arange(4), lon=np.arange(5)))
 
-    lmin = gv.find_local_extrema(data, eType='Low')[0]
+    lmin = find_local_extrema(data, eType='Low')[0]
 
     assert lmin == (2, 2)
 
@@ -242,11 +242,11 @@ def test_plot_contour_labels():
         (-33.43, 37.55)
     ]
 
-    gv.plot_contour_labels(ax,
-                           p,
-                           ccrs.Geodetic(),
-                           proj,
-                           clabel_locations=contour_label_locations)
+    plot_contour_labels(ax,
+                        p,
+                        ccrs.Geodetic(),
+                        proj,
+                        clabel_locations=contour_label_locations)
     return fig
 
 
@@ -265,12 +265,12 @@ def test_plot_extrema_labels():
 
     lowClevels = [(357.5, 75.0), (302.5, 60.0), (170.0, 52.5), (327.5, -60.0)]
 
-    gv.plot_extrema_labels(pressure,
-                           ccrs.Geodetic(),
-                           proj,
-                           label_locations=lowClevels,
-                           label='L',
-                           show_warnings=False)
+    plot_extrema_labels(pressure,
+                        ccrs.Geodetic(),
+                        proj,
+                        label_locations=lowClevels,
+                        label='L',
+                        show_warnings=False)
     return fig
 
 
@@ -284,7 +284,7 @@ def test_set_vector_density():
     fig = plt.figure(figsize=(10, 5.25))
     ax = plt.axes(projection=ccrs.PlateCarree())
 
-    z = gv.set_vector_density(ds, 10)
+    z = set_vector_density(ds, 10)
 
     Q = plt.quiver(z['lon'],
                    z['lat'],
@@ -310,5 +310,5 @@ def test_get_skewt_vars():
     tc0 = tc[0]
     tdc0 = tdc[0]
     pro = mpcalc.parcel_profile(p, tc0, tdc0)
-    subtitle = gv.get_skewt_vars(p, tc, tdc, pro)
+    subtitle = get_skewt_vars(p, tc, tdc, pro)
     assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3135'
