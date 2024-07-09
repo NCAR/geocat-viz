@@ -15,6 +15,8 @@ Internal Changes
 Testing
 ^^^^^^^
 * Add basic testing infrastructure by `Katelyn FitzGerald`_ and `Julia Kent`_ in (:pr:`233`)
+* Add tests for `viz.taylor` by `Julia Kent`_ in (:pr:`234`)
+* Add tests for `viz.util` by `Julia Kent`_ in (:pr:`239`)
 * Remove now duplicative macOS runner from CI and add back in Python 3.10 by `Katelyn FitzGerald`_ in (:pr:`240`)
 
 
