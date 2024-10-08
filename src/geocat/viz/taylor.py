@@ -506,7 +506,8 @@ class TaylorDiagram(object):
 
         *arr*.
 
-        This method will be deprecated in favor of `TaylorDiagram.add_std_grid()`
+        This method will be deprecated in favor of
+        `TaylorDiagram.add_std_grid()`
         """
 
         warnings.warn(
