@@ -5,11 +5,12 @@
 Release Notes
 =============
 
-v2024.07.0 (unreleased)
+v2024.xx.0 (unreleased)
 ---------------------------
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
+* Update pre-commit versions and configuration by `Katelyn FitzGerald`_ in (:pr:`247`)
 * Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
 
 Testing
