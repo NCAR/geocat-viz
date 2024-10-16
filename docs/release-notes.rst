@@ -8,6 +8,10 @@ Release Notes
 v2024.xx.0 (unreleased)
 ---------------------------
 
+Documentation
+^^^^^^^^^^^^^
+* Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (pr::`249`)
+
 Internal Changes
 ^^^^^^^^^^^^^^^^
 * Update pre-commit versions and configuration by `Katelyn FitzGerald`_ in (:pr:`247`)
