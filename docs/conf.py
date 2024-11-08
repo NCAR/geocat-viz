@@ -213,19 +213,28 @@ autosummary_imported_members = True
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "repository_url": "https://github.com/NCAR/geocat-viz",
-    "repository_branch": "main",
-    "path_to_docs": "docs",
-    "use_edit_page_button": True,
-    "use_repository_button": True,
-    "use_issues_button": True,
-    "home_page_in_toc": False,
-    "navbar_footer_text": "",
+    "repository_url":
+        "https://github.com/NCAR/geocat-viz",
+    "repository_branch":
+        "main",
+    "path_to_docs":
+        "docs",
+    "use_edit_page_button":
+        True,
+    "use_repository_button":
+        True,
+    "use_issues_button":
+        True,
+    "home_page_in_toc":
+        False,
+    "navbar_footer_text":
+        "",
     "logo": {
         "image_light": '_static/images/logos/NSF_NCAR_light.svg',
         "image_dark": '_static/images/logos/NSF_NCAR_dark.svg',
     },
-    "extra_footer": "<em>This material is based upon work supported by the NSF National Center for Atmospheric Research, a major facility sponsored by the U.S. National Science Foundation and managed by the University Corporation for Atmospheric Research. Any opinions, findings and conclusions or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</em>",
+    "extra_footer":
+        "<em>This material is based upon work supported by the NSF National Center for Atmospheric Research, a major facility sponsored by the U.S. National Science Foundation and managed by the University Corporation for Atmospheric Research. Any opinions, findings and conclusions or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</em>",
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
