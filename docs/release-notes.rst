@@ -11,6 +11,7 @@ v2024.xx.0 (unreleased)
 Documentation
 ^^^^^^^^^^^^^
 * Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (pr::`249`)
+* Fix documentation theme configuration by `Katelyn FitzGerald`_ in (pr::`253`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
