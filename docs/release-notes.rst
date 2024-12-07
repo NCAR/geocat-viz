@@ -17,6 +17,7 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Update pre-commit versions and configuration by `Katelyn FitzGerald`_ in (:pr:`247`)
 * Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
+* Modify tests to avoid hitting an unrelated Xarray bug and turn on image comparison testing by `Katelyn FitzGerald`_ in (:pr:`257`)
 
 Testing
 ^^^^^^^
