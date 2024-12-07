@@ -12,6 +12,7 @@ Documentation
 ^^^^^^^^^^^^^
 * Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (pr::`249`)
 * Fix documentation theme configuration by `Katelyn FitzGerald`_ in (pr::`253`)
+* Minor updates and removal of broken link on citation page by`Katelyn FitzGerald`_ in (pr::`260`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
