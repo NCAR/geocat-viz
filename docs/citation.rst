@@ -32,4 +32,3 @@ Citing GeoCAT-viz without referring to a specific version:
     **Visualization & Analysis Systems Technologies. (2020).
     Geoscience Community Analysis Toolkit: GeoCAT-viz [Software].
     Boulder, CO: NSF NCAR Computational and Information Systems Lab. doi:10.5281/zenodo.6678345.**
-
