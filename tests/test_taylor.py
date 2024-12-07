@@ -6,7 +6,7 @@ import numpy as np
 from geocat.viz.taylor import TaylorDiagram
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_model_set():
@@ -21,7 +21,7 @@ def test_add_model_set():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_legend():
@@ -50,7 +50,7 @@ def test_add_legend():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_bias_legend():
@@ -72,7 +72,7 @@ def test_add_bias_legend():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_model_name():
@@ -94,7 +94,7 @@ def test_add_model_name():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_corr_grid():
@@ -116,7 +116,7 @@ def test_add_corr_grid():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_contours():

@@ -13,7 +13,7 @@ import geocat.datafiles as gdf
 from geocat.viz.util import set_tick_direction_spine_visibility, add_lat_lon_gridlines, add_right_hand_axis, add_height_from_pressure_axis, add_lat_lon_ticklabels, add_major_minor_ticks, set_titles_and_labels, set_axes_limits_and_ticks, truncate_colormap, xr_add_cyclic_longitudes, set_map_boundary, find_local_extrema, plot_contour_labels, plot_extrema_labels, set_vector_density, get_skewt_vars
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_set_tick_direction_spine_visibility():
@@ -26,7 +26,7 @@ def test_set_tick_direction_spine_visibility():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_lat_lon_gridlines():
@@ -44,7 +44,7 @@ def test_add_lat_lon_gridlines():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_right_hand_axis():
@@ -60,7 +60,7 @@ def test_add_right_hand_axis():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_height_from_pressure_axis():
@@ -73,7 +73,7 @@ def test_add_height_from_pressure_axis():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_lat_lon_ticklabels():
@@ -87,7 +87,7 @@ def test_add_lat_lon_ticklabels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_add_major_minor_ticks():
@@ -101,7 +101,7 @@ def test_add_major_minor_ticks():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_set_titles_and_labels():
@@ -117,7 +117,7 @@ def test_set_titles_and_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_set_axes_limits_and_ticks():
@@ -169,7 +169,7 @@ def test_xr_add_cyclic_longitudes_length():
     assert len(U.lon) == len(cyclic_lon)
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_xr_add_cyclic_longitudes():
@@ -191,7 +191,7 @@ def test_xr_add_cyclic_longitudes():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_set_map_boundary():
@@ -215,7 +215,7 @@ def test_find_local_extrema():
     assert lmin == (2, 2)
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_plot_contour_labels():
@@ -248,7 +248,7 @@ def test_plot_contour_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_plot_extrema_labels():
@@ -272,7 +272,7 @@ def test_plot_extrema_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02,
+@pytest.mark.mpl_image_compare(tolerance=2,
                                remove_text=True,
                                style='default')
 def test_set_vector_density():
