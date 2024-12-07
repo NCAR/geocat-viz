@@ -13,9 +13,7 @@ import geocat.datafiles as gdf
 from geocat.viz.util import set_tick_direction_spine_visibility, add_lat_lon_gridlines, add_right_hand_axis, add_height_from_pressure_axis, add_lat_lon_ticklabels, add_major_minor_ticks, set_titles_and_labels, set_axes_limits_and_ticks, truncate_colormap, xr_add_cyclic_longitudes, set_map_boundary, find_local_extrema, plot_contour_labels, plot_extrema_labels, set_vector_density, get_skewt_vars
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_set_tick_direction_spine_visibility():
     fig, ax = plt.subplots(figsize=(6, 6))
 
@@ -26,9 +24,7 @@ def test_set_tick_direction_spine_visibility():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_add_lat_lon_gridlines():
     fig = plt.figure(figsize=(10, 10))
 
@@ -44,9 +40,7 @@ def test_add_lat_lon_gridlines():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_add_right_hand_axis():
     fig = plt.figure(figsize=(9, 10))
     ax1 = plt.gca()
@@ -60,9 +54,7 @@ def test_add_right_hand_axis():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_add_height_from_pressure_axis():
     fig = plt.figure(figsize=(8, 8))
     ax = plt.axes()
@@ -73,9 +65,7 @@ def test_add_height_from_pressure_axis():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_add_lat_lon_ticklabels():
     fig = plt.figure(figsize=(12, 6))
 
@@ -87,9 +77,7 @@ def test_add_lat_lon_ticklabels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_add_major_minor_ticks():
     fig = plt.figure(figsize=(12, 6))
     ax = plt.axes()
@@ -101,9 +89,7 @@ def test_add_major_minor_ticks():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_set_titles_and_labels():
     fig = fig, ax = plt.subplots()
 
@@ -117,9 +103,7 @@ def test_set_titles_and_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_set_axes_limits_and_ticks():
     fig = fig, ax = plt.subplots()
 
@@ -169,9 +153,7 @@ def test_xr_add_cyclic_longitudes_length():
     assert len(U.lon) == len(cyclic_lon)
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_xr_add_cyclic_longitudes():
     ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"),
                          decode_times=False)
@@ -191,9 +173,7 @@ def test_xr_add_cyclic_longitudes():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_set_map_boundary():
     fig = plt.figure(figsize=(8, 8))
     ax = plt.axes(projection=ccrs.NorthPolarStereo())
@@ -215,9 +195,7 @@ def test_find_local_extrema():
     assert lmin == (2, 2)
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_plot_contour_labels():
     ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"),
                          decode_times=False)
@@ -248,9 +226,7 @@ def test_plot_contour_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_plot_extrema_labels():
     ds = xr.open_dataset(gdf.get("netcdf_files/slp.1963.nc"),
                          decode_times=False)
@@ -272,9 +248,7 @@ def test_plot_extrema_labels():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2,
-                               remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=2, remove_text=True, style='default')
 def test_set_vector_density():
     file_in = xr.open_dataset(gdf.get("netcdf_files/uv300.nc"))
     ds = file_in.isel(time=1, lon=slice(0, -1, 3), lat=slice(1, -1, 3))
