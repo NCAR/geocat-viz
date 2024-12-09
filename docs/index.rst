@@ -86,7 +86,6 @@ plotting packages.
 
    Release Notes <release-notes.rst>
    Contributor's Guide <contrib.rst>
-   Roadmap <https://geocat.ucar.edu/pages/roadmap.html>
 
 .. toctree::
    :maxdepth: 2
