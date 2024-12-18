@@ -13,7 +13,7 @@ dependencies:
   - myst-nb
   - nbsphinx
   - sphinx-design
-  - xarray
+  - xarray!=2024.11.0
   - geocat-datafiles
   - pip:
       - -e ..
