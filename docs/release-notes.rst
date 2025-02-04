@@ -10,9 +10,10 @@ v2024.xx.0 (unreleased)
 
 Documentation
 ^^^^^^^^^^^^^
-* Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (pr::`249`)
-* Fix documentation theme configuration by `Katelyn FitzGerald`_ in (pr::`253`)
-* Minor updates and removal of broken link on citation page by`Katelyn FitzGerald`_ in (pr::`260`)
+* Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (:pr:`249`)
+* Fix documentation theme configuration by `Katelyn FitzGerald`_ in (:pr:`253`)
+* Minor updates and removal of broken link on citation page by `Katelyn FitzGerald`_ in (:pr:`260`)
+* Fix broken link to Taylor Diagram documentation from usage example by `Katelyn FitzGerald`_ in (:pr:`270`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
