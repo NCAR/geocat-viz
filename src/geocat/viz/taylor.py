@@ -719,12 +719,12 @@ class TaylorDiagram(object):
         if kwargs.get('labels') is None:
             labels = [p.get_label() for p in handles]
 
-        legend = self.ax.legend(handles,
-                                labels,
-                                loc=loc,
-                                bbox_to_anchor=(xloc, yloc),
-                                fontsize=fontsize,
-                                frameon=False)
+        legend = self._ax.legend(handles,
+                                 labels,
+                                 loc=loc,
+                                 bbox_to_anchor=(xloc, yloc),
+                                 fontsize=fontsize,
+                                 frameon=False)
         return legend
 
     def add_title(self,
