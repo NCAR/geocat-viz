@@ -10,7 +10,7 @@ v2024.xx.0 (unreleased)
 
 Bug Fixes
 ^^^^^^^^^
-* Change Taylor diagram legend to be specified on the graphical axes to address legend location issues by `Katelyn FitzGerald`_ in (:pr:`273`)
+* Change Taylor diagram legend to be specified on the graphical axes to address legend location issues by `Katelyn FitzGerald`_ in (:pr:`274`)
 
 Documentation
 ^^^^^^^^^^^^^
