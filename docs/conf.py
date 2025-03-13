@@ -213,6 +213,9 @@ autosummary_imported_members = True
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
+    "analytics": {
+        "google_analytics_id": "G-S5EEZCJGZ0",
+    },
     "repository_url":
         "https://github.com/NCAR/geocat-viz",
     "repository_branch":
