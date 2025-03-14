@@ -100,7 +100,7 @@ class TaylorDiagram(object):
         self.smax = std_range[1]
 
         # Set polar transform
-        tr = PolarAxes.PolarTransform()
+        tr = PolarAxes.PolarTransform(apply_theta_transforms=False)
 
         # Set correlation labels
         rlocs = np.concatenate((np.arange(10) / 10., [0.95, 0.99, 1]))
