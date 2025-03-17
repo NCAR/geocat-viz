@@ -97,7 +97,7 @@ How to create a Conda environment for building GeoCAT-viz
 
 The GeoCAT-viz source code includes a conda environment definition file
 ``build_envs/environment.yml`` that can be used to create a development environment
-containing all of the packages required to build GeoCAT-viz. 
+containing all of the packages required to build GeoCAT-viz.
 The following commands will create and activate the environment::
 
     conda env create -f build_envs/environment.yml
