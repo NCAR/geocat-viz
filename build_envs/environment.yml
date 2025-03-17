@@ -2,7 +2,6 @@ name: geocat_viz_build
 channels:
   - conda-forge
 dependencies:
-  - python>=3.9, <3.13
   - cartopy
   - make
   - matplotlib

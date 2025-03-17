@@ -88,30 +88,19 @@ Building GeoCAT-viz from source
 --------------------------------
 
 Building GeoCAT-viz from source code is a fairly straightforward task, but
-doing so should not be necessary for most users. If you `are` interested in
-building GeoCAT-viz from source, you will need the following packages to be
-installed.
-
-Required dependencies for building and testing GeoCAT-viz
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    - Python 3.9+
-    - `numpy <https://numpy.org/doc/stable/>`__
-    - `xarray <http://xarray.pydata.org/en/stable/>`__
-    - `matplotlib <https://matplotlib.org/stable/index.html>`__
-    - `cartopy <https://scitools.org.uk/cartopy/docs/latest/>`__
+doing so should not be necessary for most users. If you are interested in
+building from source, the instructions below will guide you through the process.
 
 
 How to create a Conda environment for building GeoCAT-viz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GeoCAT-viz source code includes a conda environment definition file in
-the root directory that can be used to create a development environment containing
-all of the packages required to build GeoCAT-viz. The file ``build_envs/environment.yml``
-is intended to be used on Linux systems and macOS.
-The following commands should work on both Linux and macOS::
+The GeoCAT-viz source code includes a conda environment definition file
+``build_envs/environment.yml`` that can be used to create a development environment
+containing all of the packages required to build GeoCAT-viz.
+The following commands will create and activate the environment::
 
-    conda env create -f conda_environment.yml
+    conda env create -f build_envs/environment.yml
     conda activate geocat_viz_build
 
 
