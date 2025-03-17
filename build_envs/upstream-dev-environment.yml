@@ -2,7 +2,7 @@ name: geocat_viz_upstream
 channels:
   - conda-forge
 dependencies:
-  - python>=3.9
+  - python>=3.10
   - geocat-comp
   - cf_xarray>=0.3.1
   - geocat-datafiles
