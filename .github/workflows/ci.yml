@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: [ "3.9", "3.10", "3.11", "3.12" ]
+        python-version: [ "3.10", "3.11", "3.12", "3.13" ]
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
         with:
           activate-environment: gv-docs
           channel-priority: strict
-          python-version: 3.9
+          python-version: 3.10
           channels: conda-forge
           environment-file: build_envs/docs.yml
 
