@@ -369,6 +369,7 @@ def update_gallery(app: Sphinx):
 # set to "off" to turn off
 # set to "auto" for default behavior
 nb_execution_mode = "force"
+nb_execution_raise_on_error = True
 
 # generate warning for all invalid links
 #nitpicky = True

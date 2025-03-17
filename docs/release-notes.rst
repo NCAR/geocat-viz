@@ -38,7 +38,7 @@ Testing
 * Add tests for `viz.taylor` by `Julia Kent`_ in (:pr:`234`)
 * Add tests for `viz.util` by `Julia Kent`_ in (:pr:`239`)
 * Remove now duplicative macOS runner from CI and add back in Python 3.10 by `Katelyn FitzGerald`_ in (:pr:`240`)
-
+* Set docs configuration to raise an error when there are errors in notebook builds by `Katelyn FitzGerald`_ in (:pr:`280`)
 
 v2024.03.0 (March 26, 2024)
 ---------------------------
