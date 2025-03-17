@@ -5,8 +5,12 @@
 Release Notes
 =============
 
-v2024.xx.0 (unreleased)
+v2025.xx.0 (unreleased)
 ---------------------------
+
+New Features
+^^^^^^^^^^^^
+* Added Python 3.13 support and testing by `Katelyn FitzGerald`_ in (:pr:`278`)
 
 Bug Fixes
 ^^^^^^^^^
