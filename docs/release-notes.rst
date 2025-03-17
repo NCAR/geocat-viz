@@ -29,6 +29,8 @@ Internal Changes
 * Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
 * Modify tests to avoid hitting an unrelated Xarray bug and turn on image comparison testing by `Katelyn FitzGerald`_ in (:pr:`257`)
 * Configure analytics by `Katelyn FitzGerald`_ in (:pr:`277`)
+* Set `apply_theta_transforms=False` to adopt future behavior and silence warnings from
+`matplotlib.projections.PolarAxes.PolarTransform()` by `Katelyn FitzGerald`_ in (:pr:`279`)
 
 Testing
 ^^^^^^^
