@@ -8,13 +8,10 @@ dependencies:
   - matplotlib
   - pandas
   - pint
-  - pip
+  - xarray
   - pre-commit
   - sphinx-book-theme
   - myst-nb
   - nbsphinx
   - sphinx-design
-  - xarray!=2024.11.0
   - geocat-datafiles
-  - pip:
-      - -e ..
