@@ -6,6 +6,7 @@ dependencies:
   - cartopy
   - cmaps
   - matplotlib
+  - pandas
   - pint
   - pip
   - pre-commit

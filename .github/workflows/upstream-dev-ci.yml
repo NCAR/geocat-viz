@@ -1,0 +1,55 @@
+name: CI Upstream
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+     - cron: '0 0 * * *' # Daily “At 00:00”
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upstream-dev:
+    name:  upstream-dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up environment
+        id: env-setup
+        continue-on-error: true
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: build_envs/environment.yml
+          create-args: >-
+            python=${{ matrix.python-version }}
+
+      - name: conda list
+        run: |
+          conda list
+
+      - name: Install upstream versions
+        run: |
+          bash ci/install-upstream.sh
+
+      - name: Install geocat-viz
+        run: |
+          python -m pip install . --no-deps
+
+      - name: conda list
+        run: |
+          conda list
+
+      - name: tests
+        run: |
+          python -m pytest

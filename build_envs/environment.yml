@@ -10,6 +10,7 @@ dependencies:
   - numpy
   - xarray
   - metpy
+  - pandas
   - pint
   - pytest
   - pytest-mpl
