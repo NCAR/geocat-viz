@@ -4,7 +4,7 @@ channels:
   - nodefaults
 dependencies:
   - cartopy
-  - matplotlib
+  - matplotlib-base
   - cmaps
   - numpy
   - xarray
