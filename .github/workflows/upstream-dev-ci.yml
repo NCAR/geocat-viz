@@ -52,4 +52,4 @@ jobs:
 
       - name: tests
         run: |
-          python -m pytest --mpl
+          python -m pytest
