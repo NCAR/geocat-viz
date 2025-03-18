@@ -5,7 +5,7 @@ channels:
 dependencies:
   - cartopy
   - cmaps
-  - matplotlib
+  - matplotlib-base
   - pandas
   - pint
   - xarray
