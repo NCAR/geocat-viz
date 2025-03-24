@@ -43,7 +43,7 @@ Testing
 
 Maintenance
 ^^^^^^^^^^^
-* Require matplotlib-base instead of matplotlib and some minor dependency cleanup by `Katelyn FitzGerald`_ in (:pr:`285`)
+* Require matplotlib-base instead of matplotlib and some minor dependency cleanup by `Katelyn FitzGerald`_ in (:pr:`284`)
 
 v2024.03.0 (March 26, 2024)
 ---------------------------
