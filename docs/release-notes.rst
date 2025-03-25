@@ -41,6 +41,10 @@ Testing
 * Set docs configuration to raise an error when there are errors in notebook builds by `Katelyn FitzGerald`_ in (:pr:`280`)
 * Add upstream dev CI by `Katelyn FitzGerald`_ in (:pr:`282`)
 
+Maintenance
+^^^^^^^^^^^
+* Require matplotlib-base instead of matplotlib and some minor dependency cleanup by `Katelyn FitzGerald`_ in (:pr:`284`)
+
 v2024.03.0 (March 26, 2024)
 ---------------------------
 This release deprecates ``TaylorDiagram`` method names ``add_xgrid()`` and
