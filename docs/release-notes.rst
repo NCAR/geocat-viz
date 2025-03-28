@@ -5,10 +5,11 @@
 Release Notes
 =============
 
-v2025.xx.0 (unreleased)
+v2025.03.0 (March 28, 2025)
 ---------------------------
+This release adds testing infrastructure and significant test coverage, adds support and testing for Python 3.13, drops Python 3.9, and addresses some minor documentation and Matplotlib compatibility issues.
 
-New Features
+Enhancements
 ^^^^^^^^^^^^
 * Added Python 3.13 support and testing by `Katelyn FitzGerald`_ in (:pr:`278`)
 
@@ -18,7 +19,7 @@ Bug Fixes
 
 Documentation
 ^^^^^^^^^^^^^
-* Remove link to broken NCL_vector_5.py example by `Katelyn FitzGerald`_ in (:pr:`249`)
+* Remove link to broken ``NCL_vector_5.py`` example by `Katelyn FitzGerald`_ in (:pr:`249`)
 * Fix documentation theme configuration by `Katelyn FitzGerald`_ in (:pr:`253`)
 * Minor updates and removal of broken link on citation page by `Katelyn FitzGerald`_ in (:pr:`260`)
 * Fix broken link to Taylor Diagram documentation from usage example by `Katelyn FitzGerald`_ in (:pr:`270`)
@@ -26,24 +27,24 @@ Documentation
 Internal Changes
 ^^^^^^^^^^^^^^^^
 * Update pre-commit versions and configuration by `Katelyn FitzGerald`_ in (:pr:`247`)
-* Remove M1 workaround for CI and tokens that are no longer needed by `Katelyn FitzGerald`_ in (:pr:`232`)
-* Modify tests to avoid hitting an unrelated Xarray bug and turn on image comparison testing by `Katelyn FitzGerald`_ in (:pr:`257`)
+* Remove M1 workaround and minor CI maintenance by `Katelyn FitzGerald`_ in (:pr:`232`)
+* Modify tests to avoid an Xarray bug and turn on image comparison testing by `Katelyn FitzGerald`_ in (:pr:`257`)
 * Configure analytics by `Katelyn FitzGerald`_ in (:pr:`277`)
-* Set `apply_theta_transforms=False` to adopt future behavior and silence warnings from
-`matplotlib.projections.PolarAxes.PolarTransform()` by `Katelyn FitzGerald`_ in (:pr:`279`)
+* Set ``apply_theta_transforms=False`` to adopt future behavior and silence warnings from ``matplotlib.projections.PolarAxes.PolarTransform()`` by `Katelyn FitzGerald`_ in (:pr:`279`)
 
 Testing
 ^^^^^^^
 * Add basic testing infrastructure by `Katelyn FitzGerald`_ and `Julia Kent`_ in (:pr:`233`)
-* Add tests for `viz.taylor` by `Julia Kent`_ in (:pr:`234`)
-* Add tests for `viz.util` by `Julia Kent`_ in (:pr:`239`)
-* Remove now duplicative macOS runner from CI and add back in Python 3.10 by `Katelyn FitzGerald`_ in (:pr:`240`)
-* Set docs configuration to raise an error when there are errors in notebook builds by `Katelyn FitzGerald`_ in (:pr:`280`)
+* Add tests for ``viz.taylor`` by `Julia Kent`_ in (:pr:`234`)
+* Add tests for ``viz.util`` by `Julia Kent`_ in (:pr:`239`)
+* Remove duplicative macOS runner from CI and add Python 3.10 by `Katelyn FitzGerald`_ in (:pr:`240`)
+* Set docs configuration to raise an error following errors in notebook builds by `Katelyn FitzGerald`_ in (:pr:`280`)
 * Add upstream dev CI by `Katelyn FitzGerald`_ in (:pr:`282`)
 
 Maintenance
 ^^^^^^^^^^^
-* Require matplotlib-base instead of matplotlib and some minor dependency cleanup by `Katelyn FitzGerald`_ in (:pr:`284`)
+* Require ``matplotlib-base`` instead of ``matplotlib`` and minor dependency cleanup by `Katelyn FitzGerald`_ in (:pr:`284`)
+
 
 v2024.03.0 (March 26, 2024)
 ---------------------------
@@ -57,7 +58,6 @@ Documentation
 Deprecations
 ^^^^^^^^^^
 * Pending deprecation warnings added for ``TaylorDiagram`` methods ``add_xgrid`` and ``add_ygrid`` which are changing to the new ``add_corr_grid`` and ``add_std_grid`` by `Julia Kent`_ in (:pr:`219`)
-
 
 v2024.02.1 (February 28, 2024)
 ------------------------------
@@ -128,7 +128,6 @@ Bug Fixes
 Documentation
 ^^^^^^^^^^^^^
 * Additions to the examples gallery for ``find_local_extrema()``, ``plot_contour_labels()``, and ``plot_extrema_labels()`` by `Julia Kent`_ in (:pr:`145`)
-
 
 v2023.07.0 (July 6, 2023)
 -------------------------
