@@ -5,6 +5,13 @@
 Release Notes
 =============
 
+vYYYY.MM.## (unreleased)
+------------------------
+
+Internal Changes
+^^^^^^^^^^^^^^^^
+* Update PyPI workflow to use build rather than setup.py by `Katelyn FitzGerald`_ in (:pr:`290`)
+
 v2025.03.0 (March 28, 2025)
 ---------------------------
 This release adds testing infrastructure and significant test coverage, adds support and testing for Python 3.13, drops Python 3.9, and addresses some minor documentation and Matplotlib compatibility issues.
