@@ -1,0 +1,21 @@
+name: geocat_viz_build
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.10
+  - cartopy
+  - matplotlib-base=3.8
+  - cmaps
+  - numpy=1.25
+  - xarray=2023.4
+  - metpy
+  - pandas=2.1
+  - pint
+  - scikit-learn
+# testing
+  - pytest
+  - pytest-mpl
+  - geocat-datafiles
+# formatting
+  - pre-commit

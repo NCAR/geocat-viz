@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Python ${{ matrix.python-version }} ${{ matrix.os }} ${{ matrix.env }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -24,9 +24,22 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest", "windows-latest"]
         python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+        env: [ "" ]
+        include:
+          - env: "min-deps"
+            python-version: "3.10"
+            os: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
+
+      - name: set environment variables
+        run:
+          if [[ "${{ matrix.env }}" == "min-deps" ]]; then
+             echo "CONDA_ENV_FILE=build_envs/min-deps.yml" >> $GITHUB_ENV
+          else
+             echo "CONDA_ENV_FILE=build_envs/environment.yml" >> $GITHUB_ENV
+          fi
 
       - name: environment setup
         uses: conda-incubator/setup-miniconda@v3
@@ -35,7 +48,7 @@ jobs:
           channel-priority: strict
           python-version: ${{ matrix.python-version }}
           channels: conda-forge
-          environment-file: build_envs/environment.yml
+          environment-file: ${{ env.CONDA_ENV_FILE }}
 
       - name: Install geocat-viz
         run: |
