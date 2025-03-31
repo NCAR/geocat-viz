@@ -3,7 +3,7 @@ import warnings
 import typing
 
 import numpy as np
-
+from packaging.version import Version
 import xarray as xr
 
 import matplotlib
@@ -100,7 +100,11 @@ class TaylorDiagram(object):
         self.smax = std_range[1]
 
         # Set polar transform
-        tr = PolarAxes.PolarTransform(apply_theta_transforms=False)
+        mpl_version = Version(matplotlib.__version__)
+        if mpl_version < Version('3.9'):
+            tr = PolarAxes.PolarTransform(_apply_theta_transforms=False)
+        else:
+            tr = PolarAxes.PolarTransform(apply_theta_transforms=False)
 
         # Set correlation labels
         rlocs = np.concatenate((np.arange(10) / 10., [0.95, 0.99, 1]))
