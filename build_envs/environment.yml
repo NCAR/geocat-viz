@@ -9,6 +9,7 @@ dependencies:
   - numpy
   - xarray
   - metpy
+  - packaging
   - pandas
   - pint
   - scikit-learn

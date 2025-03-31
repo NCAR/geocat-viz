@@ -10,6 +10,7 @@ dependencies:
   - numpy=1.25
   - xarray=2023.4
   - metpy
+  - packaging
   - pandas=2.1
   - pint
   - scikit-learn
