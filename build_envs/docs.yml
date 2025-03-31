@@ -9,6 +9,7 @@ dependencies:
   - pandas
   - pint
   - xarray
+  - packaging
   - pre-commit
   - sphinx-book-theme
   - myst-nb
