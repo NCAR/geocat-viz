@@ -94,4 +94,4 @@ plotting packages.
 
    Support <support>
    GitHub Issues <https://github.com/NCAR/geocat-viz/issues>
-   Feature Request Form <https://forms.gle/6DTo3ELLri4DAGfG8>
+   Suggestion Box <https://forms.gle/6DTo3ELLri4DAGfG8>
