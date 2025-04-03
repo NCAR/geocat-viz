@@ -12,6 +12,10 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Update PyPI workflow to use build rather than setup.py by `Katelyn FitzGerald`_ in (:pr:`290`)
 
+Documentation
+^^^^^^^^^^^^^
+* Remove reference to NCAR/geocat repo from support page by `Katelyn FitzGerald`_ in (:pr:`293`)
+
 Testing
 ^^^^^^^
 * Add minimum dependency version testing and address minor compatibility issues with Matplotlib by `Katelyn FitzGerald`_ in (:pr:`291`)
