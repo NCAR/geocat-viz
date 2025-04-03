@@ -15,7 +15,7 @@ Documentation
 Testing
 ^^^^^^^
 * Add minimum dependency version testing and address minor compatibility issues with Matplotlib by `Katelyn FitzGerald`_ in (:pr:`291`)
-* Move to setup-micromamba for environments in CI by `Katelyn FitzGerald`_ in (:pr:`293`)
+* Move to setup-micromamba for environments in CI by `Katelyn FitzGerald`_ in (:pr:`294`)
 
 
 v2025.03.0 (March 28, 2025)
