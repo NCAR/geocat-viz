@@ -19,7 +19,6 @@ jobs:
       - name: Build tarball and wheels
         run: |
           python -m build
-          python -m pip wheel . -w dist --no-deps
       - name: Test the artifacts
         run: |
           python -m twine check dist/*
@@ -43,7 +42,6 @@ jobs:
       - name: Build tarball and wheels
         run: |
           python -m build
-          python -m pip wheel . -w dist --no-deps
       - name: Test the artifacts
         run: |
           python -m twine check dist/*
