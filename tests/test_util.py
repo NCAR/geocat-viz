@@ -285,7 +285,7 @@ def test_get_skewt_vars():
     tdc0 = tdc[0]
     pro = mpcalc.parcel_profile(p, tc0, tdc0)
     subtitle = get_skewt_vars(p, tc, tdc, pro)
-    
+
     metpy_version = Version(metpy.__version__)
     if metpy_version > Version('1.6.3'):
         assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3261'
