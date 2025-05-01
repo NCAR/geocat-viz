@@ -6,7 +6,9 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import xarray as xr
 import pandas as pd
+from packaging.version import Version
 from metpy.units import units
+import metpy
 import metpy.calc as mpcalc
 import geocat.datafiles as gdf
 
@@ -283,4 +285,9 @@ def test_get_skewt_vars():
     tdc0 = tdc[0]
     pro = mpcalc.parcel_profile(p, tc0, tdc0)
     subtitle = get_skewt_vars(p, tc, tdc, pro)
-    assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3135'
+
+    metpy_version = Version(metpy.__version__)
+    if metpy_version < Version('1.7'):
+        assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3135'
+    else:
+        assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3261'

@@ -16,6 +16,7 @@ Testing
 ^^^^^^^
 * Add minimum dependency version testing and address minor compatibility issues with Matplotlib by `Katelyn FitzGerald`_ in (:pr:`291`)
 * Move to setup-micromamba for environments in CI by `Katelyn FitzGerald`_ in (:pr:`294`)
+* Adapt tests to accomodate upstream changes in the MetPy CAPE calculations by `Katelyn FitzGerald`_ in (:pr:`299`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^

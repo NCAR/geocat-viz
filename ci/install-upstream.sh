@@ -8,7 +8,7 @@ conda remove -y --force \
     pandas \
     pint \
     xarray \
-    matplotlib \
+    matplotlib-base \
     cartopy
 
 # conda list
