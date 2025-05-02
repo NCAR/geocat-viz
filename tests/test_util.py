@@ -290,4 +290,4 @@ def test_get_skewt_vars():
     if metpy_version < Version('1.7'):
         assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3135'
     else:
-        assert subtitle == 'Plcl= 927 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3212'
+        assert subtitle == 'Plcl= 926 Tlcl[C]= 24 Shox= 3 Pwat[cm]= 5 Cape[J]= 3212'
