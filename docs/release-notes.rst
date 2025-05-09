@@ -16,7 +16,7 @@ Testing
 ^^^^^^^
 * Add minimum dependency version testing and address minor compatibility issues with Matplotlib by `Katelyn FitzGerald`_ in (:pr:`291`)
 * Move to setup-micromamba for environments in CI by `Katelyn FitzGerald`_ in (:pr:`294`)
-* Adapt tests to accomodate upstream changes in MetPy for LCL and CAPE by `Katelyn FitzGerald`_ in (:pr:`299`, :pr:`300`)
+* Adapt tests to accommodate upstream changes in MetPy for LCL and CAPE by `Katelyn FitzGerald`_ in (:pr:`299`, :pr:`300`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
@@ -169,7 +169,7 @@ Function and keyword argument names have been adjusted to follow consistent form
 
 Deprecations
 ^^^^^^^^^^^^
-* Some functions reanmed (``findLocalExtrema`` -> ``find_local_extrema``, ``plotCLabels`` -> ``plot_contour_labels``, and ``plotELabels`` -> ``plot_extrema_labels``) and keyword arguments renamed in ``get_skewt_vars`` by `Julia Kent`_ in (:pr:`127`)
+* Some functions renamed (``findLocalExtrema`` -> ``find_local_extrema``, ``plotCLabels`` -> ``plot_contour_labels``, and ``plotELabels`` -> ``plot_extrema_labels``) and keyword arguments renamed in ``get_skewt_vars`` by `Julia Kent`_ in (:pr:`127`)
 
 Bug Fixes
 ^^^^^^^^^
