@@ -36,7 +36,7 @@ class TaylorDiagram(object):
         Optional subplot definition
 
     label : str
-        Optional reference label string indentifier
+        Optional reference label string identifier
 
     stdRange : tuple
         Optional stddev axis extent
@@ -77,7 +77,7 @@ class TaylorDiagram(object):
             Optional subplot definition
 
         label : str
-            Optional reference label string indentifier
+            Optional reference label string identifier
 
         std_range : tuple
             Optional stddev axis extent
@@ -218,7 +218,7 @@ class TaylorDiagram(object):
             Input should have the same size as *stddev*
 
         fontsize : float
-            Fonsize of marker labels. This argument is suplied to `matplotlib.axes.Axes.annotate` command. Optional. Default value 14.
+            Fonsize of marker labels. This argument is supplied to `matplotlib.axes.Axes.annotate` command. Optional. Default value 14.
 
         xytext : tuple(float, float)
             The position (x, y) to place the marker label at. The coordinate system is set to pixels.
@@ -807,7 +807,7 @@ class TaylorDiagram(object):
         Parameters
         ----------
         bias : int, float
-            Bais value to dictate the size of the marker size and string marker
+            Bias value to dictate the size of the marker size and string marker
 
         Returns
         -------

@@ -17,7 +17,7 @@ examples to get you started.
         :img-top: _static/images/icons/handshake.svg
         :link: getting_started/overview.rst
 
-        Get aquainted with GeoCAT-viz
+        Get acquainted with GeoCAT-viz
 
     .. grid-item-card::  Quick Installation
         :class-title: custom-title
