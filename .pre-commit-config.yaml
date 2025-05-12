@@ -1,3 +1,7 @@
+ci:
+    autofix_prs: false
+    autoupdate_schedule: monthly
+
 repos:
 -   repo: https://github.com/google/yapf    # To format the code to conform YAPF
     rev: v0.43.0
@@ -12,6 +16,19 @@ repos:
 #     - id: docformatter
 #       args: [--in-place]
 #
+
+-   repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        args:
+          - --ignore-words-list=inout
+        exclude: >
+          (?x)^(
+              .*\.svg|
+              .*\.ipynb|
+          )$
+
 -   repo: https://github.com/pre-commit/pre-commit-hooks    # Some common pre-commit hooks
     rev: v5.0.0
     hooks:
@@ -22,7 +39,3 @@ repos:
     - id: trailing-whitespace      # Checks for any tabs or spaces after the last non-whitespace character on the line.
     - id: check-docstring-first    # Checks that code comes after the docstrings.
     - id: check-yaml               # Check valid yml file
-
-ci:
-    autofix_prs: false
-    autoupdate_schedule: monthly

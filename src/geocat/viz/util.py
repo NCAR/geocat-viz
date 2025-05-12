@@ -1474,7 +1474,7 @@ def set_vector_density(data: xr.DataArray,
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
         if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
-            warnings.warn('Plot spacing is alrady greater or equal to ' +
+            warnings.warn('Plot spacing is already greater or equal to ' +
                           str(minDistance))
 
         # While the difference between two vectors is smaller than minDistance, increment the value that
