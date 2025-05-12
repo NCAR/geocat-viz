@@ -1,0 +1,11 @@
+[format]
+# preserve mixture of single and double quotes
+quote-style = "preserve"
+
+[lint]
+# Skip F841 Local variable name is assigned to but never used
+ignore = ["F841"]
+
+[lint.per-file-ignores]
+# Skip imported but unused imports in __init__.py
+"__init__.py" = ["F401"]
