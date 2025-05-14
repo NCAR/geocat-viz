@@ -22,6 +22,7 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Update PyPI workflow to use build rather than setup.py by `Katelyn FitzGerald`_ in (:pr:`290`)
 * Update pins for third party GitHub Actions per new guidance by `Katelyn FitzGerald`_ in (:pr:`297`)
+* Transition formatting to `ruff` and `blackdoc` by `Cora Schneck`_ in (:pr:`302`)
 
 
 v2025.03.0 (March 28, 2025)
@@ -198,3 +199,4 @@ Documentation
 .. _`Simon Rosanka`: https://github.com/srosanka
 .. _`Orhan Eroglu`: https://github.com/erogluorhan
 .. _`Anissa Zacharias`: https://github.com/anissa111
+.. _`Cora Schneck`: https://github.com/cyschneck

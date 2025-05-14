@@ -27,12 +27,14 @@ from metpy.units import units
 from itertools import chain
 
 
-def set_tick_direction_spine_visibility(ax,
-                                        tick_direction='out',
-                                        top_spine_visible=True,
-                                        bottom_spine_visible=True,
-                                        left_spine_visible=True,
-                                        right_spine_visible=True):
+def set_tick_direction_spine_visibility(
+    ax,
+    tick_direction='out',
+    top_spine_visible=True,
+    bottom_spine_visible=True,
+    left_spine_visible=True,
+    right_spine_visible=True,
+):
     """Utility function to turn off axes spines and set tickmark orientations.
 
     Note: This function should be called after calling add_major_minor_ticks()
@@ -95,13 +97,15 @@ def set_tick_direction_spine_visibility(ax,
         ax.yaxis.set_ticks_position('none')
 
 
-def add_lat_lon_gridlines(ax,
-                          projection=None,
-                          draw_labels=True,
-                          xlocator=np.arange(-180, 180, 15),
-                          ylocator=np.arange(-90, 90, 15),
-                          labelsize=12,
-                          **kwargs):
+def add_lat_lon_gridlines(
+    ax,
+    projection=None,
+    draw_labels=True,
+    xlocator=np.arange(-180, 180, 15),
+    ylocator=np.arange(-90, 90, 15),
+    labelsize=12,
+    **kwargs,
+):
     """Utility function that adds latitude and longtitude gridlines to the
     plot.
 
@@ -143,11 +147,13 @@ def add_lat_lon_gridlines(ax,
     """
 
     # Draw gridlines
-    gl = ax.gridlines(crs=projection,
-                      draw_labels=draw_labels,
-                      x_inline=False,
-                      y_inline=False,
-                      **kwargs)
+    gl = ax.gridlines(
+        crs=projection,
+        draw_labels=draw_labels,
+        x_inline=False,
+        y_inline=False,
+        **kwargs,
+    )
 
     gl.xlocator = tic.FixedLocator(xlocator)
     gl.ylocator = tic.FixedLocator(ylocator)
@@ -157,14 +163,16 @@ def add_lat_lon_gridlines(ax,
     return gl
 
 
-def add_right_hand_axis(ax,
-                        label=None,
-                        ylim=None,
-                        yticks=None,
-                        ticklabelsize=12,
-                        labelpad=10,
-                        axislabelsize=16,
-                        y_minor_per_major=None):
+def add_right_hand_axis(
+    ax,
+    label=None,
+    ylim=None,
+    yticks=None,
+    ticklabelsize=12,
+    labelpad=10,
+    axislabelsize=16,
+    y_minor_per_major=None,
+):
     """Utility function that adds a right hand axis to the plot.
 
     Parameters
@@ -211,9 +219,7 @@ def add_right_hand_axis(ax,
 
     axRHS = ax.twinx()
     if label is not None:
-        axRHS.set_ylabel(ylabel=label,
-                         labelpad=labelpad,
-                         fontsize=axislabelsize)
+        axRHS.set_ylabel(ylabel=label, labelpad=labelpad, fontsize=axislabelsize)
     set_axes_limits_and_ticks(axRHS, ylim=ylim, yticks=yticks)
     axRHS.tick_params(labelsize=ticklabelsize, length=8, width=0.9)
     if y_minor_per_major is not None:
@@ -223,13 +229,15 @@ def add_right_hand_axis(ax,
     return axRHS
 
 
-def add_height_from_pressure_axis(ax,
-                                  heights=None,
-                                  pressure_units='hPa',
-                                  ticklabelsize=12,
-                                  label='Height (km)',
-                                  labelpad=10,
-                                  axislabelsize=16):
+def add_height_from_pressure_axis(
+    ax,
+    heights=None,
+    pressure_units='hPa',
+    ticklabelsize=12,
+    label='Height (km)',
+    labelpad=10,
+    axislabelsize=16,
+):
     """Utility function that adds a right-hand Height axis to the plot, derived
     from the left-hand Pressure axis. Replicates the height-axis functionality
     in NCL's `gsn_csm_pres_hgt`method for drawing a pressure/height plot.
@@ -297,20 +305,24 @@ def add_height_from_pressure_axis(ax,
 
         # Range and step values mirror NCL's `set_pres_hgt_axes` logic
         height_range = abs(height_max - height_min)
-        if (height_range <= 35 * units('km')):
+        if height_range <= 35 * units('km'):
             step = 4
-        elif (height_range <= 70 * units('km')):
+        elif height_range <= 70 * units('km'):
             step = 7
         else:
             step = 10
 
         # Select heights to display as tick labels
-        heights = np.arange(int(height_min.magnitude),
-                            int(height_max.magnitude) + 1, step)
+        heights = np.arange(
+            int(height_min.magnitude), int(height_max.magnitude) + 1, step
+        )
 
     # Send selected height values back to pressure to get tick locations
-    pressures = mpcalc.height_to_pressure_std(
-        heights * units('km')).to(pressure_units).magnitude
+    pressures = (
+        mpcalc.height_to_pressure_std(heights * units('km'))
+        .to(pressure_units)
+        .magnitude
+    )
 
     # Set right-hand height axis scale to match left-hand pressure axis
     axRHS.set_yscale(ax.get_yscale())
@@ -318,20 +330,20 @@ def add_height_from_pressure_axis(ax,
     # Turn off minor ticks that are spaced by pressure
     axRHS.minorticks_off()
 
-    set_axes_limits_and_ticks(axRHS,
-                              ylim=ax.get_ylim(),
-                              yticks=pressures,
-                              yticklabels=heights)
+    set_axes_limits_and_ticks(
+        axRHS, ylim=ax.get_ylim(), yticks=pressures, yticklabels=heights
+    )
     axRHS.tick_params(labelsize=ticklabelsize)  # manually set tick label size
     axRHS.set_ylabel(ylabel=label, labelpad=labelpad, fontsize=axislabelsize)
 
     return axRHS
 
 
-def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
-                                            cartopy.mpl.geoaxes.GeoAxesSubplot],
-                           zero_direction_label: bool = False,
-                           dateline_direction_label: bool = False):
+def add_lat_lon_ticklabels(
+    ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+    zero_direction_label: bool = False,
+    dateline_direction_label: bool = False,
+):
     """Utility function to make plots look like NCL plots by adding latitude,
     longitude tick labels.
 
@@ -361,21 +373,23 @@ def add_lat_lon_ticklabels(ax: typing.Union[matplotlib.axes.Axes,
 
     lon_formatter = LongitudeFormatter(
         zero_direction_label=zero_direction_label,
-        dateline_direction_label=dateline_direction_label)
+        dateline_direction_label=dateline_direction_label,
+    )
     lat_formatter = LatitudeFormatter()
     ax.xaxis.set_major_formatter(lon_formatter)
     ax.yaxis.set_major_formatter(lat_formatter)
 
 
-def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
-                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
-                          x_minor_per_major: int = 3,
-                          y_minor_per_major: int = 3,
-                          basex: int = 10,
-                          basey: int = 10,
-                          labelsize: typing.Union[str, int] = "small",
-                          linthreshx: int = 2,
-                          linthreshy: int = 2):
+def add_major_minor_ticks(
+    ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+    x_minor_per_major: int = 3,
+    y_minor_per_major: int = 3,
+    basex: int = 10,
+    basey: int = 10,
+    labelsize: typing.Union[str, int] = "small",
+    linthreshx: int = 2,
+    linthreshy: int = 2,
+):
     """Utility function to make plots look like NCL plots by adding minor and
     major tick lines.
 
@@ -428,27 +442,35 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
     ax.minorticks_on()
     if ax.xaxis.get_scale() == 'log':
         ax.xaxis.set_minor_locator(
-            tic.LogLocator(base=basex,
-                           subs=np.linspace(0, basex, x_minor_per_major + 1)))
+            tic.LogLocator(
+                base=basex, subs=np.linspace(0, basex, x_minor_per_major + 1)
+            )
+        )
     elif ax.xaxis.get_scale() == 'symlog':
         ax.xaxis.set_minor_locator(
-            tic.SymmetricalLogLocator(base=basex,
-                                      subs=np.linspace(0, basex,
-                                                       x_minor_per_major + 1),
-                                      linthresh=linthreshx))
+            tic.SymmetricalLogLocator(
+                base=basex,
+                subs=np.linspace(0, basex, x_minor_per_major + 1),
+                linthresh=linthreshx,
+            )
+        )
     else:
         ax.xaxis.set_minor_locator(tic.AutoMinorLocator(n=x_minor_per_major))
 
     if ax.yaxis.get_scale() == 'log':
         ax.yaxis.set_minor_locator(
-            tic.LogLocator(base=basey,
-                           subs=np.linspace(0, basey, y_minor_per_major + 1)))
+            tic.LogLocator(
+                base=basey, subs=np.linspace(0, basey, y_minor_per_major + 1)
+            )
+        )
     elif ax.yaxis.get_scale() == 'symlog':
         ax.yaxis.set_minor_locator(
-            tic.SymmetricalLogLocator(base=basey,
-                                      subs=np.linspace(0, basey,
-                                                       y_minor_per_major + 1),
-                                      linthresh=linthreshy))
+            tic.SymmetricalLogLocator(
+                base=basey,
+                subs=np.linspace(0, basey, y_minor_per_major + 1),
+                linthresh=linthreshy,
+            )
+        )
     else:
         ax.yaxis.set_minor_locator(tic.AutoMinorLocator(n=y_minor_per_major))
 
@@ -475,19 +497,20 @@ def add_major_minor_ticks(ax: typing.Union[matplotlib.axes.Axes,
     )
 
 
-def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
-                                           cartopy.mpl.geoaxes.GeoAxesSubplot],
-                          maintitle: str = None,
-                          maintitlefontsize: int = 18,
-                          subtitle: str = None,
-                          subtitlefontsize: int = 18,
-                          lefttitle: str = None,
-                          lefttitlefontsize: int = 18,
-                          righttitle: str = None,
-                          righttitlefontsize: int = 18,
-                          xlabel: str = None,
-                          ylabel: str = None,
-                          labelfontsize: int = 16):
+def set_titles_and_labels(
+    ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+    maintitle: str = None,
+    maintitlefontsize: int = 18,
+    subtitle: str = None,
+    subtitlefontsize: int = 18,
+    lefttitle: str = None,
+    lefttitlefontsize: int = 18,
+    righttitle: str = None,
+    righttitlefontsize: int = 18,
+    xlabel: str = None,
+    ylabel: str = None,
+    labelfontsize: int = 16,
+):
     """Utility function to handle axis titles, left/right aligned titles, and
     labels as they appear in NCL plots.
 
@@ -571,10 +594,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
     if maintitle is not None:
         if subtitle is not None:
             fig = ax.get_figure()
-            fig.suptitle(maintitle,
-                         fontsize=maintitlefontsize,
-                         y=1.04,
-                         ha='center')
+            fig.suptitle(maintitle, fontsize=maintitlefontsize, y=1.04, ha='center')
         elif lefttitle is not None or righttitle is not None:
             ax.set_title(maintitle, fontsize=maintitlefontsize + 2, y=1.12)
         else:
@@ -587,10 +607,7 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
         ax.set_title(lefttitle, fontsize=lefttitlefontsize, y=1.04, loc='left')
 
     if righttitle is not None:
-        ax.set_title(righttitle,
-                     fontsize=righttitlefontsize,
-                     y=1.04,
-                     loc='right')
+        ax.set_title(righttitle, fontsize=righttitlefontsize, y=1.04, loc='right')
 
     if xlabel is not None:
         ax.set_xlabel(xlabel, fontsize=labelfontsize)
@@ -600,14 +617,14 @@ def set_titles_and_labels(ax: typing.Union[matplotlib.axes.Axes,
 
 
 def set_axes_limits_and_ticks(
-        ax: typing.Union[matplotlib.axes.Axes,
-                         cartopy.mpl.geoaxes.GeoAxesSubplot],
-        xlim: tuple = None,
-        ylim: tuple = None,
-        xticks: list = None,
-        yticks: list = None,
-        xticklabels: list = None,
-        yticklabels: list = None):
+    ax: typing.Union[matplotlib.axes.Axes, cartopy.mpl.geoaxes.GeoAxesSubplot],
+    xlim: tuple = None,
+    ylim: tuple = None,
+    xticks: list = None,
+    yticks: list = None,
+    xticklabels: list = None,
+    yticklabels: list = None,
+):
     """Utility function to determine axis limits, tick values and labels.
 
     The intent of this function is to help developers use only this convenience function instead of multiple
@@ -671,12 +688,14 @@ def set_axes_limits_and_ticks(
         ax.set_ylim(ylim)
 
 
-def truncate_colormap(cmap: matplotlib.colors.Colormap,
-                      minval: typing.Union[int, float] = 0.0,
-                      maxval: typing.Union[int, float] = 1.0,
-                      n: int = 256,
-                      name: str = None,
-                      force: bool = True):
+def truncate_colormap(
+    cmap: matplotlib.colors.Colormap,
+    minval: typing.Union[int, float] = 0.0,
+    maxval: typing.Union[int, float] = 1.0,
+    n: int = 256,
+    name: str = None,
+    force: bool = True,
+):
     """Utility function that truncates a colormap. Registers the new colormap
     by name and returns the corresponding colormap object.
 
@@ -718,11 +737,10 @@ def truncate_colormap(cmap: matplotlib.colors.Colormap,
     """
 
     if not name:
-        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name,
-                                                   a=minval,
-                                                   b=maxval)
+        name = "trunc({n},{a:.2f},{b:.2f})".format(n=cmap.name, a=minval, b=maxval)
     new_cmap = mpl.colors.LinearSegmentedColormap.from_list(
-        name=name, colors=cmap(np.linspace(minval, maxval)), N=n)
+        name=name, colors=cmap(np.linspace(minval, maxval)), N=n
+    )
 
     try:
         mpl.colormaps.register(new_cmap, force=force)
@@ -757,29 +775,29 @@ def xr_add_cyclic_longitudes(da: xr.DataArray, coord: str):
     - `NCL_sat_1.py <https://geocat-examples.readthedocs.io/en/latest/gallery/MapProjections/NCL_sat_1.html?highlight=xr_add_cyclic_longitudes>`_
     """
 
-    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values,
-                                                       coord=da[coord])
+    cyclic_data, cyclic_coord = cutil.add_cyclic_point(da.values, coord=da[coord])
 
     coords = da.coords.to_dataset()
     coords[coord] = cyclic_coord
 
-    new_da = xr.DataArray(cyclic_data,
-                          dims=da.dims,
-                          coords=coords.coords,
-                          attrs=da.attrs)
+    new_da = xr.DataArray(
+        cyclic_data, dims=da.dims, coords=coords.coords, attrs=da.attrs
+    )
     new_da.encoding = da.encoding
 
     return new_da
 
 
-def set_map_boundary(ax: matplotlib.axes.Axes,
-                     lon_range: typing.Union[tuple, list],
-                     lat_range: typing.Union[tuple, list],
-                     north_pad: int = 0,
-                     south_pad: int = 0,
-                     east_pad: int = 0,
-                     west_pad: int = 0,
-                     res: int = 1):
+def set_map_boundary(
+    ax: matplotlib.axes.Axes,
+    lon_range: typing.Union[tuple, list],
+    lat_range: typing.Union[tuple, list],
+    north_pad: int = 0,
+    south_pad: int = 0,
+    east_pad: int = 0,
+    west_pad: int = 0,
+    res: int = 1,
+):
     """Utility function to set the boundary of ax to a path that surrounds a
     given region specified by latitude and longitude coordinates. This boundary
     is drawn in the projection coordinates and therefore follows any curves
@@ -859,54 +877,86 @@ def set_map_boundary(ax: matplotlib.axes.Axes,
             "The first latitude value must be strictly less than the second latitude value"
         )
 
-    if (lon_range[0] > 180 or lon_range[0] < -180 or lon_range[1] > 180 or
-            lon_range[1] < -180):
+    if (
+        lon_range[0] > 180
+        or lon_range[0] < -180
+        or lon_range[1] > 180
+        or lon_range[1] < -180
+    ):
         raise ValueError(
-            "The longitudes must be within the range [-180, 180] inclusive")
+            "The longitudes must be within the range [-180, 180] inclusive"
+        )
 
-    if (lat_range[0] > 90 or lat_range[0] < -90 or lat_range[1] > 90 or
-            lat_range[1] < -90):
-        raise ValueError(
-            "The latitudes must be within the range [-90, 90] inclusive")
+    if (
+        lat_range[0] > 90
+        or lat_range[0] < -90
+        or lat_range[1] > 90
+        or lat_range[1] < -90
+    ):
+        raise ValueError("The latitudes must be within the range [-90, 90] inclusive")
 
     # Make a boundary path in PlateCarree projection beginning in the south
     # west and continuing anticlockwise creating a point every `res` degree
     if lon_range[0] >= 0 >= lon_range[1]:  # Case when range crosses antimeridian
-        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)] + \
-                   [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)] + \
-                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
-                   [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)] + \
-                   [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat)
-                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+        vertices = (
+            [(lon, lat_range[0]) for lon in range(lon_range[0], 180 + 1, res)]
+            + [(lon, lat_range[0]) for lon in range(-180, lon_range[1] + 1, res)]
+            + [
+                (lon_range[1], lat)
+                for lat in range(lat_range[0], lat_range[1] + 1, res)
+            ]
+            + [(lon, lat_range[1]) for lon in range(lon_range[1], -180 - 1, -res)]
+            + [(lon, lat_range[1]) for lon in range(180, lon_range[0] - 1, -res)]
+            + [
+                (lon_range[0], lat)
+                for lat in range(lat_range[1], lat_range[0] - 1, -res)
+            ]
+        )
         path = mpath.Path(vertices)
-    elif ((lon_range[0] == 180 or lon_range[0] == -180) and
-          (lon_range[1] == 180 or lon_range[1] == -180)):
+    elif (lon_range[0] == 180 or lon_range[0] == -180) and (
+        lon_range[1] == 180 or lon_range[1] == -180
+    ):
         vertices = [(lon, lat_range[0]) for lon in range(0, 360 + 1, res)]
         path = mpath.Path(vertices)
     else:
-        vertices = [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)] + \
-                   [(lon_range[1], lat) for lat in range(lat_range[0], lat_range[1] + 1, res)] + \
-                   [(lon, lat_range[1]) for lon in range(lon_range[1], lon_range[0] - 1, -res)] + \
-                   [(lon_range[0], lat)
-                    for lat in range(lat_range[1], lat_range[0] - 1, -res)]
+        vertices = (
+            [(lon, lat_range[0]) for lon in range(lon_range[0], lon_range[1] + 1, res)]
+            + [
+                (lon_range[1], lat)
+                for lat in range(lat_range[0], lat_range[1] + 1, res)
+            ]
+            + [
+                (lon, lat_range[1])
+                for lon in range(lon_range[1], lon_range[0] - 1, -res)
+            ]
+            + [
+                (lon_range[0], lat)
+                for lat in range(lat_range[1], lat_range[0] - 1, -res)
+            ]
+        )
         path = mpath.Path(vertices)
 
     proj_to_data = ccrs.PlateCarree()._as_mpl_transform(ax) - ax.transData
     ax.set_boundary(proj_to_data.transform_path(path))
 
-    ax.set_extent([
-        lon_range[0] - west_pad, lon_range[1] + east_pad,
-        lat_range[0] - south_pad, lat_range[1] + north_pad
-    ],
-                  crs=ccrs.PlateCarree())
+    ax.set_extent(
+        [
+            lon_range[0] - west_pad,
+            lon_range[1] + east_pad,
+            lat_range[0] - south_pad,
+            lat_range[1] + north_pad,
+        ],
+        crs=ccrs.PlateCarree(),
+    )
 
 
-def findLocalExtrema(da: xr.DataArray,
-                     highVal: int = 0,
-                     lowVal: int = 1000,
-                     eType: str = 'Low',
-                     eps: float = 10) -> list:
+def findLocalExtrema(
+    da: xr.DataArray,
+    highVal: int = 0,
+    lowVal: int = 1000,
+    eType: str = 'Low',
+    eps: float = 10,
+) -> list:
     r""".. deprecated:: 2023.02.0 The ``findLocalExtrema`` function is deprecated due to naming conventions. Use :func:`find_local_extrema` instead.
 
     Utility function to find local low/high field variable coordinates on a
@@ -956,16 +1006,19 @@ def findLocalExtrema(da: xr.DataArray,
 
     warnings.warn(
         'This function is deprecated. Call `find_local_extrema` instead.',
-        PendingDeprecationWarning)
+        PendingDeprecationWarning,
+    )
 
     return find_local_extrema(da, highVal, lowVal, eType, eps)
 
 
-def find_local_extrema(da: xr.DataArray,
-                       highVal: int = 0,
-                       lowVal: int = 1000,
-                       eType: str = 'Low',
-                       eps: float = 10) -> list:
+def find_local_extrema(
+    da: xr.DataArray,
+    highVal: int = 0,
+    lowVal: int = 1000,
+    eType: str = 'Low',
+    eps: float = 10,
+) -> list:
     """Utility function to find local low/high field variable coordinates on a
     contour map. To classify as a local high, the data point must be greater
     than highval, and to classify as a local low, the data point must be less
@@ -1030,12 +1083,10 @@ def find_local_extrema(da: xr.DataArray,
 
     if extremacoords == []:
         if eType == 'Low':
-            warnings.warn(
-                'No local extrema with data value less than given lowval')
+            warnings.warn('No local extrema with data value less than given lowval')
             return []
         if eType == 'High':
-            warnings.warn(
-                'No local extrema with data value greater than given highval')
+            warnings.warn('No local extrema with data value greater than given highval')
             return []
 
     # Clean up noisy data to find actual extrema
@@ -1057,13 +1108,13 @@ def find_local_extrema(da: xr.DataArray,
 
     # Iterate through the coordinates in each cluster
     for key in coordsAndLabels:
-
         # Create array to hold all the field variable values for that cluster
         data_vals = []
         for coord in coordsAndLabels[key]:
             # Find pressure data at that coordinate
-            cond = np.logical_and(coordarr[:, :, 0] == coord[0],
-                                  coordarr[:, :, 1] == coord[1])
+            cond = np.logical_and(
+                coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1]
+            )
             x, y = np.where(cond)
             data_vals.append(da.data[x[0]][y[0]])
 
@@ -1075,19 +1126,22 @@ def find_local_extrema(da: xr.DataArray,
 
         # Append the coordinate corresponding to that index to the array to be returned
         clusterExtremas.append(
-            (coordsAndLabels[key][index][0], coordsAndLabels[key][index][1]))
+            (coordsAndLabels[key][index][0], coordsAndLabels[key][index][1])
+        )
 
     return clusterExtremas
 
 
-def plotCLabels(ax: matplotlib.axes.Axes,
-                contours,
-                transform: cartopy.crs.CRS,
-                proj: cartopy.crs.CRS,
-                clabel_locations: list = [],
-                fontsize: int = 12,
-                whitebbox: bool = False,
-                horizontal: bool = False) -> list:
+def plotCLabels(
+    ax: matplotlib.axes.Axes,
+    contours,
+    transform: cartopy.crs.CRS,
+    proj: cartopy.crs.CRS,
+    clabel_locations: list = [],
+    fontsize: int = 12,
+    whitebbox: bool = False,
+    horizontal: bool = False,
+) -> list:
     r""".. deprecated:: 2023.02.0 The ``plotCLabels`` function is deprecated due to naming conventions. Use :func:`plot_contour_levels` instead.
 
     Utility function to plot contour labels by passing in a coordinate to
@@ -1140,20 +1194,24 @@ def plotCLabels(ax: matplotlib.axes.Axes,
 
     warnings.warn(
         'This function is  deprecated. Call `plot_contour_labels` instead.',
-        PendingDeprecationWarning)
+        PendingDeprecationWarning,
+    )
 
-    return plot_contour_labels(ax, contours, transform, proj, clabel_locations,
-                               fontsize, whitebbox, horizontal)
+    return plot_contour_labels(
+        ax, contours, transform, proj, clabel_locations, fontsize, whitebbox, horizontal
+    )
 
 
-def plot_contour_labels(ax: matplotlib.axes.Axes,
-                        contours,
-                        transform: cartopy.crs.CRS,
-                        proj: cartopy.crs.CRS,
-                        clabel_locations: list = [],
-                        fontsize: int = 12,
-                        whitebbox: bool = False,
-                        horizontal: bool = False) -> list:
+def plot_contour_labels(
+    ax: matplotlib.axes.Axes,
+    contours,
+    transform: cartopy.crs.CRS,
+    proj: cartopy.crs.CRS,
+    clabel_locations: list = [],
+    fontsize: int = 12,
+    whitebbox: bool = False,
+    horizontal: bool = False,
+) -> list:
     """Utility function to plot contour labels by passing in a coordinate to
     the clabel function.
 
@@ -1210,15 +1268,19 @@ def plot_contour_labels(ax: matplotlib.axes.Axes,
     # Plot any regular contour levels
     if clabel_locations != []:
         clevelpoints = proj.transform_points(
-            transform, np.array([x[0] for x in clabel_locations]),
-            np.array([x[1] for x in clabel_locations]))
+            transform,
+            np.array([x[0] for x in clabel_locations]),
+            np.array([x[1] for x in clabel_locations]),
+        )
         transformed_locations = [(x[0], x[1]) for x in clevelpoints]
-        ax.clabel(contours,
-                  manual=transformed_locations,
-                  inline=True,
-                  fontsize=fontsize,
-                  colors='black',
-                  fmt='%.0f')
+        ax.clabel(
+            contours,
+            manual=transformed_locations,
+            inline=True,
+            fontsize=fontsize,
+            colors='black',
+            fmt='%.0f',
+        )
         [cLabels.append(txt) for txt in contours.labelTexts]
 
         if horizontal is True:
@@ -1233,14 +1295,16 @@ def plot_contour_labels(ax: matplotlib.axes.Axes,
     return cLabels
 
 
-def plotELabels(da: xr.DataArray,
-                transform: cartopy.crs.CRS,
-                proj: cartopy.crs.CRS,
-                clabel_locations: list = [],
-                label: str = 'L',
-                fontsize: int = 22,
-                whitebbox: bool = False,
-                horizontal: bool = True) -> list:
+def plotELabels(
+    da: xr.DataArray,
+    transform: cartopy.crs.CRS,
+    proj: cartopy.crs.CRS,
+    clabel_locations: list = [],
+    label: str = 'L',
+    fontsize: int = 22,
+    whitebbox: bool = False,
+    horizontal: bool = True,
+) -> list:
     r""".. deprecated:: 2023.02.0 The ``plotELabels`` function is deprecated due to naming conventions. Use :func:`plot_extrema_labels` instead.
 
     Utility function to plot high/low contour labels.
@@ -1295,21 +1359,25 @@ def plotELabels(da: xr.DataArray,
 
     warnings.warn(
         'This function is deprecated. Please use `plot_extrema_labels` instead.',
-        PendingDeprecationWarning)
+        PendingDeprecationWarning,
+    )
 
-    return plot_extrema_labels(da, transform, proj, clabel_locations, label,
-                               fontsize, whitebbox, horizontal)
+    return plot_extrema_labels(
+        da, transform, proj, clabel_locations, label, fontsize, whitebbox, horizontal
+    )
 
 
-def plot_extrema_labels(da: xr.DataArray,
-                        transform: cartopy.crs.CRS,
-                        proj: cartopy.crs.CRS,
-                        label_locations: list = [],
-                        label: str = 'L',
-                        fontsize: int = 22,
-                        whitebbox: bool = False,
-                        horizontal: bool = True,
-                        show_warnings: bool = True) -> list:
+def plot_extrema_labels(
+    da: xr.DataArray,
+    transform: cartopy.crs.CRS,
+    proj: cartopy.crs.CRS,
+    label_locations: list = [],
+    label: str = 'L',
+    fontsize: int = 22,
+    whitebbox: bool = False,
+    horizontal: bool = True,
+    show_warnings: bool = True,
+) -> list:
     """Utility function to plot contour labels.
 
     High/Low contour labels will be plotted using text boxes for more accurate label values
@@ -1377,17 +1445,19 @@ def plot_extrema_labels(da: xr.DataArray,
 
     # Plot any low contour levels
     clabel_points = proj.transform_points(
-        transform, np.array([x[0] for x in label_locations]),
-        np.array([x[1] for x in label_locations]))
+        transform,
+        np.array([x[0] for x in label_locations]),
+        np.array([x[1] for x in label_locations]),
+    )
     transformed_locations = [(x[0], x[1]) for x in clabel_points]
 
     nan_indices = [
-        i for i, (x, y) in enumerate(transformed_locations)
+        i
+        for i, (x, y) in enumerate(transformed_locations)
         if math.isnan(x) or math.isnan(y)
     ]
     transformed_locations = [
-        loc for i, loc in enumerate(transformed_locations)
-        if i not in nan_indices
+        loc for i, loc in enumerate(transformed_locations) if i not in nan_indices
     ]
 
     if show_warnings:
@@ -1396,24 +1466,27 @@ def plot_extrema_labels(da: xr.DataArray,
         if len(bad_locations) > 0:
             warnings.warn(
                 f'The following locations could not be translated into the desired projection: {bad_locations_str}. These locations will be dropped.',
-                stacklevel=2)
+                stacklevel=2,
+            )
 
     for loc in range(len(transformed_locations)):
-
         try:
             # Find field variable data at that coordinate
             coord = label_locations[loc]
-            cond = np.logical_and(coordarr[:, :, 0] == coord[0],
-                                  coordarr[:, :, 1] == coord[1])
+            cond = np.logical_and(
+                coordarr[:, :, 0] == coord[0], coordarr[:, :, 1] == coord[1]
+            )
             z_loc, y_loc = np.where(cond)
             p_loc = int(round(da.data[z_loc[0]][y_loc[0]]))
 
-            lab = plt.text(transformed_locations[loc][0],
-                           transformed_locations[loc][1],
-                           label + '$_{' + str(p_loc) + '}$',
-                           fontsize=fontsize,
-                           horizontalalignment='center',
-                           verticalalignment='center')
+            lab = plt.text(
+                transformed_locations[loc][0],
+                transformed_locations[loc][1],
+                label + '$_{' + str(p_loc) + '}$',
+                fontsize=fontsize,
+                horizontalalignment='center',
+                verticalalignment='center',
+            )
 
             if horizontal is True:
                 lab.set_rotation('horizontal')
@@ -1433,8 +1506,7 @@ def plot_extrema_labels(da: xr.DataArray,
     return extremaLabels
 
 
-def set_vector_density(data: xr.DataArray,
-                       minDistance: int = 0) -> xr.DataArray:
+def set_vector_density(data: xr.DataArray, minDistance: int = 0) -> xr.DataArray:
     """Utility function to change density of vector plots.
 
     Parameters
@@ -1473,13 +1545,22 @@ def set_vector_density(data: xr.DataArray,
         # Get distance between points that are diagonally adjacent
         diagDifference = math.sqrt(latdifference**2 + londifference**2)
 
-        if diagDifference >= minDistance and latdifference >= minDistance and londifference >= minDistance:
-            warnings.warn('Plot spacing is already greater or equal to ' +
-                          str(minDistance))
+        if (
+            diagDifference >= minDistance
+            and latdifference >= minDistance
+            and londifference >= minDistance
+        ):
+            warnings.warn(
+                'Plot spacing is already greater or equal to ' + str(minDistance)
+            )
 
         # While the difference between two vectors is smaller than minDistance, increment the value that
         # the data arrays will be sliced by
-        while diagDifference < minDistance or latdifference < minDistance or londifference < minDistance:
+        while (
+            diagDifference < minDistance
+            or latdifference < minDistance
+            or londifference < minDistance
+        ):
             # Get distance between points in latitude (y axis)
             latdifference = float(lat[lat_every] - lat[0])
 
@@ -1493,20 +1574,23 @@ def set_vector_density(data: xr.DataArray,
             lon_every += 1
 
         # Slice data arrays
-        ds = data.isel(lat=slice(None, None, lat_every),
-                       lon=slice(None, None, lon_every))
+        ds = data.isel(
+            lat=slice(None, None, lat_every), lon=slice(None, None, lon_every)
+        )
 
         return ds
 
 
-def get_skewt_vars(pressure: Quantity = None,
-                   temperature: Quantity = None,
-                   dewpoint: Quantity = None,
-                   profile: Quantity = None,
-                   p: Quantity = None,
-                   tc: Quantity = None,
-                   tdc: Quantity = None,
-                   pro: Quantity = None) -> str:
+def get_skewt_vars(
+    pressure: Quantity = None,
+    temperature: Quantity = None,
+    dewpoint: Quantity = None,
+    profile: Quantity = None,
+    p: Quantity = None,
+    tc: Quantity = None,
+    tdc: Quantity = None,
+    pro: Quantity = None,
+) -> str:
     """This function processes the dataset values and returns a string element
     which can be used as a subtitle to replicate the styles of NCL Skew-T
     Diagrams.
@@ -1580,22 +1664,26 @@ def get_skewt_vars(pressure: Quantity = None,
         pressure = p
         warnings.warn(
             'The keyword argument `p` is deprecated. Use `pressure` instead.',
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
     if tc:
         temperature = tc
         warnings.warn(
             'The keyword argument `tc` is deprecated. Use `temperature` instead.',
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
     if tdc:
         dewpoint = tdc
         warnings.warn(
             'The keyword argument `tdc` is deprecated. Use `dewpoint` instead.',
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
     if pro:
         profile = pro
         warnings.warn(
             'The keyword argument `pro` is deprecated. Use `profile` instead.',
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
 
     # CAPE
     cape = mpcalc.cape_cin(pressure, temperature, dewpoint, profile)
