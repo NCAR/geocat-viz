@@ -38,11 +38,11 @@ https://geocat-viz.readthedocs.io/en/latest/citation.html) page.
 [rtd-link]: https://geocat-viz.readthedocs.io/en/latest/?badge=latest
 [pypi-badge]: https://img.shields.io/pypi/v/geocat-viz?logo=pypix&style=for-the-badge
 [pypi-link]: https://pypi.org/project/geocat-viz
-[conda-badge]: https://img.shields.io/conda/vn/ncar/geocat-viz?logo=anaconda&style=for-the-badge
-[conda-link]: https://anaconda.org/ncar/geocat-viz
+[conda-badge]: https://img.shields.io/conda/vn/conda-forge/geocat-viz?logo=anaconda&style=for-the-badge
+[conda-link]: https://anaconda.org/conda-forge/geocat-viz
 [license-badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge
 [license-badge-link]: ./LICENSE
 [upstream-examples-ci-badge]: https://img.shields.io/github/actions/workflow/status/NCAR/geocat-viz/upstream-examples-ci.yml?branch=main&label=Upstream%20Examples%20CI&style=for-the-badge
 [upstream-examples-ci-link]: https://github.com/NCAR/geocat-viz/actions/workflows/upstream-examples-ci.yml
-[doi-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.6941740.svg?style=for-the-badge
-[doi-link]: https://doi.org/10.5281/zenodo.6941740
+[doi-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.6678345.svg?style=for-the-badge
+[doi-link]: https://doi.org/10.5281/zenodo.6678345
