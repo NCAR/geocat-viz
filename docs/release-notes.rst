@@ -12,6 +12,10 @@ Documentation
 ^^^^^^^^^^^^^
 * Remove reference to NCAR/geocat repo from support page by `Katelyn FitzGerald`_ in (:pr:`293`)
 
+Enhancements
+^^^^^^^^^^^^
+* Adapt Taylor diagram code for compatibility with Matplotlib 3.11 by `Katelyn FitzGerald`_ in (:pr:`308`)
+
 Testing
 ^^^^^^^
 * Add minimum dependency version testing and address minor compatibility issues with Matplotlib by `Katelyn FitzGerald`_ in (:pr:`291`)
