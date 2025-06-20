@@ -106,8 +106,10 @@ class TaylorDiagram(object):
         mpl_version = Version(matplotlib.__version__)
         if mpl_version < Version('3.9'):
             tr = PolarAxes.PolarTransform(_apply_theta_transforms=False)
-        else:
+        elif mpl_version < Version('3.11'):
             tr = PolarAxes.PolarTransform(apply_theta_transforms=False)
+        else:
+            tr = PolarAxes.PolarTransform()
 
         # Set correlation labels
         rlocs = np.concatenate((np.arange(10) / 10.0, [0.95, 0.99, 1]))
