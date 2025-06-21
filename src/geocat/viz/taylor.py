@@ -5,6 +5,7 @@ import typing
 
 import numpy as np
 from packaging.version import Version
+from packaging.specifiers import SpecifierSet
 import xarray as xr
 
 import matplotlib
@@ -104,9 +105,9 @@ class TaylorDiagram(object):
 
         # Set polar transform
         mpl_version = Version(matplotlib.__version__)
-        if mpl_version < Version('3.9'):
+        if mpl_version in SpecifierSet("<3.9", prereleases=True):
             tr = PolarAxes.PolarTransform(_apply_theta_transforms=False)
-        elif mpl_version < Version('3.11'):
+        elif mpl_version in SpecifierSet("<3.11", prereleases=True):
             tr = PolarAxes.PolarTransform(apply_theta_transforms=False)
         else:
             tr = PolarAxes.PolarTransform()
