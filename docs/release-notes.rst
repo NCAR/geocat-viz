@@ -14,7 +14,7 @@ Documentation
 
 Enhancements
 ^^^^^^^^^^^^
-* Adapt Taylor diagram code for compatibility with Matplotlib 3.11 by `Katelyn FitzGerald`_ in (:pr:`308`)
+* Adapt Taylor diagram code for compatibility with Matplotlib 3.11 by `Katelyn FitzGerald`_ in (:pr:`308`, :pr:`309`)
 
 Testing
 ^^^^^^^
