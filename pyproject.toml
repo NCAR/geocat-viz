@@ -6,4 +6,4 @@ requires = [
 ]
 
 [tool.setuptools_scm]
-fallback_version = "999"
+fallback_version = "9999"
