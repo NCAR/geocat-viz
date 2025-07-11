@@ -24,6 +24,7 @@ Testing
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
+* Streamlines packaging and configuration by `Katelyn FitzGerald`_ in (:pr:`311`)
 * Update PyPI workflow to use build rather than setup.py by `Katelyn FitzGerald`_ in (:pr:`290`)
 * Update pins for third party GitHub Actions per new guidance by `Katelyn FitzGerald`_ in (:pr:`297`)
 * Transition formatting to `ruff` and `blackdoc` by `Cora Schneck`_ in (:pr:`302`)
