@@ -49,7 +49,7 @@ def test_add_lat_lon_gridlines():
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=10))
     ax.set_extent([4.25, 15.25, 42.25, 49.25], ccrs.PlateCarree())
 
-    gl = add_lat_lon_gridlines(
+    add_lat_lon_gridlines(
         ax,
         color='black',
         labelsize=14,
@@ -301,7 +301,7 @@ def test_xr_add_cyclic_longitudes():
     ax = plt.axes(projection=proj)
     ax.set_global()
 
-    p = wrap_pressure.plot.contour(
+    wrap_pressure.plot.contour(
         ax=ax, transform=ccrs.PlateCarree(), linewidths=0.5, add_labels=False
     )
     return fig
@@ -395,11 +395,11 @@ def test_set_vector_density():
     ds = file_in.isel(time=1, lon=slice(0, -1, 3), lat=slice(1, -1, 3))
 
     fig = plt.figure(figsize=(10, 5.25))
-    ax = plt.axes(projection=ccrs.PlateCarree())
+    plt.axes(projection=ccrs.PlateCarree())
 
     z = set_vector_density(ds, 10)
 
-    Q = plt.quiver(
+    plt.quiver(
         z['lon'],
         z['lat'],
         z['U'].data,
