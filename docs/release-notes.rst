@@ -5,8 +5,9 @@
 Release Notes
 =============
 
-vYYYY.MM.## (unreleased)
-------------------------
+v2025.07.0 (July 16, 2025)
+--------------------------
+This release includes a number of internal testing and packaging updates as well as improved Matplotlib compatibility.
 
 Documentation
 ^^^^^^^^^^^^^
