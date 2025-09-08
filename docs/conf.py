@@ -68,15 +68,15 @@ extensions = [
 # mathjax_path = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
 
 intersphinx_mapping = {
-    'dask': ('https://docs.dask.org/en/latest/', None),
-    'python': ('http://docs.python.org/3/', None),
-    'numpy': ("https://numpy.org/doc/stable", None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-    'xarray': ('http://xarray.pydata.org/en/stable/', None),
+    'dask': ('https://docs.dask.org/en/stable/', None),
+    'python': ('https://docs.python.org/3/', None),
+    'numpy': ('https://numpy.org/doc/stable/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
+    'xarray': ('https://docs.xarray.dev/en/stable/', None),
     'pint': ('https://pint.readthedocs.io/en/stable/', None),
     'cftime': ('https://unidata.github.io/cftime/', None),
     'matplotlib': ('https://matplotlib.org/stable/', None),
-    'cartopy': ('https://scitools.org.uk/cartopy/docs/latest/', None),
+    'cartopy': ('https://cartopy.readthedocs.io/stable/', None),
 }
 # allows us to easily link PRs and issues in the change log
 extlinks = {
