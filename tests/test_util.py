@@ -302,7 +302,7 @@ def test_xr_add_cyclic_longitudes():
     ax.set_global()
 
     wrap_pressure.plot.contour(
-        ax=ax, transform=ccrs.PlateCarree(), linewidths=0.5, add_labels=False
+        ax=ax, transform=ccrs.PlateCarree(), levels=7, linewidths=0.5, add_labels=False
     )
     return fig
 
@@ -345,7 +345,7 @@ def test_plot_contour_labels():
     ax.set_global()
 
     p = pressure.plot.contour(
-        ax=ax, transform=ccrs.PlateCarree(), linewidths=0.5, add_labels=False
+        ax=ax, transform=ccrs.PlateCarree(), levels=7, linewidths=0.5, add_labels=False
     )
 
     contour_label_locations = [
