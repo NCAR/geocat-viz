@@ -16,3 +16,4 @@ dependencies:
   - nbsphinx
   - sphinx-design
   - geocat-datafiles
+  - pip
