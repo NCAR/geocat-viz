@@ -5,6 +5,19 @@
 Release Notes
 =============
 
+vYYYY.MM.## (unreleased)
+------------------------
+This release...
+
+Testing
+^^^^^^^
+* Manually specify contour levels in tests by `Katelyn FitzGerald`_ in (:pr:`321`)
+
+Documentation
+^^^^^^^^^^^^^
+* Fix color specification in `plot_contour_labels.ipynb` and Intersphinx configuration by `Katelyn FitzGerald`_ in (:pr:`321`)
+
+
 v2025.07.0 (July 16, 2025)
 --------------------------
 This release includes a number of internal testing and packaging updates as well as improved Matplotlib compatibility.
