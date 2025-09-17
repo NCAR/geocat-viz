@@ -17,6 +17,9 @@ Documentation
 ^^^^^^^^^^^^^
 * Fix color specification in `plot_contour_labels.ipynb` and Intersphinx configuration by `Katelyn FitzGerald`_ in (:pr:`321`)
 
+Internal Changes
+^^^^^^^^^^^^^^^^
+* Group Dependabot updates by `Katelyn FitzGerald`_ in (:pr:`323`)
 
 v2025.07.0 (July 16, 2025)
 --------------------------
