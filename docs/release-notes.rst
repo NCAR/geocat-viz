@@ -16,6 +16,7 @@ Testing
 Documentation
 ^^^^^^^^^^^^^
 * Fix color specification in `plot_contour_labels.ipynb` and Intersphinx configuration by `Katelyn FitzGerald`_ in (:pr:`321`)
+* Update logos and color schemes by `Anissa Zacharias`_ in (:pr:`335`)
 
 Internal Changes
 ^^^^^^^^^^^^^^^^
