@@ -14,6 +14,7 @@ dependencies:
   - pandas=2.1
   - pint
   - scikit-learn
+  - proj<9.8.0
 # testing
   - pytest
   - pytest-mpl

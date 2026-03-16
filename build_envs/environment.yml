@@ -13,6 +13,7 @@ dependencies:
   - pandas
   - pint
   - scikit-learn
+  - proj<9.8.0
 # testing
   - pytest
   - pytest-mpl
