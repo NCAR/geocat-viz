@@ -363,7 +363,7 @@ nb_execution_raise_on_error = True
 # nitpicky = True
 
 # add links to ignore during link checking
-linkcheck_ignore = [r'https://stackoverflow.com/*']
+linkcheck_ignore = [r'https://stackoverflow.com/*', r'https://zenodo.org/search*']
 
 
 # Allow for changes to be made to the css in the theme_overrides file
