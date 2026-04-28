@@ -54,7 +54,7 @@ jobs:
           conda list
 
       - name: tests
-        id: tests       
+        id: tests
         run: |
           python -m pytest
 
