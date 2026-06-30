@@ -220,7 +220,6 @@ html_theme_options = {
     "use_repository_button": True,
     "use_issues_button": True,
     "home_page_in_toc": False,
-    "navbar_footer_text": "",
     "logo": {
         "image_light": '_static/images/logos/NSF_NCAR_light.png',
         "image_dark": '_static/images/logos/NSF_NCAR_dark.png',
