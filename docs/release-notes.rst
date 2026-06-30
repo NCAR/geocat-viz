@@ -101,7 +101,7 @@ Documentation
 * Document known issue with `suptitle` argument of  ``set_titles_and_labels`` and Cartopy plots by `Julia Kent`_ in (:pr:`219`)
 
 Deprecations
-^^^^^^^^^^
+^^^^^^^^^^^^
 * Pending deprecation warnings added for ``TaylorDiagram`` methods ``add_xgrid`` and ``add_ygrid`` which are changing to the new ``add_corr_grid`` and ``add_std_grid`` by `Julia Kent`_ in (:pr:`219`)
 
 v2024.02.1 (February 28, 2024)
@@ -180,7 +180,7 @@ v2023.07.0 (July 6, 2023)
 Matplotlib unpinned and an examples gallery added.
 
 Bug Fixes
-^^^^^^^^^^^^
+^^^^^^^^^
 * Matplotlib unpinned by `Katelyn Fitzgerald`_ in (:pr:`134`)
 
 Documentation
