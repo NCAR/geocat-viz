@@ -23,6 +23,7 @@ Internal Changes
 ^^^^^^^^^^^^^^^^
 * Group Dependabot updates by `Katelyn FitzGerald`_ in (:pr:`323`)
 * Automatic issue generation for CI Upstream failure by `Katelyn FitzGerald`_ in (:pr:`348`, :pr:`351`)
+* Address docs warnings and adjust CI Upstream runs by `Katelyn FitzGerald`_ in (:pr:`366`)
 
 v2025.07.0 (July 16, 2025)
 --------------------------
