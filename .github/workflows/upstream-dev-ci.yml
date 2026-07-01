@@ -1,6 +1,5 @@
 name: CI Upstream
 on:
-  push:
   workflow_dispatch:
   schedule:
      - cron: '0 0 * * *' # Daily “At 00:00”
