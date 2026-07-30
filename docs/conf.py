@@ -365,7 +365,7 @@ nb_execution_raise_on_error = True
 linkcheck_ignore = [
     r'https://stackoverflow.com/*',
     r'https://zenodo.org/search*',
-    r'https://github.com/signup/free', # 403 error in CI
+    r'https://github.com/signup/free',  # 403 error in CI
 ]
 
 
