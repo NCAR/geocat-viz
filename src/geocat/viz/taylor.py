@@ -277,8 +277,10 @@ class TaylorDiagram(object):
         std_plot = np_std
         corr_plot = np_corr
 
-        # Create a dictionary of key: std, value: annotated number
-        stdAndNumber = dict(zip(np_std, range(1, len(np_std) + 1)))
+        # Keep model labels tied to their input positions. Standard deviation
+        # values are not unique, so they cannot safely be used as label keys.
+        model_numbers = np.arange(1, len(np_std) + 1)
+        numbers_plot = model_numbers
 
         # If percent_bias_on is True, check inputted arguments
         if percent_bias_on:
@@ -301,8 +303,10 @@ class TaylorDiagram(object):
 
             std_plot = np_std[cond]
             corr_plot = np_corr[cond]
+            numbers_plot = model_numbers[cond]
             std_outlier = np_std[np.bitwise_not(cond)]
             corr_outlier = np_corr[np.bitwise_not(cond)]
+            numbers_outlier = model_numbers[np.bitwise_not(cond)]
             if percent_bias_on:
                 bias_plot = bias_plot[cond]
                 bias_outlier = np.array(bias_array)[np.bitwise_not(cond)]
@@ -348,8 +352,8 @@ class TaylorDiagram(object):
 
         # Annotate model markers if annotate_on is True
         if annotate_on:
-            for std, corr in zip(std_plot, corr_plot):
-                label = str(stdAndNumber[std])
+            for number, std, corr in zip(numbers_plot, std_plot, corr_plot):
+                label = str(number)
                 textObject = self.ax.annotate(
                     label,
                     (np.arccos(corr), std),
@@ -363,7 +367,9 @@ class TaylorDiagram(object):
         # Plot outlier model stats
         if model_outlier_on:
             if len(std_outlier) > 0:
-                for std, corr in zip(std_outlier, corr_outlier):
+                for number, std, corr in zip(
+                    numbers_outlier, std_outlier, corr_outlier
+                ):
                     self.modelOutside += 1  # outlier model number increases
 
                     # Plot markers
@@ -393,7 +399,7 @@ class TaylorDiagram(object):
                     textObject = self.ax.text(
                         0.045 + self.modelOutside * 0.22,
                         -0.08,
-                        str(stdAndNumber[std]),
+                        str(number),
                         fontsize=fontsize,
                         transform=self.ax.transAxes,
                     )
