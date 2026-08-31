@@ -21,6 +21,29 @@ def test_add_model_set():
     return fig
 
 
+@pytest.mark.parametrize(
+    'correlations, model_outlier_on',
+    [
+        ([0.32, 0.05, 0.06], False),
+        ([0.32, 0.05, -0.06], True),
+    ],
+)
+def test_add_model_set_preserves_labels_for_duplicate_standard_deviations(
+    correlations, model_outlier_on
+):
+    fig = plt.figure(figsize=(10, 10))
+    taylor = TaylorDiagram(fig=fig, label='REF')
+
+    model_texts, _ = taylor.add_model_set(
+        [0.6, 0.8, 0.6],
+        correlations,
+        model_outlier_on=model_outlier_on,
+    )
+
+    assert [text.get_text() for text in model_texts] == ['1', '2', '3']
+    plt.close(fig)
+
+
 @pytest.mark.mpl_image_compare(tolerance=18, remove_text=True, style='default')
 def test_add_legend():
     fig = plt.figure(figsize=(10, 10))
