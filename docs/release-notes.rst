@@ -9,6 +9,10 @@ vYYYY.MM.## (unreleased)
 ------------------------
 This release...
 
+Bug Fixes
+^^^^^^^^^
+* Preserve Taylor diagram model labels when standard deviations repeat by `Yushuo Sun`_ in (:pr:`378`)
+
 Testing
 ^^^^^^^
 * Increase image test tolerances to support Matplotlib 3.11 by `Katelyn FitzGerald`_ in (:pr:`363`)
@@ -226,3 +230,4 @@ Documentation
 .. _`Orhan Eroglu`: https://github.com/erogluorhan
 .. _`Anissa Zacharias`: https://github.com/anissa111
 .. _`Cora Schneck`: https://github.com/cyschneck
+.. _`Yushuo Sun`: https://github.com/yushuosun
